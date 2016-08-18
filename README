@@ -1,3 +1,7 @@
 Welcomne to mialib!
 
-Try 'make build' and good luck.
+Try 'make build' and good luck!
+
+
+Then cd to 'swig/build/python' and try ipython
+followed by import mialmodule as mial.
