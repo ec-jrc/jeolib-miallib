@@ -1,0 +1,5 @@
+Make sure that the buid directory is included in the TEXINPUTS variable at shell level and also in the file .late2html-init!
+
+The latex2html produced documentation is stored in build/html/
+
+In case build directory is changed in Makefile, please adapt manually any occurence of ../build/ in the other files (use of grep '../build/' *).

@@ -1,0 +1,411 @@
+/***************************************************************************
+                          pqueueExact.c  -  description
+
+          Adapted from http://www.purists.org/georg/pqueue:
+          << Binary Heap Priority Queue >>
+          As of last Update May 07, 2004
+
+                             -------------------
+    begin                : Thu Apr 22 2004
+    authors              : by Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
+    copyright            : (C) 2004 JRC
+    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
+
+    
+ ***************************************************************************/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "pqueueExact.h"
+
+
+/*
+ *  pqExactInit: initialize the queue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue, or NULL if the user
+ *                wishes to leave it to pqinit to allocate the queue.
+ *
+ *    n           Numer of queue items for which memory should be
+ *                preallocated, that is, the initial size of the
+ *                item array the queue uses. If you insert more than
+ *                n items to the queue, another n items will
+ *                be allocated automatically.
+ *
+ *  Return values:
+ *
+ *   non-NULL     Priority queue has been initialized.
+ *
+ *   NULL         Insufficient memory.
+ */
+struct pqueue *pqExactInit(struct pqueue *q, int n)
+{
+    struct pqueue *tmp = q;
+
+    if (!q && !(q = malloc(sizeof(struct pqueue)))){
+        return NULL;
+    }
+    if (!(q->d = malloc(sizeof(PQDATUM) * n))){
+        if (!tmp) free(q);
+        return NULL;
+    }
+    q->avail = q->step = n;
+    q->size = 1;
+    return q;
+}
+
+/*
+ *  pqExactInsert: insert an item into the queue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *    d           Datum to be inserted.
+ *
+ *  Return values:
+ *
+ *    1           The item has been inserted.
+ *
+ *    0           The item could not be appended. Either the queue i
+ *                pointer provided was NULL, or the function was unable 
+ *                to allocate the amount of memory needed for 
+ *                the new item.
+ */
+int pqExactInsert(struct pqueue *q, PQDATUM d)
+{
+    PQDATUM *tmp;
+    int i, newsize;
+
+    if (!q) return 0;
+
+    /* allocate more memory if necessary */
+    if (q->size >= q->avail){
+        newsize = q->size + q->step;
+        if (!(tmp = realloc(q->d, sizeof(PQDATUM) * newsize))){
+            return 0;
+        };
+        q->d = tmp;
+        q->avail = newsize;
+    }
+
+    /* insert item */
+    i = q->size++;
+    while (i > 1 && PQPRIO(q->d[i / 2]) < PQPRIO(d)){
+        q->d[i] = q->d[i / 2];
+        i /= 2;
+    }
+    q->d[i] = d;
+    return 1;
+}
+
+/*
+ *  pqExactMaxInsert: insert an item into the queue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *    d           Datum to be inserted.
+ *
+ *  Return values:
+ *
+ *    1           The item has been inserted.
+ *
+ *    0           The item could not be appended. Either the queue i
+ *                pointer provided was NULL, or the function was unable
+ *                to allocate the amount of memory needed for
+ *                the new item.
+ */
+int pqExactMaxInsert(struct pqueue *q, PQDATUM d)
+{
+    PQDATUM *tmp;
+    int i, newsize;
+
+    if (!q) return 0;
+
+    /* allocate more memory if necessary */
+    if (q->size >= q->avail){
+        newsize = q->size + q->step;
+        if (!(tmp = realloc(q->d, sizeof(PQDATUM) * newsize))){
+            return 0;
+        };
+        q->d = tmp;
+        q->avail = newsize;
+    }
+
+    /* insert item */
+    i = q->size++;
+    while (i > 1 && PQPRIO(q->d[i / 2]) < PQPRIO(d)){
+        q->d[i] = q->d[i / 2];
+        i /= 2;
+    }
+    q->d[i] = d;
+    return 1;
+}
+
+/*
+ *  pqExactMinInsert: insert an item into the queue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *    d           Datum to be inserted.
+ *
+ *  Return values:
+ *
+ *    1           The item has been inserted.
+ *
+ *    0           The item could not be appended. Either the queue i
+ *                pointer provided was NULL, or the function was unable
+ *                to allocate the amount of memory needed for
+ *                the new item.
+ */
+int pqExactMinInsert(struct pqueue *q, PQDATUM d)
+{
+    PQDATUM *tmp;
+    int i, newsize;
+
+    if (!q) return 0;
+
+    /* allocate more memory if necessary */
+    if (q->size >= q->avail){
+        newsize = q->size + q->step;
+        if (!(tmp = realloc(q->d, sizeof(PQDATUM) * newsize))){
+            return 0;
+        };
+        q->d = tmp;
+        q->avail = newsize;
+    }
+
+    /* insert item */
+    i = q->size++;
+    while (i > 1 && PQPRIO(q->d[i / 2]) > PQPRIO(d)){
+        q->d[i] = q->d[i / 2];
+        i /= 2;
+    }
+    q->d[i] = d;
+    return 1;
+}
+
+/*
+ *  pqExcatRemove: remove the highest-ranking item from the queue.
+ *
+ *  Parameters:
+ *
+ *    p           Pointer to a priority queue.
+ *
+ *    d           Pointer to the PQDATUM variable that will hold the 
+ *                datum corresponding to the queue item removed.               
+ *
+ *  Return values:
+ *
+ *    non-NULL    An item has been removed. The variable that d points
+ *                to now contains the datum associated with the item
+ *                in question.
+ *
+ *    NULL        No item could be removed. Either the queue pointer
+ *                provided was NULL, or the queue was empty. The chunk
+ *                of memory that d points to has not been modified.
+ */
+PQDATUM *pqExactRemove(struct pqueue *q, PQDATUM *d)
+{
+    PQDATUM tmp;
+    int i = 1, j;
+
+    if (!q || q->size == 1) return NULL;
+    *d = q->d[1];
+    tmp = q->d[--q->size];
+    while (i <= q->size / 2){
+        j = 2 * i;
+        if (j < q->size &&
+                PQPRIO(q->d[j]) < PQPRIO(q->d[j + 1])){
+            j++;
+        }
+        if (PQPRIO(q->d[j]) <= PQPRIO(tmp)){
+            break;
+        }
+        q->d[i] = q->d[j];
+        i = j;
+    }
+    q->d[i] = tmp;
+    return d;
+}
+
+/*
+ *  pqExcatMaxRemove: remove an item from the queue.
+ *
+ *  Parameters:
+ *
+ *    p           Pointer to a priority queue.
+ *
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the queue item removed.
+ *
+ *  Return values:
+ *
+ *    non-NULL    An item has been removed. The variable that d points
+ *                to now contains the datum associated with the item
+ *                in question.
+ *
+ *    NULL        No item could be removed. Either the queue pointer
+ *                provided was NULL, or the queue was empty. The chunk
+ *                of memory that d points to has not been modified.
+ */
+PQDATUM *pqExactMaxRemove(struct pqueue *q, PQDATUM *d)
+{
+    PQDATUM tmp;
+    int i = 1, j;
+
+    if (!q || q->size == 1) return NULL;
+    *d = q->d[1];
+    tmp = q->d[--q->size];
+    while (i <= q->size / 2){
+        j = 2 * i;
+        if (j < q->size &&
+                PQPRIO(q->d[j]) < PQPRIO(q->d[j + 1])){
+            j++;
+        }
+        if (PQPRIO(q->d[j]) <= PQPRIO(tmp)){
+            break;
+        }
+        q->d[i] = q->d[j];
+        i = j;
+    }
+    q->d[i] = tmp;
+    return d;
+}
+
+/*
+ *  pqExcatMinRemove: remove an item from the queue.
+ *
+ *  Parameters:
+ *
+ *    p           Pointer to a priority queue.
+ *
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the queue item removed.
+ *
+ *  Return values:
+ *
+ *    non-NULL    An item has been removed. The variable that d points
+ *                to now contains the datum associated with the item
+ *                in question.
+ *
+ *    NULL        No item could be removed. Either the queue pointer
+ *                provided was NULL, or the queue was empty. The chunk
+ *                of memory that d points to has not been modified.
+ */
+
+PQDATUM *pqExactMinRemove(struct pqueue *q, PQDATUM *d)
+{
+    PQDATUM tmp;
+    int i = 1, j;
+
+    if (!q || q->size == 1) return NULL;
+    *d = q->d[1];
+    tmp = q->d[--q->size];
+    while (i <= q->size / 2){
+        j = 2 * i;
+        if (j < q->size &&
+                PQPRIO(q->d[j]) > PQPRIO(q->d[j + 1])){
+            j++;
+        }
+        if (PQPRIO(q->d[j]) >= PQPRIO(tmp)){
+            break;
+        }
+        q->d[i] = q->d[j];
+        i = j;
+    }
+    q->d[i] = tmp;
+    return d;
+}
+
+/*
+ *  pqExactPeek: access highest-ranking item without removing it.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the highest-ranking item.
+ *                
+ *  Return values:
+ *
+ *    non-NULL   Success. The variable that d points to now contains
+ *               the datum associated with the highest-ranking item.
+ *
+ *    NULL       Failure. Either the queue pointer provided was NULL,
+ *               or the queue was empty. The chunk of memory that d
+ *               points to has not been modified.
+ */
+PQDATUM * pqExactPeek(struct pqueue *q, PQDATUM *d)
+{
+    if (!q || q->size == 1) return NULL;
+    *d = q->d[1];
+    return d;
+}
+
+
+
+/*
+ *  freeExact_pq: free memory allocated for a pqueue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *  Return values:
+ *
+ *    none
+ */
+void freeExact_pq(struct pqueue *q)
+{
+    /* int i, count=0; */
+    /*  for (i=0; i<q->size; i++){
+      if (q->d[i] != NULL)
+        free((char*) (q->d[i]) );
+      else
+        count++;
+        }
+        printf("%d datum were set to NULL in free_pq\n", count); */
+
+    free(q->d);
+    free(q);
+}
+
+
+/*
+ *  EmergencyFreeExact_pq: free memory allocated for a pqueue.
+ *
+ *  Parameters:
+ *
+ *    q           Pointer to a priority queue.
+ *
+ *  Return values:
+ *
+ *    none
+ */
+
+void EmergencyFreeExact_pq(struct pqueue *q)
+{
+    int i, count=0;
+
+    printf("q->avail=%d\n", q->avail);
+    printf("q->size=%d\n", q->size);
+
+    for (i=1; i<q->size; i++){
+        if (q->d[i] != NULL){
+            count++;
+            free((char*) (q->d[i]) );
+        }
+    }
+
+    printf("%d datum were freed in free_pq\n", count);
+
+    free(q->d);
+    free(q);
+}
