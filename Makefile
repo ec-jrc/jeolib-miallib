@@ -1,5 +1,6 @@
 
-
+core:
+	cd core/c && make -j all && make -j doc
 
 build:	
 	cd core/c && make -j all && make -j doc
