@@ -44,4 +44,5 @@ all: miaxlisp
 
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete
+	test -f banner_mialib.h && rm banner_mialib.h
 
