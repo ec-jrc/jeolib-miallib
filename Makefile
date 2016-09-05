@@ -1,6 +1,4 @@
 
-
-
 build:	
 	cd core/c && make -j all && make -j doc
 	cd swig/python && make all
