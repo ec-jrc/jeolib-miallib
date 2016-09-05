@@ -268,6 +268,7 @@ doc: $(DOCDIR)/xml/mial_doxy2swig.i
 
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
+	cp -a mialib_swig.h $(prefix)/include/
 
 clean:
 	find $(BUILDDIR) -delete
