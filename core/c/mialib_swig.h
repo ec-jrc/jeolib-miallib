@@ -791,8 +791,8 @@ extern ERROR_TYPE clmaxlike(IMAGE *immos, IMAGE *imin, int bklabel, int type, do
 /* skel.c */
 extern ERROR_TYPE binODthin_noqueue(IMAGE *imin, int stype, int atype, IMAGE *imanchor);
 extern ERROR_TYPE binODthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanchor);
-extern ERROR_TYPE binOIthin_noqueue (IMAGE *imin, int stype, int atype, IMAGE *imanchor);
-extern ERROR_TYPE binOIthin_FIFO (IMAGE *imin, int stype, int atype, IMAGE *imanchor);
+extern ERROR_TYPE binOIthin_noqueue(IMAGE *imin, int stype, int atype, IMAGE *imanchor);
+extern ERROR_TYPE binOIthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanchor);
 #endif
 /************************************************************************************/
 
@@ -811,7 +811,7 @@ extern ERROR_TYPE mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, lon
 
 /* segmentation.c */
 extern IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat);
-extern ERROR_TYPE writeGnuPlot3D(IMAGE ** inputImArray, int nc, int graph, int regionSize, int varianz, char * fileName);
+extern ERROR_TYPE writeGnuPlot3D(IMAGE **inputImArray, int nc, int graph, int regionSize, int varianz, char *fileName);
 
 /* vectorize.c */
 extern ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int format, double simplifyBorderLines);
