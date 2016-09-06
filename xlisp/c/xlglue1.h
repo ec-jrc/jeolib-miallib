@@ -56,13 +56,15 @@ extern ERROR_TYPE gorder(IMAGE *lbl, IMAGE *g, int n);
 extern IMAGE *sortindex(IMAGE *i0);
 
 /* imem.c */
-extern void free_image(IMAGE *);
-extern void iminfo(IMAGE *);
+extern void free_image(IMAGE *im);
+extern void iminfo(IMAGE *im);
 extern IMAGE *create_image(int data_type, long int nx, int ny, int nz);
 extern IMAGE *copy_image(IMAGE *im);
 extern ERROR_TYPE copy_lut(IMAGE *im1, IMAGE *im2);
 extern ERROR_TYPE create_lut(IMAGE *im);
 extern void free_lut(IMAGE *im);
+extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi);
+extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
 
 /* imio_gdal.c */
 extern int GDAL2MIALDataType(int aGDALDataType); 
@@ -139,9 +141,9 @@ extern ERROR_TYPE IsPartitionEqual(IMAGE *, IMAGE *, int *);
 extern ERROR_TYPE swap(IMAGE *im);
 
 /* recons.c */
-extern int rero(IMAGE *, IMAGE *, int, int);
-extern int rdil(IMAGE *, IMAGE *, int, int);
-extern int rerodilp(IMAGE *, IMAGE *, int, int, int);
+extern ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag);
+extern ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag);
+extern ERROR_TYPE rerodilp(IMAGE *mark, IMAGE *mask, int graph, int flag, int version);
 
 /* setreg.c */
 extern ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic);
@@ -353,8 +355,6 @@ extern IMAGE *phase_correlation(IMAGE *im, IMAGE *im_template);
 /* gsl.c */
 extern IMAGE *coor_extrema_paraboloid(IMAGE *b);
 extern IMAGE *fitlinear(IMAGE *xarray, IMAGE  *yarray);
-extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi);
-extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
 
 /* histo.c */
 extern IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, IMAGE *cdf_gb_tgt);
