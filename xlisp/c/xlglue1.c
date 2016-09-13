@@ -762,7 +762,7 @@ LVAL ishmatimage()
   \cfunction{\cfshmatimage}
   \cfile{shm.c}
   \creationdate{20130926}
-  \example{}
+  \example{}{}
 */
   shmkey = (int)getfixnum(xlgafixnum());
   nx = (int)getfixnum(xlgafixnum());
@@ -793,7 +793,7 @@ LVAL ishmdtimage()
   \cfunction{\cfshmdtimage}
   \cfile{shm.c}
   \creationdate{20130926}
-  \example{}
+  \example{}{}
 */
 
   /* semkey_flag is hard set to 0 (no key) for the time being */
