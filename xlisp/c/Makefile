@@ -23,7 +23,7 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DDOMINIK
 
 
 
-miaxlisp: banner_mialib.h $(BUILDOBJS)
+$(BUILDDIR)/miaxlisp: banner_mialib.h $(BUILDOBJS)
 	g++ -fopenmp -m64 -o $(BUILDDIR)/miaxlisp $(BUILDOBJS) $(LIBMIADIR)/libmia_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
 	#g++ -fopenmp -m64 -o $(BUILDDIR)/miaxlisp $(BUILDOBJS) $(LIBMIADIR)/libmia_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto /usr/local/lib/libnn.a /usr/local/lib/libcsa.a -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
 
@@ -40,7 +40,7 @@ $(BUILDDIR)/%.o: %.c xlisp.h xlftab.h xlglob.h
 	$(CC) -c $(CFLAGS) $(INCLUDE) -o $@ $<
 
 
-all: miaxlisp
+all: $(BUILDDIR)/miaxlisp
 
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete

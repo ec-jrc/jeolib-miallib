@@ -247,7 +247,7 @@ $(LDIR)/$(TARGET)_python.so: $(DOBJS)
 
 ##################################################################
 
-$(DOCDIR)/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a
+$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a
 	cd $(DOCDIR) && make clean && make doc
 
 ##################################################################
@@ -259,12 +259,7 @@ all: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xl
 
 core: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
 
-
-
-
-
-doc: $(DOCDIR)/xml/mial_doxy2swig.i
-
+doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/

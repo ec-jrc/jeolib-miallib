@@ -107,7 +107,7 @@ PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python2.7
 PYTHON_LIB    = 
 
 # PYTHON_PACKAGES_DIR = /home/soillpi/.local/lib/python2.7/site-packages/
-PYTHON_PACKAGES_DIR = /usr/local/lib/python2.7/site-packages/
+PYTHON_PACKAGES_DIR = /usr/local/lib/python2.7/dist-packages/
 
 # Extra Python specific dynamic linking options
 PYTHON_DLNK   = 
@@ -122,33 +122,39 @@ PYTHON_DLNK   =
 
 
 
-mial_wrap.c: ../include/mial.i ../include/$(BINDING)/mial_$(BINDING).i # ../include/$(BINDING)/typemaps_$(BINDING).i
+$(SWIGOUTPUTDIR)/mial_wrap.c: ../include/mial.i ../include/$(BINDING)/mial_$(BINDING).i # ../include/$(BINDING)/typemaps_$(BINDING).i
+	@mkdir -p $(SWIGOUTPUTDIR)
 	@mkdir -p $(BUILDDIR)$(@D)
-	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIAL_ROOT) -$(BINDING) -o $(SWIGOUTPUTDIR)$@ ../include/mial.i
+	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIAL_ROOT) -$(BINDING) -o $@ ../include/mial.i
 	cd $(SWIGOUTPUTDIR) && patch -o - < ../mial_dealloc.patch > /tmp/mial_wrap.c && rm -f ./-.o*
 	mv /tmp/mial_wrap.c $(SWIGOUTPUTDIR)
 	test -f $(SWIGOUTPUTDIR)/$(TARGET)module.py && mv $(SWIGOUTPUTDIR)/$(TARGET)module.py $(BUILDDIR)
 
+$(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o: $(SWIGOUTPUTDIR)/mial_wrap.c
+	@mkdir -p $(@D)
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
 
-mial_wrap.o: mial_wrap.c
-	@mkdir -p $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o  $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$@ 
-
-mialmodule: mial_wrap.o
+$(BUILDDIR)/_$(TARGET)module$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o
 	@mkdir -p $(BUILDDIR)/$(@D)
 	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) $(LIBS) -o $(BUILDDIR)/_$(TARGET)module$(SO)
 
-doc:
+
+$(BUILDDIR)/doc/mial_docs_html/toc.html:
 	@mkdir -p $(BUILDDIR)/doc/$(@D)
 	epydoc -v --name mial --html --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_html
+
+$(BUILDDIR)/doc/mial_docs_tex/api.tex:
+	@mkdir -p $(BUILDDIR)/doc/$(@D)
 	epydoc -v --name mial --pdf  --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_tex
 
+doc: $(BUILDDIR)/_$(TARGET)module$(SO) $(BUILDDIR)/doc/mial_docs_html/toc.html $(BUILDDIR)/doc/mial_docs_tex/api.tex
 
-all: mialmodule doc
+all: $(BUILDDIR)/_$(TARGET)module$(SO) doc
 
 
 install:
 	cp -a $(BUILDDIR)/_$(TARGET)module$(SO) $(PYTHON_PACKAGES_DIR)
+	cp -a $(BUILDDIR)/mialmodule.py $(PYTHON_PACKAGES_DIR)
 
 
 clean:
@@ -162,6 +168,6 @@ clean:
 
 veryclean: clean
 	-rm -f ${WRAPPERS} ${PY_MODULES}
-	-rm -f ${SWIGOUTPUTDIR}/mial_wrap.c
+	-rm -rf ${SWIGOUTPUTDIR}
 
 
