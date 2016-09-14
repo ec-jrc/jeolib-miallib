@@ -131,7 +131,7 @@ typedef void *             PTR_TYPE;
 typedef int                LBL_TYPE; /* should be unsigned, see also t_LBL_TYPE */
 
 /* consider defining long long type (8 bytes) on 486: int64 */
-typedef union generic_type {
+typedef union {
   GENERICPIX generic_val;
   UCHAR  uc_val;
   USHORT us_val;
@@ -146,7 +146,7 @@ typedef union generic_type {
 
 
 /* consider projectioncode ulx uly ulz resx resy resz */
-typedef struct image {
+typedef struct {
   void *p_im;    /* Pointer to image data */
   int DataType;  /* Image data type */
   int nx;        /* Number of columns */

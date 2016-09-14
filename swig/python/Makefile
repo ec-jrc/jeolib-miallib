@@ -158,6 +158,7 @@ install:
 
 
 clean:
+	-rm -rf $(SWIGOUTPUTDIR)
 	-rm -f ${PACKAGE_DIR}/*.pyc
 	-rm -rf $(BUILDDIR)
 	-rm -rf $(BUILDBASEDIR)
