@@ -75,4 +75,4 @@ $(BUILDDOCDIRTEX)/cfvt.tex: $(BUILDDOCDIRTEX)/xlglue1.tex
 all: ${FN}.dvi $(BUILDDOCDIRHTML)/${FN}.html ${FN}.pdf
 
 clean:
-	rm -rf $(BUILDDOCDIR); rm -f ${FN}.aux ${FN}.ilg $(FN).pdf ${FN}.log ${FN}.blg ${FN}.dvi ${FN}.toc ${FN}.idx ${FN}.ind ${FN}.bbl ${FN}.bib ${FN}.out ${FN}.ps $(EPS_FILES) $(XPS_FILES) core ; rm -rf .xvpics cfet.tex cfit.tex cfvt.tex
+	rm -rf $(BUILDDOCDIR); rm -f ${FN}.aux ${FN}.ilg $(FN).pdf ${FN}.log ${FN}.blg ${FN}.dvi ${FN}.toc ${FN}.idx ${FN}.ind ${FN}.bbl ${FN}.out ${FN}.ps $(EPS_FILES) $(XPS_FILES) core ; rm -rf .xvpics cfet.tex cfit.tex cfvt.tex

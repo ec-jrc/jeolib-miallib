@@ -449,7 +449,8 @@ This chapter can be considered as a companion of the `Background' chapter of \ci
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliography{strurl,pierre,dem,soille,techrep,proj,cloud,remsens,registration,calib}
+%\bibliography{strurl,pierre,dem,soille,techrep,proj,cloud,remsens,registration,calib}
+\bibliography{miadocxlisp}
 
 \cleardoublepage
 \addcontentsline{toc}{chapter}{Index}
@@ -461,3 +462,4 @@ This chapter can be considered as a companion of the `Background' chapter of \ci
 
 
 export BIBINPUTS=$BIBINPUTS:/mnt/workstation/workstation/bib/
+bibtool -x miadocxlisp.aux -r /home/soillpi/workstation/bib/clean4mmd.rsc  > miadocxlisp.bib
