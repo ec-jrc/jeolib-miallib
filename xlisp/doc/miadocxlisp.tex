@@ -20,10 +20,15 @@
 %bookmarks=true]{hyperref}
 %\else
 %\usepackage[latex2html,dvips]{hyperref}
-\usepackage[breaklinks=true]{hyperref}
-%\fi
 \usepackage{url}
-%\usepackage{html}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[breaklinks=true]{hyperref}
+\else
+\usepackage{html}
+\usepackage[latex2html,breaklinks=true]{hyperref}
+\fi
+%\fi
 
 %\usepackage{rotating}
 \usepackage{natbib}
@@ -31,7 +36,21 @@
 \usepackage{makeidx}
 \usepackage{natbib}
 \usepackage{threeparttable}
-\usepackage{ifpdf}
+
+
+% NOTE: to have a correct doi processing for latex2html, the 
+% file original bst file needed to be edited and stored in myplainnat.bst
+
+%\providecommand{\doi}[1]{doi: \href{http://dx.doi.org/#1}{\path{#1}}}
+%\providecommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
+\providecommand{\doi}[1]{doi: \htmladdnormallink{\path{#1}}{http://dx.doi.org/#1}}
+%\providecommand{\doi}[1]{doi: \url{#1}}
+%\renewcommand{\htmladdnormallink}[2]{\href{#2}{#1}}
+
+%\newcommand{\doi}[1]{doi: \url{http://dx.dor.org/#1}}
+
+%\newcommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
+
 
 
 \def\l{english}
@@ -99,14 +118,14 @@
 \newcommand{\cfunction}[1]{C FUNCTION: #1
 
 }
-\newcommand{\cfile}[1]{C FILE: \htmladdnormallink{#1}{file:../../core/c/#1}
+\newcommand{\cfile}[1]{C FILE: \htmladdnormallink{\path{#1}}{file:../../../../core/c/#1}
 
 }
-\newcommand{\xlispcfile}[1]{C FILE: \htmladdnormallink{#1}{file:../c/#1}
+\newcommand{\xlispcfile}[1]{C FILE: \htmladdnormallink{#1}{file:../../../c/#1}
 
 }
 
-\newcommand{\lspfile}[1]{LSP FILE: \htmladdnormallink{#1}{file:../lsp/#1}
+\newcommand{\lspfile}[1]{LSP FILE: \htmladdnormallink{#1}{file:../../../lsp/#1}
 
 }
 \newcommand{\coding}[1]{Coding note: #1}
@@ -177,21 +196,6 @@
 
 
 \makeindex
-
-
-% NOTE: to have a correct doi processing for latex2html, the 
-% file original bst file needed to be edited and stored in myplainnat.bst
-
-%\providecommand{\doi}[1]{doi: \href{http://dx.doi.org/#1}{\path{#1}}}
-%\providecommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
-\providecommand{\doi}[1]{doi: \htmladdnormallink{\path{#1}}{http://dx.doi.org/#1}}
-%\providecommand{\doi}[1]{doi: \url{#1}}
-\renewcommand{\htmladdnormallink}[2]{\href{#2}{#1}}
-
-%\newcommand{\doi}[1]{doi: \url{http://dx.dor.org/#1}}
-
-%\newcommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
-
 
 \begin{document}
 
