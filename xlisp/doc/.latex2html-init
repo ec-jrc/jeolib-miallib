@@ -1,9 +1,9 @@
-#$EXTERNAL_UP_LINK = "http://ams.jrc.it/mdigest";
-#$EXTERNAL_UP_TITLE = "MDigest";
-$MAX_SPLIT_DEPTH = 0;
+$EXTERNAL_UP_LINK = "http://jeodpp.jrc.ec.europa.eu";
+$EXTERNAL_UP_TITLE = "JEODPP";
+#$MAX_SPLIT_DEPTH = 2;
 $TITLE = "MIA";
 $BOTTOM_NAVIGATION = 1;
 $LOCAL_ICONS = 1;
 $TOC_DEPTH = 2;
-$TEXINPUTS = "../build/doc/texinputs";
+$TEXINPUTS = "../build/doc/texinputs:.";
 $DESTDIR = "../build/doc/html";

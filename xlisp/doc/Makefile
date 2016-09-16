@@ -21,9 +21,7 @@ BUILDDOCDIR = ../build/doc
 BUILDDOCDIRTEX = $(BUILDDOCDIR)/texinputs
 BUILDDOCDIRHTML = $(BUILDDOCDIR)/html
 
-
-
-
+export TEXINPUTS:=.:../build/doc/texinputs/:${TEXINPUTS}
 
 SRC = `find $(SRCSDIR) -name "*.c"`
 

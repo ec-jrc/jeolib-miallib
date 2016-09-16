@@ -1844,7 +1844,7 @@
 ; \feature{}
 ; \authors{}
 ; \creationdate{}
-  ;; Band watts/(meter squared * microm) \cite{chander-markham2003tgars}
+  ;; Band watts/(meter squared * microm) \cite{chander-markham2003tgars,chander-markham-helder2009}
   (case bandnumber
 	(1 1957.000)
 	(2 1825.000)

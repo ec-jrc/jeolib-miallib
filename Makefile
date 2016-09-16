@@ -3,10 +3,9 @@ build:
 	cd core/c && make -j all && make -j doc
 	cd swig/python && make -j 1 all
 	cd xlisp/c && make -j all
-	#cd xlisp/doc && make -j 1 all
+	cd xlisp/doc && make -j 1 all
 
-#documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed
-#try cd xlisp/doc && make 
+#documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
 
 
 install: build

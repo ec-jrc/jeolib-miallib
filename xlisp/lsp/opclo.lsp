@@ -802,7 +802,7 @@
 ; \param{lscale}{a list of integer values representing the desired scales (in number of pixels)}
 ; \param{graph}{integer value for the connectivity (either 4 or 8)}
 ; \return{a list of 4 images containing the scale at which the maximum opening difference,  the scale at which the maximum closing difference occurs, the image of the values of the maximum opening differences, and the image of the values of the maximum closing differences.}
-; \desc{See \citep{pesaresi-benediktsson2000ismm,pesaresi-benediktsson2001} for details on morphological profiles.  Much faster implementation by scanning the max-tree \citep{}.}
+; \desc{See \citep{pesaresi-benediktsson2000ismm,pesaresi-benediktsson2001} for details on morphological profiles.  Much faster implementation by scanning the max-tree \citep{ouzounis-pesaresi-soille2012}.}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}

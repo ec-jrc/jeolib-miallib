@@ -33,8 +33,6 @@
 \usepackage{threeparttable}
 \usepackage{ifpdf}
 
-%\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
-
 
 \def\l{english}
 \def\english{english}
@@ -68,7 +66,7 @@
 
 \newcommand{\maxNumberOfBands}{255}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{myplainnat}
 
 \setlength{\parindent}{0cm}
 
@@ -181,7 +179,19 @@
 \makeindex
 
 
+% NOTE: to have a correct doi processing for latex2html, the 
+% file original bst file needed to be edited and stored in myplainnat.bst
+
+%\providecommand{\doi}[1]{doi: \href{http://dx.doi.org/#1}{\path{#1}}}
+%\providecommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
+\providecommand{\doi}[1]{doi: \htmladdnormallink{\path{#1}}{http://dx.doi.org/#1}}
+%\providecommand{\doi}[1]{doi: \url{#1}}
 \renewcommand{\htmladdnormallink}[2]{\href{#2}{#1}}
+
+%\newcommand{\doi}[1]{doi: \url{http://dx.dor.org/#1}}
+
+%\newcommand{\doi}[1]{doi: \url{http://dx.doi.org/#1}}
+
 
 \begin{document}
 
