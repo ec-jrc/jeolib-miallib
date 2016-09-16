@@ -64,7 +64,7 @@ SWIGARGS = -Wall -I../include -I../include/$(BINDING)
 CFLAGS     = -fPIC -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
 INCLUDE    = -I./ -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7 -I$(MIAL_ROOT)
 LIBS       = -lgdal -ltiff -ldl -lmia_python
-LIBDIR	   = 
+LIBDIR	   = ../../core/build/lib/
 INTERFACE  = mial.i
 SWIGOPT    =
 SWIG       = swig
@@ -136,7 +136,7 @@ $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o: $(SWIGOUTPUTDIR)/mial_wrap.c
 
 $(BUILDDIR)/_$(TARGET)module$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o
 	@mkdir -p $(BUILDDIR)/$(@D)
-	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) $(LIBS) -o $(BUILDDIR)/_$(TARGET)module$(SO)
+	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)module$(SO)
 
 
 $(BUILDDIR)/doc/mial_docs_html/toc.html:
