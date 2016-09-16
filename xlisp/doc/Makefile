@@ -40,7 +40,7 @@ ${FN}.dvi: $(BUILDDOCDIRTEX)/xlglue1.tex $(BUILDDOCDIRTEX)/cfit.tex $(BUILDDOCDI
 	latex ${FN}; bibtex ${FN}; latex ${FN}; cat ${FN}.idx  | sed 's/indexentry{\([@*]\)\([a-z]*\)/indexentry{\2\@\\texttt{\"\1}\2/' | tr -d '  ' > /tmp/toto.idx;  mv /tmp/toto.idx ${FN}.idx; makeindex ${FN}.idx; latex ${FN}; touch ${FN}.bbl; touch $@
 
 $(BUILDDOCDIRHTML)/$(FN).html: ${FN}.dvi
-	/usr/local/bin/latex2html $(FN)
+	latex2html $(FN)
 
 $(FN).pdf: ${FN}.dvi
 	pdflatex $(FN)
