@@ -11,6 +11,7 @@ build:
 install: build
 	cd core/c && make install
 	cd swig/python && make install
+	cd xlisp/c && make install
 
 clean:
 	-cd core/c && make clean

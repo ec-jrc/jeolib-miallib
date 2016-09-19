@@ -2,6 +2,7 @@
 
 CC =gcc -m64 -O3 -Wall # -Or26 # -pg
 
+PREFIX=/usr/local
 BUILDDIR = ../build
 LIBMIADIR= ../../core/build/lib
 
@@ -41,6 +42,13 @@ $(BUILDDIR)/%.o: %.c xlisp.h xlftab.h xlglob.h
 
 
 all: $(BUILDDIR)/miaxlisp
+
+
+install:
+	sudo cp -a $(BUILDDIR)/miaxlisp $(PREFIX)/bin/
+	mkdir -p $(PREFIX)/share/miaxlisp/
+	sudo cp -ar ../lsp $(PREFIX)/share/miaxlisp/
+
 
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete
