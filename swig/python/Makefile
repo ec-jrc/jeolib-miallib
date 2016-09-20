@@ -45,7 +45,6 @@ MIAL_ROOT = ../../core/c/
 BUILDDIR = ../build/python/
 BUILDDIRBASE = ../build/
 
-PY_MODULES      =       ${PACKAGE_DIR}/mial.py
 
 
 TARGET     = mial
@@ -143,9 +142,14 @@ $(BUILDDIR)/doc/mial_docs_tex/api.tex:
 	@mkdir -p $(@D)
 	epydoc -v --name mial --pdf  --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_tex
 
-doc: $(BUILDDIR)/_$(TARGET)module$(SO) $(BUILDDIR)/doc/mial_docs_html/toc.html $(BUILDDIR)/doc/mial_docs_tex/api.tex
 
-all: $(BUILDDIR)/_$(TARGET)module$(SO) doc
+
+
+build: $(BUILDDIR)/_$(TARGET)module$(SO)
+
+doc: build $(BUILDDIR)/doc/mial_docs_html/toc.html $(BUILDDIR)/doc/mial_docs_tex/api.tex
+
+all: doc build
 
 
 install:
@@ -164,7 +168,7 @@ clean:
 	-rm -rf dist
 
 veryclean: clean
-	-rm -f ${WRAPPERS} ${PY_MODULES}
+	-rm -f ${WRAPPERS}
 	-rm -rf ${SWIGOUTPUTDIR}
 
 

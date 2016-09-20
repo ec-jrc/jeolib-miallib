@@ -1,11 +1,25 @@
 
+
+#
+# build requires documentation to be generated for core and
+# documentation generation for core requires doxygen to be installed!
+#
 build:	
-	cd core/c && make -j all && make -j doc
-	cd swig/python && make -j 1 all
+	cd core/c && make -j build && make -j doc
+	cd swig/python && make -j 1 build
 	cd xlisp/c && make -j all
+
+
+
+#
+# documentation generation for python requires epydoc  to be installed!
+# documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
+#
+doc: build
+	cd swig/python && make -j 1 doc
 	cd xlisp/doc && make -j 1 all
 
-#documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
+all: build doc
 
 
 install:

@@ -255,11 +255,11 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a
 
 
 
-all: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
-
-core: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
+build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
 
 doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
+
+all: build doc
 
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
