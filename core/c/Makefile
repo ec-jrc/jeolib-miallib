@@ -263,7 +263,9 @@ all: build doc
 
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
-	cp -a mialib_swig.h $(prefix)/include/
+	mkdir -p $(prefix)/include/$(TARGET)/
+	cp -a mialib_swig.h $(prefix)/include/$(TARGET)/
+	cp -a op.h $(prefix)/include/$(TARGET)/
 
 clean:
 	find $(BUILDDIR) -delete
