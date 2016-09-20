@@ -336,16 +336,15 @@ LVAL iGDALRead()
     xlabort("(*GDALRead fn band &opt nXOff nYOff nXSize nYSize &key nBufXSize nBufYSize)); where fn is an image file recognised by GDAL as such\n");
 
 /*
-  \lspfunction{*}{GDALRead}{fn band nXOff nYOff nXSize nYSize}
+  \lspfunction{*}{GDALRead}{fn band nXOff nYOff nXSize nYSize &key (nBufXSize nXSize) (nBufYSize nYSize)}
   \param{fn}{a string for the name of an image file (possibly including its path)}
   \param{band}{an integer for the band number, 0 for first band}
-
-  \param{nXOff:  The pixel offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the left side (default value).}
-  \param{nYOff: The line offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the top (default value).}
-  \param{nXSize: The width of the region of the band to be accessed in pixels.}
-  \param{nYSize: The height of the region of the band to be accessed in lines.}
-  \param{nBufXSize: integer for number of columns of output image (default is nXSize).}
-  \param{nBufYSize: integer for number of lines of output image (default is nYSize).}
+  \param{nXOff}{integer for the pixel offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the left side (default value).}
+  \param{nYOff}{integer for the line offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the top (default value).}
+  \param{nXSize}{integer for the width of the region of the band to be accessed in pixels.}
+  \param{nYSize}{integer for the height of the region of the band to be accessed in lines.}
+  \param{nBufXSize}{integer for the number of columns of output image (default is nXSize).}
+  \param{nBufYSize}{integer for the number of lines of output image (default is nYSize).}
   \return{a new image node containing the read image or NIL in case an error occured.}
   \desc{reads a \htmladdnormallink{GDAL}{http://www.gdal.org/} compatible image stored in the filename specified by fn.  This function is a wrapper to the function GDALRasterIO.}
   \cfunction{\cfGDALRead}

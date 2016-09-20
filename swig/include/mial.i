@@ -26,7 +26,6 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 
-
 %{
 /* Put header files here or function declarations like below */
 #include "mialib_swig.h"
@@ -55,6 +54,27 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 // %nodefaultctor image;      // No default constructor 
 // %nodefaultdtor image;      // No default destructor
+
+
+
+
+// renaming:
+
+/* imem.c */
+%rename(imInfo) iminfo;
+%rename(imToArray) imtoarray;
+%rename(arrayToIm) arraytoim;
+%rename(setPixVal) setpixval;
+%rename(getPixVal) getpixval;
+%rename(createImArray) create_imarray;
+
+// rename the C declarations
+// %rename("%(lowercamelcase)s", %$isfunction) ""; // foo_bar -> fooBar; FooBar -> fooBar
+
+
+%rename("nd_%s", regextarget=1, fullname=1) "IMAGE \*\(.*";
+
+
 
 
 // These are the headers with the declarations that will be warped

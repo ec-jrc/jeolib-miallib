@@ -365,8 +365,8 @@ extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t n
 extern ERROR_TYPE shmdtimage(void *shm_address, int semkey_flag, key_t semkey);
 
 /* mblincomb.c */
-extern ERROR_TYPE f_mblincomb(IMAGE **imarray, int n, IMAGE *matrix);
-extern ERROR_TYPE uc_condmean(IMAGE **imarray, int n);
+extern ERROR_TYPE mblincomb(IMAGE **imarray, int n, IMAGE *matrix);
+extern ERROR_TYPE condmean(IMAGE **imarray, int n);
 
 /* htop.c */
 extern IMAGE *htop(IMAGE *dem, IMAGE *d8);
@@ -424,7 +424,7 @@ extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE *ima[], int n, int gr
 
 /* skelodthin.c */
 extern ERROR_TYPE skeleton(IMAGE *im);
-
+extern ERROR_TYPE bprune(IMAGE *im, int occa, int graph);
 
 #ifdef NNI
 extern IMAGE *nni(IMAGE *, IMAGE *, IMAGE *, double, double, double, double, int, int, double);
@@ -436,7 +436,6 @@ extern IMAGE *nni(IMAGE *, IMAGE *, IMAGE *, double, double, double, double, int
 /* unwrap.c */
 extern int unwrap();
 extern IMAGE *omeca();  
-extern int uc_bprune();
 
 /* ngb.c */
 extern IMAGE *mult8();

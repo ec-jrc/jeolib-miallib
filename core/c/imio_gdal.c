@@ -73,7 +73,8 @@ int GDAL2MIALDataType(int aGDALDataType)
  * @param nYOff: The line offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the top (default value).
  * @param nXSize: The width of the region of the band to be accessed in pixels.
  * @param nYSize: The height of the region of the band to be accessed in lines.
- * @param nBufXSize: integer for number of columns of output image (default is nXSize).   @param nBufYSize: integer for number of lines of output image (default is nYSize)
+ * @param nBufXSize: integer for number of columns of output image (default is nXSize).
+ * @param nBufYSize: integer for number of lines of output image (default is nYSize)
  * @desc read a given band of a raster image using gdal with the specified options.  Any invalid geometry parameter will result in the whole image domain to be read!
  */
 IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize)

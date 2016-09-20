@@ -8,7 +8,7 @@ build:
 #documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
 
 
-install: build
+install:
 	cd core/c && make install
 	cd swig/python && make install
 	cd xlisp/c && make install

@@ -524,6 +524,7 @@ extern ERROR_TYPE compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int gr
 
 /* skelodthin.c */
 extern ERROR_TYPE skeleton(IMAGE *im);
+extern ERROR_TYPE bprune(IMAGE *im, int occa, int graph);
 
 /* setreg.c */
 extern ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic);
@@ -759,8 +760,8 @@ extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t n
 extern ERROR_TYPE shmdtimage(void *shm_address, int semkey_flag, key_t semkey);
 
 /* mblincomb.c */
-extern ERROR_TYPE f_mblincomb(IMAGE **imarray, int n, IMAGE *matrix);
-extern ERROR_TYPE uc_condmean(IMAGE **imarray, int n);
+extern ERROR_TYPE mblincomb(IMAGE **imarray, int n, IMAGE *matrix);
+extern ERROR_TYPE condmean(IMAGE **imarray, int n);
 
 /* htop.c */
 extern IMAGE *htop(IMAGE *dem, IMAGE *d8);

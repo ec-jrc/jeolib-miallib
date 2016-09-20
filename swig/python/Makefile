@@ -42,12 +42,8 @@ WRAPPERS = mial_wrap.c
 
 SWIGOUTPUTDIR = extensions/
 MIAL_ROOT = ../../core/c/
-BUILDBASEDIR = ../build
 BUILDDIR = ../build/python/
-
-SWIGOUTPUTDIR = extensions/
-MIAL_ROOT = ../../core/c/
-BUILDDIR = ../build/python/
+BUILDDIRBASE = ../build/
 
 PY_MODULES      =       ${PACKAGE_DIR}/mial.py
 
@@ -122,9 +118,9 @@ PYTHON_DLNK   =
 
 
 
-$(SWIGOUTPUTDIR)/mial_wrap.c: ../include/mial.i ../include/$(BINDING)/mial_$(BINDING).i # ../include/$(BINDING)/typemaps_$(BINDING).i
+$(SWIGOUTPUTDIR)/mial_wrap.c: ../include/mial.i ../include/$(BINDING)/mial_$(BINDING).i
 	@mkdir -p $(SWIGOUTPUTDIR)
-	@mkdir -p $(BUILDDIR)$(@D)
+	@mkdir -p $(BUILDDIR)
 	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIAL_ROOT) -$(BINDING) -o $@ ../include/mial.i
 	cd $(SWIGOUTPUTDIR) && patch -o - < ../mial_dealloc.patch > /tmp/mial_wrap.c && rm -f ./-.o*
 	mv /tmp/mial_wrap.c $(SWIGOUTPUTDIR)
@@ -135,16 +131,16 @@ $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o: $(SWIGOUTPUTDIR)/mial_wrap.c
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
 
 $(BUILDDIR)/_$(TARGET)module$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o
-	@mkdir -p $(BUILDDIR)/$(@D)
+	@mkdir -p $(BUILDDIR)
 	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)module$(SO)
 
 
 $(BUILDDIR)/doc/mial_docs_html/toc.html:
-	@mkdir -p $(BUILDDIR)/doc/$(@D)
+	@mkdir -p $(@D)
 	epydoc -v --name mial --html --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_html
 
 $(BUILDDIR)/doc/mial_docs_tex/api.tex:
-	@mkdir -p $(BUILDDIR)/doc/$(@D)
+	@mkdir -p $(@D)
 	epydoc -v --name mial --pdf  --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_tex
 
 doc: $(BUILDDIR)/_$(TARGET)module$(SO) $(BUILDDIR)/doc/mial_docs_html/toc.html $(BUILDDIR)/doc/mial_docs_tex/api.tex
@@ -161,7 +157,7 @@ clean:
 	-rm -rf $(SWIGOUTPUTDIR)
 	-rm -f ${PACKAGE_DIR}/*.pyc
 	-rm -rf $(BUILDDIR)
-	-rm -rf $(BUILDBASEDIR)
+	-rmdir $(BUILDDIRBASE)
 	-rm -f *.pyc
 	-rm -rf *.egg-info
 	-rm -f *.so ./osgeo/*.so
