@@ -61,18 +61,18 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // renaming:
 
 /* imem.c */
-%rename(imInfo) iminfo;
-%rename(imToArray) imtoarray;
-%rename(arrayToIm) arraytoim;
-%rename(setPixVal) setpixval;
-%rename(getPixVal) getpixval;
-%rename(createImArray) create_imarray;
+/* %rename(imInfo) iminfo; */
+/* %rename(imToArray) imtoarray; */
+/* %rename(arrayToIm) arraytoim; */
+/* %rename(setPixVal) setpixval; */
+/* %rename(getPixVal) getpixval; */
+/* %rename(createImArray) create_imarray; */
 
 // rename the C declarations
 // %rename("%(lowercamelcase)s", %$isfunction) ""; // foo_bar -> fooBar; FooBar -> fooBar
 
 
-%rename("nd_%s", regextarget=1, fullname=1) "IMAGE \*\(.*";
+// %rename("nd_%s", regextarget=1, fullname=1) "IMAGE \*\(.*";
 
 
 
