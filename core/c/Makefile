@@ -247,7 +247,7 @@ $(LDIR)/$(TARGET)_python.so: $(DOBJS)
 
 ##################################################################
 
-$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a
+$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyfile
 	cd $(DOCDIR) && make clean && make doc
 
 ##################################################################
