@@ -1,17 +1,16 @@
---- mial_wrap.c	2016-08-18 14:42:29.968116535 +0200
-+++ mial_wrap.c.PATCH.2016081801	2016-08-18 15:57:06.590314906 +0200
-@@ -1548,6 +1548,10 @@
+--- mialib_wrap.c	2016-09-21 14:55:24.946731224 +0200
++++ mialib_wrap.c.PATCH.2016092201	2016-09-21 15:09:09.278818866 +0200
+@@ -1548,6 +1548,9 @@
    return SwigPyObject_format("%x",v);
  }
  
 +/* patch by Pierre.Soille@jrc.ec.europa.eu */
 +#include "mialib_swig.h"
 +
-+
  SWIGRUNTIME PyObject *
  #ifdef METH_NOARGS
  SwigPyObject_repr(SwigPyObject *v)
-@@ -1557,6 +1561,26 @@
+@@ -1557,6 +1560,26 @@
  {
    const char *name = SWIG_TypePrettyName(v->ty);
    PyObject *repr = SWIG_Python_str_FromFormat("<Swig Object of type '%s' at %p>", (name ? name : "unknown"), (void *)v);
@@ -20,7 +19,7 @@
 +  printf("\n bonjour in entering SwigPyObject_repr\n");
 +  printf("coucou in SwigPyObject_repr()\n");
 +#endif
-+  if (strcmp(v->ty->str, "Image *")==0){
++  if (strcmp(v->ty->str, "IMAGE *")==0){
 +#ifdef _DEBUG
 +    printf("\t v->own=%d\n", v->own);
 +    printf("\t v->next=%p\n", v->next);
@@ -38,7 +37,7 @@
    if (v->next) {
  # ifdef METH_NOARGS
      PyObject *nrep = SwigPyObject_repr((SwigPyObject *)v->next);
-@@ -1661,10 +1685,39 @@
+@@ -1661,10 +1684,31 @@
  #if !defined(SWIG_PYTHON_SILENT_MEMLEAK)
      else {
        const char *name = SWIG_TypePrettyName(ty);
@@ -47,11 +46,7 @@
 +      /* start of patch 1 by Pierre.Soille@jrc.ec.europa.eu */
 +      printf("patch1 %s\n", name);
 +#endif
-+      if (strcmp(name, "struct image *")==0 || \
-+	  strcmp(name, "p_image")==0 || \
-+	  strcmp(name, "image *")==0 || \
-+	  strcmp(name, "IMAGE *")==0 || \
-+          strcmp(name, "struct image *|image *|IMAGE *")==0 ){
++      if (strcmp(name, "IMAGE *")==0){
 +#ifdef _DEBUG
 +	printf("patch1 to avoid memory leak with image with sobj->own=1\n");
 +#endif
@@ -61,13 +56,9 @@
      }
  #endif
 -  } 
-+  }  
++  }   
 +  /* start of patch 2 by Pierre */
-+  else if (strcmp(sobj->ty->str, "struct image *")==0 || \
-+  	   strcmp(sobj->ty->str, "p_image")==0 || \
-+  	   strcmp(sobj->ty->str, "image *")==0 || \
-+  	   strcmp(sobj->ty->str, "IMAGE *")==0 || \
-+           strcmp(sobj->ty->str, "struct image *|image *|IMAGE *")==0 ){
++  else if (strcmp(sobj->ty->str, "IMAGE *")==0){
 +#ifdef _DEBUG
 +    printf("in patch2 %s\n", sobj->ty->str);
 +    printf("patch2 to avoid memory leak with image with sobj->own=0\n");
