@@ -3,7 +3,8 @@
 # note: compile with -DCLUSTER for additional types in set_regions but requires dcluster.c
 #
 
-TARGET     = libmia
+BASE       = mialib
+TARGET     = lib$(BASE)
 CC         = gcc
 CXX        = c++
 
@@ -263,9 +264,9 @@ all: build doc
 
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
-	mkdir -p $(prefix)/include/$(TARGET)/
-	cp -a mialib_swig.h $(prefix)/include/$(TARGET)/
-	cp -a op.h $(prefix)/include/$(TARGET)/
+	mkdir -p $(prefix)/include/$(BASE)/
+	cp -a mialib_swig.h $(prefix)/include/$(BASE)/
+	cp -a op.h $(prefix)/include/$(BASE)/
 
 clean:
 	find $(BUILDDIR) -delete

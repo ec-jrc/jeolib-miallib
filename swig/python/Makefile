@@ -29,6 +29,8 @@
 #      'method' describes what is being built.
 #---------------------------------------------------------------
 
+TARGET     = mialib
+
 ifndef PYTHON
         PYTHON=python
 endif
@@ -36,18 +38,17 @@ endif
 BINDING = python
 
 #GDAL include ../SWIGmake.base
-WRAPPERS = mial_wrap.c
+WRAPPER = $(TARGET)_wrap.c
 
 #PACKAGE_DIR=osmial
 
-SWIGOUTPUTDIR = extensions/
-MIAL_ROOT = ../../core/c/
+SWIGOUTPUTDIR = extensions
+MIALIB_ROOT = ../../core/c/
 BUILDDIR = ../build/python/
 BUILDDIRBASE = ../build/
 
 
 
-TARGET     = mial
 CC         = gcc
 CXX        = c++
 prefix     = /usr/local
@@ -57,10 +58,10 @@ exec_prefix= ${prefix}
 
 SWIGARGS = -Wall -I../include -I../include/$(BINDING) 
 CFLAGS     = -fPIC -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
-INCLUDE    = -I./ -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7 -I$(MIAL_ROOT)
-LIBS       = -lgdal -ltiff -ldl -lmia_python
+INCLUDE    = -I./ -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7 -I$(MIALIB_ROOT)
+LIBS       = -lgdal -ltiff -ldl -l$(TARGET)_python
 LIBDIR	   = ../../core/build/lib/
-INTERFACE  = mial.i
+INTERFACE  = $(TARGET).i
 SWIGOPT    =
 SWIG       = swig
 RUNTIMEDIR = $(exec_prefix)/lib
@@ -117,44 +118,44 @@ PYTHON_DLNK   =
 
 
 
-$(SWIGOUTPUTDIR)/mial_wrap.c: ../include/mial.i ../include/$(BINDING)/mial_$(BINDING).i
+$(SWIGOUTPUTDIR)/$(WRAPPER): ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i
 	@mkdir -p $(SWIGOUTPUTDIR)
 	@mkdir -p $(BUILDDIR)
-	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIAL_ROOT) -$(BINDING) -o $@ ../include/mial.i
-	cd $(SWIGOUTPUTDIR) && patch -o - < ../mial_dealloc.patch > /tmp/mial_wrap.c && rm -f ./-.o*
-	mv /tmp/mial_wrap.c $(SWIGOUTPUTDIR)
-	test -f $(SWIGOUTPUTDIR)/$(TARGET)module.py && mv $(SWIGOUTPUTDIR)/$(TARGET)module.py $(BUILDDIR)
+	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIALIB_ROOT) -$(BINDING) -o $@ ../include/$(TARGET).i
+	cd $(SWIGOUTPUTDIR) && patch -o - < ../$(TARGET)_dealloc.patch > /tmp/$(TARGET)_wrap.c && rm -f ./-.o*
+	mv /tmp/$(WRAPPER) $(SWIGOUTPUTDIR)
+	test -f $(SWIGOUTPUTDIR)/$(TARGET).py && mv $(SWIGOUTPUTDIR)/$(TARGET).py $(BUILDDIR)
 
-$(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o: $(SWIGOUTPUTDIR)/mial_wrap.c
+$(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o: $(SWIGOUTPUTDIR)/$(WRAPPER)
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
 
-$(BUILDDIR)/_$(TARGET)module$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/mial_wrap.o
+$(BUILDDIR)/_$(TARGET)$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o
 	@mkdir -p $(BUILDDIR)
-	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)module$(SO)
+	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)$(SO)
 
 
-$(BUILDDIR)/doc/mial_docs_html/toc.html:
+$(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
 	@mkdir -p $(@D)
-	epydoc -v --name mial --html --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_html
+	epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
 
-$(BUILDDIR)/doc/mial_docs_tex/api.tex:
+$(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex:
 	@mkdir -p $(@D)
-	epydoc -v --name mial --pdf  --graph all $(BUILDDIR)/mialmodule.py -o $(BUILDDIR)/doc/mial_docs_tex
+	epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
 
 
 
 
-build: $(BUILDDIR)/_$(TARGET)module$(SO)
+build: $(BUILDDIR)/_$(TARGET)$(SO)
 
-doc: build $(BUILDDIR)/doc/mial_docs_html/toc.html $(BUILDDIR)/doc/mial_docs_tex/api.tex
+doc: build $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex
 
 all: doc build
 
 
 install:
-	cp -a $(BUILDDIR)/_$(TARGET)module$(SO) $(PYTHON_PACKAGES_DIR)
-	cp -a $(BUILDDIR)/mialmodule.py $(PYTHON_PACKAGES_DIR)
+	cp -a $(BUILDDIR)/_$(TARGET)$(SO) $(PYTHON_PACKAGES_DIR)
+	cp -a $(BUILDDIR)/$(TARGET).py $(PYTHON_PACKAGES_DIR)
 
 
 clean:
@@ -168,7 +169,7 @@ clean:
 	-rm -rf dist
 
 veryclean: clean
-	-rm -f ${WRAPPERS}
+	-rm -f ${WRAPPER}
 	-rm -rf ${SWIGOUTPUTDIR}
 
 

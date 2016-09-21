@@ -18,7 +18,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // It consists of wrappers of C code underlying mialisp orginally developed
 // by Pierre Soille over the years since 1988.
 
-%module(docstring=DOCSTRING) mialmodule
+%module(docstring=DOCSTRING) mialib
 
 
 // see https://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
@@ -99,5 +99,5 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 #if defined(SWIGPYTHON)
-%include "mial_python.i"
+%include "mialib_python.i"
 #endif

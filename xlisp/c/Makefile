@@ -24,9 +24,8 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DDOMINIK
 
 
 
-$(BUILDDIR)/miaxlisp: banner_mialib.h $(BUILDOBJS)
-	g++ -fopenmp -m64 -o $(BUILDDIR)/miaxlisp $(BUILDOBJS) $(LIBMIADIR)/libmia_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
-	#g++ -fopenmp -m64 -o $(BUILDDIR)/miaxlisp $(BUILDOBJS) $(LIBMIADIR)/libmia_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto /usr/local/lib/libnn.a /usr/local/lib/libcsa.a -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
+$(BUILDDIR)/mialibxlisp: banner_mialib.h $(BUILDOBJS)
+	g++ -fopenmp -m64 -o $(BUILDDIR)/mialibxlisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
 
 
 banner_mialib.h: $(SRCS)
@@ -41,13 +40,13 @@ $(BUILDDIR)/%.o: %.c xlisp.h xlftab.h xlglob.h
 	$(CC) -c $(CFLAGS) $(INCLUDE) -o $@ $<
 
 
-all: $(BUILDDIR)/miaxlisp
+all: $(BUILDDIR)/mialibxlisp
 
 
 install:
-	sudo cp -a $(BUILDDIR)/miaxlisp $(PREFIX)/bin/
-	mkdir -p $(PREFIX)/share/miaxlisp/
-	sudo cp -ar ../lsp $(PREFIX)/share/miaxlisp/
+	sudo cp -a $(BUILDDIR)/mialibxlisp $(PREFIX)/bin/
+	mkdir -p $(PREFIX)/share/mialibxlisp/
+	sudo cp -ar ../lsp $(PREFIX)/share/mialibxlisp/
 
 
 clean:
