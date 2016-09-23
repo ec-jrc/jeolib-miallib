@@ -10,7 +10,7 @@ CXX        = c++
 
 # defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
 # skipped: -DNNI
-CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DMARCIN -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
+CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON 
 prefix     = /usr/local

@@ -4,7 +4,7 @@
 # build requires documentation to be generated for core and
 # documentation generation for core requires doxygen to be installed!
 #
-build:	
+build:
 	cd core/c && make -j build && make -j doc
 	cd swig/python && make -j 1 build
 	cd xlisp/c && make -j all

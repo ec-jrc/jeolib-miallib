@@ -13,7 +13,7 @@
 #define PIX_DST_MSB  0x80
 #define PIX_DST      0x7F
 #define LBL_TYPE     UINT32
-ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE *ima[], int n, int graph)
+ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 {
   int c, k, tie=0, nties=0;
   unsigned long ofs, ofsk, npix=GetImNPix(ima[0]);
@@ -129,7 +129,7 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE *ima[], int n, int graph)
 #define PIX_DST_MSB  0x80
 #define PIX_DST      0x7F
 #define LBL_TYPE     UINT32
-ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE *ima[], int n, int graph)
+ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 {
   int c, k, tie=0, nties=0;
   unsigned long ofs, ofsk, npix=GetImNPix(ima[0]);
@@ -241,7 +241,7 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE *ima[], int n, int graph)
 
 
 
-ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE *ima[], int n, int graph)
+ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph)
 {
   /* test image types */
   if ( (GetImDataType(lbl)!=t_UINT32) || (GetImDataType(dst)!=t_UCHAR) ){

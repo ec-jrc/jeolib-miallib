@@ -419,7 +419,7 @@ extern IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambda, int graph);
 extern ERROR_TYPE dendro(IMAGE **, int, char *);
 
 /* propagate.c */
-extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE *ima[], int n, int graph);
+extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph);
 
 
 /* skelodthin.c */

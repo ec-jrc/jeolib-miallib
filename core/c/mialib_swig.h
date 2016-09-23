@@ -703,7 +703,7 @@ extern IMAGE *transgrad(IMAGE *im, int graph);
 extern ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn);
 
 /* propagate.c */
-extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE *ima[], int n, int graph);
+extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph);
 
 /* setreglut.c  */
 extern IMAGE *region_lut(IMAGE *ilbl, int graph, int type, int param1, int param2);

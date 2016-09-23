@@ -18,6 +18,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // It consists of wrappers of C code underlying mialisp orginally developed
 // by Pierre Soille over the years since 1988.
 
+%title "MIALib"
 %module(docstring=DOCSTRING) mialib
 
 
@@ -76,16 +77,82 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 
+// new object with their constructor and destructor
+//%newobject *IMAGE();
+//%newobject *G_TYPE();
+
+ //%typemap(newfree) IMAGE * "free_image($1);";
+
+// 20160922
+// define each mialib function returning a new IMAGE as a new object
+// this triggers the setting of 'SWIG_POINTER_OWN' for the new IMAGE
+// rather than '0' previously
+// (note that for the destructor ~IMAGE() the setting is 'SWIG_POINTER_NEW')
+%include mialib_newobjects.i
+
+
+// 20160923
+// define a typemap to handle IMAGE arrays as lists in Python
+ //  %typemap(in) (IMAGE **, int)) {
+  %typemap(in) IMAGE **) {
+  int i,dim;
+  int res1;
+  void *argp1 = 0 ;
+  //  PyObject * obj0 = 0 ;
+  if (!PySequence_Check($input)) {
+    PyErr_SetString(PyExc_ValueError,"Expected a sequence");
+    return NULL;
+  }
+  dim=PySequence_Length($input);
+  //$2=dim;
+  printf("coucou: dim=%d\n", dim);
+  $1 = (IMAGE **) malloc(dim*sizeof(IMAGE **));
+  for (i = 0; i < dim; i++) {
+    PyObject *o = PySequence_GetItem($input,i);
+    res1 = SWIG_ConvertPtr(o, &argp1,SWIGTYPE_p_IMAGE, 0 |  0 );
+    if (SWIG_IsOK(res1)) {
+      $1[i] = (IMAGE *) argp1;
+    } else {
+      PyErr_SetString(PyExc_ValueError,"Sequence elements must be IMAGE pointers");      
+      free($1);
+      return NULL;
+    }
+  }
+}
+//%typemap(freearg) IMAGE ** {
+%typemap(freearg) (IMAGE **, int) {
+   if ($1) free($1);
+}
 
 // These are the headers with the declarations that will be warped
+// It needs to be inserted before the extend declaration
 %include "mialib_swig.h"
 %include "op.h"
 
-// new object with their constructor and destructor
-%newobject *IMAGE();
-%newobject *G_TYPE();
+ // 20160922
+ // Allow for automatic garbage collection (no need to patch)
+%extend IMAGE {             // Attach these functions to struct IMAGE
+  IMAGE(int type, long int nx, int ny, int nz) {
+    return create_image(type, nx,ny,nz);
+  }
+  ~IMAGE() {
+    free_image($self);
+  }
+  void toto() {
+    iminfo($self);
+  }
+};
 
- 
+%typemap(newfree) IMAGE * {
+  delete $1;
+}
+
+// We still need to deal with IMAGE **
+
+
+
+
+
 
 // Addtional code for IMAGE<->NumPy array conversions [20160729]
 // adapted from gdal_array.i
