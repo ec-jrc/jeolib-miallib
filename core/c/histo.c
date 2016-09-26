@@ -119,7 +119,7 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
   */
 
   IMAGE *r_lut=NULL, *g_lut=NULL, *b_lut=NULL;
-  IMAGE **imarray;
+  IMAGE **imap;
   UCHAR *pr_lut, *pg_lut, *pb_lut;
   HST3D_TYPE *prgb;
   int nx=GetImNx(cdf_rgb_src);
@@ -150,10 +150,10 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
     return NULL;
   }
 
-  imarray=(IMAGE **)malloc(3 * sizeof(IMAGE *));
-  imarray[0]=r_lut;
-  imarray[1]=g_lut;
-  imarray[2]=b_lut;
+  imap=(IMAGE **)malloc(3 * sizeof(IMAGE *));
+  imap[0]=r_lut;
+  imap[1]=g_lut;
+  imap[2]=b_lut;
   
   prgb=(HST3D_TYPE *)GetImPtr(cdf_rgb_src);
   pr_lut=(UCHAR *)GetImPtr(r_lut);
@@ -192,7 +192,7 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
       }
     }
   }
-  return imarray;
+  return imap;
 }
 
 
@@ -291,7 +291,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
   */
 
   IMAGE *r_lut=NULL, *g_lut=NULL, *b_lut=NULL;
-  IMAGE **imarray;
+  IMAGE **imap;
   UCHAR *pr_lut, *pg_lut, *pb_lut;
   HST3D_TYPE *prgb;
   int nx=GetImNx(cdf_rgb_src);
@@ -323,10 +323,10 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
     return NULL;
   }
 
-  imarray=(IMAGE **)malloc(3 * sizeof(IMAGE *));
-  imarray[0]=r_lut;
-  imarray[1]=g_lut;
-  imarray[2]=b_lut;
+  imap=(IMAGE **)malloc(3 * sizeof(IMAGE *));
+  imap[0]=r_lut;
+  imap[1]=g_lut;
+  imap[2]=b_lut;
   
   prgb=(HST3D_TYPE *)GetImPtr(cdf_rgb_src);
   pr_lut=(UCHAR *)GetImPtr(r_lut);
@@ -356,7 +356,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
       }
     }
   }
-  return imarray;
+  return imap;
 }
 
 /*@}*/

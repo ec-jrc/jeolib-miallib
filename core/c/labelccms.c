@@ -21,7 +21,7 @@
 #define BORDER_OR_LBL_BIT 0x8FFFFE00
 #define R_BIT             0x000000FF
 #define NCMAX 255 /* maximum number of channels */
-IMAGE *uc_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2)
+IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2)
 {
   /* First 2006-06-06: positive energy after IVC05 result  */
   /* first attempt for multichannel version */
@@ -41,7 +41,7 @@ IMAGE *uc_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, in
   struct node *pqd;
   struct pqueue *pq;
 
-  im=ima[0];
+  im=imap[0];
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -95,7 +95,7 @@ IMAGE *uc_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, in
 
   /* Here we go */
   for (c=0;c<nc;c++)
-    p[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+    p[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   plbl= (CC_LBL_TYPE *)GetImPtr(imlbl);
   for (i=0;i<npix;i++){
     // printf("lbl=%d\n", lbl);
@@ -272,7 +272,7 @@ IMAGE *uc_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, in
 #define BORDER_OR_LBL_BIT 0xFFFFF000
 #define R_BIT             0x000007FF
 #define NCMAX 255 /* maximum number of channels */
-IMAGE *us_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2)
+IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2)
 {
   /* First 2006-06-06: positive energy after IVC05 result  */
   /* first attempt for multichannel version */
@@ -292,7 +292,7 @@ IMAGE *us_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, in
   struct node *pqd;
   struct pqueue *pq;
 
-  im=ima[0];
+  im=imap[0];
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -346,7 +346,7 @@ IMAGE *us_labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, in
 
   /* Here we go */
   for (c=0;c<nc;c++)
-    p[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+    p[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   plbl= (CC_LBL_TYPE *)GetImPtr(imlbl);
   for (i=0;i<npix;i++){
     // printf("lbl=%d\n", lbl);

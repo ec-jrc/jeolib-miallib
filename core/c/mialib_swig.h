@@ -398,7 +398,7 @@ extern ERROR_TYPE tiffinfo(char *fn, char *field, float *val);
 extern IMAGE *tiffinfoJIP(char *fn);
 extern ERROR_TYPE read_image_data2(FILE *fp, IMAGE *im, int x, int y, int inx, int scale);
 extern ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
-extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
+extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
 extern void print_mia_banner();
 
 /* imstat.c */
@@ -469,16 +469,16 @@ extern IMAGE *to_tiff4bitpp(IMAGE *im);
 
 
 /* geom.c */
-extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);
-extern ERROR_TYPE imputop(IMAGE *, IMAGE *, int, int, int, int);
-extern ERROR_TYPE imputcompose(IMAGE *, IMAGE *, IMAGE *, int, int, int, int);
 extern ERROR_TYPE framebox(IMAGE *im, int *box, G_TYPE gval);
-extern ERROR_TYPE subframebox(IMAGE *im, int *box);
 extern ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval);
-extern IMAGE *magnify(IMAGE *, int);
-extern IMAGE *getboundingbox(IMAGE *);
-extern ERROR_TYPE dumpxyz(IMAGE *, int, int, int, int, int);
-extern IMAGE **rotatecoor(IMAGE *, double);
+extern ERROR_TYPE subframebox(IMAGE *im, int *box);
+extern ERROR_TYPE dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy);
+extern ERROR_TYPE imputop(IMAGE *im1, IMAGE *im2, int x, int y, int z, int op);
+extern ERROR_TYPE imputcompose(IMAGE *im1, IMAGE *imlbl, IMAGE *im2, int x, int y, int z, int val);
+extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);
+extern IMAGE *getboundingbox(IMAGE *im);
+extern IMAGE *magnify(IMAGE *im, int n);
+extern IMAGE **rotatecoor(IMAGE *im, double theta);
 
 /* indexx.c */
 extern IMAGE *sortindex(IMAGE *i0);
@@ -633,8 +633,8 @@ extern ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph);
 
 /* srg.c  */
 extern ERROR_TYPE srg(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz);
-extern ERROR_TYPE mssrg(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz);
-extern ERROR_TYPE mssrgcore(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz);
+extern ERROR_TYPE mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz);
+extern ERROR_TYPE mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz);
 
 /* dirmean.c */
 extern IMAGE *dirmean(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz);
@@ -653,7 +653,7 @@ extern IMAGE *labelvertexconnectedness(IMAGE *im, int alpha, int graph, int deg)
 extern IMAGE *labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl);
 
 /* labelccms.c */
-extern IMAGE *labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2);
+extern IMAGE *labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2);
 
 /* labelccmi.c */
 extern IMAGE *labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz, int rg, int rl);
@@ -662,7 +662,7 @@ extern IMAGE *labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int
 extern IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl);
 
 /* labelcims.c:  */
-extern IMAGE *labelcims(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int rl);
+extern IMAGE *labelcims(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int rl);
 
 /* labelccdissim.c */
 extern IMAGE *labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl);
@@ -671,7 +671,7 @@ extern IMAGE *labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl);
 extern IMAGE *labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl, double varmax);
 
 /* labelccmsdissim.c: */
-extern IMAGE *labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl);
+extern IMAGE *labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl);
 
 /* newlabelcc.c */
 extern IMAGE *labelccattr(IMAGE *im, int graph, int rg, int rl);
@@ -700,10 +700,10 @@ extern IMAGE *ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w);
 extern IMAGE *transgrad(IMAGE *im, int graph);
 
 /* dendro.c */
-extern ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn);
+extern ERROR_TYPE dendro(IMAGE **imap, int nc, char *fn);
 
 /* propagate.c */
-extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph);
+extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **imap, int nc, int graph);
 
 /* setreglut.c  */
 extern IMAGE *region_lut(IMAGE *ilbl, int graph, int type, int param1, int param2);
@@ -722,7 +722,7 @@ extern IMAGE *hpcloseti(IMAGE *im, int dx, int dy);
 extern IMAGE *chull(IMAGE *ilbl, int graph);
 
 /* dbscan.c */
-extern IMAGE *dissim(IMAGE **ima, int nc, IMAGE *mask, int type);
+extern IMAGE *dissim(IMAGE **imap, int nc, IMAGE *mask, int type);
 extern IMAGE *dbscan(IMAGE *dissim, double eps, int MinPts);
 
 /* alphacc.c */
@@ -760,8 +760,8 @@ extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t n
 extern ERROR_TYPE shmdtimage(void *shm_address, int semkey_flag, key_t semkey);
 
 /* mblincomb.c */
-extern ERROR_TYPE mblincomb(IMAGE **imarray, int n, IMAGE *matrix);
-extern ERROR_TYPE condmean(IMAGE **imarray, int n);
+extern ERROR_TYPE mblincomb(IMAGE **imap, int nc, IMAGE *matrix);
+extern ERROR_TYPE condmean(IMAGE **imap, int nc);
 
 /* htop.c */
 extern IMAGE *htop(IMAGE *dem, IMAGE *d8);
@@ -777,8 +777,8 @@ extern IMAGE *shade(IMAGE *im, int dir);
 extern IMAGE *LineDilate3D(IMAGE *im, float dh);
 
 /* msmm.c */
-extern IMAGE *msgradlinf(IMAGE **imarray, int n, int graph);
-extern IMAGE *msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, int oz);
+extern IMAGE *msgradlinf(IMAGE **imap, int nc, int graph);
+extern IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz);
 
 /************************************************************************************/
 #ifdef MARCIN
@@ -801,21 +801,21 @@ extern ERROR_TYPE binOIthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanc
 /************************************************************************************/
 #ifdef DOMINIK
 /* mslabel.c */
-extern IMAGE *labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long int lambda);
+extern IMAGE *labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda);
 
 /* determineSize.c */
 extern long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold);
-extern long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsigned long int threshold);
+extern long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned long int threshold);
 
 /* mcisrg.c */
-extern ERROR_TYPE mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version);
+extern ERROR_TYPE mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version);
 
 /* segmentation.c */
-extern IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat);
-extern ERROR_TYPE writeGnuPlot3D(IMAGE **inputImArray, int nc, int graph, int regionSize, int varianz, char *fileName);
+extern IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat);
+extern ERROR_TYPE writeGnuPlot3D(IMAGE **imap, int nc, int graph, int regionSize, int varianz, char *fileName);
 
 /* vectorize.c */
-extern ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int format, double simplifyBorderLines);
+extern ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, double simplifyBorderLines);
 
 #endif
 /************************************************************************************/

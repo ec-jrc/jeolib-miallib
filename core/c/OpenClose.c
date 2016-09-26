@@ -25,9 +25,9 @@
  *
  *  Parameters:
  *
- *    imArray       array of pointer to the channels of an input images
+ *    imap       array of pointer to the channels of an input images
  *
- *     nc            size of imArray => number of channels
+ *     nc            size of imap => number of channels
  *
  *    labelIm       pointer to an image in which the resulting label image is stored
  *
@@ -49,7 +49,7 @@
  *   ERROR          if connectivity was not equal to 4 or 8
  *                  if the dimensions of the input images and the label image are not equal
 */
-ERROR_TYPE OpenClose(IMAGE ** imArray, int nc, IMAGE * labelIm, int connectivity, int varianz, int version)
+ERROR_TYPE OpenClose(IMAGE ** imap, int nc, IMAGE * labelIm, int connectivity, int varianz, int version)
 {
     IMAGE * imse, * erodeIm, * dilateIm1, * dilateIm2;
     UCHAR * imsePtr;
@@ -62,12 +62,12 @@ ERROR_TYPE OpenClose(IMAGE ** imArray, int nc, IMAGE * labelIm, int connectivity
     box[4] = 0;
     box[5] = 0;
 
-    if(labelImage(imArray, nc, labelIm, connectivity, varianz)==NULL){
+    if(labelImage(imap, nc, labelIm, connectivity, varianz)==NULL){
       free_image(labelIm);
       return ERROR;
     }else{
       for (i = 0; i < nc; i++){
-        if (us_addframebox(imArray[i], box, BORDER) == ERROR){
+        if (us_addframebox(imap[i], box, BORDER) == ERROR){
           return ERROR;
         }
       }
@@ -99,14 +99,14 @@ ERROR_TYPE OpenClose(IMAGE ** imArray, int nc, IMAGE * labelIm, int connectivity
          return ERROR;
       }
       for(i=0; i<nc; i++){
-        subframebox(imArray[i], box);
+        subframebox(imap[i], box);
       }
       if(subframebox(labelIm, box)==ERROR){
          return ERROR;
       }
       regionNumber = thresholdRegion_Size(erodeIm,1);
       //after open and close the border has the wrong value (0 instead of 1)-> set the border to the border value used in this application
-      mcisrg(imArray, nc, erodeIm, connectivity, regionNumber, version);
+      mcisrg(imap, nc, erodeIm, connectivity, regionNumber, version);
       free_image(erodeIm);
       free_image(imse);
     }

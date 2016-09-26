@@ -14,7 +14,7 @@
 
 #include "f_def.h"
 #define NCMAX 255 /* maximum number of channels */
-ERROR_TYPE f_mblincomb(IMAGE **imarray, int n, IMAGE *matrix)
+ERROR_TYPE f_mblincomb(IMAGE **imap, int nc, IMAGE *matrix)
 {
   PIX_TYPE *imptr[NCMAX];
   double *pm, pocrt[NCMAX];
@@ -26,29 +26,29 @@ ERROR_TYPE f_mblincomb(IMAGE **imarray, int n, IMAGE *matrix)
     return ERROR;
   }
 
-  for(k=0;k<n;k++){
-    if (GetImDataType(imarray[k]) != t_PIX_TYPE){
-      sprintf(buf, "f_mblincomb() error: all images in imarray must be of type float\n"); errputstr(buf);
+  for(k=0;k<nc;k++){
+    if (GetImDataType(imap[k]) != t_PIX_TYPE){
+      sprintf(buf, "f_mblincomb() error: all images in imap must be of type float\n"); errputstr(buf);
       return ERROR;
     }
-    imptr[k]=(PIX_TYPE *)GetImPtr(imarray[k]);
+    imptr[k]=(PIX_TYPE *)GetImPtr(imap[k]);
   }
 
-  npix=GetImNPix(imarray[0]);
+  npix=GetImNPix(imap[0]);
   pm=(double *)GetImPtr(matrix);
 
   printf("coucou\n");
 
 #pragma omp parallel for private(j,pocrt,ofs,i)
   for (k=0; k<npix; k++){
-    for (j=0; j<n; j++){
+    for (j=0; j<nc; j++){
       pocrt[j]=0.0;
-      ofs=j*n;
-      for (i=0; i<n; i++){
+      ofs=j*nc;
+      for (i=0; i<nc; i++){
 	pocrt[j]+=(double)pm[i+ofs]*(double)imptr[i][k];
       }
     }
-    for (i=0; i<n; i++)
+    for (i=0; i<nc; i++)
       imptr[i][k]=(PIX_TYPE)pocrt[i];
   }
 
@@ -57,24 +57,24 @@ ERROR_TYPE f_mblincomb(IMAGE **imarray, int n, IMAGE *matrix)
 #undef NCMAX
 #include "f_undef.h"
 
-ERROR_TYPE mblincomb(IMAGE **imarray, int n, IMAGE *matrix)
+ERROR_TYPE mblincomb(IMAGE **imap, int nc, IMAGE *matrix)
 {
   int i;
 
-  for(i=1; i<n; i++)
-    if (szcompat(imarray[0], imarray[i]) == ERROR){
-      sprintf(buf, "mblincomb() error: all images in imarray must be of same size and type\n"); errputstr(buf);
+  for(i=1; i<nc; i++)
+    if (szcompat(imap[0], imap[i]) == ERROR){
+      sprintf(buf, "mblincomb() error: all images in imap must be of same size and type\n"); errputstr(buf);
       return ERROR;
     }
 
   if (GetImDataType(matrix) != t_DOUBLE){
-    sprintf(buf, "mblincomb(IMAGE **imarray, int n, IMAGE *matrix) error: the matrix image must be of type t_DOUBLE\n"); errputstr(buf);
+    sprintf(buf, "mblincomb(IMAGE **imap, int nc, IMAGE *matrix) error: the matrix image must be of type t_DOUBLE\n"); errputstr(buf);
     return ERROR;
   }
 
-  switch (GetImDataType(imarray[0])){
+  switch (GetImDataType(imap[0])){
   case t_FLOAT:
-    return(f_mblincomb(imarray, n, matrix));
+    return(f_mblincomb(imap, nc, matrix));
     break;
   default:
     (void)sprintf(buf,"mblincomb(): invalid pixel type\n");
@@ -86,7 +86,7 @@ ERROR_TYPE mblincomb(IMAGE **imarray, int n, IMAGE *matrix)
 
 
 #include "uc_def.h"
-ERROR_TYPE uc_condmean(IMAGE **imarray, int n)
+ERROR_TYPE uc_condmean(IMAGE **imap, int nc)
 {
   PIX_TYPE *pim0, *pim1, *pim2, *pim3, *pim4, *pim5;
   IMAGE *refhst, *hst;
@@ -94,34 +94,34 @@ ERROR_TYPE uc_condmean(IMAGE **imarray, int n)
   unsigned long int i, k, npix, ofs;
   unsigned int nxh, nyh, nxyh;
 
-  if (n!=6){
-    sprintf(buf, "condmean() error: number of images in imarray must be equal to 6\n"); errputstr(buf);
+  if (nc!=6){
+    sprintf(buf, "condmean() error: number of images in imap must be equal to 6\n"); errputstr(buf);
     return ERROR;
   }
   
-  for(k=0;k<n;k++){
-    if (GetImDataType(imarray[k]) != t_PIX_TYPE){
-      sprintf(buf, "condmean() error: all images in imarray must be of the same type\n"); errputstr(buf);
+  for(k=0;k<nc;k++){
+    if (GetImDataType(imap[k]) != t_PIX_TYPE){
+      sprintf(buf, "condmean() error: all images in imap must be of the same type\n"); errputstr(buf);
       return ERROR;
     }
   }
 
-  refhst=(IMAGE *)histo3d(imarray[3], imarray[4], imarray[5]);
+  refhst=(IMAGE *)histo3d(imap[3], imap[4], imap[5]);
   hst=(IMAGE *)copy_image(refhst);
   prefhst=(HST3D_TYPE *)GetImPtr(refhst);
   phst=(HST3D_TYPE *)GetImPtr(hst);
   i32_blank(hst, 0);
 
-  npix=GetImNPix(imarray[0]);
+  npix=GetImNPix(imap[0]);
   nxh=GetImNx(refhst);
   nyh=GetImNy(refhst);
   nxyh=nxh*nyh;
-  pim0=(PIX_TYPE *)GetImPtr(imarray[0]);
-  pim1=(PIX_TYPE *)GetImPtr(imarray[1]);
-  pim2=(PIX_TYPE *)GetImPtr(imarray[2]);
-  pim3=(PIX_TYPE *)GetImPtr(imarray[3]);
-  pim4=(PIX_TYPE *)GetImPtr(imarray[4]);
-  pim5=(PIX_TYPE *)GetImPtr(imarray[5]);
+  pim0=(PIX_TYPE *)GetImPtr(imap[0]);
+  pim1=(PIX_TYPE *)GetImPtr(imap[1]);
+  pim2=(PIX_TYPE *)GetImPtr(imap[2]);
+  pim3=(PIX_TYPE *)GetImPtr(imap[3]);
+  pim4=(PIX_TYPE *)GetImPtr(imap[4]);
+  pim5=(PIX_TYPE *)GetImPtr(imap[5]);
 
 
   /* first channel */
@@ -162,19 +162,19 @@ ERROR_TYPE uc_condmean(IMAGE **imarray, int n)
 #include "uc_undef.h"
 
 
-ERROR_TYPE condmean(IMAGE **imarray, int n)
+ERROR_TYPE condmean(IMAGE **imap, int nc)
 {
   int i;
 
-  for(i=1; i<n; i++)
-    if (szcompat(imarray[0], imarray[i]) == ERROR){
-      sprintf(buf, "condmean() error: all images in imarray must be of same size and type\n"); errputstr(buf);
+  for(i=1; i<nc; i++)
+    if (szcompat(imap[0], imap[i]) == ERROR){
+      sprintf(buf, "condmean() error: all images in imap must be of same size and type\n"); errputstr(buf);
       return ERROR;
     }
 
-  switch (GetImDataType(imarray[0])){
+  switch (GetImDataType(imap[0])){
   case t_UCHAR:
-    return(uc_condmean(imarray, n));
+    return(uc_condmean(imap, nc));
     break;
   default:
     (void)sprintf(buf,"condmean(): invalid pixel type\n");

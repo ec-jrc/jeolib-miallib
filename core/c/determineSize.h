@@ -15,7 +15,7 @@
 #define SIZE 0x01
 #define CONTRAST 0x02
 
-long int thresholdRegion_Size(IMAGE * inputIm, unsigned long int threshold);
+long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold);
 ERROR_TYPE thresholdImage(IMAGE *inputIm, unsigned long int threshold);
-long int thresholdRegion_Contrast(IMAGE ** imArray, int nc, IMAGE * inputIm, unsigned long int threshold);
+long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE * inputIm, unsigned long int threshold);
 #endif

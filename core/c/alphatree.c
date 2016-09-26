@@ -87,7 +87,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   PIX_TYPE *pdx, *pdy, *alphalbl;
   IMAGE *ilbl, *iprtlbl, *ipcprtlbl, *iblbl, *ialphalbl;
   IMAGE *imhst; /* 20120323: for cumulative histogram of # nodes per label */
-  IMAGE **ima;
+  IMAGE **imap;
   CC_LBL_TYPE *plbl, lbl, blblp, blblq, lblp, lblq, ablbl, albl;  /* p -> q  (blbl for base label) */
   CC_LBL_TYPE lblr;
   CC_LBL_TYPE n, nbelow, ncrt, nrm;
@@ -525,13 +525,13 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   SetImNx(ialphalbl, nbelow+1);
   
   printf("setting image array pointers\n");
-  ima=(IMAGE **)calloc(sizeof(IMAGE *), 5);
-  ima[0]=iprtlbl;
-  ima[1]=iblbl;
-  ima[2]=ipcprtlbl;
-  ima[3]=ialphalbl;
-  ima[4]=imhst;
-  return ima;
+  imap=(IMAGE **)calloc(sizeof(IMAGE *), 5);
+  imap[0]=iprtlbl;
+  imap[1]=iblbl;
+  imap[2]=ipcprtlbl;
+  imap[3]=ialphalbl;
+  imap[4]=imhst;
+  return imap;
 }
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE

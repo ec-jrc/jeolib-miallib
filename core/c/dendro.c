@@ -96,11 +96,22 @@ IMAGE **imgc(IMAGE *imlbl)
 }
 
 
-ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn)
+/** 
+ * @synopsis outputs dendrogram of input partition hierarchy in ascii file
+ * 
+ * @param imap: array of labelled images (fine to coarse partition hierarchy)
+ * @param nc: number of levels of the hierarchy
+ * @param fn: string for file name to write dendrogram in ascii format
+ * 
+ * @return 1 on failure, 0 otherwise
+ *
+ * @creationdate 20130911
+ */
+ERROR_TYPE dendro(IMAGE **imap, int nc, char *fn)
 {
   /*
-    imlbl: array of labelled images (fine to coarse partition hierarchy)
-    n: number of levels of the hierarchy
+    imap: array of labelled images (fine to coarse partition hierarchy)
+    nc: number of levels of the hierarchy
     fn: name of output ascii file
   */
 
@@ -108,23 +119,22 @@ ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn)
   IMAGE *imcrt, *imnxt;
   UINT32 *pcrt, *pnxt;
   char *flaga;
-  IMAGE **cgcrt, **cgnxt;
+  IMAGE **cgcrt=NULL, **cgnxt=NULL;
   USHORT *pxc, *pxn, *pyc, *pyn;
   int h;
   unsigned long int npix, maxlbl;
   long int i;
   double maxval;
-
   
-  npix=GetImNPix(imlbl[0]);
+  npix=GetImNPix(imap[0]);
 
   /* initialisation */
-  iminfo(imlbl[0]);
-  iminfo(imlbl[1]);
-  getmax(imlbl[1], &maxval);
+  iminfo(imap[0]);
+  iminfo(imap[1]);
+  getmax(imap[1], &maxval);
   maxlbl=(unsigned long)maxval;
   fprintf(stderr, "mxlbl=%d\n", (int) maxlbl);
-  getmax(imlbl[0], &maxval);
+  getmax(imap[0], &maxval);
   maxlbl=(unsigned long)maxval;
   fprintf(stderr, "mxlbl=%d\n", (int) maxlbl);
   flaga=(char *)malloc((maxlbl+1) * sizeof(char));
@@ -135,24 +145,34 @@ ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn)
 
   if ((fp = fopen(fn, "w")) == NULL){
     (void)sprintf(buf,"ERROR in dendro() unable to write in %s", fn); errputstr(buf);
+    free(flaga);
     return(ERROR);
   }
   
-  fprintf(stderr, "n=%d\n", (int) n);
-  cgnxt=imgc(imlbl[n-1]);
+  fprintf(stderr, "nc=%d\n", (int) nc);
+  cgnxt=imgc(imap[nc-1]);
+
+  if (cgnxt==NULL){
+    free(flaga);
+    return(ERROR);
+  }
 
   fprintf(stderr, "COUCOU0\n");
   /* here we go */
-  for (h=n-1; h>0; h--){
+  for (h=nc-1; h>0; h--){
     fprintf(stderr, "h=%d\n", (int) h);
-    imcrt=imlbl[h];
+    imcrt=imap[h];
     pcrt= (UINT32 *) GetImPtr(imcrt);
-    imnxt=imlbl[h-1];
+    imnxt=imap[h-1];
     pnxt= (UINT32 *) GetImPtr(imnxt);
     cgcrt=cgnxt;
     pxc=(USHORT *)GetImPtr(cgcrt[0]);
     pyc=(USHORT *)GetImPtr(cgcrt[1]);
     cgnxt=imgc(imnxt);
+    if (cgnxt==NULL){
+      free(flaga);
+      return(ERROR);
+    }
     pxn=(USHORT *)GetImPtr(cgnxt[0]);
     pyn=(USHORT *)GetImPtr(cgnxt[1]);
     memset(flaga, 0x1, maxlbl+1);
@@ -168,6 +188,7 @@ ERROR_TYPE dendro(IMAGE **imlbl, int n, char *fn)
     free_image(cgcrt[1]);
     free(cgcrt);
   }
+  free(flaga);
   free_image(cgnxt[0]);
   free_image(cgnxt[1]);
   free(cgnxt);

@@ -10,6 +10,6 @@
 #ifndef init_segmentation
 #define init_segmentation
 
-ERROR_TYPE segmentImage(IMAGE ** inputImArray, int nc, int connectivity, int varianz, long int regionSize, int contrast, int version, char *fn);
+ERROR_TYPE segmentImage(IMAGE **imap, int nc, int connectivity, int varianz, long int regionSize, int contrast, int version, char *fn);
 
 #endif

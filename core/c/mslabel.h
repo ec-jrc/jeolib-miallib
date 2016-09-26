@@ -11,6 +11,6 @@
 #define init_label
 
 #include "mialib.h"
-IMAGE *labelImage(IMAGE **,int, IMAGE *, int, long int);
+extern IMAGE *labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda);
 
 #endif

@@ -12,7 +12,7 @@
 #define NCMAX 255 /* maximum number of channels */
 #define SIM_PIX_TYPE   MIAFLOAT
 #define t_SIM_PIX_TYPE t_FLOAT
-IMAGE *f_dissim(IMAGE **ima, int nc, IMAGE *mask, int type)
+IMAGE *f_dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
 {
   /* compute dissimilarity matrix using type distance and
      only for points in mask (other have a similarity set to -1.
@@ -27,9 +27,9 @@ IMAGE *f_dissim(IMAGE **ima, int nc, IMAGE *mask, int type)
 
   /* Here we go */
   for (c=0;c<nc;c++)
-    p[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+    p[c]=(PIX_TYPE *)GetImPtr(imap[c]);
 
-  npix=GetImNPix(ima[0]);
+  npix=GetImNPix(imap[0]);
 
   /* create similarity matrix */
   sim = (IMAGE *)create_image(t_SIM_PIX_TYPE, npix, npix, 1);
@@ -84,16 +84,16 @@ IMAGE *f_dissim(IMAGE **ima, int nc, IMAGE *mask, int type)
 #include "f_undef.h"
 
 
-IMAGE *dissim(IMAGE **ima, int nc, IMAGE *mask, int type)
+IMAGE *dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
 {
-  switch (GetImDataType(ima[0])){
+  switch (GetImDataType(imap[0])){
 
   case t_FLOAT:
-    return(f_dissim(ima, nc, mask, type));
+    return(f_dissim(imap, nc, mask, type));
     break;
     
   default:
-    (void)sprintf(buf,"dissim(IMAGE **ima, int nc, IMAGE *mask, int type): invalid pixel type in ima[0]\n"); errputstr(buf);
+    (void)sprintf(buf,"dissim(IMAGE **imap, int nc, IMAGE *mask, int type): invalid pixel type in imap[0]\n"); errputstr(buf);
     return(NULL);
   }
   return(NULL);

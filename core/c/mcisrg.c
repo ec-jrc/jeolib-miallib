@@ -26,10 +26,10 @@
 #include "base.h"
 #include "mcisrg.h"
 
-extern int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offset);
-extern int us_rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset);
-extern double us_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset);
-extern double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long int offset);
+extern int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imap, long int offset);
+extern int us_rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset);
+extern double us_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imap, long int offset);
+extern double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imap, long int offset);
 
 
 /** \addtogroup group_seg
@@ -43,7 +43,7 @@ extern double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArra
  *
  *  Parameters:
  *
- *      IMAGE **imArray:	      multichannel image
+ *      IMAGE **imap:	      multichannel image
  *
  *      int nc:			            number of channels
  *
@@ -67,7 +67,7 @@ extern double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArra
  */
 
 #include "uc_def.h"
-ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
+ERROR_TYPE uc_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
 {
   long int l, k, shft[27], offset, current, ofsk, ofsj, nxny;
   double delta, deltacrt=0.0, hprior,j;
@@ -95,7 +95,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   box[5] = 0;
 
   // make checks on datatypes, and wheather dimensions of images in
-  // imArray and labelIm fit together
+  // imap and labelIm fit together
   if ((nc < 1) || (regionNumber < 1)){
     (void)sprintf(buf,"mcisrg(): invalid nc or regionNumber\n"); errputstr(buf);
     return ERROR;
@@ -108,8 +108,8 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   for (i = 0; i < nc; i++){
-    if ((GetImNx(imArray[i]) != GetImNx(seedsIm)) || (GetImNy(imArray[i]) != GetImNy(seedsIm)) \
-	|| (GetImDataType(imArray[i]) != GetImDataType(imArray[0])) ){
+    if ((GetImNx(imap[i]) != GetImNx(seedsIm)) || (GetImNy(imap[i]) != GetImNy(seedsIm)) \
+	|| (GetImDataType(imap[i]) != GetImDataType(imap[0])) ){
       (void)sprintf(buf,"mcisrg(): at least one channel is not matching the image of seeds (different size)\n"); errputstr(buf);
       return ERROR;
     }
@@ -119,7 +119,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
   //add border
   for (i = 0; i < nc; i++){
-    if (generic_addframebox(imArray[i], box, BORDER) == ERROR){
+    if (generic_addframebox(imap[i], box, BORDER) == ERROR){
       return ERROR;
     }
   }
@@ -155,7 +155,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 
   // add frameboxes so that neighbours are always in image
   for (i = 0; i < nc; i++){
-    pIm[i]=(PIX_TYPE *) GetImPtr(imArray[i]);
+    pIm[i]=(PIX_TYPE *) GetImPtr(imap[i]);
   }
 
   if (set_seq_shift(GetImNx(seedsIm), GetImNy(seedsIm), GetImNz(seedsIm), graph, shft) == ERROR){
@@ -182,7 +182,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   for(offset=0; offset<nxny; offset++){
     pSeedsCrt=pSeeds+offset;
     if((*pSeedsCrt)>=SEED){
-      uc_rmAddValueOriginal(rm+(*pSeedsCrt), imArray, offset);
+      uc_rmAddValueOriginal(rm+(*pSeedsCrt), imap, offset);
     }
     else if ((*pSeedsCrt)==NOSEED){ /* usually, there will be less NOSEED then SEED pixels */
       for (k=0; k < graph; k++){
@@ -198,7 +198,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   sprintf(fname,"/tmp/mcisrgBEFORE.tif");
-  write_tiff(imArray[0], fname); 
+  write_tiff(imap[0], fname); 
        
   /* here we go */
   while ( (fifo4_empty(nhq)==0) || (pqExactPeek(pq, apqd) != NULL) ){
@@ -213,21 +213,21 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 	  //switch for different versions of algorithm
 	  if(version==PIXEL_NEIGHBOUR){
 	    clearRegionMean(&crtRegionMean);
-	    uc_rmAddValue(&crtRegionMean, imArray, ofsk);
+	    uc_rmAddValue(&crtRegionMean, imap, ofsk);
 	    for(l=0; l<graph;l++){
 	      ofsj = offset+shft[l];
 	      pSeedsO2 = pSeeds + ofsj;
 	      if((*pSeedsO2 == crtSeedValue) && (ofsj!=ofsk)){
-		uc_rmAddValue(&crtRegionMean, imArray, ofsj);
+		uc_rmAddValue(&crtRegionMean, imap, ofsj);
 	      }
 	    }
-	    deltacrt=uc_rmGetDistanceToRM(&crtRegionMean, imArray, offset);
+	    deltacrt=uc_rmGetDistanceToRM(&crtRegionMean, imap, offset);
 	  }
 	  else if(version==ORIGINAL_SEED){
-	    deltacrt=uc_rmGetDistanceToOriginalRM(rm+(*pSeedsO), imArray, offset);
+	    deltacrt=uc_rmGetDistanceToOriginalRM(rm+(*pSeedsO), imap, offset);
 	  }
 	  else if(version==WHOLE_REGION){
-	    deltacrt=uc_rmGetDistanceToRM(rm+(*pSeedsO), imArray, offset);
+	    deltacrt=uc_rmGetDistanceToRM(rm+(*pSeedsO), imap, offset);
 	  }
 	  if (deltacrt < delta){
 	    delta=deltacrt;
@@ -281,7 +281,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
     while ((offset = (long int)fifo4_remove(hq)) ){
       pSeedsO = pSeeds+offset;
       //update color information
-      uc_rmAddValue(rm+(*pSeedsO), imArray, offset);
+      uc_rmAddValue(rm+(*pSeedsO), imap, offset);
       for (k=0; k < graph; k++){
 	pSeedsK = pSeedsO + shft[k];
 	if ((*pSeedsK == NOSEED) || (*pSeedsK == IN_PQ)){
@@ -293,7 +293,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   sprintf(fname,"/tmp/mcisrgAFTER.tif");
-  write_tiff(imArray[0], fname); 
+  write_tiff(imap[0], fname); 
        
   //admit new color value to each channel in image
   nxny=nx*ny;
@@ -320,7 +320,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 
   //substract border
   for(i=0; i<nc; i++)
-    subframebox(imArray[i], box);
+    subframebox(imap[i], box);
   subframebox(seedsIm, box);
     
   return NO_ERROR;
@@ -329,7 +329,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 
 
 #include "us_def.h"
-ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
+ERROR_TYPE us_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
 {
   long int l, k, shft[27], offset, current, ofsk, ofsj, nxny;
   double delta, deltacrt=0.0, hprior,j;
@@ -357,7 +357,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   box[5] = 0;
 
   // make checks on datatypes, and wheather dimensions of images in
-  // imArray and labelIm fit together
+  // imap and labelIm fit together
   if ((nc < 1) || (regionNumber < 1)){
     (void)sprintf(buf,"mcisrg(): invalid nc or regionNumber\n"); errputstr(buf);
     return ERROR;
@@ -370,8 +370,8 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   for (i = 0; i < nc; i++){
-    if ((GetImNx(imArray[i]) != GetImNx(seedsIm)) || (GetImNy(imArray[i]) != GetImNy(seedsIm)) \
-	|| (GetImDataType(imArray[i]) != GetImDataType(imArray[0])) ){
+    if ((GetImNx(imap[i]) != GetImNx(seedsIm)) || (GetImNy(imap[i]) != GetImNy(seedsIm)) \
+	|| (GetImDataType(imap[i]) != GetImDataType(imap[0])) ){
       (void)sprintf(buf,"mcisrg(): at least one channel is not matching the image of seeds (different size)\n"); errputstr(buf);
       return ERROR;
     }
@@ -381,7 +381,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
   //add border
   for (i = 0; i < nc; i++){
-    if (us_addframebox(imArray[i], box, BORDER) == ERROR){
+    if (us_addframebox(imap[i], box, BORDER) == ERROR){
       return ERROR;
     }
   }
@@ -417,7 +417,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 
   // add frameboxes so that neighbours are always in image
   for (i = 0; i < nc; i++){
-    pIm[i]=(PIX_TYPE *) GetImPtr(imArray[i]);
+    pIm[i]=(PIX_TYPE *) GetImPtr(imap[i]);
   }
 
   if (set_seq_shift(GetImNx(seedsIm), GetImNy(seedsIm), GetImNz(seedsIm), graph, shft) == ERROR){
@@ -444,7 +444,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   for(offset=0; offset<nxny; offset++){
     pSeedsCrt=pSeeds+offset;
     if((*pSeedsCrt)>=SEED){
-      us_rmAddValueOriginal(rm+(*pSeedsCrt), imArray, offset);
+      us_rmAddValueOriginal(rm+(*pSeedsCrt), imap, offset);
     }
     else if ((*pSeedsCrt)==NOSEED){ /* usually, there will be less NOSEED then SEED pixels */
       for (k=0; k < graph; k++){
@@ -460,7 +460,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   sprintf(fname,"/tmp/mcisrgBEFORE.tif");
-  write_tiff(imArray[0], fname); 
+  write_tiff(imap[0], fname); 
        
   /* here we go */
   while ( (fifo4_empty(nhq)==0) || (pqExactPeek(pq, apqd) != NULL) ){
@@ -475,21 +475,21 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 	  //switch for different versions of algorithm
 	  if(version==PIXEL_NEIGHBOUR){
 	    clearRegionMean(&crtRegionMean);
-	    us_rmAddValue(&crtRegionMean, imArray, ofsk);
+	    us_rmAddValue(&crtRegionMean, imap, ofsk);
 	    for(l=0; l<graph;l++){
 	      ofsj = offset+shft[l];
 	      pSeedsO2 = pSeeds + ofsj;
 	      if((*pSeedsO2 == crtSeedValue) && (ofsj!=ofsk)){
-		us_rmAddValue(&crtRegionMean, imArray, ofsj);
+		us_rmAddValue(&crtRegionMean, imap, ofsj);
 	      }
 	    }
-	    deltacrt=us_rmGetDistanceToRM(&crtRegionMean, imArray, offset);
+	    deltacrt=us_rmGetDistanceToRM(&crtRegionMean, imap, offset);
 	  }
 	  else if(version==ORIGINAL_SEED){
-	    deltacrt=us_rmGetDistanceToOriginalRM(rm+(*pSeedsO), imArray, offset);
+	    deltacrt=us_rmGetDistanceToOriginalRM(rm+(*pSeedsO), imap, offset);
 	  }
 	  else if(version==WHOLE_REGION){
-	    deltacrt=us_rmGetDistanceToRM(rm+(*pSeedsO), imArray, offset);
+	    deltacrt=us_rmGetDistanceToRM(rm+(*pSeedsO), imap, offset);
 	  }
 	  if (deltacrt < delta){
 	    delta=deltacrt;
@@ -543,7 +543,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
     while ((offset = (long int)fifo4_remove(hq)) ){
       pSeedsO = pSeeds+offset;
       //update color information
-      us_rmAddValue(rm+(*pSeedsO), imArray, offset);
+      us_rmAddValue(rm+(*pSeedsO), imap, offset);
       for (k=0; k < graph; k++){
 	pSeedsK = pSeedsO + shft[k];
 	if ((*pSeedsK == NOSEED) || (*pSeedsK == IN_PQ)){
@@ -555,7 +555,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
   }
 
   sprintf(fname,"/tmp/mcisrgAFTER.tif");
-  write_tiff(imArray[0], fname); 
+  write_tiff(imap[0], fname); 
        
   //admit new color value to each channel in image
   nxny=nx*ny;
@@ -582,7 +582,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 
   //substract border
   for(i=0; i<nc; i++)
-    subframebox(imArray[i], box);
+    subframebox(imap[i], box);
   subframebox(seedsIm, box);
     
   return NO_ERROR;
@@ -590,14 +590,14 @@ ERROR_TYPE us_mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long in
 #include "us_undef.h"
 
 
-ERROR_TYPE mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
+ERROR_TYPE mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int regionNumber, int version)
 {
-  switch (GetImDataType(imArray[0])){
+  switch (GetImDataType(imap[0])){
   case t_UCHAR:
-    return(uc_mcisrg(imArray, nc, seedsIm, graph, regionNumber, version));
+    return(uc_mcisrg(imap, nc, seedsIm, graph, regionNumber, version));
     break;
   case t_USHORT:
-    return(us_mcisrg(imArray, nc, seedsIm, graph, regionNumber, version));
+    return(us_mcisrg(imap, nc, seedsIm, graph, regionNumber, version));
     break;
 
   default:

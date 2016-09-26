@@ -20,7 +20,7 @@
 #define BORDER_OR_LBL_BIT 0x8FFFFE00
 #define R_BIT             0x000000FF
 #define NCMAX 255 /* maximum number of channels */
-IMAGE *uc_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
+IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
 {
   /* First 2010-10-18: for transition regions: the ultimate solution?  First brina this morning  */
   PIX_TYPE *p[NCMAX], *prmax, *ph, *pv;
@@ -29,13 +29,13 @@ IMAGE *uc_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio, mincc[NCMAX], maxcc[NCMAX], reset=0;
   long int  k, *shft;
-  int n=4, nx=GetImNx(ima[0]), ny, nz;
+  int n=4, nx=GetImNx(imap[0]), ny, nz;
   int doffset[4]={-nx,-1,0,0};
   PIX_TYPE *pdir[4];
   int c;
   int rgcrt;
 
-  im=ima[0];
+  im=imap[0];
   
   FIFO4 *q;
   int box[BOXELEM];
@@ -109,7 +109,7 @@ IMAGE *uc_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
 
   /* Here we go */
   for (c=0;c<nc;c++)
-    p[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+    p[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   ph  = (PIX_TYPE *)GetImPtr(imh);
   pv  = (PIX_TYPE *)GetImPtr(imv);
   pdir[0]=pv;
@@ -289,7 +289,7 @@ IMAGE *uc_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
 #define BORDER_OR_LBL_BIT 0xFFFFF000
 #define R_BIT             0x000007FF
 #define NCMAX 255 /* maximum number of channels */
-IMAGE *us_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
+IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
 {
   /* First 2010-10-18: for transition regions: the ultimate solution?  First brina this morning  */
   PIX_TYPE *p[NCMAX], *prmax, *ph, *pv;
@@ -298,13 +298,13 @@ IMAGE *us_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio, mincc[NCMAX], maxcc[NCMAX], reset=0;
   long int  k, *shft;
-  int n=4, nx=GetImNx(ima[0]), ny, nz;
+  int n=4, nx=GetImNx(imap[0]), ny, nz;
   int doffset[4]={-nx,-1,0,0};
   PIX_TYPE *pdir[4];
   int c;
   int rgcrt;
 
-  im=ima[0];
+  im=imap[0];
   
   FIFO4 *q;
   int box[BOXELEM];
@@ -378,7 +378,7 @@ IMAGE *us_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
 
   /* Here we go */
   for (c=0;c<nc;c++)
-    p[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+    p[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   ph  = (PIX_TYPE *)GetImPtr(imh);
   pv  = (PIX_TYPE *)GetImPtr(imv);
   pdir[0]=pv;
@@ -551,16 +551,16 @@ IMAGE *us_labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, i
 
 
 
-IMAGE *labelccmsdissim(IMAGE **ima, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
+IMAGE *labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, int rl)
 {
-  switch (GetImDataType(ima[0])){
+  switch (GetImDataType(imap[0])){
 
   case t_UCHAR:
-    return(uc_labelccmsdissim(ima,nc,imh,imv,rg,rl));
+    return(uc_labelccmsdissim(imap,nc,imh,imv,rg,rl));
     break;
     
   case t_USHORT:
-    return(us_labelccmsdissim(ima,nc,imh,imv,rg,rl));
+    return(us_labelccmsdissim(imap,nc,imh,imv,rg,rl));
     break;
     
   default:

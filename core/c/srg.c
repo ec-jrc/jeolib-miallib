@@ -405,11 +405,11 @@ ERROR_TYPE srg(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
 #define DELTA_MAX  UINT32_MAX
 #define SEEDS_TYPE UINT32 /* !!! type dependent call to framebox */
 #define SEEDS_TYPE_MIN UINT32_MIN /* !!! type dependent call to framebox */
-ERROR_TYPE generic_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
+ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
   ** authors: 
-  ** IMAGE *imarray: array of grey level images
+  ** IMAGE *imap: array of grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
   ** IMAGE *imse:    image for defining the connectivity (SE)
@@ -433,7 +433,7 @@ ERROR_TYPE generic_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int o
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   n = objectpix(imse);
   if (n==ERROR){
@@ -633,11 +633,11 @@ ERROR_TYPE generic_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int o
 #define DELTA_MAX  UINT32_MAX
 #define SEEDS_TYPE UINT32 /* !!! type dependent call to framebox */
 #define SEEDS_TYPE_MIN UINT32_MIN /* !!! type dependent call to framebox */
-ERROR_TYPE us_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
+ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
   ** authors: 
-  ** IMAGE *imarray: array of grey level images
+  ** IMAGE *imap: array of grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
   ** IMAGE *imse:    image for defining the connectivity (SE)
@@ -661,7 +661,7 @@ ERROR_TYPE us_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, in
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   n = objectpix(imse);
   if (n==ERROR){
@@ -854,7 +854,7 @@ ERROR_TYPE us_mssrg(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, in
 
 /* multispectral seeded region growing */
 
-ERROR_TYPE mssrg(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
+ERROR_TYPE mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
 {
 
   if ( GetImDataType(im2) != t_UINT32 ){
@@ -862,16 +862,16 @@ ERROR_TYPE mssrg(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy,
     return(ERROR);
   }
 
-  switch (GetImDataType(imarray[0])){
+  switch (GetImDataType(imap[0])){
 
 #ifndef NO_generic_IMAGE
   case t_GENERIC:
-    return(generic_mssrg(imarray,n,im2,im3,ox,oy,oz));
+    return(generic_mssrg(imap,nc,im2,im3,ox,oy,oz));
     break;
 #endif
 
   case t_USHORT:
-    return(us_mssrg(imarray,n,im2,im3,ox,oy,oz));
+    return(us_mssrg(imap,nc,im2,im3,ox,oy,oz));
     break;
     
   default:
@@ -892,11 +892,11 @@ ERROR_TYPE mssrg(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy,
 #define DELTA_MAX  UINT32_MAX /* type dependent */
 #define SEEDS_TYPE UINT32 /* !!! type dependent call to framebox */
 #define SEEDS_TYPE_MIN UINT32_MIN /* !!! type dependent call to framebox */
-ERROR_TYPE generic_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
+ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
   ** authors: 
-  ** IMAGE *imarray: array of grey level grey level images
+  ** IMAGE *imap: array of grey level grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
   ** IMAGE *imse:    image for defining the connectivity (SE)
@@ -919,7 +919,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, i
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   n = objectpix(imse);
   if (n==ERROR){
@@ -1141,11 +1141,11 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, i
 #define DELTA_MAX  UINT32_MAX /* type dependent */
 #define SEEDS_TYPE UINT32 /* !!! type dependent call to framebox */
 #define SEEDS_TYPE_MIN UINT32_MIN /* !!! type dependent call to framebox */
-ERROR_TYPE us_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
+ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
   ** authors: 
-  ** IMAGE *imarray: array of grey level grey level images
+  ** IMAGE *imap: array of grey level grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
   ** IMAGE *imse:    image for defining the connectivity (SE)
@@ -1171,7 +1171,7 @@ ERROR_TYPE us_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
 
   n = objectpix(imse);
@@ -1385,29 +1385,29 @@ ERROR_TYPE us_mssrgcore(IMAGE **imarray, int nc, IMAGE *im2, IMAGE *imse, int ox
 /* multispectral seeded region growing */
 /* multispectral distance to seed pixel */
 
-ERROR_TYPE mssrgcore(IMAGE **imarray, int n, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
+ERROR_TYPE mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
 {
 
   if ( GetImDataType(im2) != t_UINT32 ){
     (void)sprintf(buf,"mssrg(): image of seeds must be of type UINT32\n"); errputstr(buf);
     return(ERROR);
   }
-  switch (GetImDataType(imarray[0])){
+  switch (GetImDataType(imap[0])){
 
 #ifndef NO_generic_IMAGE
   case t_GENERIC:
-    return(generic_mssrgcore(imarray,n,im2,im3,ox,oy,oz));
+    return(generic_mssrgcore(imap,nc,im2,im3,ox,oy,oz));
     break;
 #endif
 
 #ifndef NO_uc_IMAGE
   case t_UCHAR:
-    return(uc_mssrgcore(imarray,n,im2,im3,ox,oy,oz));
+    return(uc_mssrgcore(imap,nc,im2,im3,ox,oy,oz));
     break;
 #endif
     
   case t_USHORT:
-    return(us_mssrgcore(imarray,n,im2,im3,ox,oy,oz));
+    return(us_mssrgcore(imap,nc,im2,im3,ox,oy,oz));
     break;
     
   default:

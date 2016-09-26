@@ -25,20 +25,20 @@ struct regionMean
 
 struct regionMean * rmInit(struct regionMean *rm, int nc);
 
-int rmAddValue(struct regionMean * rm, IMAGE ** imArray, long int offset);
-int uc_rmAddValue(struct regionMean * rm, IMAGE ** imArray, long int offset);
+int rmAddValue(struct regionMean * rm, IMAGE **imap, long int offset);
+int uc_rmAddValue(struct regionMean * rm, IMAGE **imap, long int offset);
 
-int rmAddValueOriginal(struct regionMean * rm, IMAGE ** imArray, long int offset);
-int uc_rmAddValueOriginal(struct regionMean * rm, IMAGE ** imArray, long int offset);
+int rmAddValueOriginal(struct regionMean * rm, IMAGE **imap, long int offset);
+int uc_rmAddValueOriginal(struct regionMean * rm, IMAGE **imap, long int offset);
 
-double rmGetDistanceToRM(struct regionMean * rm, IMAGE ** imArray, long int offset);
-double uc_rmGetDistanceToRM(struct regionMean * rm, IMAGE ** imArray, long int offset);
+double rmGetDistanceToRM(struct regionMean * rm, IMAGE **imap, long int offset);
+double uc_rmGetDistanceToRM(struct regionMean * rm, IMAGE **imap, long int offset);
 
-double rmGetDistanceToOriginalRM(struct regionMean * rm, IMAGE ** imArray, long int offset);
-double uc_rmGetDistanceToOriginalRM(struct regionMean * rm, IMAGE ** imArray, long int offset);
+double rmGetDistanceToOriginalRM(struct regionMean * rm, IMAGE **imap, long int offset);
+double uc_rmGetDistanceToOriginalRM(struct regionMean * rm, IMAGE **imap, long int offset);
 
-double rmGetContrastCoefficient(struct regionMean * rm, IMAGE ** imArray, long int offset);
-double uc_rmGetContrastCoefficient(struct regionMean * rm, IMAGE ** imArray, long int offset);
+double rmGetContrastCoefficient(struct regionMean * rm, IMAGE **imap, long int offset);
+double uc_rmGetContrastCoefficient(struct regionMean * rm, IMAGE **imap, long int offset);
 
 void clearRegionMean(struct regionMean * rm);
 

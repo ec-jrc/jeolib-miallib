@@ -14,5 +14,5 @@
 #define ORIGINAL_SEED 0x01
 #define PIXEL_NEIGHBOUR 0x02
 
-ERROR_TYPE mcisrg(IMAGE **imArray, int nc, IMAGE *seedsIm, int connectivity, long int regionNumber, int version);
+ERROR_TYPE mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int connectivity, long int regionNumber, int version);
 #endif

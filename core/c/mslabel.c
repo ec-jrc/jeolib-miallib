@@ -19,6 +19,7 @@
 #include "base.h"
 #include "fifo.h"
 
+
 /** \addtogroup group_label
  *  @{
  */
@@ -29,10 +30,10 @@
  *
  *  Parameters:
  *
- *    imArray       array of pointer to the channels of an input images
+ *    imap          array of pointer to the channels of an input images
  *                  (a given image MUST only appear once in the array)
  *
- *    nc            size of imArray => number of channels
+ *    nc            size of imap => number of channels
  *
  *    labelIm       pointer to an image in which the resulting label image is stored
  *
@@ -54,7 +55,7 @@
  */
 
 #include "uc_def.h"
-IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long int lambda)
+IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda)
 {
   long int shft[27], offset, i, crtOffset, neighbourOffset;
   LBL_TYPE *pLabelIm, lval;
@@ -70,26 +71,26 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
   box[5] = 0;
 
   // make checks on datatypes, and whether dimensions of images in
-  // imArray and labelIm fit together
+  // imap and labelIm fit together
   if (nc < 1){
     return NULL;
   }
 
   for (i=1; i<nc; i++){
-    if ( (GetImNx(imArray[0]) != GetImNx(imArray[i])) || (GetImNy(imArray[0]) != GetImNy(imArray[i])) \
-	 || (GetImDataType(imArray[i]) != t_PIX_TYPE) ){
+    if ( (GetImNx(imap[0]) != GetImNx(imap[i])) || (GetImNy(imap[0]) != GetImNy(imap[i])) \
+	 || (GetImDataType(imap[i]) != t_PIX_TYPE) ){
       return NULL;
     }
   }
   if (labelIm == NULL){
-    labelIm=(IMAGE *)create_image(t_LBL_TYPE, GetImNx(imArray[0]), GetImNy(imArray[0]), GetImNz(imArray[0]));
+    labelIm=(IMAGE *)create_image(t_LBL_TYPE, GetImNx(imap[0]), GetImNy(imap[0]), GetImNz(imap[0]));
     if (labelIm==NULL)
       return NULL;
   }
   else{
     if (GetImDataType(labelIm) != t_LBL_TYPE)
       return NULL;
-    if ( (GetImNx(imArray[0]) != GetImNx(labelIm)) || (GetImNy(imArray[0]) != GetImNy(labelIm)) )
+    if ( (GetImNx(imap[0]) != GetImNx(labelIm)) || (GetImNy(imap[0]) != GetImNy(labelIm)) )
       return NULL;
   }
 
@@ -99,7 +100,7 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
     pLabelIm[i]=0;
 
   for (i=0; i<nc; i++){
-    if (generic_addframebox(imArray[i], box, BORDER) == ERROR){
+    if (generic_addframebox(imap[i], box, BORDER) == ERROR){
       return NULL;
     }
   }
@@ -132,7 +133,7 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 	// channels
 	if(pLabelIm[neighbourOffset] == NOTLABELED){
 	  for (n = 0; n < nc; n++){
-	    pInputIm = (PIX_TYPE *) GetImPtr(imArray[n]);
+	    pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	    if ((( ((INT32) pInputIm[offset])-lambda) >pInputIm[neighbourOffset]) || \
 		(( ((INT32) pInputIm[offset])+lambda)<pInputIm[neighbourOffset])){
 	      bool = 0;
@@ -157,7 +158,7 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 	    // check whether neighbour has same value
 	    // for all channels
 	    for (n = 0; n < nc; n++){
-	      pInputIm = (PIX_TYPE *) GetImPtr(imArray[n]);
+	      pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	      /* srtOffset used here, was offset in previous version */
 	      if (((  ((INT32) pInputIm[crtOffset])-lambda)>pInputIm[neighbourOffset]) || \
 		   (( ((INT32) pInputIm[crtOffset])+lambda)<pInputIm[neighbourOffset])){
@@ -177,7 +178,7 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
   }
   free_fifo4(hq);
   for(i=0; i<nc; i++){
-    subframebox(imArray[i], box);
+    subframebox(imap[i], box);
   }
   subframebox(labelIm, box);
   return labelIm;
@@ -185,7 +186,7 @@ IMAGE *uc_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 #include "uc_undef.h"
 
 #include "us_def.h"
-IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long int lambda)
+IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda)
 {
   long int shft[27], offset, i, crtOffset, neighbourOffset;
   LBL_TYPE *pLabelIm, lval;
@@ -201,26 +202,26 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
   box[5] = 0;
 
   // make checks on datatypes, and whether dimensions of images in
-  // imArray and labelIm fit together
+  // imap and labelIm fit together
   if (nc < 1){
     return NULL;
   }
 
   for (i=1; i<nc; i++){
-    if ( (GetImNx(imArray[0]) != GetImNx(imArray[i])) || (GetImNy(imArray[0]) != GetImNy(imArray[i])) \
-	 || (GetImDataType(imArray[i]) != t_PIX_TYPE) ){
+    if ( (GetImNx(imap[0]) != GetImNx(imap[i])) || (GetImNy(imap[0]) != GetImNy(imap[i])) \
+	 || (GetImDataType(imap[i]) != t_PIX_TYPE) ){
       return NULL;
     }
   }
   if (labelIm == NULL){
-    labelIm=(IMAGE *)create_image(t_LBL_TYPE, GetImNx(imArray[0]), GetImNy(imArray[0]), GetImNz(imArray[0]));
+    labelIm=(IMAGE *)create_image(t_LBL_TYPE, GetImNx(imap[0]), GetImNy(imap[0]), GetImNz(imap[0]));
     if (labelIm==NULL)
       return NULL;
   }
   else{
     if (GetImDataType(labelIm) != t_LBL_TYPE)
       return NULL;
-    if ( (GetImNx(imArray[0]) != GetImNx(labelIm)) || (GetImNy(imArray[0]) != GetImNy(labelIm)) )
+    if ( (GetImNx(imap[0]) != GetImNx(labelIm)) || (GetImNy(imap[0]) != GetImNy(labelIm)) )
       return NULL;
   }
 
@@ -231,7 +232,7 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
   }
 
   for (i = 0; i < nc; i++){
-    if (us_addframebox(imArray[i], box, BORDER) == ERROR){
+    if (us_addframebox(imap[i], box, BORDER) == ERROR){
       return NULL;
     }
   }
@@ -264,7 +265,7 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 	// channels
 	if(pLabelIm[neighbourOffset] == NOTLABELED){
 	  for (n = 0; n < nc; n++){
-	    pInputIm = (PIX_TYPE *) GetImPtr(imArray[n]);
+	    pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	    if ((( ((INT32) pInputIm[offset])-lambda) >pInputIm[neighbourOffset]) || \
 		(( ((INT32) pInputIm[offset])+lambda)<pInputIm[neighbourOffset])){
 	      bool = 0;
@@ -289,7 +290,7 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 	    // check whether neighbour has same value
 	    // for all channels
 	    for (n = 0; n < nc; n++){
-	      pInputIm = (PIX_TYPE *) GetImPtr(imArray[n]);
+	      pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	      /* srtOffset used here, was offset in previous version */
 	      if (((  ((INT32) pInputIm[crtOffset])-lambda)>pInputIm[neighbourOffset]) || \
 		   (( ((INT32) pInputIm[crtOffset])+lambda)<pInputIm[neighbourOffset])){
@@ -309,7 +310,7 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
   }
   free_fifo4(hq);
   for(i=0; i<nc; i++){
-    subframebox(imArray[i], box);
+    subframebox(imap[i], box);
   }
   subframebox(labelIm, box);
   return labelIm;
@@ -317,20 +318,20 @@ IMAGE *us_labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long in
 #include "us_undef.h"
 
 
-IMAGE *labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long int lambda)
+IMAGE *labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda)
 {
-  switch (GetImDataType(imArray[0])){
+  switch (GetImDataType(imap[0])){
 
   case t_UCHAR:
-    return(uc_labelImage(imArray, nc, labelIm, graph, lambda));
+    return(uc_labelImage(imap, nc, labelIm, graph, lambda));
     break;
 
   case t_USHORT:
-    return(us_labelImage(imArray, nc, labelIm, graph, lambda));
+    return(us_labelImage(imap, nc, labelIm, graph, lambda));
     break;
 
   default:
-    (void)sprintf(buf,"labelImage(): invalid multichannel pixel type (%d)\n", GetImDataType(imArray[0])); errputstr(buf);
+    (void)sprintf(buf,"labelImage(): invalid multichannel pixel type (%d)\n", GetImDataType(imap[0])); errputstr(buf);
   }
   return(NULL);
 }

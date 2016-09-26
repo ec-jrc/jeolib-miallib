@@ -70,7 +70,7 @@ struct regionMean *rmInit(struct regionMean *rm, int nc){
  *
  *		rm			Pointer to a regionMean
  *
- *		imArray		Array of IMAGE
+ *		imap		Array of IMAGE
  *
  *		offset		offset to values in IMAGE which shall be added.
  *		
@@ -79,22 +79,22 @@ struct regionMean *rmInit(struct regionMean *rm, int nc){
  *
  *		1			The values has been added
  *
- *		0			The values could not been added. The pointer rm or imArray was NULL.
+ *		0			The values could not been added. The pointer rm or imap was NULL.
  */
 #include "uc_def.h"
-int uc_rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
+int uc_rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
   int i, n;
   long int crtCount;
 
   float * mean, crtMean, newMean,crtValue;
   PIX_TYPE *value;
-  if(!rm || !imArray) return 0;
+  if(!rm || !imap) return 0;
 
   mean= rm->meanValue;
   n = rm->nc;
   crtCount = rm->count;
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     crtMean= mean[i];
     crtValue = (float) value[offset];
     newMean=(float)((((double)crtMean)*crtCount)+crtValue)/((float)(crtCount+1));
@@ -107,19 +107,19 @@ int uc_rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
 #include "uc_undef.h"
 
 #include "us_def.h"
-int us_rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
+int us_rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
   int i, n;
   long int crtCount;
 
   float * mean, crtMean, newMean,crtValue;
   PIX_TYPE *value;
-  if(!rm || !imArray) return 0;
+  if(!rm || !imap) return 0;
 
   mean= rm->meanValue;
   n = rm->nc;
   crtCount = rm->count;
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     crtMean= mean[i];
     crtValue = (float) value[offset];
     newMean=(float)((((double)crtMean)*crtCount)+crtValue)/((float)(crtCount+1));
@@ -131,14 +131,14 @@ int us_rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
 }
 #include "us_undef.h"
 
-int rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
+int rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
 
-  switch(GetImDataType(imArray[0])){
+  switch(GetImDataType(imap[0])){
   case t_UCHAR:
-    return(uc_rmAddValue(rm, imArray, offset));
+    return(uc_rmAddValue(rm, imap, offset));
     break;
   case t_USHORT:
-    return(us_rmAddValue(rm, imArray, offset));
+    return(us_rmAddValue(rm, imap, offset));
     break;
 
   default:
@@ -158,7 +158,7 @@ int rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
  *
  *		rm			Pointer to a regionMean
  *
- *		imArray		Array of IMAGE
+ *		imap		Array of IMAGE
  *
  *		offset		offset to a pixel in IMAGE.
  *		
@@ -167,22 +167,22 @@ int rmAddValue(struct regionMean *rm, IMAGE **imArray, long int offset){
  *
  *		>=0			Distance
  *
- *		-1			The Distance could not been calculated. The pointer rm or imArray was NULL.
+ *		-1			The Distance could not been calculated. The pointer rm or imap was NULL.
  */
 #include "uc_def.h"
-double uc_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset){
+double uc_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imap, long int offset){
   int i, n;
   float * mean;
   PIX_TYPE *value;
   double tmp, distance=0;
 
-  if(!rm || !imArray) return -1;
+  if(!rm || !imap) return -1;
 
   mean= rm->meanValue;
   n = rm->nc;
 
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     tmp=0;
     tmp = (mean[i]-((double) value[offset]));
     distance+=(tmp*tmp);
@@ -192,19 +192,19 @@ double uc_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int off
 #include "uc_undef.h"
 
 #include "us_def.h"
-double us_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset){
+double us_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imap, long int offset){
   int i, n;
   float * mean;
   PIX_TYPE *value;
   double tmp, distance=0;
 
-  if(!rm || !imArray) return -1;
+  if(!rm || !imap) return -1;
 
   mean= rm->meanValue;
   n = rm->nc;
 
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     tmp=0;
     tmp = (mean[i]-((double) value[offset]));
     distance+=(tmp*tmp);
@@ -214,14 +214,14 @@ double us_rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int off
 #include "us_undef.h"
 
 
-double rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset){
+double rmGetDistanceToRM(struct regionMean *rm, IMAGE **imap, long int offset){
 
-  switch(GetImDataType(imArray[0])){
+  switch(GetImDataType(imap[0])){
   case t_UCHAR:
-    return(uc_rmGetDistanceToRM(rm, imArray, offset));
+    return(uc_rmGetDistanceToRM(rm, imap, offset));
     break;
   case t_USHORT:
-    return(us_rmGetDistanceToRM(rm, imArray, offset));
+    return(us_rmGetDistanceToRM(rm, imap, offset));
     break;
 
   default:
@@ -238,7 +238,7 @@ double rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset
  *
  *		rm			Pointer to a regionMean
  *
- *		imArray		Array of IMAGE
+ *		imap		Array of IMAGE
  *
  *		offset		offset to values in IMAGE which shall be added.
  *
@@ -247,23 +247,23 @@ double rmGetDistanceToRM(struct regionMean *rm, IMAGE **imArray, long int offset
  *
  *		1			The values has been added
  *
- *		0			The values could not been added. The pointer rm or imArray was NULL.
+ *		0			The values could not been added. The pointer rm or imap was NULL.
  */
 #include "uc_def.h"
-int uc_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offset){
+int uc_rmAddValueOriginal(struct regionMean *rm, IMAGE **imap, long int offset){
 
   int i, n;
   long int crtCount;
 
   float * mean, crtMean, newMean,crtValue;
   PIX_TYPE *value;
-  if(!rm || !imArray) return 0;
+  if(!rm || !imap) return 0;
 
   mean= rm->meanValueOriginal;
   n = rm->nc;
   crtCount = rm->countOriginal;
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     crtMean= mean[i];
     crtValue = (float) value[offset];
     newMean=(float)(((double)crtMean*crtCount)+crtValue)/((float)(crtCount+1));
@@ -271,26 +271,26 @@ int uc_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offse
   }
   crtCount++;
   rm->countOriginal=crtCount;
-  uc_rmAddValue(rm, imArray, offset);
+  uc_rmAddValue(rm, imap, offset);
   return 1;
 }
 #include "uc_undef.h"
 
 #include "us_def.h"
-int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offset){
+int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imap, long int offset){
 
   int i, n;
   long int crtCount;
 
   float * mean, crtMean, newMean,crtValue;
   PIX_TYPE *value;
-  if(!rm || !imArray) return 0;
+  if(!rm || !imap) return 0;
 
   mean= rm->meanValueOriginal;
   n = rm->nc;
   crtCount = rm->countOriginal;
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     crtMean= mean[i];
     crtValue = (float) value[offset];
     newMean=(float)(((double)crtMean*crtCount)+crtValue)/((float)(crtCount+1));
@@ -298,7 +298,7 @@ int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offse
   }
   crtCount++;
   rm->countOriginal=crtCount;
-  us_rmAddValue(rm, imArray, offset);
+  us_rmAddValue(rm, imap, offset);
   return 1;
 }
 #include "us_undef.h"
@@ -313,7 +313,7 @@ int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offse
  *
  *		rm			Pointer to a regionMean
  *
- *		imArray		Array of IMAGE
+ *		imap		Array of IMAGE
  *
  *		offset		offset to a pixel in IMAGE.
  *
@@ -322,23 +322,23 @@ int us_rmAddValueOriginal(struct regionMean *rm, IMAGE **imArray, long int offse
  *
  *		>=0			Distance
  *
- *		-1			The Distance could not been calculated. The pointer rm or imArray was NULL.
+ *		-1			The Distance could not been calculated. The pointer rm or imap was NULL.
  */
 #include "uc_def.h"
-double uc_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long int offset)
+double uc_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imap, long int offset)
 {
   int i, n;
   float * mean;
   PIX_TYPE *value;
   double tmp, distance=0;
 
-  if(!rm || !imArray) return -1;
+  if(!rm || !imap) return -1;
 
   mean= rm->meanValueOriginal;
   n = rm->nc;
 
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     tmp=0;
     tmp = (mean[i]-((double) value[offset]));
     distance+=(tmp*tmp);
@@ -348,20 +348,20 @@ double uc_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long
 #include "uc_undef.h"
 
 #include "us_def.h"
-double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long int offset)
+double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imap, long int offset)
 {
   int i, n;
   float * mean;
   PIX_TYPE *value;
   double tmp, distance=0;
 
-  if(!rm || !imArray) return -1;
+  if(!rm || !imap) return -1;
 
   mean= rm->meanValueOriginal;
   n = rm->nc;
 
   for(i=0; i<n;i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     tmp=0;
     tmp = (mean[i]-((double) value[offset]));
     distance+=(tmp*tmp);
@@ -381,7 +381,7 @@ double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long
  *
  *		rm			Pointer to a regionMean
  *
- *		imArray	Array of IMAGE
+ *		imap	Array of IMAGE
  *
  *		offset	offset to a pixel in IMAGE.
  *
@@ -395,14 +395,14 @@ double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imArray, long
  *		<0      Pixel is darker
  */
 #include "uc_def.h"
-double uc_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imArray, long int offset){
+double uc_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imap, long int offset){
   int i,n;
   float * mean = rm->meanValue;
   PIX_TYPE * value;
   double contrast=0;
   n = rm->nc;
   for(i=0; i<n; i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     contrast = 0;
     contrast += (((double) value[offset])-mean[i]);
   }
@@ -411,7 +411,7 @@ double uc_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imArray, long 
 #include "uc_undef.h"
 
 #include "us_def.h"
-double us_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imArray, long int offset)
+double us_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imap, long int offset)
 {
   int i,n;
   float * mean = rm->meanValue;
@@ -419,7 +419,7 @@ double us_rmGetContrastCoefficient(struct regionMean *rm, IMAGE **imArray, long 
   double contrast=0;
   n = rm->nc;
   for(i=0; i<n; i++){
-    value = (PIX_TYPE *) GetImPtr(imArray[i]);
+    value = (PIX_TYPE *) GetImPtr(imap[i]);
     contrast = 0;
     contrast += (((double) value[offset])-mean[i]);
   }

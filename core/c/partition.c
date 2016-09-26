@@ -59,7 +59,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   long int shft[27];
   int n, k, box[6];
   
-  IMAGE **im_array; /* holds all output arrays: correspondences and similarities */
+  IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
 
@@ -112,11 +112,11 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     return NULL;
   }
 
-  im_array=(IMAGE **)calloc(sizeof(IMAGE *), 4);
-  im_array[0]=lut_c12;
-  im_array[1]=lut_c21;
-  im_array[2]=lut_s12;
-  im_array[3]=lut_s21;
+  imap=(IMAGE **)calloc(sizeof(IMAGE *), 4);
+  imap[0]=lut_c12;
+  imap[1]=lut_c21;
+  imap[2]=lut_s12;
+  imap[3]=lut_s21;
 
   nx = GetImNx(part1);
   ny = GetImNy(part1);
@@ -130,7 +130,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
   }
 
   if (GetImNy(part1) == 1)
@@ -172,7 +172,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
     free_image(im_flag);
     free_fifo4(q);
     return NULL;
@@ -262,7 +262,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   free_fifo4(q);
   free_pq(pq);
   
-  return(im_array);
+  return(imap);
 }
 #undef PIX_FLAG_TYPE
 #undef t_PIX_FLAG_TYPE
@@ -301,7 +301,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   long int shft[27];
   int n, k, box[6];
   
-  IMAGE **im_array; /* holds all output arrays: correspondences and similarities */
+  IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
 
@@ -354,11 +354,11 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     return NULL;
   }
 
-  im_array=(IMAGE **)calloc(sizeof(IMAGE *), 4);
-  im_array[0]=lut_c12;
-  im_array[1]=lut_s12;
-  im_array[2]=lut_c21;
-  im_array[3]=lut_s21;
+  imap=(IMAGE **)calloc(sizeof(IMAGE *), 4);
+  imap[0]=lut_c12;
+  imap[1]=lut_s12;
+  imap[2]=lut_c21;
+  imap[3]=lut_s21;
 
   nx = GetImNx(part1);
   ny = GetImNy(part1);
@@ -372,7 +372,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
   }
 
   if (GetImNy(part1) == 1)
@@ -414,7 +414,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
     free_image(im_flag);
     free_fifo4(q);
     return NULL;
@@ -504,7 +504,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   free_fifo4(q);
   free_pq(pq);
   
-  return(im_array);
+  return(imap);
 }
 #undef PIX_FLAG_TYPE
 #undef t_PIX_FLAG_TYPE
@@ -543,7 +543,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   long int shft[27];
   int n, k, box[6];
   
-  IMAGE **im_array; /* holds all output arrays: correspondences and similarities */
+  IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
 
@@ -596,11 +596,11 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     return NULL;
   }
 
-  im_array=(IMAGE **)calloc(sizeof(IMAGE *), 4);
-  im_array[0]=lut_c12;
-  im_array[1]=lut_s12;
-  im_array[2]=lut_c21;
-  im_array[3]=lut_s21;
+  imap=(IMAGE **)calloc(sizeof(IMAGE *), 4);
+  imap[0]=lut_c12;
+  imap[1]=lut_s12;
+  imap[2]=lut_c21;
+  imap[3]=lut_s21;
 
   nx = GetImNx(part1);
   ny = GetImNy(part1);
@@ -614,7 +614,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
   }
 
   if (GetImNy(part1) == 1)
@@ -656,7 +656,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     free_image(lut_s21);
     free_image(lut_c12);
     free_image(lut_c21);
-    free(im_array);
+    free(imap);
     free_image(im_flag);
     free_fifo4(q);
     return NULL;
@@ -746,7 +746,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   free_fifo4(q);
   free_pq(pq);
   
-  return(im_array);
+  return(imap);
 }
 #undef PIX_FLAG_TYPE
 #undef t_PIX_FLAG_TYPE

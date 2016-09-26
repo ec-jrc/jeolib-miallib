@@ -10,5 +10,5 @@
 #ifndef init_OpenClose
 #define init_OpenClose
 #include "mialib.h"
-ERROR_TYPE OpenClose(IMAGE ** imArray, int nc, IMAGE * labelIm, int connectivity, int varianz, int version);
+ERROR_TYPE OpenClose(IMAGE **imap, int nc, IMAGE * labelIm, int connectivity, int varianz, int version);
 #endif

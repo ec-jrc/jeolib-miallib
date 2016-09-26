@@ -13,10 +13,10 @@
 #define PIX_DST_MSB  0x80
 #define PIX_DST      0x7F
 #define LBL_TYPE     UINT32
-ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
+ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
 {
   int c, k, tie=0, nties=0;
-  unsigned long ofs, ofsk, npix=GetImNPix(ima[0]);
+  unsigned long ofs, ofsk, npix=GetImNPix(imap[0]);
   long int d, dnext, dk, dkc, dcrt, dmax=UINT32_MAX; /* was double before 20111004 */
   PIX_TYPE **pim;
   LBL_TYPE *pl;
@@ -33,9 +33,9 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 
   set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft); 
 
-  pim = (PIX_TYPE **)calloc(n, sizeof(PIX_TYPE **));
-  for  (c=0; c<n; c++)
-    pim[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+  pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
+  for  (c=0; c<nc; c++)
+    pim[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   pl=(LBL_TYPE *)GetImPtr(lbl);
   pd=(DST_TYPE *)GetImPtr(dst);
   
@@ -48,7 +48,7 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 	ofsk=ofs+shft[k];
 	if (pd[ofsk]==0){
           dk=0;
-	  for (c=0; c<n; c++){
+	  for (c=0; c<nc; c++){
 	    dkc=*(pim[c]+ofs)-*(pim[c]+ofsk);
 	    dk+=dkc*dkc;
 	  }
@@ -83,7 +83,7 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
       ofsk=ofs+shft[k];
       if ((pd[ofsk]&PIX_DST)<d){
 	dk=0;
-	for (c=0; c<n; c++){
+	for (c=0; c<nc; c++){
 	  dkc=*(pim[c]+ofs)-*(pim[c]+ofsk);
 	  dk+=dkc*dkc;
 	}
@@ -129,10 +129,10 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 #define PIX_DST_MSB  0x80
 #define PIX_DST      0x7F
 #define LBL_TYPE     UINT32
-ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
+ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
 {
   int c, k, tie=0, nties=0;
-  unsigned long ofs, ofsk, npix=GetImNPix(ima[0]);
+  unsigned long ofs, ofsk, npix=GetImNPix(imap[0]);
   long int d, dnext, dk, dkc, dcrt, dmax=UINT32_MAX; /* was double before 20111004 */
   PIX_TYPE **pim;
   LBL_TYPE *pl;
@@ -149,9 +149,9 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 
   set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft); 
 
-  pim = (PIX_TYPE **)calloc(n, sizeof(PIX_TYPE **));
-  for  (c=0; c<n; c++)
-    pim[c]=(PIX_TYPE *)GetImPtr(ima[c]);
+  pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
+  for  (c=0; c<nc; c++)
+    pim[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   pl=(LBL_TYPE *)GetImPtr(lbl);
   pd=(DST_TYPE *)GetImPtr(dst);
   
@@ -164,7 +164,7 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 	ofsk=ofs+shft[k];
 	if (pd[ofsk]==0){
           dk=0;
-	  for (c=0; c<n; c++){
+	  for (c=0; c<nc; c++){
 	    dkc=*(pim[c]+ofs)-*(pim[c]+ofsk);
 	    dk+=dkc*dkc;
 	  }
@@ -199,7 +199,7 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
       ofsk=ofs+shft[k];
       if ((pd[ofsk]&PIX_DST)<d){
 	dk=0;
-	for (c=0; c<n; c++){
+	for (c=0; c<nc; c++){
 	  dkc=*(pim[c]+ofs)-*(pim[c]+ofsk);
 	  dk+=dkc*dkc;
 	}
@@ -241,7 +241,7 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **ima, int n, int graph)
 
 
 
-ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph)
+ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **imap, int nc, int graph)
 {
   /* test image types */
   if ( (GetImDataType(lbl)!=t_UINT32) || (GetImDataType(dst)!=t_UCHAR) ){
@@ -252,12 +252,12 @@ ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **ima, int n, int graph)
     return ERROR;
   }
 
-  switch (GetImDataType(ima[0])){
+  switch (GetImDataType(imap[0])){
   case t_UCHAR:
-    return(uc_propagate(lbl, dst, ima, n, graph));
+    return(uc_propagate(lbl, dst, imap, nc, graph));
     break;
   case t_USHORT:
-    return(us_propagate(lbl, dst, ima, n, graph));
+    return(us_propagate(lbl, dst, imap, nc, graph));
     break;
   default:
     (void)sprintf(buf,"propagate(): invalid pixel type for image array\n"); errputstr(buf);

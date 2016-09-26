@@ -466,7 +466,7 @@ extern ERROR_TYPE tiffinfo(char *fn, char *field, float *val);
 extern IMAGE *tiffinfoJIP(char *fn);
 extern ERROR_TYPE read_image_data2(FILE *fp, IMAGE *im, int x, int y, int inx, int scale);
 extern ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
-extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
+extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
 
 /* imstat.c */
 extern IMAGE *histo1d(IMAGE *im);
@@ -544,16 +544,16 @@ extern IMAGE *to_tiff4bitpp(IMAGE *im);
 
 
 /* geom.c */
-extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);
-extern ERROR_TYPE imputop(IMAGE *, IMAGE *, int, int, int, int);
-extern ERROR_TYPE imputcompose(IMAGE *, IMAGE *, IMAGE *, int, int, int, int);
 extern ERROR_TYPE framebox(IMAGE *im, int *box, G_TYPE gval);
-extern ERROR_TYPE subframebox(IMAGE *im, int *box);
 extern ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval);
-extern IMAGE *magnify(IMAGE *, int);
-extern IMAGE *getboundingbox(IMAGE *);
-extern ERROR_TYPE dumpxyz(IMAGE *, int, int, int, int, int);
-extern IMAGE **rotatecoor(IMAGE *, double);
+extern ERROR_TYPE subframebox(IMAGE *im, int *box);
+extern ERROR_TYPE dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy);
+extern ERROR_TYPE imputop(IMAGE *im1, IMAGE *im2, int x, int y, int z, int op);
+extern ERROR_TYPE imputcompose(IMAGE *im1, IMAGE *imlbl, IMAGE *im2, int x, int y, int z, int val);
+extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);
+extern IMAGE *getboundingbox(IMAGE *im);
+extern IMAGE *magnify(IMAGE *im, int n);
+extern IMAGE **rotatecoor(IMAGE *im, double theta);
 
 extern ERROR_TYPE generic_framebox(IMAGE *im, int *box,  GENERICPIX gval);
 extern ERROR_TYPE uc_framebox(IMAGE *im, int *box,  GENERICPIX gval);

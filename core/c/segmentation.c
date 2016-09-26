@@ -47,7 +47,7 @@ void writeGnuPlotFloat(FILE * fhd, int contrast, float value)
   fputs(buffer, fhd);
 }
 
-ERROR_TYPE writeGnuPlotFiles(IMAGE **inputImArray, int nc, IMAGE *labelIm, int graph, int varianz, char * filename, long  int regionSize)
+ERROR_TYPE writeGnuPlotFiles(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int varianz, char * filename, long  int regionSize)
 {
   long int regionNumber;
   double value1, value2=0.0, value3=0.0, newValue=0.0, oldValue=0.0;
@@ -69,11 +69,11 @@ ERROR_TYPE writeGnuPlotFiles(IMAGE **inputImArray, int nc, IMAGE *labelIm, int g
   }
   else{
     for(i=1; i<255;i++){
-      if(labelImage(inputImArray, nc, labelIm, graph, varianz)==NULL){
+      if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
 	free_image(labelIm);
 	return ERROR;
       }
-      regionNumber = thresholdRegion_Contrast(inputImArray, nc, labelIm, i);
+      regionNumber = thresholdRegion_Contrast(imap, nc, labelIm, i);
       fifo4_add(values, regionNumber);
       writeGnuPlot(fhd, i, regionNumber);
       printf("%d\t", i);
@@ -127,9 +127,9 @@ ERROR_TYPE writeGnuPlotFiles(IMAGE **inputImArray, int nc, IMAGE *labelIm, int g
  *
  *  Parameters:
  *
- *    inputImArray  array of pointer to the channels of an input images
+ *    imap  array of pointer to the channels of an input images
  *
- *    nc            size of imArray => number of channels
+ *    nc            size of imap => number of channels
  *
  *    labelIm       pointer to an image in which the resulting label image is stored
  *
@@ -142,18 +142,18 @@ ERROR_TYPE writeGnuPlotFiles(IMAGE **inputImArray, int nc, IMAGE *labelIm, int g
  *   ERROR          if there was an error
  *
  */
-USHORT getBestContrast(IMAGE **inputImArray, int nc, IMAGE *labelIm, int graph, int varianz)
+USHORT getBestContrast(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int varianz)
 {
   long int regionNumber, value1, value2=0.0, value3=0.0;
   int i;
   double newValue=0, oldValue=0;
   printf("determine best contrast value!\n");
   for(i=1; i<USHORT_MAX;i++){
-    if(labelImage(inputImArray, nc, labelIm, graph, varianz)==NULL){
+    if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
       free_image(labelIm);
       return ERROR;
     }
-    regionNumber = thresholdRegion_Contrast(inputImArray, nc, labelIm, i);
+    regionNumber = thresholdRegion_Contrast(imap, nc, labelIm, i);
     if(i==1){
       value2=regionNumber;
     }
@@ -182,9 +182,9 @@ USHORT getBestContrast(IMAGE **inputImArray, int nc, IMAGE *labelIm, int graph, 
  *
  *  Parameters:
  *
- *    inputImArray  array of pointer to the channels of an input images
+ *    imap  array of pointer to the channels of an input images
  *
- *    nc            size of imArray => number of channels
+ *    nc            size of imap => number of channels
  *
  *    graph  either 4 or 8
  *
@@ -215,39 +215,39 @@ USHORT getBestContrast(IMAGE **inputImArray, int nc, IMAGE *labelIm, int graph, 
  *   ERROR          if there was an error
  *                  
  */
-IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat)
+IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat)
 {
   long int i, regionNumber=0, oldRegionNumber=0;
   IMAGE *labelIm=NULL;
   char fname[256];
   
   for (i = 1; i < nc; i++){
-    if ( (GetImNx(inputImArray[0]) != GetImNx(inputImArray[i])) || \
-	 (GetImNy(inputImArray[0]) != GetImNy(inputImArray[i])) || \
-	 (GetImDataType(inputImArray[0]) != GetImDataType(inputImArray[i])) ){
+    if ( (GetImNx(imap[0]) != GetImNx(imap[i])) || \
+	 (GetImNy(imap[0]) != GetImNy(imap[i])) || \
+	 (GetImDataType(imap[0]) != GetImDataType(imap[i])) ){
       sprintf(buf, "Bands of different datatype or dimension!"); errputstr(buf);
       return NULL;
     }
   }
-  labelIm = (IMAGE *)create_image(t_LBL_TYPE, GetImNx(inputImArray[0]), \
-				  GetImNy(inputImArray[0]),  GetImNz(inputImArray[0]));
+  labelIm = (IMAGE *)create_image(t_LBL_TYPE, GetImNx(imap[0]), \
+				  GetImNy(imap[0]),  GetImNz(imap[0]));
   if (labelIm==NULL){
       sprintf(buf, "segmentImage(): not enough memory\n"); errputstr(buf);
     return NULL;
   }
   for(i=2; i<=regionSize;i++){
     printf("%li: before determineRegionSize\n", i);
-    if(labelImage(inputImArray, nc, labelIm, graph, varianz)==NULL){
+    if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
       sprintf(buf, "%li: an error occurred\n", i); errputstr(buf);
       sprintf(fname,"/tmp/ERROR.tif");
       write_tiff(labelIm, fname);
       sprintf(fname,"/tmp/ERROR[0].tif");
-      write_tiff(inputImArray[0], fname);
+      write_tiff(imap[0], fname);
       free_image(labelIm);
       return NULL;
     }
     sprintf(fname,"/tmp/mcisrgINIT0.tif");
-    /* write_tiff(inputImArray[0], fname); */
+    /* write_tiff(imap[0], fname); */
     sprintf(fname,"/tmp/labelBEFORE%ld.tif", i);
     /* write_tiff(labelIm, fname); */
     if ((regionNumber = thresholdRegion_Size(labelIm, i)) == 0){
@@ -257,7 +257,7 @@ IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long i
     if(oldRegionNumber!=regionNumber){
       oldRegionNumber=regionNumber;
       printf("%li: after determineRegionSize - Number of Regions: %li\n", i, regionNumber);
-      if(mcisrg(inputImArray, nc, labelIm, graph, regionNumber, version) == ERROR){
+      if(mcisrg(imap, nc, labelIm, graph, regionNumber, version) == ERROR){
 	sprintf(fname,"/tmp/labelAFTER%ld.tif", i);
 	free_image(labelIm);
 	return NULL;
@@ -268,42 +268,42 @@ IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long i
     }
   }
   sprintf(fname,"/tmp/mcisrgINIT1.tif");
-  /* write_tiff(inputImArray[0], fname); */
+  /* write_tiff(imap[0], fname); */
   if (fndat!=NULL)
-    writeGnuPlotFiles(inputImArray, nc, labelIm, graph, varianz, fndat, regionSize);
+    writeGnuPlotFiles(imap, nc, labelIm, graph, varianz, fndat, regionSize);
   if(contrast==0){
-    contrast = getBestContrast(inputImArray, nc, labelIm, graph, varianz);
+    contrast = getBestContrast(imap, nc, labelIm, graph, varianz);
     printf("best contrast value= %d\n", contrast);
   }
   sprintf(fname,"/tmp/mcisrgINIT2.tif");
-  /* write_tiff(inputImArray[0], fname); */
+  /* write_tiff(imap[0], fname); */
   
   if(contrast>0){ /* then make merge of regions with similar contrast value */
-    if(labelImage(inputImArray, nc, labelIm, graph, varianz)==NULL){
+    if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
       free_image(labelIm);
       return NULL;
     }
-    if ((regionNumber = thresholdRegion_Contrast(inputImArray, nc, labelIm, contrast))==0){
+    if ((regionNumber = thresholdRegion_Contrast(imap, nc, labelIm, contrast))==0){
       free_image(labelIm);
       return NULL;
     }
     sprintf(fname,"/tmp/mcisrgINIT3.tif");
-    /* write_tiff(inputImArray[0], fname); */
-    if(mcisrg(inputImArray, nc, labelIm, graph, regionNumber, version) == ERROR){
+    /* write_tiff(imap[0], fname); */
+    if(mcisrg(imap, nc, labelIm, graph, regionNumber, version) == ERROR){
       free_image(labelIm);
       return NULL;
     }
   }
   sprintf(fname,"/tmp/mcisrgINIT.tif");
-  /* write_tiff(inputImArray[0], fname); */
+  /* write_tiff(imap[0], fname); */
 
   /* make open and closing */
-  /*if(OpenClose(inputImArray, nc, labelIm, graph, varianz, version)==ERROR){
+  /*if(OpenClose(imap, nc, labelIm, graph, varianz, version)==ERROR){
     free_image(labelIm);
     return ERROR;
     }
     //delete regions which are too small
-    if(labelImage(inputImArray, nc, labelIm, graph, varianz)==NULL){
+    if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
     free_image(labelIm);
     return ERROR;
     }
@@ -311,7 +311,7 @@ IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long i
     free_image(labelIm);
     return ERROR;
     }
-    if(mcisrg(inputImArray, nc, labelIm, graph, regionNumber, version) == ERROR){
+    if(mcisrg(imap, nc, labelIm, graph, regionNumber, version) == ERROR){
     free_image(labelIm);
     return ERROR;
     }   */
@@ -321,7 +321,7 @@ IMAGE *segmentImage(IMAGE **inputImArray, int nc, int graph, int varianz, long i
   return labelIm;
 }
 
-ERROR_TYPE writeGnuPlot3D(IMAGE ** inputImArray, int nc, int graph, int regionSize, int varianz, char * fileName)
+ERROR_TYPE writeGnuPlot3D(IMAGE **imap, int nc, int graph, int regionSize, int varianz, char * fileName)
 {
   long int regionNumber;
   int i,j;
@@ -342,11 +342,11 @@ ERROR_TYPE writeGnuPlot3D(IMAGE ** inputImArray, int nc, int graph, int regionSi
     sprintf(buf, "error in writeGnuPlot3D(): File could not be generated!\n"); errputstr(buf);
   }
   else{
-    labelIm = (IMAGE *) create_image(t_LBL_TYPE, GetImNx(inputImArray[0]), GetImNy(inputImArray[0]), 1);
+    labelIm = (IMAGE *) create_image(t_LBL_TYPE, GetImNx(imap[0]), GetImNy(imap[0]), 1);
     for(i=1; i<=regionSize;i++){
       for(j=0; j<varianz;j++){
         //printf("%li: before determineRegionSize\n", i);
-        labelImage(inputImArray, nc, labelIm, graph, j);
+        labelImage(imap, nc, labelIm, graph, j);
         if ((regionNumber = thresholdRegion_Size(labelIm, i)) == ERROR){
           free_image(labelIm);
           return ERROR;

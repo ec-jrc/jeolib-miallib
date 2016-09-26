@@ -1034,7 +1034,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     return NO_ERROR;
 }
 
-ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str)
+ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str)
 {
   /* see also geotifcp.c, libgeotiff */
     TIFF *tif=(TIFF*)0;
@@ -1055,7 +1055,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int P
       GdalTiffTags_flag=1;
     }
 
-    im=imarray[0];
+    im=imap[0];
 
     *mp++ = 'w';
     *mp='\0';
@@ -1079,7 +1079,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int P
     
     int nx  = GetImNx(im);
     int ny  = GetImNy(im);
-    int z, nz  = n;
+    int z, nz  = nc;
     char *p = (char *)GetImPtr(im); 
     int bpp = GetImBitPerPixel(im)/8;
     int stripCount, sf;
@@ -1260,8 +1260,8 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imarray, int n, char *fn, int P
       return ERROR;
     }
     stripCount=0;
-    for (z=0; z<n; z++){
-      p=(char *)GetImPtr(imarray[z]); 
+    for (z=0; z<nc; z++){
+      p=(char *)GetImPtr(imap[z]); 
       for(; stripCount<ny*(z+1); stripCount++){
 	memcpy(lbuf, p, nx*bpp); /* because TIFFWriteEncodedStrip actually modifies the data ! */
 	if (TIFFWriteEncodedStrip(tif, stripCount, lbuf, nx*bpp) == -1){

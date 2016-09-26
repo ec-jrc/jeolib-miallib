@@ -275,7 +275,7 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
     warning: rounding is done internally assuming output times are integers
   */
   long int i, npix;
-  IMAGE **imarray=NULL;
+  IMAGE **imap=NULL;
   IMAGE *imh, *ims, *imv;
 
   PIX_TYPE *pr, *pg, *pb;
@@ -287,14 +287,14 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
   imh = (IMAGE *)create_image(t_HUE, GetImNx(imr), GetImNy(imr), GetImNz(imr));
   if (imh == NULL){
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
-    return(imarray);
+    return(imap);
   }
 			      
   ims = (IMAGE *)create_image(t_SATURATION, GetImNx(imr), GetImNy(imr), GetImNz(imr));
   if (ims == NULL){
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
     free_image(imh);
-    return(imarray);
+    return(imap);
   }
 			      
   imv = (IMAGE *)create_image(t_VALUE, GetImNx(imr), GetImNy(imr), GetImNz(imr));
@@ -302,14 +302,14 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
     free_image(imh);
     free_image(ims);
-    return(imarray);
+    return(imap);
   }
 			      
-  imarray=(IMAGE **)malloc(3 * sizeof(IMAGE *));
+  imap=(IMAGE **)malloc(3 * sizeof(IMAGE *));
 			      
-  imarray[0]=imh;
-  imarray[1]=ims;
-  imarray[2]=imv;
+  imap[0]=imh;
+  imap[1]=ims;
+  imap[2]=imv;
   npix=GetImNPix(imr);
 
   ph=(HUE_TYPE *)GetImPtr(imh);
@@ -369,7 +369,7 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
       pv[i]=(VALUE_TYPE)(((double)pr[i]+(double)pg[i]+(double)pb[i])/3.0);
     }
   }
-  return(imarray);
+  return(imap);
 }
 #undef t_HUE
 #undef t_SATURATION

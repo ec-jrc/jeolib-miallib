@@ -13,7 +13,7 @@
 
 
 #include "uc_def.h"
-IMAGE *uc_msgradlinf(IMAGE **imarray, int n, int graph)
+IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
 {
   int i, k, b, ofs, ofsk, ofsmax;
   long int shft[27];
@@ -23,9 +23,9 @@ IMAGE *uc_msgradlinf(IMAGE **imarray, int n, int graph)
   MIAFLOAT *pout, dmax, dcrt, db;
   
 
-  pim = (PIX_TYPE **)calloc(n, sizeof(PIX_TYPE **));
+  pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
 
-  imout = create_image(t_FLOAT, GetImNx(imarray[0]), GetImNy(imarray[0]), GetImNz(imarray[0]));
+  imout = create_image(t_FLOAT, GetImNx(imap[0]), GetImNy(imap[0]), GetImNz(imap[0]));
   if (imout == NULL){
     (void)sprintf(buf,"uc_msgradlinf(): not enough memory for output image\n"); errputstr(buf);
     return(NULL);
@@ -33,8 +33,8 @@ IMAGE *uc_msgradlinf(IMAGE **imarray, int n, int graph)
   pout=(MIAFLOAT *)GetImPtr(imout);
 
   
-  for (i=0; i<n; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+  for (i=0; i<nc; i++)
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   /* set shift array */
   set_seq_shift(GetImNx(imout), GetImNy(imout), GetImNz(imout), graph, shft);
@@ -47,7 +47,7 @@ IMAGE *uc_msgradlinf(IMAGE **imarray, int n, int graph)
     dcrt=0;
     for (k=0; k<graph; k++){
       ofsk=ofs+shft[k];
-      for (b=0; b<n; b++){
+      for (b=0; b<nc; b++){
 	db=*(pim[b]+ofs)-*(pim[b]+ofsk);
 	dcrt+=db*db;
       }
@@ -64,7 +64,7 @@ IMAGE *uc_msgradlinf(IMAGE **imarray, int n, int graph)
 
 
 #include "f_def.h"
-IMAGE *f_msgradlinf(IMAGE **imarray, int n, int graph)
+IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
 {
   int i, k, b, ofs, ofsk, ofsmax;
   long int shft[27];
@@ -74,17 +74,17 @@ IMAGE *f_msgradlinf(IMAGE **imarray, int n, int graph)
   MIAFLOAT *pout, dmax, dcrt, db;
   
 
-  pim = (PIX_TYPE **)calloc(n, sizeof(PIX_TYPE **));
+  pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
 
-  imout = create_image(t_FLOAT, GetImNx(imarray[0]), GetImNy(imarray[0]), GetImNz(imarray[0]));
+  imout = create_image(t_FLOAT, GetImNx(imap[0]), GetImNy(imap[0]), GetImNz(imap[0]));
   if (imout == NULL){
     (void)sprintf(buf,"uc_msgradlinf(): not enough memory for output image\n"); errputstr(buf);
     return(NULL);
   }
   pout=(MIAFLOAT *)GetImPtr(imout);
 
-  for (i=0; i<n; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+  for (i=0; i<nc; i++)
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   /* set shift array */
   set_seq_shift(GetImNx(imout), GetImNy(imout), GetImNz(imout), graph, shft);
@@ -97,7 +97,7 @@ IMAGE *f_msgradlinf(IMAGE **imarray, int n, int graph)
     dcrt=0;
     for (k=0; k<graph; k++){
       ofsk=ofs+shft[k];
-      for (b=0; b<n; b++){
+      for (b=0; b<nc; b++){
 	db=*(pim[b]+ofs)-*(pim[b]+ofsk);
 	dcrt+=db*db;
       }
@@ -112,31 +112,31 @@ IMAGE *f_msgradlinf(IMAGE **imarray, int n, int graph)
 #include "f_undef.h"
 
 
-IMAGE *msgradlinf(IMAGE **imarray, int n, int graph)
+IMAGE *msgradlinf(IMAGE **imap, int nc, int graph)
 {
   /*
   ** authors: Pierre Soille  28 Jan 2003
-  ** IMAGE **imarray: array of images (multispectral image)
+  ** IMAGE **imap: array of images (multispectral image)
   ** int n:  number of bands
   ** int graph: connectivity
 
   ** comment:
   */
 
-  switch (GetImDataType(imarray[0])){
+  switch (GetImDataType(imap[0])){
 
   case t_UCHAR:
-    return(uc_msgradlinf(imarray, n, graph));
+    return(uc_msgradlinf(imap, nc, graph));
     break;
 
 
   case t_FLOAT:
-    return(f_msgradlinf(imarray, n, graph));
+    return(f_msgradlinf(imap, nc, graph));
     break;
 
 
   default:
-    (void)sprintf(buf,"msgradlinf(IMAGE **imarray, int n, int graph): invalid pixel type\n"); errputstr(buf);
+    (void)sprintf(buf,"msgradlinf(IMAGE **imap, int nc, int graph): invalid pixel type\n"); errputstr(buf);
     return(NULL);
   }
   return(NULL);
@@ -146,7 +146,7 @@ IMAGE *msgradlinf(IMAGE **imarray, int n, int graph)
 #include "uc_def.h"
 #define t_OUT t_FLOAT
 #define PIX_OUT MIAFLOAT
-IMAGE *uc_msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, int oz)
+IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz)
 {
   int i, k, n;
   int nx, ny, nz;
@@ -170,7 +170,7 @@ IMAGE *uc_msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, i
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
-    pim[i]=(PIX_TYPE *)GetImPtr(imarray[i]);
+    pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   /* Take neighbourhood  into account */
   box[0] = GetImNx(imngb);
@@ -180,15 +180,15 @@ IMAGE *uc_msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, i
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imngb), box, \
-		    GetImNx(*imarray), GetImNy(*imarray), shft);
+		    GetImNx(*imap), GetImNy(*imap), shft);
   
-  nx = GetImNx(*imarray);
-  ny = GetImNy(*imarray);
-  nz = GetImNz(*imarray);
+  nx = GetImNx(*imap);
+  ny = GetImNy(*imap);
+  nz = GetImNz(*imap);
 
   
   /* create output image */
-  imout = (IMAGE *)create_image(t_OUT, GetImNx(*imarray), GetImNy(*imarray), GetImNz(*imarray));
+  imout = (IMAGE *)create_image(t_OUT, GetImNx(*imap), GetImNy(*imap), GetImNz(*imap));
   if (imout == NULL){
     free(shft);
     free(pim);
@@ -250,11 +250,11 @@ IMAGE *uc_msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, i
 #include "uc_undef.h"
 
 
-IMAGE *msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, int oz)
+IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz)
 {
-  switch (GetImDataType(*imarray)){
+  switch (GetImDataType(*imap)){
   case t_UCHAR:
-    return(uc_msgradlinfngb(imarray, nc, imngb, ox, oy, oz));
+    return(uc_msgradlinfngb(imap, nc, imngb, ox, oy, oz));
     break;
   default:
     (void)sprintf(buf,"msgradlinfngb(): invalid pixel type\n"); errputstr(buf);

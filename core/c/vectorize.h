@@ -27,9 +27,9 @@
  *
  *  Parameters:
  *
- *    inputImArray  array of pointer to the channels of an input images
+ *    imap          array of pointer to the channels of an input images
  *
- *    nc            size of imArray => number of channels
+ *    nc            size of imap => number of channels
  *
  *    filename      filename to the input image (is needed in order to read the geo informations, if available)
  *
@@ -50,7 +50,7 @@
  *   ERROR          if error occured
  */
 #include "uc_def.h"
-ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int format, double simplifyBorderLines){
+ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, double simplifyBorderLines){
   int i;
   long int regionNumber, r, crtLabel;
   IMAGE * labelIm;
@@ -70,19 +70,19 @@ ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int form
 
   printf("vectorize() - start vectorisation \n");
   for (i = 0; i < nc; i++){
-    if ((GetImNx(inputImArray[0]) != GetImNx(inputImArray[i])) \
-	|| (GetImNy(inputImArray[0]) != GetImNy(inputImArray[i])) \
-	|| (GetImDataType(inputImArray[i]) != t_UCHAR)){
+    if ((GetImNx(imap[0]) != GetImNx(imap[i])) \
+	|| (GetImNy(imap[0]) != GetImNy(imap[i])) \
+	|| (GetImDataType(imap[i]) != t_UCHAR)){
       printf("Datatype not provided, or dimensions of image different!");
       return ERROR;
     }
   }
-  labelIm = (IMAGE *) create_image(t_LBL_TYPE, GetImNx(inputImArray[0]), GetImNy(inputImArray[0]), 1);
+  labelIm = (IMAGE *) create_image(t_LBL_TYPE, GetImNx(imap[0]), GetImNy(imap[0]), 1);
   if (labelIm==NULL){
     return ERROR;
   }
   //labelImage
-  if(labelImage(inputImArray, nc, labelIm, 4, 0)==NULL){
+  if(labelImage(imap, nc, labelIm, 4, 0)==NULL){
     free_image(labelIm);
     return ERROR;
   }
@@ -123,10 +123,10 @@ ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int form
     }
     return ERROR;
   }
-  for(r=0; r<GetImNx(inputImArray[0]) * GetImNy(inputImArray[0]); r++){
+  for(r=0; r<GetImNx(imap[0]) * GetImNy(imap[0]); r++){
     for(i=0; i<nc; i++){
       crtLabel = pLabelIm[r];
-      pInputIm = (PIX_TYPE *) GetImPtr(inputImArray[i]);
+      pInputIm = (PIX_TYPE *) GetImPtr(imap[i]);
       regions[crtLabel]->colorValues[i]=pInputIm[r];
     }
   }
@@ -142,10 +142,10 @@ ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int form
 	    setUseFlags(&linepool, 1);
   //reduce points if necessary
   if(simplifyBorderLines>0){
-    simplifyLine(&linepool, simplifyBorderLines, GetImNx(inputImArray[0]), GetImNy(inputImArray[0]));
+    simplifyLine(&linepool, simplifyBorderLines, GetImNx(imap[0]), GetImNy(imap[0]));
   }
   if(format==1 || format==3){
-    if(writeSVG(regions, regionNumber, filename, GetImNx(inputImArray[0]), GetImNy(inputImArray[0]))==ERROR){
+    if(writeSVG(regions, regionNumber, filename, GetImNx(imap[0]), GetImNy(imap[0]))==ERROR){
       for(r=0; r<regionNumber; r++){
         freeRegion(regions[r]);
         free(regions[r]);

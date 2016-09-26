@@ -176,7 +176,7 @@ long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold)
  *
  *  Parameters:      
  *
- *    imArray            image array with the different channels of the image
+ *    imap            image array with the different channels of the image
  *
  *    nc                 number of channels
  *
@@ -193,7 +193,7 @@ long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold)
  *
  *     >1                number of regions which are left after thresholding the image
  */
-long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsigned long int threshold)
+long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned long int threshold)
 {
   long int shft[27], i, label=SEED;
   int nx, ny;
@@ -220,13 +220,13 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
   }
 
   for (i = 0; i < nc; i++){
-    if (GetImDataType(imArray[i])==t_UCHAR){
-      if (generic_addframebox(imArray[i], box, (UCHAR)BORDER) == ERROR){
+    if (GetImDataType(imap[i])==t_UCHAR){
+      if (generic_addframebox(imap[i], box, (UCHAR)BORDER) == ERROR){
 	return ERROR;
       }
     }
-    else if (GetImDataType(imArray[i])==t_USHORT){
-      if (us_addframebox(imArray[i], box, (USHORT)BORDER) == ERROR){
+    else if (GetImDataType(imap[i])==t_USHORT){
+      if (us_addframebox(imap[i], box, (USHORT)BORDER) == ERROR){
 	return ERROR;
       }
     }
@@ -284,7 +284,7 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
       count++;
       // put this pixel to region queue
       fifo4_add(rq, (long int) offset);
-      rmAddValue(&rm, imArray, (long int) offset);
+      rmAddValue(&rm, imap, (long int) offset);
       crtStatus[offset].is_labeled = LABELED;
       // check the neighbours
       for (k = 0; k < 8; k++){
@@ -294,7 +294,7 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
 	  fifo4_add(nq, (long int) (neighbourOffset));
 	  crtStatus[neighbourOffset].is_labeled = LABELED;
 	  fifo4_add(rq, (long int) (neighbourOffset));
-	  rmAddValue(&rm, imArray, (long int) neighbourOffset);
+	  rmAddValue(&rm, imap, (long int) neighbourOffset);
 	  count++;
 	}else{
 	  //check whether the pixel is already in the queue which stores the pixel to determine the contrast
@@ -314,7 +314,7 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
 	    fifo4_add(nq, (long int) (neighbourOffset));
 	    crtStatus[neighbourOffset].is_labeled = LABELED;
 	    fifo4_add(rq, (long int) (neighbourOffset));
-	    rmAddValue(&rm, imArray, (long int) neighbourOffset);
+	    rmAddValue(&rm, imap, (long int) neighbourOffset);
 	    count++;
 	  }
 	  else{
@@ -332,7 +332,7 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
       //take all Pixel which surrounds the region and sum up the contrast values
       while(fifo4_empty(cq) == 0){
 	offset = (long int) fifo4_remove(cq);
-	distance =rmGetDistanceToRM(&rm, imArray, offset);
+	distance =rmGetDistanceToRM(&rm, imap, offset);
 	contrast+= distance;
 	crtStatus[neighbourOffset].is_contrast_labeled = NOTLABELED;
       }
@@ -369,7 +369,7 @@ long int thresholdRegion_Contrast(IMAGE **imArray, int nc, IMAGE *inputIm, unsig
   freeRegionMean(&rm);
   free(crtStatus);
   for(i=0; i<nc; i++){
-    subframebox(imArray[i], box);
+    subframebox(imap[i], box);
   }
   subframebox(inputIm, box);
     
