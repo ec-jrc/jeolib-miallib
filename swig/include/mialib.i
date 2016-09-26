@@ -1,4 +1,4 @@
-/* mial.i */
+/* mialib.i */
 
 %include constraints.i
 
@@ -80,7 +80,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 //%newobject *IMAGE();
 //%newobject *G_TYPE();
 
- //%typemap(newfree) IMAGE * "free_image($1);";
+//%typemap(newfree) IMAGE * "free_image($1);";
 
 // 20160922
 // define each mialib function returning a new IMAGE as a new object
@@ -208,8 +208,8 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %include "mialib_swig.h"
 %include "op.h"
 
- // 20160922
- // Allow for automatic garbage collection (no need to patch)
+// 20160922
+// Allow for automatic garbage collection (no need to patch!)
 %extend IMAGE {             // Attach these functions to struct IMAGE
   IMAGE(int type, long int nx, int ny, int nz) {
     return create_image(type, nx,ny,nz);
@@ -226,21 +226,10 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   delete $1;
 }
 
-%typemap(newfree) IMAGE ** {
-  delete $1;
-}
-
-
-// We still need to deal with IMAGE **
-
-
-
-
 
 
 // Addtional code for IMAGE<->NumPy array conversions [20160729]
 // adapted from gdal_array.i
-
 
 %init %{
   print_mia_banner();
