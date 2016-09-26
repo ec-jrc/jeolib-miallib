@@ -121,6 +121,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   }
  }
 
+// handling IMAGE array output argument as python list
 %typemap(out) IMAGE **rotatecoor {
   int i;
   int nc=2;
@@ -136,7 +137,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 %typemap(out) IMAGE **imrgb2hsx {
   int i;
-  int nc=2;
+  int nc=3;
   IMAGE **imap=(IMAGE **)$1;
   $result = PyList_New(nc);
   PyObject * o = 0 ;
@@ -163,6 +164,32 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %typemap(out) IMAGE **alphatree {
   int i;
   int nc=5;
+  IMAGE **imap=(IMAGE **)$1;
+  $result = PyList_New(nc);
+  PyObject * o = 0 ;
+  for (i = 0; i < nc; i++) {
+    o = SWIG_NewPointerObj(SWIG_as_voidptr(imap[i]), SWIGTYPE_p_IMAGE, SWIG_POINTER_OWN |  0 );
+    PyList_SetItem($result,i,o);
+  }
+  free(imap);
+ }
+
+%typemap(out) IMAGE **histrgbmatch {
+  int i;
+  int nc=3;
+  IMAGE **imap=(IMAGE **)$1;
+  $result = PyList_New(nc);
+  PyObject * o = 0 ;
+  for (i = 0; i < nc; i++) {
+    o = SWIG_NewPointerObj(SWIG_as_voidptr(imap[i]), SWIGTYPE_p_IMAGE, SWIG_POINTER_OWN |  0 );
+    PyList_SetItem($result,i,o);
+  }
+  free(imap);
+ }
+
+%typemap(out) IMAGE **histrgb3dmatch {
+  int i;
+  int nc=3;
   IMAGE **imap=(IMAGE **)$1;
   $result = PyList_New(nc);
   PyObject * o = 0 ;
