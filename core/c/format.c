@@ -535,8 +535,8 @@ ERROR_TYPE f_to_ushort(IMAGE *im, IMAGE *imout)
   pg    = min_max(im);
   if (pg == NULL)
     return(ERROR);
-  mini  = pg[0].generic_val;
-  maxi  = pg[1].generic_val;
+  mini  = pg[0].f_val;
+  maxi  = pg[1].f_val;
   range = (double)maxi - mini;
   
   if (((double)maxi-mini) < (double)USHORT_MAX + 1){

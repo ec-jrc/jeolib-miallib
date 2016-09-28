@@ -92,6 +92,28 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %include mialib_newobjects.i
 
 
+%typemap(in) G_TYPE {
+  G_TYPE gt;
+  printf("coucou\n");
+  if (!PyFloat_Check($input)) {
+    PyErr_SetString(PyExc_ValueError,"Expected a number");
+    return NULL;
+  }
+  double dval=PyFloat_AsDouble($input);
+  gt.generic_val=(unsigned char)dval;
+  gt.uc_val=(unsigned char)dval;
+  gt.us_val=(unsigned short)dval;
+  gt.s_val=(short)dval;
+  gt.i32_val=(int)dval;
+  gt.u32_val=(unsigned int)dval;
+  gt.i64_val=(long int)dval;
+  gt.u64_val=(unsigned long int)dval;
+  gt.f_val=(float)dval;
+  gt.d_val=(double)dval;
+  $1=gt;
+ }
+
+
 // 20160923
 // define a typemap to handle IMAGE arrays as lists in Python
 // needed to specify names to have multiple argument working

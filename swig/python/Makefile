@@ -40,7 +40,7 @@ BINDING = python
 #GDAL include ../SWIGmake.base
 WRAPPER = $(TARGET)_wrap.c
 
-#PACKAGE_DIR=osmial
+PACKAGE_DIR = ./packages
 
 SWIGOUTPUTDIR = extensions
 MIALIB_ROOT = ../../core/c/
@@ -59,7 +59,7 @@ exec_prefix= ${prefix}
 SWIGARGS = -Wall -I../include -I../include/$(BINDING) 
 SWIGDEFINES = -DDOMINIK
 CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
-INCLUDE    = -I./ -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7 -I$(MIALIB_ROOT)
+INCLUDE    = -I./  -I$(MIALIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
 LIBS       = -lgdal -ltiff -ldl -l$(TARGET)_python
 LIBDIR	   = ../../core/build/lib/
 INTERFACE  = $(TARGET).i
@@ -104,7 +104,7 @@ PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python2.7
 PYTHON_LIB    = 
 
 # PYTHON_PACKAGES_DIR = /home/soillpi/.local/lib/python2.7/site-packages/
-PYTHON_PACKAGES_DIR = /usr/local/lib/python2.7/dist-packages/
+PYTHON_PACKAGES_DIR = /usr/local/lib/python2.7/dist-packages/$(TARGET)/
 
 # Extra Python specific dynamic linking options
 PYTHON_DLNK   = 
@@ -152,14 +152,18 @@ doc: build $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET
 all: doc build
 
 
+
+
+
 install:
+	mkdir -p $(PYTHON_PACKAGES_DIR)
+	#rsync -avu --delete --exclude '*~' $(PACKAGE_DIR)/ $(PYTHON_PACKAGES_DIR)
 	cp -a $(BUILDDIR)/_$(TARGET)$(SO) $(PYTHON_PACKAGES_DIR)
 	cp -a $(BUILDDIR)/$(TARGET).py $(PYTHON_PACKAGES_DIR)
 
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)
-	-rm -f ${PACKAGE_DIR}/*.pyc
 	-rm -rf $(BUILDDIR)
 	-rmdir $(BUILDDIRBASE)
 	-rm -f *.pyc

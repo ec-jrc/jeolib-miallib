@@ -78,7 +78,10 @@ void errputstr(char *buf)
 /**********************************/
 int fprintfgenericnum(G_TYPE gval, int type)
 {
-  if (type == t_UCHAR){
+  if (type == t_GENERIC){
+    (void)sprintf(buf,"%d\n", (int)gval.generic_val); stdputstr(buf);
+  }
+  else if (type == t_UCHAR){
     (void)sprintf(buf,"%d\n", (int)gval.uc_val); stdputstr(buf);
   }
   else if  (type == t_USHORT){

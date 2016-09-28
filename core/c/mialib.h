@@ -132,7 +132,7 @@ typedef void *             PTR_TYPE;
 typedef int                LBL_TYPE; /* should be unsigned, see also t_LBL_TYPE */
 
 /* consider defining long long type (8 bytes) on 486: int64 */
-typedef union {
+typedef struct {
   GENERICPIX generic_val;
   UCHAR  uc_val;
   USHORT us_val;
