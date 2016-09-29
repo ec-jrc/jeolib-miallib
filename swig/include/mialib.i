@@ -92,6 +92,8 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %include mialib_newobjects.i
 
 
+
+// handle G_TYPE arguments as Python Float value in python
 %typemap(in) G_TYPE {
   G_TYPE gt;
   printf("coucou\n");

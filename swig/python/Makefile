@@ -44,7 +44,8 @@ PACKAGE_DIR = ./packages
 
 SWIGOUTPUTDIR = extensions
 MIALIB_ROOT = ../../core/c/
-BUILDDIR = ../build/python/
+#BUILDDIR = ../build/python/
+BUILDDIR = ./build/
 BUILDDIRBASE = ../build/
 
 
@@ -119,20 +120,27 @@ PYTHON_DLNK   =
 
 
 
-$(SWIGOUTPUTDIR)/$(WRAPPER): ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i
-	@mkdir -p $(SWIGOUTPUTDIR)
-	@mkdir -p $(BUILDDIR)
-	cat $(MIALIB_ROOT)/mialib_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/mialib_newobjects.i
-	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIALIB_ROOT) -$(BINDING) -o $@ ../include/$(TARGET).i
-	test -f $(SWIGOUTPUTDIR)/$(TARGET).py && mv $(SWIGOUTPUTDIR)/$(TARGET).py $(BUILDDIR)
+# $(SWIGOUTPUTDIR)/$(WRAPPER): ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i
+# 	@mkdir -p $(SWIGOUTPUTDIR)
+# 	@mkdir -p $(BUILDDIR)
+# 	cat $(MIALIB_ROOT)/mialib_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/mialib_newobjects.i
+# 	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIALIB_ROOT) -$(BINDING) -o $@ ../include/$(TARGET).i
+# 	test -f $(SWIGOUTPUTDIR)/$(TARGET).py && mv $(SWIGOUTPUTDIR)/$(TARGET).py $(BUILDDIR)
 
-$(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o: $(SWIGOUTPUTDIR)/$(WRAPPER)
-	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
+# $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o: $(SWIGOUTPUTDIR)/$(WRAPPER)
+# 	@mkdir -p $(@D)
+# 	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
 
-$(BUILDDIR)/_$(TARGET)$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o
-	@mkdir -p $(BUILDDIR)
-	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)$(SO)
+# $(BUILDDIR)/_$(TARGET)$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o
+# 	@mkdir -p $(BUILDDIR)
+# 	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)$(SO)
+
+
+build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py
+	mkdir -p $(@D)/extensions/
+	python setup.py build
+	mv packages/mialib.py  build/lib.linux-x86_64-2.7/mialib/
+	python setup.py bdist
 
 $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html: $(SWIGOUTPUTDIR)/$(WRAPPER)
 	@mkdir -p $(@D)
@@ -145,8 +153,6 @@ $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex: $(SWIGOUTPUTDIR)/$(WRAPPER)
 
 
 
-build: $(BUILDDIR)/_$(TARGET)$(SO)
-
 doc: build $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex
 
 all: doc build
@@ -156,20 +162,22 @@ all: doc build
 
 
 install:
-	mkdir -p $(PYTHON_PACKAGES_DIR)
-	#rsync -avu --delete --exclude '*~' $(PACKAGE_DIR)/ $(PYTHON_PACKAGES_DIR)
-	cp -a $(BUILDDIR)/_$(TARGET)$(SO) $(PYTHON_PACKAGES_DIR)
-	cp -a $(BUILDDIR)/$(TARGET).py $(PYTHON_PACKAGES_DIR)
+	python setup.py install
+	#mkdir -p $(PYTHON_PACKAGES_DIR)
+	#cp -a $(BUILDDIR)/_$(TARGET)$(SO) $(PYTHON_PACKAGES_DIR)
+	#cp -a $(BUILDDIR)/$(TARGET).py $(PYTHON_PACKAGES_DIR)
 
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)
 	-rm -rf $(BUILDDIR)
-	-rmdir $(BUILDDIRBASE)
+	-rm -rf $(BUILDDIRBASE)
 	-rm -f *.pyc
 	-rm -rf *.egg-info
 	-rm -f *.so ./osgeo/*.so
 	-rm -rf dist
+	-rm -f mialib_wrap.c
+	-rm -f packages/mialib.py
 
 veryclean: clean
 	-rm -f ${WRAPPER}
