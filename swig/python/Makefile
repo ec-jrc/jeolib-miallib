@@ -151,7 +151,7 @@ install:
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)
-	-rm -rf $(BUILDDIR)-
+	-rm -rf $(BUILDDIR)
 	-rm -rf $(BUILDDIRBASE)
 	-rm -f ../include/$(BINDING)/mialib_newobjects.i
 	-rm -f *.pyc
