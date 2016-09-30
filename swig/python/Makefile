@@ -2,6 +2,7 @@
 # for testing jipl C library binding to python
 
 # 20160419: added automatic documentation generation using epydoc
+# 20160928: started to use distutils
 
 
 # ------------------------------------------------------------
@@ -119,59 +120,40 @@ PYTHON_DLNK   =
 #	cd ../ljip/src && make $@
 
 
-
-# $(SWIGOUTPUTDIR)/$(WRAPPER): ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i
-# 	@mkdir -p $(SWIGOUTPUTDIR)
-# 	@mkdir -p $(BUILDDIR)
-# 	cat $(MIALIB_ROOT)/mialib_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/mialib_newobjects.i
-# 	$(SWIG) $(SWIGARGS) $(SWIGDEFINES) -I$(MIALIB_ROOT) -$(BINDING) -o $@ ../include/$(TARGET).i
-# 	test -f $(SWIGOUTPUTDIR)/$(TARGET).py && mv $(SWIGOUTPUTDIR)/$(TARGET).py $(BUILDDIR)
-
-# $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o: $(SWIGOUTPUTDIR)/$(WRAPPER)
-# 	@mkdir -p $(@D)
-# 	$(CC) -c $(CCSHARED) $(CFLAGS) $(ISRCS) $(INCLUDE) $(PYTHON_INCLUDE) -o $@ 
-
-# $(BUILDDIR)/_$(TARGET)$(SO): $(BUILDDIR)/temp/$(SWIGOUTPUTDIR)/$(TARGET)_wrap.o
-# 	@mkdir -p $(BUILDDIR)
-# 	$(LDSHARED) -Wall -fopenmp  -m64 $(IOBJS) $(PYTHON_DLNK) -L $(LIBDIR) $(LIBS) -o $(BUILDDIR)/_$(TARGET)$(SO)
-
-
-build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py
-	mkdir -p $(@D)/extensions/
+build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/mialib_swig.h
+	cat $(MIALIB_ROOT)/mialib_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/mialib_newobjects.i
 	python setup.py build
 	mv packages/mialib.py  build/lib.linux-x86_64-2.7/mialib/
 	python setup.py bdist
 
-$(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html: $(SWIGOUTPUTDIR)/$(WRAPPER)
+$(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html: build
 	@mkdir -p $(@D)
-	epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
+	epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/mialib/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
 
-$(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex: $(SWIGOUTPUTDIR)/$(WRAPPER)
+$(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex: build
 	@mkdir -p $(@D)
-	epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
+	epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/mialib/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
+
+
 
 
 
 
 doc: build $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex
 
-all: doc build
 
-
-
+all: build doc
 
 
 install:
 	python setup.py install
-	#mkdir -p $(PYTHON_PACKAGES_DIR)
-	#cp -a $(BUILDDIR)/_$(TARGET)$(SO) $(PYTHON_PACKAGES_DIR)
-	#cp -a $(BUILDDIR)/$(TARGET).py $(PYTHON_PACKAGES_DIR)
 
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)
-	-rm -rf $(BUILDDIR)
+	-rm -rf $(BUILDDIR)-
 	-rm -rf $(BUILDDIRBASE)
+	-rm -f ../include/$(BINDING)/mialib_newobjects.i
 	-rm -f *.pyc
 	-rm -rf *.egg-info
 	-rm -f *.so ./osgeo/*.so
