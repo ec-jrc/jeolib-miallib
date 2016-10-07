@@ -92,6 +92,29 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %include mialib_newobjects.i
 
 
+%typemap(in, numinputs=0)  double * (double temp){
+  printf("typemap(in)\n");
+  temp=99.0;
+  $1 = &temp;
+  printf("%g %g\n", temp, *arg2);
+}
+
+%typemap(out) ERROR_TYPE getminmax {
+  if (result!=NO_ERROR){
+    PyErr_SetString(PyExc_ValueError,"getmimax() returned error");
+    return NULL;
+  }
+  $result = PyList_New(2);
+ }
+
+%typemap(argout) double * {
+  PyObject * o = 0 ;
+  printf("typemap(argout); %d val=%g\n", $argnum, temp$argnum);
+  o=PyFloat_FromDouble(temp$argnum);
+  PyList_SetItem($result,($argnum)-2,o);
+ }
+
+  
 
 // handle G_TYPE arguments as Python Float value in python
 %typemap(in) G_TYPE {

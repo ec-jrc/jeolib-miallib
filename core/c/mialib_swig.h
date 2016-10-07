@@ -419,6 +419,7 @@ extern ERROR_TYPE volume(IMAGE *);
 extern ERROR_TYPE dirmax(IMAGE *im, int dir);
 extern ERROR_TYPE imequalp(IMAGE *, IMAGE *);
 extern ERROR_TYPE getmax(IMAGE *im, double *maxval);
+extern ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval);
 
 
 /* pointop.c */

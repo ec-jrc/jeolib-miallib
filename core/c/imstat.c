@@ -100,7 +100,6 @@ ERROR_TYPE getfirstmaxpos(IMAGE *im, unsigned long int *pos)
 /*************************************************************************/
 /*               Compute min and max values of an image                  */
 
-#ifndef NO_generic_IMAGE
 #include "g_def.h"
 ERROR_TYPE generic_min_max(IMAGE *im, G_TYPE *pg)
 {
@@ -118,14 +117,48 @@ ERROR_TYPE generic_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].generic_val = mini;
   pg[1].generic_val = maxi;
+
+#if (t_PIX_TYPE==t_UCHAR)
+  pg[0].uc_val = mini;
+  pg[1].uc_val = maxi;
+#endif
 
   return(NO_ERROR);
 }
 #include "g_undef.h"
-#endif /* #ifndef NO_generic_IMAGE */
+
+#include "uc_def.h"
+ERROR_TYPE uc_min_max(IMAGE *im, G_TYPE *pg)
+{
+  mia_size_t i, npix;
+  PIX_TYPE *p1, mini, maxi;
+
+  p1   = (PIX_TYPE *)GetImPtr(im);
+  npix = GetImNPix(im);
+  mini = *p1;
+  maxi = *p1;
+
+  for (i=0; i<npix; i++, p1++){
+    if (*p1 < mini)
+      mini = *p1;
+    else if (*p1 > maxi)
+      maxi = *p1;
+  }
+
+  pg[0].uc_val = mini;
+  pg[1].uc_val = maxi;
+
+#if (t_PIX_TYPE==t_GENERIC)
+  pg[0].generic_val = mini;
+  pg[1].generic_val = maxi;
+#endif
+
+  return(NO_ERROR);
+}
+#include "uc_undef.h"
 
 #include "s_def.h"
 ERROR_TYPE s_min_max(IMAGE *im, G_TYPE *pg)
@@ -342,17 +375,9 @@ G_TYPE *min_max(IMAGE *im)
 
   switch (GetImDataType(im)){
 
-#ifndef NO_generic_IMAGE
-  case t_GENERIC:
-    rval = generic_min_max(im, pg);
-    break;
-#endif
-
-#ifndef NO_uc_IMAGE
   case t_UCHAR:
     rval = uc_min_max(im, pg);
     break;
-#endif
 
   case t_USHORT:
     rval = us_min_max(im, pg);
@@ -2385,7 +2410,7 @@ ERROR_TYPE getmax(IMAGE *im, double *maxval)
   pgs = pg[1];
   free((char *)pg);
 
-  switch(im->DataType){
+  switch(GetImDataType(im)){
   case t_UCHAR:
     *maxval=(double) pgs.uc_val;
     break;
@@ -2418,6 +2443,76 @@ ERROR_TYPE getmax(IMAGE *im, double *maxval)
                 undefined image data type\n"); errputstr(buf);
     return(ERROR);
   }
+  printf("maxval=%f\n", (float) *maxval);
+
+  return NO_ERROR;
+}
+
+/*************************************************************************/
+/*                 get maximum value of an image                         */
+
+ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval)
+{
+  G_TYPE *pg, pgmin, pgmax;
+
+  /* get min values */
+  pg = min_max(im);
+  if (pg == NULL)
+    return ERROR;
+  pgmin = pg[0];
+  pgmax = pg[1];
+
+  switch(GetImDataType(im)){
+  case t_UCHAR:
+    *minval=(double) pgmin.uc_val;
+    *maxval=(double) pgmax.uc_val;
+    break;
+  case t_USHORT:
+    *minval=(double) pgmin.us_val;
+    *maxval=(double) pgmax.us_val;
+    break;
+  case t_SHORT:
+    *minval=(double) pgmin.us_val;
+    *maxval=(double) pgmax.us_val;
+    break;
+  case t_INT32:
+    *minval=(double) pgmin.i32_val;
+    *maxval=(double) pgmax.i32_val;
+    break;
+  case t_UINT32:
+    *minval=(double) pgmin.u32_val;
+    *maxval=(double) pgmax.u32_val;
+    break;
+  case t_INT64:
+    printf("min/max values may not fit a double!\n");
+    *minval=(double) pgmin.i64_val;
+    *maxval=(double) pgmax.i64_val;
+    break;
+  case t_UINT64:
+    printf("min/max values may not fit a double!\n");
+    *minval=(double) pgmin.u64_val;
+    *maxval=(double) pgmax.u64_val;
+    break;
+  case t_FLOAT:
+    *minval=(double) pgmin.f_val;
+    *maxval=(double) pgmax.f_val;
+    break;
+  case t_DOUBLE:
+    *minval=(double) pgmin.d_val;
+    *maxval=(double) pgmax.d_val;
+    break;
+  default:
+    free((char *)pg);
+    (void)sprintf(buf, "error in getmax: \
+                undefined image data type\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  printf("minval=%d maxval=%d\n", (int)pgmin.uc_val, (int)pgmax.uc_val);
+  free((char *)pg);
+
+  printf("minval=%f maxval=%f\n", (float)*minval, (float)*maxval);
+
   return NO_ERROR;
 }
 
