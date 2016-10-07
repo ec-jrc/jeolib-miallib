@@ -96,7 +96,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // handle G_TYPE arguments as Python Float value in python
 %typemap(in) G_TYPE {
   G_TYPE gt;
-  printf("coucou\n");
+  // printf("coucou\n");
   if (!PyFloat_Check($input)) {
     PyErr_SetString(PyExc_ValueError,"Expected a number");
     return NULL;
@@ -129,7 +129,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   }
   dim=PySequence_Length($input);
   $2=dim;
-  printf("coucou: dim=%d\n", dim);
+  printf("message: dim=%d\n", dim);
   $1 = (IMAGE **) malloc(dim*sizeof(IMAGE **));
   for (i = 0; i < dim; i++) {
     PyObject *o = PySequence_GetItem($input,i);
@@ -225,7 +225,17 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
  }
 
 
-
+/* %typemap(argout) ERROR_TYPE to_uchar(IMAGE *) { */
+/*    PyObject * o = 0 ; */
+/*    printf("message: typemap(argout) test\n"); */
+/*    Py_XDECREF($result);   /\* Blow away any previous result *\/ */
+/*    if (result > 0) {      /\* Check for I/O error *\/ */
+/*        PyErr_SetFromErrno(PyExc_IOError); */
+/*        return NULL; */
+/*    } */
+/*    o = SWIG_NewPointerObj(SWIG_as_voidptr(im), 0 |  0 ); */
+/*    $result = o; */
+/* } */
 
 // These are the headers with the declarations that will be warped
 // It needs to be inserted before the extend declaration

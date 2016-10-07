@@ -282,7 +282,7 @@ void free_image(IMAGE *im)
 {
   void *p;
 
-  printf("message: entering free_image*()\n");
+  printf("message: entering free_image()\n");
 #ifdef DMALLOC
   malloc_debug(2);
   (void)sprintf(buf,"malloc_debug returns %d in free_image\n",malloc_debug()); errputstr(buf);
