@@ -36,7 +36,7 @@ setup (name = 'mialib',
        ext_modules = [mialib_module],
        py_modules = ["mialib/mialib"],
        package_dir = {'' : 'packages'},
-       packages=['mialib', 'mialib/format', 'mialib/geodesy', 'mialib/geometry', 'mialib/io', 'mialib/pointop', 'mialib/visu'],
+       packages=['mialib', 'mialib/format', 'mialib/geodesy', 'mialib/geometry', 'mialib/imstat', 'mialib/io', 'mialib/pointop', 'mialib/visu'],
        #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
        #
 
