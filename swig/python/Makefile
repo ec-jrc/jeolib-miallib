@@ -62,7 +62,7 @@ SWIGARGS = -Wall -I../include -I../include/$(BINDING)
 SWIGDEFINES = -DDOMINIK
 CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
 INCLUDE    = -I./  -I$(MIALIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
-LIBS       = -lgdal -ltiff -ldl -l$(TARGET)_python
+LIBS       = -lgdal -ltiff -ldl ../../core/build/lib/lib$(TARGET)_python.so
 LIBDIR	   = ../../core/build/lib/
 INTERFACE  = $(TARGET).i
 SWIGOPT    =
@@ -120,26 +120,26 @@ PYTHON_DLNK   =
 #	cd ../ljip/src && make $@
 
 
-build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/mialib_swig.h
-	cat $(MIALIB_ROOT)/mialib_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/mialib_newobjects.i
+build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/$(TARGET)_swig.h
+	cat $(MIALIB_ROOT)/$(TARGET)_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
-	mv packages/mialib.py  build/lib.linux-x86_64-2.7/mialib/
+	mv packages/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	python setup.py bdist
 
-$(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html: build
+$(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
 	@mkdir -p $(@D)
-	epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/mialib/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ &&  epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
 
-$(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex: build
+$(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex:
 	@mkdir -p $(@D)
-	epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/mialib/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ && epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
 
 
 
 
 
 
-doc: build $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex
+doc: $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex
 
 
 all: build doc
@@ -153,13 +153,13 @@ clean:
 	-rm -rf $(SWIGOUTPUTDIR)
 	-rm -rf $(BUILDDIR)
 	-rm -rf $(BUILDDIRBASE)
-	-rm -f ../include/$(BINDING)/mialib_newobjects.i
+	-rm -f ../include/$(BINDING)/$(TARGET)_newobjects.i
 	-rm -f *.pyc
 	-rm -rf *.egg-info
 	-rm -f *.so ./osgeo/*.so
 	-rm -rf dist
-	-rm -f mialib_wrap.c
-	-rm -f packages/mialib.py
+	-rm -f $(TARGET)_wrap.c
+	-rm -f packages/$(TARGET).py
 
 veryclean: clean
 	-rm -f ${WRAPPER}

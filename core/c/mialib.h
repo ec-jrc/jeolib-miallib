@@ -483,6 +483,7 @@ extern ERROR_TYPE volume(IMAGE *);
 extern G_TYPE *min_max(IMAGE *im);
 extern ERROR_TYPE getfirstmaxpos(IMAGE *, unsigned long int *);
 extern ERROR_TYPE getmax(IMAGE *im, double *maxval);
+extern ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval);
 
 
 extern ERROR_TYPE generic_min_max(IMAGE *im, G_TYPE *pg);

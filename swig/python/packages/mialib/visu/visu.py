@@ -1,4 +1,5 @@
 import mialib
+import os
 
 def xv(i0):
     mialib.write_tiff(i0,"/tmp/toto.tif")

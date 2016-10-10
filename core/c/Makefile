@@ -151,15 +151,11 @@ CXXSHARED=      gcc -shared
 
 $(SDIR-GENERIC)/imio2.o: $(SRCS) mialib.h
 	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(INCLUDE) -o $(SDIR-GENERIC)/imio2.o imio2.c
+	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h && echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h && $(CC) -c $(CCSTATIC) $(CFLAGS) $(INCLUDE) -o $(SDIR-GENERIC)/imio2.o imio2.c
 
 $(DDIR-GENERIC)/imio2.o: $(SRCS) mialib.h
 	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(INCLUDE) -o $(DDIR-GENERIC)/imio2.o imio2.c
+	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h && echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h && $(CC) -c $(CCSHARED) $(CFLAGS) $(INCLUDE) -o $(DDIR-GENERIC)/imio2.o imio2.c
 
 $(SDIR-GENERIC)/%.o: %.c mialib.h
 	@mkdir -p $(@D)

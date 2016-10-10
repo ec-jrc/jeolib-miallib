@@ -337,6 +337,53 @@ ERROR_TYPE u32_to_uchar(IMAGE *im)
 }
 #include "u32_undef.h"
 
+#include "i64_def.h"
+ERROR_TYPE i64_to_uchar(IMAGE *im)
+{
+  mia_size_t i, npix;
+  unsigned long int nbyte;
+  UCHAR *p2;
+  PIX_TYPE *p1, mini, maxi;
+  double range;
+  G_TYPE *pg;
+
+  p1    = (PIX_TYPE *)GetImPtr(im);
+  p2    = (UCHAR *)GetImPtr(im);
+  npix  = GetImNPix(im);
+  pg    = min_max(im);
+  if (pg == NULL)
+    return(ERROR);
+  mini  = pg[0].i64_val;
+  maxi  = pg[1].i64_val;
+  free((char *)pg);
+  range = (double)maxi - mini;
+
+  if ( (maxi <= UCHAR_MAX) && (mini >= UCHAR_MIN) )
+    for (i=0; i<npix; i++)
+      p2[i] = (UCHAR)(p1[i]);
+  else if ( ((double)maxi-mini) <= (double)UCHAR_MAX){
+    for (i=0; i<npix; i++)
+      p2[i] = (UCHAR)(p1[i] - mini);
+  }
+  else{
+    for (i=0; i<npix; i++)
+      p2[i] = (UCHAR)(((double)p1[i] - mini)/range * UCHAR_MAX);
+  }
+
+  nbyte=GetImNPix(im);
+  if (nbyte%sizeof(long int)) /* pad for word size */
+    nbyte+=sizeof(long int);
+  p1=(PIX_TYPE *)realloc((void *)GetImPtr(im), nbyte);
+  if(p1==NULL)
+    return ERROR;
+  SetImDataType(im, t_UCHAR);
+  SetImPtr(im, p1);
+  SetImNByte(im, nbyte);  
+
+  return(NO_ERROR);
+}
+#include "i64_undef.h"
+
 #include "f_def.h"
 ERROR_TYPE f_to_uchar(IMAGE *im)
 {
@@ -454,8 +501,16 @@ ERROR_TYPE to_uchar(IMAGE *im)
     return(u32_to_uchar(im));
     break;
 
+   case t_INT64:
+    return(i64_to_uchar(im));
+    break;
+
    case t_FLOAT:
     return(f_to_uchar(im));
+    break;
+
+   case t_DOUBLE:
+    return(d_to_uchar(im));
     break;
 
   default:

@@ -138,6 +138,39 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   $1=gt;
  }
 
+%typemap(out) G_TYPE getpixval {
+  double dval=0.0;
+  switch (GetImDataType(arg1)) {
+  case t_UCHAR:
+    dval=(double)$1.uc_val;
+    break;
+  case t_SHORT:
+    dval=(double)$1.s_val;
+    break;
+  case t_USHORT:
+    dval=(double)$1.us_val;
+    break;
+  case t_INT32:
+    dval=(double)$1.i32_val;
+    break;
+  case t_UINT32:
+    dval=(double)$1.u32_val;
+    break;
+  case t_INT64:
+    dval=(double)$1.i64_val;
+    break;
+  case t_UINT64:
+    dval=(double)$1.u64_val;
+    break;
+  case t_MIAFLOAT:
+    dval=(double)$1.f_val;
+    break;
+  case t_DOUBLE:
+    dval=(double)$1.d_val;
+    break;
+  }
+  $result=PyFloat_FromDouble(dval);
+ }
 
 // 20160923
 // define a typemap to handle IMAGE arrays as lists in Python
@@ -274,6 +307,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   ~IMAGE() {
     free_image($self);
   }
+  
   void iminfoMethod() {
     iminfo($self);
   }

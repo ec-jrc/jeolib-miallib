@@ -143,7 +143,7 @@ def ConvertNumPyArrayToMIALibImage( psArray ):
     """Pure python implementation of converting a numpy array into
     a MIALib image.  Data values are copied!"""
 
-    im=_mialmodule.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    im=_mialib.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
 
     if _ConvertNumPyArrayToMIALibIMAGE(im, psArray) != NO_ERROR:
         return None

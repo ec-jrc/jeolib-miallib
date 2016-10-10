@@ -2443,7 +2443,6 @@ ERROR_TYPE getmax(IMAGE *im, double *maxval)
                 undefined image data type\n"); errputstr(buf);
     return(ERROR);
   }
-  printf("maxval=%f\n", (float) *maxval);
 
   return NO_ERROR;
 }
@@ -2461,6 +2460,7 @@ ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval)
     return ERROR;
   pgmin = pg[0];
   pgmax = pg[1];
+  free((char *)pg);
 
   switch(GetImDataType(im)){
   case t_UCHAR:
@@ -2502,17 +2502,10 @@ ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval)
     *maxval=(double) pgmax.d_val;
     break;
   default:
-    free((char *)pg);
     (void)sprintf(buf, "error in getmax: \
                 undefined image data type\n"); errputstr(buf);
     return(ERROR);
   }
-
-  printf("minval=%d maxval=%d\n", (int)pgmin.uc_val, (int)pgmax.uc_val);
-  free((char *)pg);
-
-  printf("minval=%f maxval=%f\n", (float)*minval, (float)*maxval);
-
   return NO_ERROR;
 }
 

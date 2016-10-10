@@ -2,13 +2,14 @@
 # destructive does not always exists (@function in  lisp)
 # non-destructive always exists
 
+import mialib
 
 def d_arith(i0, i1, op):
     mialib.arith(i0, i1, op)
     return i0
     
 def nd_arith(i0, i1, op):
-    i2=mialib.copy_image(i0)
+    i2=_mialib.copy_image(i0)
     mialib.arith(i2, i1, op)
     return i2
 
