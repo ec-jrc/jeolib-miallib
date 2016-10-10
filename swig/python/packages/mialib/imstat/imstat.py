@@ -4,7 +4,7 @@ import mialib
 
 
 def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0, maxStretch=None):
-    """Image enhancement based on histogram calculations (originally written in list, see @histostrech function)
+    """Image enhancement based on histogram calculations (originally written in lisp, see @histostrech function)
 
     :param im: an image
     :param percentageLow: cut-off percentage from below
