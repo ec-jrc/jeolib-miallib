@@ -30,7 +30,7 @@ def nd_sqedt(i0):
 
 
 
-def d_threshTMP(i0,low,high,bg,fg):
+def d_thresh(i0,low,high,bg,fg):
     # low_gt=mialib.G_TYPE()
     # high_gt=mialib.G_TYPE()
     # bg_gt=mialib.G_TYPE()
