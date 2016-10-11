@@ -13,7 +13,6 @@ def nd_arith(i0, i1, op):
     mialib.arith(i2, i1, op)
     return i2
 
-
 def d_imsqrt(i0):
     if mialib.imsqrt(i0)==mialib.NO_ERROR:
         return i0
@@ -29,61 +28,31 @@ def nd_sqedt(i0):
     return mialib.sqedt(i0)
 
 
-
-def d_thresh(i0,low,high,bg,fg):
-    # low_gt=mialib.G_TYPE()
-    # high_gt=mialib.G_TYPE()
-    # bg_gt=mialib.G_TYPE()
-    # fg_gt=mialib.G_TYPE()
-    # dt=i0.DataType
-    # setgtval(low_gt, low, dt)
-    # setgtval(high_gt, high, dt)
-    # setgtval(bg_gt, bg, dt)
-    # setgtval(fg_gt, fg, dt)
-    
+def d_thresh(i0,low,high,bg,fg):    
     r=mialib.thresh(i0, low, high, bg, fg)
-
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_thresh(): invalid data type'
-                    
 
 def nd_thresh(i0,low,high,bg,fg):
     i1=mialib.copy_image(i0)
     return d_thresh(i1,low,high,bg,fg)
 
-
-
 def d_blank(i0,val):
-    # val_gt=mialib.G_TYPE()
-    #dt=i0.DataType
-    #setgtval(val_gt, val, dt)
-
     r=mialib.blank(i0, val)
-
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_blank(): invalid data type'
                     
-
 def nd_blank(i0,val):
     i1=mialib.copy_image(i0)
     return d_blank(i1,val)
 
-
 def d_setlevel(i0,low,high,val):
-    # low_gt=mialib.G_TYPE()
-    # high_gt=mialib.G_TYPE()
-    # val_gt=mialib.G_TYPE()
-    # dt=i0.DataType
-    # setgtval(low_gt, low, dt)
-    # setgtval(high_gt, high, dt)
-
     r=mialib.setlevel(i0, low, high, val)
-    
-    if r==mialib.NO_ERROR:
+        if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_setlevel(): invalid data type'
