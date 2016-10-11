@@ -3,8 +3,8 @@
 ** by Pierre.Soille@jrc.it  1988--2016
 */
 
-#ifndef  INT_MIAL
-#define  INT_MIAL
+#ifndef _MIALIB_H
+#define _MIALIB_H       1
 
 
 #ifdef PYTHON
@@ -12,27 +12,10 @@
 #define printf PySys_WriteStdout
 #endif
 
-
 #include <limits.h>
 #include <unistd.h>
 
-
-/* added for 64 transition */
-typedef unsigned long int mia_size_t;
-typedef int INT32;
-typedef unsigned int UINT32;
-typedef long long int INT64;
-typedef unsigned long long int UINT64;
-
-/* */
-
-#define ERROR      1
-#define NO_ERROR   0
-#define	TRUE	   1
-#define	FALSE	   0
-#ifndef PI
-#define PI         3.14159265358979323846 /* same as in XLISP-PLUS */
-#endif
+#include "miatypes.h"
 
 
 /* adjust to local system */
@@ -108,74 +91,15 @@ typedef unsigned long long int UINT64;
 #define DOUBLE_MIN   4.94065645841246544e-324
 #endif
 
-/* type definitions */
-/* consider using or referring to stdint.h in the future*/
-typedef unsigned char      DST_TYPE;  
-typedef unsigned char      GENERICPIX;
-typedef unsigned char      RGB_TYPE;
-typedef int                HST1D_TYPE;
-typedef unsigned char      HST2D_TYPE;
-typedef int                HST3D_TYPE;
-typedef float              LUT_TYPE;
-typedef char               CHAR;
-typedef unsigned char      UCHAR;
-typedef int                INT;
-typedef short int          SHORT;
-typedef unsigned short int USHORT;
-typedef float              MIAFLOAT;  /* FLOAT defined as double in windows ... */
-typedef double             DOUBLE;
-typedef void *             NULL_TYPE;
-/* typedef char               BOOLEAN;  */
-typedef int                ERROR_TYPE;
-typedef double             VOL_TYPE;
-typedef void *             PTR_TYPE;
-typedef int                LBL_TYPE; /* should be unsigned, see also t_LBL_TYPE */
+/* */
 
-/* consider defining long long type (8 bytes) on 486: int64 */
-typedef struct {
-  GENERICPIX generic_val;
-  UCHAR  uc_val;
-  USHORT us_val;
-  SHORT  s_val;
-  UINT32 u32_val;
-  INT32  i32_val;
-  UINT64 u64_val;
-  INT64  i64_val;
-  MIAFLOAT  f_val;
-  DOUBLE d_val;
-} G_TYPE;
-
-
-/* consider projectioncode ulx uly ulz resx resy resz */
-typedef struct {
-  void *p_im;    /* Pointer to image data */
-  int DataType;  /* Image data type */
-  int nx;        /* Number of columns */
-  int ny;        /* Number of lines */
-  int nz;        /* Number of x-y planes */
-  mia_size_t NByte;  /* Number of bytes for image data */
-  VOL_TYPE vol;  /* Sum of pixel values (volume) */
-  USHORT *lut;   /* Pointer to colour map */
-  G_TYPE g;      /* used to store a value matching DataType (see e.g. alphacc.c) */
-} IMAGE; 
-
-typedef struct { /* structure for blob analysis */
-  int area;     /* number of pixels */
-  int m00;      /* moments of order p-q */
-  int m10;
-  int m01;
-  int minor; /* length of minor axis */
-  int major; /* length of major axis */
-  int irradiance; /* mean value * 255 */
-  double xcg;   /* x coordinate of gravity centre */
-  double ycg;   /* y coordinate of gravity centre */
-  double mu11;  /* centred moments of order p-q */
-  double mu20;
-  double mu02;
-  double ratio; /* ratio between minor and major axis */
-  UCHAR  dir;   /* dir=360/(4pi) arctan(2mu11/(mu20-mu02)) */
-  double r;      /* correlation coefficient */
-} IMBLOB;
+#define ERROR      1
+#define NO_ERROR   0
+#define	TRUE	   1
+#define	FALSE	   0
+#ifndef PI
+#define PI         3.14159265358979323846 /* same as in XLISP-PLUS */
+#endif
 
 /* pixel type table */
 #define t_TIFFONEBITPERPIXEL 12
@@ -195,17 +119,14 @@ typedef struct { /* structure for blob analysis */
 #define t_RGB                13 /* fake type, requires pixel data type=t_UCHAR */
 #define t_PTR                14
 #define t_UNSUPPORTED       255
-
 #define t_LBL_TYPE            6 /* consider unsigned long int in the future*/
 #define LBL_MAX       INT32_MAX
-
 #define t_GENERIC             3
 #define t_HST1D               6
 #define t_HST2D               3 /* different types should be allowed, 3 for ACCA */
 #define t_HST3D               6
 #define t_LUT                10
 #define t_LABEL               6
-
 #define PLANARCONFIG_BIL      3 /* bil model (band interleaved by line) not supported by TIFF */
 
 /* constants */
@@ -240,7 +161,6 @@ typedef struct { /* structure for blob analysis */
 
 /* other image macro definitions */
 #define IsImInteger(x)  (GetImDataType(x)!=10 || GetImDataType(x)!=11)
-
 
 
 #define GetImMin(x, val) \
@@ -392,13 +312,8 @@ typedef struct { /* structure for blob analysis */
 			       }
 
 /* macro definitions for framebox */
-						 
 #define BOX_1D box[0]=box[1]=1; box[2]=box[3]=box[4]=box[5]=0
-
-
 #define BOX_2D box[0]=box[1]=box[2]=box[3]=1; box[4]=box[5]=0
-
-
 #define BOX_3D box[0]=box[1]=box[2]=box[3]=box[4]=box[5]=1
 
 
@@ -603,4 +518,4 @@ extern IMAGE *sort_offset(IMAGE *im, IMAGE *imrsum);
 
 
 
-#endif /* #ifndef INT_MIAL */
+#endif /* mialib.h */

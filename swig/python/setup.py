@@ -24,6 +24,19 @@ mialib_module = Extension('_mialib', ['mialib.i'],
                           define_macros = [('DOMINIK', None)],)
 
 
+pointop_module = Extension('_pointop_base', ['pointop.i'],
+                          swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
+                                       '-I../include/python',
+                                       '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
+                                       '-I/usr/local/lib/python2.7',
+                                       '-I../../core/c',
+                                       '-DDOMINIK'],
+                          libraries = ['gdal', 'tiff', 'mialib_python'],
+                          library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
+                          include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include', '/usr/local/lib/python2.7', '../../core/c/'],
+                          define_macros = [('DOMINIK', None)],)
+
+
 setup (name = 'mialib',
        version = '0.1',
        author      = "Pierre Soille",
@@ -33,13 +46,14 @@ setup (name = 'mialib',
        description = """Python interface to mialib thanks to SWIG""",
        long_description = """Python interface to mialib thanks to SWIG: long description""",
        url = "http://jeodpp.ec.europa.eu",
-       ext_modules = [mialib_module],
-       py_modules = ["mialib/mialib"],
+       ext_modules = [mialib_module, pointop_module],
        package_dir = {'' : 'packages'},
-       packages=['mialib', 'mialib/format', 'mialib/geodesy', 'mialib/geometry', 'mialib/imstat', 'mialib/io', 'mialib/pointop', 'mialib/visu'],
+       packages=['mialib'],
+       #py_modules = ["mialib/mialib"],
+       py_modules = ['mialib/pointop_base', 'mialib/mialib', 'mialib/format', 'mialib/geodesy', 'mialib/geometry', 'mialib/imstat', 'mialib/io', 'mialib/pointop', 'mialib/visu'],
        #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
        #
-
-       package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so']},
+       package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so', '_pointop_base.so']},
+       #package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so']},
        build_dir = {'' : '../build'}
        )

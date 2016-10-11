@@ -1,4 +1,5 @@
 from mialib import * 
+from pointop_base import * 
 
 
 # use . to secure that the local subpackage is imported

@@ -10,11 +10,11 @@ def d_framebox(i0, l, r, t, b, u, d, val):
     mialib.intp_setitem(box, 3, b)
     mialib.intp_setitem(box, 4, u)
     mialib.intp_setitem(box, 5, d)
-    val_gt=mialib.G_TYPE()
-    dt=i0.DataType
-    setgtval(val_gt, val, dt)
+    #val_gt=mialib.G_TYPE()
+    #dt=i0.DataType
+    #setgtval(val_gt, val, dt)
 
-    r=mialib.framebox(i0, box, val_gt)
+    r=mialib.framebox(i0, box, val)
 
     if r==mialib.NO_ERROR:
         return i0

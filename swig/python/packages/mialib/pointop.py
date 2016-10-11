@@ -30,18 +30,18 @@ def nd_sqedt(i0):
 
 
 
-def d_thresh(i0,low,high,bg,fg):
-    low_gt=mialib.G_TYPE()
-    high_gt=mialib.G_TYPE()
-    bg_gt=mialib.G_TYPE()
-    fg_gt=mialib.G_TYPE()
-    dt=i0.DataType
-    setgtval(low_gt, low, dt)
-    setgtval(high_gt, high, dt)
-    setgtval(bg_gt, bg, dt)
-    setgtval(fg_gt, fg, dt)
+def d_threshTMP(i0,low,high,bg,fg):
+    # low_gt=mialib.G_TYPE()
+    # high_gt=mialib.G_TYPE()
+    # bg_gt=mialib.G_TYPE()
+    # fg_gt=mialib.G_TYPE()
+    # dt=i0.DataType
+    # setgtval(low_gt, low, dt)
+    # setgtval(high_gt, high, dt)
+    # setgtval(bg_gt, bg, dt)
+    # setgtval(fg_gt, fg, dt)
     
-    r=mialib.thresh(i0, low_gt, high_gt, bg_gt, fg_gt)
+    r=mialib.thresh(i0, low, high, bg, fg)
 
     if r==mialib.NO_ERROR:
         return i0
@@ -56,11 +56,11 @@ def nd_thresh(i0,low,high,bg,fg):
 
 
 def d_blank(i0,val):
-    val_gt=mialib.G_TYPE()
-    dt=i0.DataType
-    setgtval(val_gt, val, dt)
+    # val_gt=mialib.G_TYPE()
+    #dt=i0.DataType
+    #setgtval(val_gt, val, dt)
 
-    r=mialib.blank(i0, val_gt)
+    r=mialib.blank(i0, val)
 
     if r==mialib.NO_ERROR:
         return i0
@@ -74,14 +74,14 @@ def nd_blank(i0,val):
 
 
 def d_setlevel(i0,low,high,val):
-    low_gt=mialib.G_TYPE()
-    high_gt=mialib.G_TYPE()
-    val_gt=mialib.G_TYPE()
-    dt=i0.DataType
-    setgtval(low_gt, low, dt)
-    setgtval(high_gt, high, dt)
+    # low_gt=mialib.G_TYPE()
+    # high_gt=mialib.G_TYPE()
+    # val_gt=mialib.G_TYPE()
+    # dt=i0.DataType
+    # setgtval(low_gt, low, dt)
+    # setgtval(high_gt, high, dt)
 
-    r=mialib.setlevel(i0, low_gt, high_gt, val_gt)
+    r=mialib.setlevel(i0, low, high, val)
     
     if r==mialib.NO_ERROR:
         return i0

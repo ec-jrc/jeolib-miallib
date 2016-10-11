@@ -124,11 +124,12 @@ build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./set
 	cat $(MIALIB_ROOT)/$(TARGET)_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
 	mv packages/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
+	mv packages/pointop_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	python setup.py bdist
 
 $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
 	@mkdir -p $(@D)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ &&  epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_html
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ &&  epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_html
 
 $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex:
 	@mkdir -p $(@D)
@@ -160,6 +161,10 @@ clean:
 	-rm -rf dist
 	-rm -f $(TARGET)_wrap.c
 	-rm -f packages/$(TARGET).py
+	-rm -f packages/$(TARGET)/$(TARGET).py
+	-rm -f packages/$(TARGET)/*.pyc
+	-rm -f packages/$(TARGET)/_$(TARGET).so
+	-find . -name "*pyc" -delete
 
 veryclean: clean
 	-rm -f ${WRAPPER}

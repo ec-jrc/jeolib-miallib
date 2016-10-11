@@ -16,12 +16,7 @@
 #define  INT_LIIAR
 
 
-/* added for 64 transition */
-typedef unsigned long int mia_size_t;
-typedef int INT32;
-typedef unsigned int UINT32;
-typedef long long int INT64;
-typedef unsigned long long int UINT64;
+#include "miatypes.h"
 
 /* */
 
@@ -106,57 +101,6 @@ typedef unsigned long long int UINT64;
 #ifndef DOUBLE_MIN  
 #define DOUBLE_MIN   4.94065645841246544e-324
 #endif
-
-/* type definitions */
-/* consider using or referring to stdint.h in the future*/
-typedef unsigned char      DST_TYPE;  
-typedef unsigned char      GENERICPIX;
-typedef unsigned char      RGB_TYPE;
-typedef int                HST1D_TYPE;
-typedef unsigned char      HST2D_TYPE;
-typedef int                HST3D_TYPE;
-typedef float              LUT_TYPE;
-typedef char               CHAR;
-typedef unsigned char      UCHAR;
-typedef int                INT;
-typedef short int          SHORT;
-typedef unsigned short int USHORT;
-typedef float              MIAFLOAT;  /* FLOAT defined as double in windows ... */
-typedef double             DOUBLE;
-typedef void *             NULL_TYPE;
-/* typedef char               BOOLEAN;  */
-typedef int                ERROR_TYPE;
-typedef double             VOL_TYPE;
-typedef void *             PTR_TYPE;
-typedef int                LBL_TYPE; /* should be unsigned, see also t_LBL_TYPE */
-
-/* consider defining long long type (8 bytes) on 486: int64 */
-typedef struct {
-  GENERICPIX generic_val;
-  UCHAR  uc_val;
-  USHORT us_val;
-  SHORT  s_val;
-  UINT32 u32_val;
-  INT32  i32_val;
-  UINT64 u64_val;
-  INT64  i64_val;
-  MIAFLOAT  f_val;
-  DOUBLE d_val;
-} G_TYPE;
-
-
-/* consider projectioncode ulx uly ulz resx resy resz */
-typedef struct {
-  void *p_im;    /* Pointer to image data */
-  int DataType;  /* Image data type */
-  int nx;        /* Number of columns */
-  int ny;        /* Number of lines */
-  int nz;        /* Number of x-y planes */
-  mia_size_t NByte;  /* Number of bytes for image data */
-  VOL_TYPE vol;  /* Sum of pixel values (volume) */
-  USHORT *lut;   /* Pointer to colour map */
-  G_TYPE g;
-} IMAGE; 
 
 
 /* pixel type table */
@@ -420,36 +364,6 @@ extern ERROR_TYPE dirmax(IMAGE *im, int dir);
 extern ERROR_TYPE imequalp(IMAGE *, IMAGE *);
 extern ERROR_TYPE getmax(IMAGE *im, double *maxval);
 extern ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval);
-
-
-/* pointop.c */
-extern ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op);
-extern ERROR_TYPE negation(IMAGE *im);
-extern ERROR_TYPE arith(IMAGE *, IMAGE *, int);
-extern ERROR_TYPE arithcst(IMAGE *, G_TYPE, int);
-extern ERROR_TYPE imabs(IMAGE *), imsqrt(IMAGE *), imlog(IMAGE *), power2p(IMAGE *);
-extern ERROR_TYPE imcos(IMAGE *), imsin(IMAGE *);
-extern ERROR_TYPE imatan(IMAGE *), imacos(IMAGE *), imasin(IMAGE *);
-extern ERROR_TYPE thresh(IMAGE *, G_TYPE, G_TYPE, G_TYPE, G_TYPE);
-extern ERROR_TYPE setlevel(IMAGE *im, G_TYPE gt1, G_TYPE gt2, G_TYPE gval);
-extern ERROR_TYPE modulo(IMAGE *im, int val);
-extern ERROR_TYPE complement(IMAGE *im);
-extern ERROR_TYPE blank(IMAGE *im, G_TYPE gval);
-extern ERROR_TYPE shift(IMAGE *im, int val);
-extern ERROR_TYPE setrange(IMAGE *im, G_TYPE gt1, G_TYPE gt2);
-extern ERROR_TYPE FindPixWithVal(IMAGE *, G_TYPE, unsigned long int *);
-extern ERROR_TYPE IsPartitionEqual(IMAGE *, IMAGE *, int *);
-extern ERROR_TYPE swap(IMAGE *im);
-
-extern ERROR_TYPE i32_arithcst(IMAGE *, INT32, int);
-extern ERROR_TYPE f_arithcst(IMAGE *, MIAFLOAT, int);
-extern ERROR_TYPE us_blank(IMAGE *, USHORT);
-extern ERROR_TYPE i32_blank(IMAGE *, INT32);
-extern ERROR_TYPE u32_blank(IMAGE *, UINT32);
-extern ERROR_TYPE f_blank(IMAGE *, MIAFLOAT);
-extern ERROR_TYPE generic_blank(IMAGE *, UCHAR);
-extern ERROR_TYPE us_setlevel(IMAGE *im, USHORT t1, USHORT t2, USHORT val);
-extern ERROR_TYPE us_setrange(IMAGE *im, USHORT t1, USHORT t2);
 
 /* dist.c */
 extern ERROR_TYPE dst2d4(IMAGE *im);

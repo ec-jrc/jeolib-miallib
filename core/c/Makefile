@@ -266,8 +266,11 @@ install:
 	cp -a op.h $(prefix)/include/$(BASE)/
 
 clean:
-	find $(BUILDDIR) -delete
-	test -f banner.h && rm banner.h
+	-rm -rf $(BUILDDIR)
+	-rm -f banner.h
+
+
+
 	#rm -rf $(SDIR-GENERIC)/*.o $(DDIR-GENERIC)/*.o $(SDIR)/*.o $(SDIR-XLISP)/*.o $(DDIR)/*.o $(LDIR)/*.a $(LDIR)/*.so $(SDIR-GENERIC)/*.o
 	# cd $(DOCDIR) && make clean
 
