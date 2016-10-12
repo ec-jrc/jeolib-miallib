@@ -124,7 +124,7 @@ build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./set
 	cat $(MIALIB_ROOT)/$(TARGET)_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
 	mv packages/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
-	mv packages/pointop_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
+	mv packages/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	python setup.py bdist
 
 $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
@@ -133,7 +133,7 @@ $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
 
 $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex:
 	@mkdir -p $(@D)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ && epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/$(TARGET).py -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ && epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
 
 
 
@@ -159,7 +159,8 @@ clean:
 	-rm -rf *.egg-info
 	-rm -f *.so ./osgeo/*.so
 	-rm -rf dist
-	-rm -f $(TARGET)_wrap.c
+	-rm -f *_wrap.c
+	-rm -f packages/*.py
 	-rm -f packages/$(TARGET).py
 	-rm -f packages/$(TARGET)/$(TARGET).py
 	-rm -f packages/$(TARGET)/*.pyc

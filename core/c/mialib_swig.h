@@ -302,48 +302,6 @@
   external function declarations
 */
 
-/* imem.c */
-extern void free_image(IMAGE *im);
-extern void iminfo(IMAGE *im);
-extern IMAGE *create_image(int data_type, long int nx, int ny, int nz);
-extern IMAGE *copy_image(IMAGE *im);
-extern ERROR_TYPE copy_lut(IMAGE *im1, IMAGE *im2);
-extern ERROR_TYPE create_lut(IMAGE *im);
-extern void free_lut(IMAGE *im);
-extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi);
-extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
-/* note: not wrapped in mialisp */
-extern ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g);
-extern G_TYPE getpixval(IMAGE *im, unsigned long offset);
-extern int GetImBitPerPixel(IMAGE *im);
-extern IMAGE **create_imarray(int);
-
-/* imio_gdal.c */
-extern int GDAL2MIALDataType(int aGDALDataType); 
-extern IMAGE *GDALInfoJIP(char *imfn);
-extern IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize);
-
-/* imio.c */
-extern IMAGE *read_all(char *fn, int nx, int ny, int nz, int data_type, int header_size, int pc);
-extern IMAGE *read_image(char *fn);
-extern IMAGE *read_image_to_type(char *fn, int data_type);
-extern ERROR_TYPE read_image_data(FILE *fp, IMAGE *im, int pc);
-extern ERROR_TYPE write_image_data(FILE *fp, IMAGE *im, int pc);
-extern ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn);
-extern ERROR_TYPE write_tiff(IMAGE *im, char *fn);
-extern ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc);
-
-/* imio2.c */
-extern IMAGE *GetGeoKey(char *fname, char *keyname);
-extern IMAGE *GetTIFFTagGeo(char *fn, char *tagname);
-extern IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale);
-extern IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy);
-extern ERROR_TYPE tiffinfo(char *fn, char *field, float *val);
-extern IMAGE *tiffinfoJIP(char *fn);
-extern ERROR_TYPE read_image_data2(FILE *fp, IMAGE *im, int x, int y, int inx, int scale);
-extern ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
-extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str);
-extern void print_mia_banner();
 
 /* imstat.c */
 extern IMAGE *histo1d(IMAGE *im);

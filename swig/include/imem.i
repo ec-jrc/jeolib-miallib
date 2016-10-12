@@ -1,4 +1,4 @@
-/* pointop.i */
+/* imem.i */
 
 %include constraints.i
 
@@ -7,7 +7,7 @@
 // %feature("docstring");
 
 %define DOCSTRING
-"Module containing base point image transformations.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
+"Module containing base I/O image funcionalities.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
 Contact: Pierre.Soille@jrc.ec.europa.eu"
 %enddef
 
@@ -16,7 +16,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // It consists of wrappers of C code underlying mialisp orginally developed
 // by Pierre Soille over the years since 1988.
 
-%module(docstring=DOCSTRING) pointop_base
+%module(docstring=DOCSTRING) imem_base
 
 
 // see https://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
@@ -27,9 +27,8 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %{
 /* Put header files here or function declarations like below */
 #include "mialib_swig.h"
-#include "mialib_pointop.h"
+#include "mialib_imem.h"
 #include "op.h"
-#include "mialib_imem.h" // for functions called in %extend
 %}
 
 
@@ -298,7 +297,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 //%include "mialib_swig.h"
 %include "op.h"
 %include "miatypes.h" // this is needed to secure garbage collection !
-%include "mialib_pointop.h"
+%include "mialib_imem.h"
 
 // 20160922
 // Allow for automatic garbage collection (no need to patch!)

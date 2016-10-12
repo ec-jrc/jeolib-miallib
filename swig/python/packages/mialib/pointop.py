@@ -3,63 +3,60 @@
 # non-destructive always exists
 
 import mialib
+import pointop_base
+import imem_base
 
 def d_arith(i0, i1, op):
-    mialib.arith(i0, i1, op)
+    pointop_base.arith(i0, i1, op)
     return i0
     
 def nd_arith(i0, i1, op):
-    i2=_mialib.copy_image(i0)
-    mialib.arith(i2, i1, op)
+    i2=_mialib.imem_base.copy_image(i0)
+    mialib.pointop_base.arith(i2, i1, op)
     return i2
 
 def d_imsqrt(i0):
-    if mialib.imsqrt(i0)==mialib.NO_ERROR:
+    if mialib.pointop_base.imsqrt(i0)==mialib.NO_ERROR:
         return i0
     return mialib.ERROR
 
 def nd_imsqrt(i0):
-    i1=mialib.copy_image(i0)
-    if mialib.imsqrt(i1)==mialib.NO_ERROR:
+    i1=mialib.imem_base.copy_image(i0)
+    if mialib.pointop_base.imsqrt(i1)==mialib.NO_ERROR:
         return i1
     return mialib.ERROR
     
-def nd_sqedt(i0):
-    return mialib.sqedt(i0)
-
-
 def d_thresh(i0,low,high,bg,fg):    
-    r=mialib.thresh(i0, low, high, bg, fg)
+    r=mialib.pointop_base.thresh(i0, low, high, bg, fg)
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_thresh(): invalid data type'
 
 def nd_thresh(i0,low,high,bg,fg):
-    i1=mialib.copy_image(i0)
+    i1=mialib.imem_base.copy_image(i0)
     return d_thresh(i1,low,high,bg,fg)
 
 def d_blank(i0,val):
-    r=mialib.blank(i0, val)
+    r=mialib.pointop_base.blank(i0, val)
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_blank(): invalid data type'
                     
 def nd_blank(i0,val):
-    i1=mialib.copy_image(i0)
+    i1=mialib.imem_base.copy_image(i0)
     return d_blank(i1,val)
 
 def d_setlevel(i0,low,high,val):
-    r=mialib.setlevel(i0, low, high, val)
-        if r==mialib.NO_ERROR:
+    r=mialib.pointop_base.setlevel(i0, low, high, val)
+    if  r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_setlevel(): invalid data type'
-                    
 
 def nd_setlevel(i0,low,high,val):
-    i1=mialib.copy_image(i0)
+    i1=mialib.imem_base.copy_image(i0)
     return d_setlevel(i1,low,val)
 
 
