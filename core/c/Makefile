@@ -262,7 +262,8 @@ all: build doc
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
 	mkdir -p $(prefix)/include/$(BASE)/
-	cp -a mialib_swig.h $(prefix)/include/$(BASE)/
+	cp -a miatypes.h $(prefix)/include/$(BASE)/
+	cp -a mialib_*.h $(prefix)/include/$(BASE)/
 	cp -a op.h $(prefix)/include/$(BASE)/
 
 clean:
