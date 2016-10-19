@@ -137,7 +137,6 @@ extern ERROR_TYPE blank(IMAGE *im, G_TYPE gval);
 extern ERROR_TYPE shift(IMAGE *im, int val);
 extern ERROR_TYPE setrange(IMAGE *im, G_TYPE gt1, G_TYPE gt2);
 extern ERROR_TYPE FindPixWithVal(IMAGE *, G_TYPE, unsigned long int *);
-extern ERROR_TYPE IsPartitionEqual(IMAGE *, IMAGE *, int *);
 extern ERROR_TYPE swap(IMAGE *im);
 
 /* recons.c */
@@ -301,6 +300,7 @@ extern ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char
 extern double julian_date(short int year, short int month, short int day, double hour);
 
 /* partorp.c */
+extern ERROR_TYPE IsPartitionEqual(IMAGE *, IMAGE *, int *);
 extern ERROR_TYPE IsPartitionFiner(IMAGE *im1, IMAGE *im2, int graph, unsigned long int *res);
 
 /* partition.c */
@@ -385,7 +385,7 @@ extern IMAGE *LineDilate3D(IMAGE *im, float dh);
 extern IMAGE *msgradlinf(IMAGE **imarray, int n, int graph);
 extern IMAGE *msgradlinfngb(IMAGE **imarray, int nc, IMAGE *imngb, int ox, int oy, int oz);
 
-#ifdef DOMINIK /*************************************************/
+#ifdef MCISRG /*************************************************/
 /* mslabel.c */
 extern IMAGE *labelImage(IMAGE **imArray, int nc, IMAGE *labelIm, int graph, long int lambda);
 
@@ -406,7 +406,7 @@ extern ERROR_TYPE writeGnuPlot3D(IMAGE ** inputImArray, int nc, int graph, int r
 
 /* vectorize.c */
 extern ERROR_TYPE vectorizeImage(IMAGE **inputImArray, int nc, char *filename, int format, double simplifyBorderLines);
-#endif /* DOMINIK ************************************************/
+#endif /* MCISRG ************************************************/
 
 /* uswilk.c */
 extern IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph);
@@ -416,6 +416,7 @@ extern IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambda, int graph);
 extern IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambda, int graph);
 
 /* dendro.c */
+extern IMAGE **imgc(IMAGE *imlbl);
 extern ERROR_TYPE dendro(IMAGE **, int, char *);
 
 /* propagate.c */

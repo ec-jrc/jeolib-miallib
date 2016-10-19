@@ -280,6 +280,18 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   free(imap);
  }
 
+%typemap(out) IMAGE **imgc {
+  int i;
+  int nc=2;
+  IMAGE **imap=(IMAGE **)$1;
+  $result = PyList_New(nc);
+  PyObject * o = 0 ;
+  for (i = 0; i < nc; i++) {
+    o = SWIG_NewPointerObj(SWIG_as_voidptr(imap[i]), SWIGTYPE_p_IMAGE, SWIG_POINTER_OWN |  0 );
+    PyList_SetItem($result,i,o);
+  }
+  free(imap);
+ }
 
 /* %typemap(argout) ERROR_TYPE to_uchar(IMAGE *) { */
 /*    PyObject * o = 0 ; */

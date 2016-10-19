@@ -4,6 +4,11 @@
 #include "mialib.h"
 
 
+/** @defgroup group_miscel miscellaneous operations
+ *  Miscellaneous image transformations not matching the other modules.
+ *  @{
+ */
+
 #define rad2deguchar(x) ((x)*((double)255/(2*PI)))  /* radians to uchar values */
 #define PIX_TYPE UCHAR
 IMAGE *dirmean(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
@@ -301,6 +306,9 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   free((char *) shft);
   return(imout);
 }
+
+/**@}*/
+
 
 
 #undef PIX_TYPE

@@ -28,6 +28,13 @@ double *solve(double *a_data, double *b_data, int size)
   return out;
 }
 
+
+
+
+/** @addtogroup group_miscel
+ *  @{
+ */
+
 IMAGE *coor_extrema_paraboloid(IMAGE *b)
 {
   /*

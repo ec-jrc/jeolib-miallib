@@ -4,7 +4,7 @@
 #include <math.h>
 #include "mialib.h"
 
-/** \addtogroup group_label
+/** \addtogroup group_seg
  *  @{
  */
 
@@ -62,7 +62,6 @@ IMAGE **u32_imgc(IMAGE *imlbl)
       m01[*plbl++]+=y;
     }
   }
-
 
   for (x=maxlbl; x>=0; x--){
     if(m00[x]){

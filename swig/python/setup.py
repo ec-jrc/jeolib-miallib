@@ -17,13 +17,13 @@ mialib_module = Extension('_mialib', ['mialib.i'],
                                        '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                        '-I/usr/local/lib/python2.7',
                                        '-I../../core/c',
-                                       '-DDOMINIK'],
+                                       '-DMCISRG'],
                           libraries = ['gdal', 'tiff', 'mialib_python'],
                           library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
                           include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                           '/usr/local/lib/python2.7',
                                           '../../core/c/'],
-                          define_macros = [('DOMINIK', None)],)
+                          define_macros = [('MCISRG', None)],)
 
 pointop_module = Extension('_pointop_base', ['pointop.i'],
                           swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
@@ -31,13 +31,13 @@ pointop_module = Extension('_pointop_base', ['pointop.i'],
                                        '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                        '-I/usr/local/lib/python2.7',
                                        '-I../../core/c',
-                                       '-DDOMINIK'],
+                                       '-DMCISRG'],
                           libraries = ['gdal', 'tiff', 'mialib_python'],
                           library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
                           include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                           '/usr/local/lib/python2.7',
                                           '../../core/c/'],
-                          define_macros = [('DOMINIK', None)],)
+                          define_macros = [('MCISRG', None)],)
 
 io_module = Extension('_io_base', ['io.i'],
                           swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
@@ -45,13 +45,13 @@ io_module = Extension('_io_base', ['io.i'],
                                        '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                        '-I/usr/local/lib/python2.7',
                                        '-I../../core/c',
-                                       '-DDOMINIK'],
+                                       '-DMCISRG'],
                           libraries = ['gdal', 'tiff', 'mialib_python'],
                           library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
                           include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                           '/usr/local/lib/python2.7',
                                           '../../core/c/'],
-                          define_macros = [('DOMINIK', None)],)
+                          define_macros = [('MCISRG', None)],)
 
 imem_module = Extension('_imem_base', ['imem.i'],
                           swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
@@ -59,13 +59,13 @@ imem_module = Extension('_imem_base', ['imem.i'],
                                        '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                        '-I/usr/local/lib/python2.7',
                                        '-I../../core/c',
-                                       '-DDOMINIK'],
+                                       '-DMCISRG'],
                           libraries = ['gdal', 'tiff', 'mialib_python'],
                           library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
                           include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                                           '/usr/local/lib/python2.7',
                                           '../../core/c/'],
-                          define_macros = [('DOMINIK', None)],)
+                          define_macros = [('MCISRG', None)],)
 
 
 setup (name = 'mialib',

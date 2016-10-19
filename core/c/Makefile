@@ -11,7 +11,7 @@ CXX        = c++
 # defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
-CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
+CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON 
 prefix     = /usr/local
@@ -23,7 +23,7 @@ exec_prefix= ${prefix}
 # note that natngbint.c # requires NNI to be defined and the libcsa and libnn libraries.  libnn makefile,in needs to pe patched to include -fPIC when compiling
 # note that phase_correlation.c requires -lfftw3
 # note that gsl.c requires -lgls -lgslcblas
-# skel.c and classification.c requires -DMARCIN
+# skel.c and classification.c requires -DODOITHIN and -DCLASSIF respectively
 
 # min_max return type master (G_TYPE *) different from type specific (ERROR_TYPE)
 

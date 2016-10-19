@@ -59,8 +59,8 @@ exec_prefix= ${prefix}
 
 
 SWIGARGS = -Wall -I../include -I../include/$(BINDING) 
-SWIGDEFINES = -DDOMINIK
-CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DMARCIN -DDOMINIK -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
+SWIGDEFINES = -DCLASSIF -DODOITHIN -DMCISRG 
+CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
 INCLUDE    = -I./  -I$(MIALIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
 LIBS       = -lgdal -ltiff -ldl ../../core/build/lib/lib$(TARGET)_python.so
 LIBDIR	   = ../../core/build/lib/
@@ -121,7 +121,7 @@ PYTHON_DLNK   =
 
 
 build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/$(TARGET)_swig.h
-	cat $(MIALIB_ROOT)/$(TARGET)_swig.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' > ../include/$(BINDING)/$(TARGET)_newobjects.i
+	cat $(MIALIB_ROOT)/$(TARGET)_*.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' | uniq > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
 	mv packages/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	mv packages/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/

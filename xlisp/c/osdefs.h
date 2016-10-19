@@ -275,7 +275,7 @@ extern LVAL imsgradlinf();
 extern LVAL imsgradlinfngb();
 extern LVAL ipropagate();
 #endif /* #ifdef TESTING */
-#ifdef DOMINIK
+#ifdef MCISRG
 extern LVAL ithresholdRegion_Size();
 extern LVAL imslabel(), imciasrg(), imcisrg(),  imcisrglist(), ivectorise();
 extern LVAL iwriteGnuPlot3D();

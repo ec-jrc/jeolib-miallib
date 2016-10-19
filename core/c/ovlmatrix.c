@@ -7,6 +7,10 @@
 #endif
 
 
+/** @addtogroup group_geom
+ *  @{
+ */
+
 ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
 {
   /* Inputs:
@@ -190,39 +194,4 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
   return NO_ERROR;
 }
 
-
-
-
-/* 	if (i==2430){ */
-/* 	  printf("flagdone[idx[%d]]=%d flagdep[idx[%d]]=%d pg[idx[%d]]=%d\n", i, flagdone[idx[i]], i, flagdep[idx[i]], i, pg[idx[i]]); */
-/* 	} */
-
-
-/*      a n x gmax image with labelled values for each line, each */
-/*      label correspoinding to a batch of independent images that can be */
-/*      processed in parallel at the corresponding overlap level */
-
-
-/* nint: number of intersecting images */
-
-//IMAGE *imout;
-//UINT32 *pout;
-	      //imout=(IMAGE *)create_image(t_UINT32, nint, 1, 1);
-	      //pout=(UINT32 *)GetImPtr(imout);
-	      //pout=(UINT32 *)calloc(n, sizeof(UINT32));
-	      //*pout++=idx[i];
-
-	      //free_image(imout);
-
-
-
-/* #ifndef OMP */
-/*     /\* reset flagdone *\/ */
-/*     for (i=0; i<n; i++) */
-/*       flagdone[i]=0; */
-/* #endif */
-
-
-
-  //free(flagdep);
-  //free(flagdone);
+/*@}*/

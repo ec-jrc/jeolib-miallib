@@ -1,4 +1,3 @@
-#ifdef MARCIN
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -1526,7 +1525,6 @@ ERROR_TYPE uc_clmaxlike(IMAGE *immos, IMAGE *imin, int bklabel, int type, double
  return NO_ERROR;
 }
 #include "uc_undef.h"
-#endif /* ifdef MARCIN */
 
 ERROR_TYPE clmaxlike(IMAGE *immos, IMAGE *imin, int bklabel, int type, double thr) 
 {

@@ -1,8 +1,12 @@
-/*
-  Author: P. Soille
-  Date: 2004-04-20
-  NOTE: snow down to sasso del ferro a Laveno yesterday!
-*/
+/**
+ * @file   msmm.c
+ * @author Pierre SOILLE <soillpi@D01RI1600821>
+ * @date   Tue Oct 18 11:56:17 2016 [First 2004-04-20 snow down to sasso del ferro a Laveno yesterday!]
+ * 
+ * @brief  Multispectral gradient calculations
+ * 
+ * 
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -112,6 +116,15 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
 #include "f_undef.h"
 
 
+/** 
+ * 
+ * 
+ * @param imap array of images
+ * @param nc integer for number of images in array
+ * @param graph integer for 2-D connectivity (either 4 or 8) 
+ * 
+ * @return graph-connected multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite{soille96}.
+ */
 IMAGE *msgradlinf(IMAGE **imap, int nc, int graph)
 {
   /*
@@ -249,7 +262,18 @@ IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int 
 }
 #include "uc_undef.h"
 
-
+/** 
+ * 
+ * 
+ * @param imap 
+ * @param nc 
+ * @param imngb image defining the neighbourhood with values in $\{0,1\}$
+ * @param ox integer for x-coordinate of origin of neighbourhood image
+ * @param oy integer for x-coordinate of origin of neighbourhood image
+ * @param oz integer for x-coordinate of origin of neighbourhood image
+ * 
+ * @return multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite{soille96} and arbitrary neighbourhood.
+ */
 IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz)
 {
   switch (GetImDataType(*imap)){

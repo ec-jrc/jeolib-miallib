@@ -1,4 +1,3 @@
-#ifdef MARCIN
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -628,9 +627,7 @@ ERROR_TYPE binOIthin_FIFO (IMAGE *imin, int stype, int atype, IMAGE *imanchor)
   free_image(isimple);    free_fifo4(q_a);   free_fifo4(q_b);   free_fifo4(q2); 
   return NO_ERROR;
 }
-
 #include "uc_undef.h"
-#endif
 
 
 /*@}*/

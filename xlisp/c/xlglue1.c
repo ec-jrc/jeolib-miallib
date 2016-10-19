@@ -12,9 +12,6 @@ struct apoint { double u, v; };
 #ifdef MARCIN
 #include "xlglue1_marcin.h"
 #endif
-#ifdef CONRAD
-#include "xlglue1_conrad.h"
-#endif
 #ifdef GRAZZJA
 #include "xlglue1_grazzja.h"
 #include "liiar_grazzja.h"
@@ -3976,7 +3973,7 @@ LVAL iswap()
   \return{im}
   \desc{swap the bytes of each pixel (little to big or vice versa conversion)}
   \cfunction{\cfswap}
-  \cfile{pointop.c}
+  \cfile{format.c}
 */
 
   xlim1 = xlgaimage();
@@ -4832,7 +4829,7 @@ LVAL ilabelcims()
   return (cvimage(labelcims((IMAGE **)imarray, nc, imarray[nc], ox, oy, oz, rl)));
 }
 
-#ifdef DOMINIK
+#ifdef MCISRG
 LVAL imslabel()
 {
   LVAL arg;
@@ -7253,48 +7250,6 @@ LVAL iminima()
   return (cvimage(minima((IMAGE *)getimage(xlim1), graph)));
 }
 
-
-LVAL icoor_extrema_paraboloid()
-{
-  LVAL xlim1;
-  if (!moreargs())
-    xlabort("(*coor_extrema_paraboloid b)\n");
-/*
-  \lspfunction{*}{solve}{b}
-  \param{im1}{an image node with 1 column of 5 double values matching the sample values of the paraboloid at coordinates (0,-1), (-1,0), (0,0), (1,0), (0,1)}
-  \return{a new image with one column containing the 5 double values of the solution X: A X = B}
-  \desc{}
-  \cfunction{\cfcoorUDextremaUDparaboloid}
-  \cfile{gsl.c}
-*/
-
-  xlim1 = xlgaimage();
-  xllastarg();
-  return(cvimage(coor_extrema_paraboloid((IMAGE *)getimage(xlim1))));
-}
-
-
-LVAL ifitlinear()
-{
-  LVAL xlim1, xlim2;
-  if (!moreargs())
-    xlabort("(*fitlinear im1 im2)\n");
-/*
-  \lspfunction{*}{fitlinear}{im1 im2}
-  \param{im1}{an image node of type double}
-  \param{im2}{an image node of type double and same size as im1}
-  \return{a new image with one line containing the 6 double values of the result of the linear regression: }
-  \desc{}
-  \cfunction{\cffitlinear}
-  \cfile{gsl.c}
-*/
-
-  xlim1 = xlgaimage();
-  xlim2 = xlgaimage();
-  xllastarg();
-  return(cvimage(fitlinear((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2))));
-}
-
 LVAL iimtoarray()
 {
   LVAL xlim1, xlim2;
@@ -8024,7 +7979,7 @@ LVAL imssrgcore()
   return(xlim1);
 }
 
-#ifdef DOMINIK
+#ifdef MCISRG
 LVAL ithresholdRegion_Size()
 {
   LVAL arg;
@@ -8328,7 +8283,7 @@ LVAL ivectorise()
   return(s_true);
 }
 
-#endif /* DOMINIK */
+#endif /* MCISRG */
 
 LVAL iIsPartitionEqual()
 {
@@ -9460,6 +9415,45 @@ LVAL itransgrad()
   return(cvimage(transgrad((IMAGE *)getimage(xlim1), graph)));
 }
 
+LVAL icoor_extrema_paraboloid()
+{
+  LVAL xlim1;
+  if (!moreargs())
+    xlabort("(*coor_extrema_paraboloid b)\n");
+/*
+  \lspfunction{*}{solve}{b}
+  \param{im1}{an image node with 1 column of 5 double values matching the sample values of the paraboloid at coordinates (0,-1), (-1,0), (0,0), (1,0), (0,1)}
+  \return{a new image with one column containing the 5 double values of the solution X: A X = B}
+  \desc{}
+  \cfunction{\cfcoorUDextremaUDparaboloid}
+  \cfile{gsl.c}
+*/
+
+  xlim1 = xlgaimage();
+  xllastarg();
+  return(cvimage(coor_extrema_paraboloid((IMAGE *)getimage(xlim1))));
+}
+
+LVAL ifitlinear()
+{
+  LVAL xlim1, xlim2;
+  if (!moreargs())
+    xlabort("(*fitlinear im1 im2)\n");
+/*
+  \lspfunction{*}{fitlinear}{im1 im2}
+  \param{im1}{an image node of type double}
+  \param{im2}{an image node of type double and same size as im1}
+  \return{a new image with one line containing the 6 double values of the result of the linear regression: }
+  \desc{}
+  \cfunction{\cffitlinear}
+  \cfile{gsl.c}
+*/
+
+  xlim1 = xlgaimage();
+  xlim2 = xlgaimage();
+  xllastarg();
+  return(cvimage(fitlinear((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2))));
+}
 
 /*
 \module{Contrast enhancement}

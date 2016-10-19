@@ -2,6 +2,11 @@
 #include "mialib.h"
 
 
+/** @addtogroup group_geom
+ *  @{
+ */
+
+
 ERROR_TYPE szcompat(IMAGE *im1, IMAGE *im2)
 {
   if (GetImNx(im1) != GetImNx(im2))
@@ -373,3 +378,5 @@ long int get_offset_last_pixel(long int nx, long int ny, long int nz, int graph)
     return -1;  /* no pixel can be processed */
   }
 }
+
+/*@}*/

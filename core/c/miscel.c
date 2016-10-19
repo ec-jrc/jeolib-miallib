@@ -105,6 +105,16 @@ IMAGE *u32_deinterleave(IMAGE *im)
 
 
 /* deinterleave (bip2bsq): useful when reading TIFF image with chunky format */
+
+
+/** 
+ * @synopsis  converts a multiband image, represented as a 3D image, from band interleaved format to band sequential format
+ * 
+ * @param an image with band interleaved representation 
+ * 
+ * @return an image with band sequential representation
+ *
+ */
 IMAGE *deinterleave(IMAGE *im)
 {
   switch (GetImDataType(im)){
