@@ -6,57 +6,76 @@ import mialib
 import pointop_base
 import imem_base
 
+def arith(i0, i1, op, inplace=0):
+    """Arithmetic operations between two input images.  By default the operation is performed in place so that the first image holds the result of the opration once completed.
+
+    :param i0: first image
+    :param i1: second image
+    :param op: integer for operation type
+    :param inplace: 0 for in place (default), otherwise
+    :returns: result of the operation (i.e., i0 if in place, a new image otherwise
+    :rtype: an image
+
+    """
+    if (inplace==0):
+        pointop_base.arith(i0, i1, op)
+        return i0
+    i2=imem_base.copy_image(i0)
+    pointop_base.arith(i2, i1, op)
+    return i2
+    
+
 def d_arith(i0, i1, op):
     pointop_base.arith(i0, i1, op)
     return i0
     
 def nd_arith(i0, i1, op):
-    i2=_mialib.imem_base.copy_image(i0)
-    mialib.pointop_base.arith(i2, i1, op)
+    i2=imem_base.copy_image(i0)
+    pointop_base.arith(i2, i1, op)
     return i2
 
 def d_imsqrt(i0):
-    if mialib.pointop_base.imsqrt(i0)==mialib.NO_ERROR:
+    if pointop_base.imsqrt(i0)==mialib.NO_ERROR:
         return i0
     return mialib.ERROR
 
 def nd_imsqrt(i0):
-    i1=mialib.imem_base.copy_image(i0)
-    if mialib.pointop_base.imsqrt(i1)==mialib.NO_ERROR:
+    i1=imem_base.copy_image(i0)
+    if pointop_base.imsqrt(i1)==mialib.NO_ERROR:
         return i1
     return mialib.ERROR
     
 def d_thresh(i0,low,high,bg,fg):    
-    r=mialib.pointop_base.thresh(i0, low, high, bg, fg)
+    r=pointop_base.thresh(i0, low, high, bg, fg)
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_thresh(): invalid data type'
 
 def nd_thresh(i0,low,high,bg,fg):
-    i1=mialib.imem_base.copy_image(i0)
+    i1=imem_base.copy_image(i0)
     return d_thresh(i1,low,high,bg,fg)
 
 def d_blank(i0,val):
-    r=mialib.pointop_base.blank(i0, val)
+    r=pointop_base.blank(i0, val)
     if r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_blank(): invalid data type'
                     
 def nd_blank(i0,val):
-    i1=mialib.imem_base.copy_image(i0)
+    i1=imem_base.copy_image(i0)
     return d_blank(i1,val)
 
 def d_setlevel(i0,low,high,val):
-    r=mialib.pointop_base.setlevel(i0, low, high, val)
+    r=pointop_base.setlevel(i0, low, high, val)
     if  r==mialib.NO_ERROR:
         return i0
     else:
         return 'd_setlevel(): invalid data type'
 
 def nd_setlevel(i0,low,high,val):
-    i1=mialib.imem_base.copy_image(i0)
+    i1=imem_base.copy_image(i0)
     return d_setlevel(i1,low,val)
 
 

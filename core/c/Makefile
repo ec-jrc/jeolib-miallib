@@ -266,6 +266,12 @@ install:
 	cp -a mialib_*.h $(prefix)/include/$(BASE)/
 	cp -a op.h $(prefix)/include/$(BASE)/
 
+uninstall:
+	-rm -f $(prefix)/lib/*mialib*
+	-rm -f $(prefix)/include/$(BASE)/miatypes.h
+	-rm -f $(prefix)/include/$(BASE)/mialib_*.h
+	-rm -f $(prefix)/include/$(BASE)/op.h
+
 clean:
 	-rm -rf $(BUILDDIR)
 	-rm -f banner.h

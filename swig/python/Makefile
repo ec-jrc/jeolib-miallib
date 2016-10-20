@@ -147,8 +147,11 @@ all: build doc
 
 
 install:
-	python setup.py install
+	python setup.py install --record $(BUILDDIR)/installed_files.txt
 
+uninstall:
+	cat $(BUILDDIR)/installed_files.txt | xargs rm -f
+	-rm -rf /usr/local/lib/python2.7/dist-packages/mialib
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)

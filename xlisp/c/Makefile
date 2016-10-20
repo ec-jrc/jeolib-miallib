@@ -44,9 +44,13 @@ all: $(BUILDDIR)/mialibxlisp
 
 
 install:
-	sudo cp -a $(BUILDDIR)/mialibxlisp $(PREFIX)/bin/
+	cp -a $(BUILDDIR)/mialibxlisp $(PREFIX)/bin/
 	mkdir -p $(PREFIX)/share/mialibxlisp/
-	sudo cp -ar ../lsp $(PREFIX)/share/mialibxlisp/
+	cp -ar ../lsp $(PREFIX)/share/mialibxlisp/
+
+uninstall:
+	-rm -f $(PREFIX)/bin/mialibxlisp
+	-rm -rf $(PREFIX)/share/mialibxlisp
 
 
 clean:

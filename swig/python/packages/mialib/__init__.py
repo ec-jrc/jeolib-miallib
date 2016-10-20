@@ -1,5 +1,6 @@
 from mialib import *
-from pointop_base import *
+#from pointop_base import *  # this makes mialib.arith available
+import pointop_base # this makes mialib.pointop_base.arith available
 from io_base import *
 from imem_base import *
 
