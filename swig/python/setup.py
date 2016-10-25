@@ -11,61 +11,52 @@ from distutils.core import setup, Extension
 
 #from setuptools import setup, find_packages
 
-mialib_module = Extension('_mialib', ['mialib.i'],
-                          swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
-                                       '-I../include/python',
-                                       '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                       '-I/usr/local/lib/python2.7',
-                                       '-I../../core/c',
-                                       '-DMCISRG'],
-                          libraries = ['gdal', 'tiff', 'mialib_python'],
-                          library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
-                          include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                          '/usr/local/lib/python2.7',
-                                          '../../core/c/'],
-                          define_macros = [('MCISRG', None)],)
 
-pointop_module = Extension('_pointop_base', ['pointop.i'],
-                          swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
-                                       '-I../include/python',
-                                       '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                       '-I/usr/local/lib/python2.7',
-                                       '-I../../core/c',
-                                       '-DMCISRG'],
-                          libraries = ['gdal', 'tiff', 'mialib_python'],
-                          library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
-                          include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                          '/usr/local/lib/python2.7',
-                                          '../../core/c/'],
-                          define_macros = [('MCISRG', None)],)
+swig_opts_val =  ['-v', '-Wall',  '-I../include', '-outdir', './packages/mialib',
+                  '-I../include/python',
+                  '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
+                  '-I/usr/local/lib/python2.7',
+                  '-I../../core/c',
+                  '-DMCISRG']
+libraries_val = ['gdal', 'tiff', 'mialib_python']
+library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib']
+include_dirs_val = ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
+                    '/usr/local/lib/python2.7',
+                    '../../core/c/']
+define_macros_val  = [('MCISRG', None)]
 
-io_module = Extension('_io_base', ['io.i'],
-                          swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
-                                       '-I../include/python',
-                                       '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                       '-I/usr/local/lib/python2.7',
-                                       '-I../../core/c',
-                                       '-DMCISRG'],
-                          libraries = ['gdal', 'tiff', 'mialib_python'],
-                          library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
-                          include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                          '/usr/local/lib/python2.7',
-                                          '../../core/c/'],
-                          define_macros = [('MCISRG', None)],)
 
-imem_module = Extension('_imem_base', ['imem.i'],
-                          swig_opts = ['-v', '-Wall',  '-I../include', '-outdir', './packages',
-                                       '-I../include/python',
-                                       '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                       '-I/usr/local/lib/python2.7',
-                                       '-I../../core/c',
-                                       '-DMCISRG'],
-                          libraries = ['gdal', 'tiff', 'mialib_python'],
-                          library_dirs = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib'],
-                          include_dirs= ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                                          '/usr/local/lib/python2.7',
-                                          '../../core/c/'],
-                          define_macros = [('MCISRG', None)],)
+
+
+_mialib = Extension('_mialib', ['mialib.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+_pointop_base = Extension('_pointop_base', ['pointop.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+_io_base = Extension('_io_base', ['io.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+_imem_base = Extension('_imem_base', ['imem.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+
 
 
 setup (name = 'mialib',
@@ -77,10 +68,10 @@ setup (name = 'mialib',
        description = """Python interface to mialib/jiplib thanks to SWIG""",
        long_description = """Python interface to mialib/jiplib thanks to SWIG: long description""",
        url = "http://jeodpp.ec.europa.eu",
-       ext_modules = [mialib_module,
-                      pointop_module,
-                      io_module,
-                      imem_module],
+       ext_modules = [_mialib,
+                      _pointop_base,
+                      _io_base,
+                      _imem_base],
        package_dir = {'' : 'packages'},
        packages=['mialib'],
        #py_modules = ["mialib/mialib"],

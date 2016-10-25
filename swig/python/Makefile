@@ -123,8 +123,8 @@ PYTHON_DLNK   =
 build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/$(TARGET)_swig.h
 	cat $(MIALIB_ROOT)/$(TARGET)_*.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' | uniq > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
-	mv packages/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
-	mv packages/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
+	mv packages/$(TARGET)/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
+	mv packages/$(TARGET)/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	python setup.py bdist
 
 $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
