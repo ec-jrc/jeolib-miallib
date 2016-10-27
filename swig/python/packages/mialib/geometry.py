@@ -1,6 +1,7 @@
-import mialib
+#import mialib
 
 
+from geometry_base import *
 
 def d_framebox(i0, l, r, t, b, u, d, val):
     box=mialib.new_intp(6)

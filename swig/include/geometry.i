@@ -16,7 +16,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // It consists of wrappers of C code underlying mialisp orginally developed
 // by Pierre Soille over the years since 1988.
 
-%module(docstring=DOCSTRING) io_base
+%module(docstring=DOCSTRING) geometry_base
 
 
 // see https://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
@@ -27,7 +27,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 %{
 /* Put header files here or function declarations like below */
 #include "mialib_swig.h"
-#include "mialib_io.h"
+#include "mialib_geometry.h"
 #include "op.h"
 #include "mialib_imem.h" // for functions called in %extend
 %}
@@ -298,7 +298,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 //%include "mialib_swig.h"
 %include "op.h"
 %include "miatypes.h" // this is needed to secure garbage collection !
-%include "mialib_io.h"
+%include "mialib_geometry.h"
 
 // 20160922
 // Allow for automatic garbage collection (no need to patch!)

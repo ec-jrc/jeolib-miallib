@@ -2,11 +2,16 @@
 # destructive does not always exists (@function in  lisp)
 # non-destructive always exists
 
-import mialib
-import pointop_base
+#import mialib
+
+#import pointop_base
+
+# we want pointop_base appear at the same level as the additional functions provided in this file.
+from pointop_base import *
+
 import imem_base
 
-def arith(i0, i1, op, inplace=0):
+def arithNew(i0, i1, op, inplace=0):
     """Arithmetic operations between two input images.  By default the operation is performed in place so that the first image holds the result of the opration once completed.
 
     :param i0: first image

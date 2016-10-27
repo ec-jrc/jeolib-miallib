@@ -1,12 +1,16 @@
-import mialib
-import os
+#import mialib
+
+
+import os 
+
+import io
 
 def xv(i0):
-    mialib.write_tiff(i0,"/tmp/toto.tif")
+    io.write_tiff(i0,"/tmp/toto.tif")
     os.system("xv /tmp/toto.tif &")
 
 def imview(i0):
-    mialib.write_tiff(i0,"/tmp/toto.tif")
+    io.write_tiff(i0,"/tmp/toto.tif")
     os.system("imview /tmp/toto.tif &")
 
 
