@@ -35,7 +35,21 @@ _mialib = Extension('_mialib', ['mialib.i'],
                           include_dirs = include_dirs_val,
                           define_macros = define_macros_val)
 
-_pointop_base = Extension('_pointop_base', ['pointop.i'],
+_format_base = Extension('_format_base', ['format.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+_geometry_base = Extension('_geometry_base', ['geometry.i'],
+                          swig_opts = swig_opts_val,
+                          libraries = libraries_val,
+                          library_dirs = library_dirs_val,
+                          include_dirs = include_dirs_val,
+                          define_macros = define_macros_val)
+
+_geodesy_base = Extension('_geodesy_base', ['geodesy.i'],
                           swig_opts = swig_opts_val,
                           libraries = libraries_val,
                           library_dirs = library_dirs_val,
@@ -63,27 +77,19 @@ _imstat_base = Extension('_imstat_base', ['imstat.i'],
                           include_dirs = include_dirs_val,
                           define_macros = define_macros_val)
 
-_format_base = Extension('_format_base', ['format.i'],
+_label_base = Extension('_label_base', ['label.i'],
                           swig_opts = swig_opts_val,
                           libraries = libraries_val,
                           library_dirs = library_dirs_val,
                           include_dirs = include_dirs_val,
                           define_macros = define_macros_val)
 
-_geometry_base = Extension('_geometry_base', ['geometry.i'],
+_pointop_base = Extension('_pointop_base', ['pointop.i'],
                           swig_opts = swig_opts_val,
                           libraries = libraries_val,
                           library_dirs = library_dirs_val,
                           include_dirs = include_dirs_val,
                           define_macros = define_macros_val)
-
-_geodesy_base = Extension('_geodesy_base', ['geodesy.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
-
 
 
 
@@ -103,6 +109,7 @@ setup (name = "mialib",
                       _imem_base,
                       _imstat_base,
                       _io_base,
+                      _label_base,
                       _pointop_base],
        package_dir = {'' : 'packages'},
        packages=['mialib'],
@@ -114,6 +121,7 @@ setup (name = "mialib",
                      'mialib/imem_base',
                      'mialib/imstat_base', 'mialib/imstat',
                      'mialib/io_base', 'mialib/io',
+                     'mialib/label_base',
                      'mialib/pointop_base', 'mialib/pointop',
                      'mialib/visu'],
        #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
@@ -125,6 +133,7 @@ setup (name = "mialib",
                                                         '_imem_base.so',
                                                         '_imstat_base.so',
                                                         '_io_base.so',
+                                                        '_label_base.so',
                                                         '_pointop_base.so'
                                                         ]},
        build_dir = {'' : '../build'}

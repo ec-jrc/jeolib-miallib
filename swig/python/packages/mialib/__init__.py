@@ -10,8 +10,17 @@
 # and mialib.imem_base.copy_image
 #from imem_base import *
 
+
+
+
 from mialib import *
 
+# packages with base only definitions
+import label_base
+
+
+
+# packages with base and extended defintions
 import format
 import geometry
 import geodesy
