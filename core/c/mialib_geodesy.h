@@ -20,6 +20,6 @@ extern IMAGE *minima(IMAGE *imin, int graph);
 /* ggeo.c */
 extern ERROR_TYPE sqtgpla(IMAGE *im_m, IMAGE *im_r, int graph);
 extern ERROR_TYPE sqtg(IMAGE *im_m, IMAGE *im_r, int graph);
-extern IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph);
+extern IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph);
 
 #endif /* mialib_geodesy.h */

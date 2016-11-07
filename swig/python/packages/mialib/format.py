@@ -1,8 +1,11 @@
+
 import mialib
+
+from format_base import *
 
 
 def d_touchar(i0):
-    mialib.to_uchar(i0)
+    to_uchar(i0)
     return i0
 
 
@@ -21,7 +24,7 @@ def getpixmax(im):
         return pow(2,64)-1
     if (im.DataType==mialib.t_UINT64):
         return pow(2,63)-1
-    if (im.DataType==mialib.t_DOULE):
+    if (im.DataType==mialib.t_DOUBLE):
         return mialib.DOUBLE_MAX
     return None
 

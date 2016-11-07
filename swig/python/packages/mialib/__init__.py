@@ -10,10 +10,18 @@
 # and mialib.imem_base.copy_image
 #from imem_base import *
 
+from mialib import *
+
+import format
+import geometry
+import geodesy
+import imstat
 import io
 import pointop
-import geometry
 import visu
+
+
+
 
 # use . to secure that the local subpackage is imported
 # from .format import *

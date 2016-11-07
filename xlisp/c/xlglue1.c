@@ -7438,7 +7438,7 @@ LVAL isqtgsym()
 
   xllastarg();
 
-  return(cvimage(uc_sqtgsym((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2), graph)));
+  return(cvimage(sqtgsym((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2), graph)));
 }
 
 LVAL isqtgpla()

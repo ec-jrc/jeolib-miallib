@@ -1,5 +1,9 @@
 import mialib
+import pointop
+import imem_base
+import format
 
+from imstat_base import *
 
 
 
@@ -16,27 +20,27 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
     :rtype: IMAGE
 
     """
-    hst=mialib.histo1d(im)
+    hst=histo1d(im)
     if (noData!=None):
         print "noData given"
         if isinstance(noData,list):
             for i in noData:
-                mialib.setpixval(hst,i,0.0)
+                imem_base.setpixval(hst,i,0.0)
         else:
-            mialib.setpixval(hst,noData,0.0)
+            imem_base.setpixval(hst,noData,0.0)
     if (maxStretch==None):
-        maxStretch=mialib.getpixmax(im)
+        maxStretch=format.getpixmax(im)
     for i in range(0,hst.nx):
-        if (mialib.getpixval(hst, i) != 0):
+        if (imem_base.getpixval(hst, i) != 0):
             valmin=i # minimum image data value
             break
     for i in range(hst.nx-1, -1, -1):
-        if (mialib.getpixval(hst, i) != 0):
+        if (imem_base.getpixval(hst, i) != 0):
             valmax=i # maximum image data value
             break
 
 
-    mialib.volume(hst)
+    volume(hst)
     vol=hst.vol # number of data values
 
     cutlow=round(vol*percentageLow/100.0)
@@ -48,14 +52,14 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
     sum=0
     for i in range(valmin, valmax+1):
         #print i
-        sum=sum+mialib.getpixval(hst,i)
+        sum=sum+imem_base.getpixval(hst,i)
         #print sum
         if (sum>=cutlow):
             low=i
             break
     sum=0
     for i in range(valmax, valmin-1, -1):   
-        sum=sum+mialib.getpixval(hst,i)
+        sum=sum+imem_base.getpixval(hst,i)
         if (sum>=cuthigh):
             high=i
             break
@@ -70,8 +74,8 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
     print "maxStretch=%d" % maxStretch
 
 
-    mialib.setlevel(im, float(valmin), float(low), float(low))
-    mialib.setlevel(im, float(high), float(valmax), float(high))
-    mialib.setrange(im, float(minStretch), float(maxStretch))
+    pointop.setlevel(im, float(valmin), float(low), float(low))
+    pointop.setlevel(im, float(high), float(valmax), float(high))
+    pointop.setrange(im, float(minStretch), float(maxStretch))
 
     return im

@@ -814,7 +814,7 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
   unsigned long int i, ofs, npix;
   int k;
   PIX_TYPE *pm, *pm_k, *pm_crt;
-  UCHAR *pr, *pr_k, *pr_crt;
+  PIX_TYPE *pr, *pr_k, *pr_crt;
   long int shift[27];
   int box[6];
 
@@ -936,6 +936,24 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
 #undef t_PIX_TYPE_OUT
 #undef RETRIEVED
 
+IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
+{
 
+  if (szcompat(im_m, im_r) != NO_ERROR){
+    (void) sprintf(buf, "sqtgsym(): input images must be of same geometry and type\n"); errputstr(buf);
+    return ERROR;
+  }
+  
+  switch (GetImDataType(im_m)){
+  case t_UCHAR: 
+    return(uc_sqtgsym(im_m, im_r, graph));
+    break;
+  default:
+    (void)sprintf(buf, "ERROR in sqtgsym(): \
+                invalid ImDataType\n"); errputstr(buf);
+    return(NULL);
+  }
+  return(NULL);
+}
 
 /*@}*/

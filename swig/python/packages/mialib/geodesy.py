@@ -1,6 +1,8 @@
 #import mialib
 
 
+# this makes all geodesy_base functions available within mialib.geodesy
+# but also makes geodesy_base available as a subpackage
 from geodesy_base import *
 
 import imem_base
