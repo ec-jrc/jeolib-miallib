@@ -8,7 +8,7 @@
 
 
 """
-Module containing base I/O image funcionalities.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
+Module containing base geometry image funcionalities.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
 Contact: Pierre.Soille@jrc.ec.europa.eu
 """
 
@@ -74,34 +74,6 @@ except AttributeError:
     _newclass = 0
 
 
-ADD_op = _geometry_base.ADD_op
-SUB_op = _geometry_base.SUB_op
-MULT_op = _geometry_base.MULT_op
-DIV_op = _geometry_base.DIV_op
-INF_op = _geometry_base.INF_op
-SUP_op = _geometry_base.SUP_op
-MASK_op = _geometry_base.MASK_op
-ADD_op_ovfl = _geometry_base.ADD_op_ovfl
-SUB_op_ovfl = _geometry_base.SUB_op_ovfl
-MULT_op_ovfl = _geometry_base.MULT_op_ovfl
-AND_op = _geometry_base.AND_op
-OR_op = _geometry_base.OR_op
-XOR_op = _geometry_base.XOR_op
-CMP_op = _geometry_base.CMP_op
-ABSSUB_op = _geometry_base.ABSSUB_op
-MASK_op2 = _geometry_base.MASK_op2
-SUBSWAP_op = _geometry_base.SUBSWAP_op
-SUBSWAP_op_ovfl = _geometry_base.SUBSWAP_op_ovfl
-EQUAL_op = _geometry_base.EQUAL_op
-OVW_op = _geometry_base.OVW_op
-POW_op = _geometry_base.POW_op
-NDI_op = _geometry_base.NDI_op
-SUBSWAPCST_op = _geometry_base.SUBSWAPCST_op
-FirstBitOn_op = _geometry_base.FirstBitOn_op
-NAND_op = _geometry_base.NAND_op
-ATAN_op = _geometry_base.ATAN_op
-COS_op = _geometry_base.COS_op
-SIN_op = _geometry_base.SIN_op
 _MIATYPES_H = _geometry_base._MIATYPES_H
 class G_TYPE(_object):
     """

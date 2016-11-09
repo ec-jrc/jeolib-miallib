@@ -1,4 +1,4 @@
-/* pointop.i */
+/* io.i */
 
 %include constraints.i
 
@@ -7,7 +7,7 @@
 // %feature("docstring");
 
 %define DOCSTRING
-"Module containing base point image transformations.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
+"Module containing base pointop image funcionalities.  They correspond directly to the MIALib C function wrapped to python thanks to SWIG.  This is an initial test module for the JIPL (Joint Image Processing Library) developed in the framework of the JEODPP of the EO&SS@BD pilot project.
 Contact: Pierre.Soille@jrc.ec.europa.eu"
 %enddef
 
@@ -296,7 +296,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // These are the headers with the declarations that will be warped
 // It needs to be inserted before the extend declaration
 //%include "mialib_swig.h"
-%include "op.h"
+//%include "op.h"
 %include "miatypes.h" // this is needed to secure garbage collection !
 %include "mialib_pointop.h"
 
@@ -334,3 +334,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 #if defined(SWIGPYTHON)
 //%include "mialib_python.i"
 #endif
+
+
+
+

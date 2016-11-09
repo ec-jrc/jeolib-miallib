@@ -13,18 +13,24 @@
 
 
 
-from mialib import *
+#from mialib import *
 
 # packages with base only definitions
+import convolve_base
+import dem_base
+import dist_base
+import erodil_base
+import hmt_base
 import label_base
+import opclo_base
+import proj_base
+import segment_base
 
-
-
-# packages with base and extended defintions
+# packages with base and extended definitions
 import format
 import geometry
 import geodesy
-import imstat
+import stats
 import io
 import pointop
 import visu

@@ -26,8 +26,6 @@ include_dirs_val = ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
 define_macros_val  = [('MCISRG', None)]
 
 
-
-
 _mialib = Extension('_mialib', ['mialib.i'],
                           swig_opts = swig_opts_val,
                           libraries = libraries_val,
@@ -35,62 +33,57 @@ _mialib = Extension('_mialib', ['mialib.i'],
                           include_dirs = include_dirs_val,
                           define_macros = define_macros_val)
 
-_format_base = Extension('_format_base', ['format.i'],
+
+ext_modules_list = ['convolve',
+                    'dem',
+                    'dist',
+                    'erodil',
+                    'format',
+                    'geometry',
+                    'geodesy',
+                    'hmt',
+                    'imem',
+                    'io',
+                    'label',
+                    'opclo',
+                    'pointop',
+                    'proj',
+                    'segment',
+                    'stats']
+
+
+def createExtension(str):
+    return (Extension('_'+str+'_base', [str+'.i'],
                           swig_opts = swig_opts_val,
                           libraries = libraries_val,
                           library_dirs = library_dirs_val,
                           include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
+                          define_macros = define_macros_val))
 
-_geometry_base = Extension('_geometry_base', ['geometry.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
+modules_list = []
+for idx in ext_modules_list:
+    modules_list.append(createExtension(idx))
 
-_geodesy_base = Extension('_geodesy_base', ['geodesy.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
+additional_py_modules = []
+for idx in ext_modules_list:
+    additional_py_modules.append('mialib/'+idx+'_base')
 
-_io_base = Extension('_io_base', ['io.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
+sos = []
+for idx in ext_modules_list:
+   sos.append('_'+idx+'_base.so')
 
-_imem_base = Extension('_imem_base', ['imem.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
 
-_imstat_base = Extension('_imstat_base', ['imstat.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
-
-_label_base = Extension('_label_base', ['label.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
-
-_pointop_base = Extension('_pointop_base', ['pointop.i'],
-                          swig_opts = swig_opts_val,
-                          libraries = libraries_val,
-                          library_dirs = library_dirs_val,
-                          include_dirs = include_dirs_val,
-                          define_macros = define_macros_val)
-
+# create the interface file for each module
+import re
+import os
+for idx in  ext_modules_list:
+    if not(os.path.isfile('../include/'+idx+'.i')):
+        with open("../include/master.i", "r") as sources:
+            lines = sources.readlines()
+        with open('../include/'+idx+'.i', "w") as sources:
+            for line in lines:
+                sources.write(re.sub('master', idx, line))
+    
 
 
 setup (name = "mialib",
@@ -102,39 +95,20 @@ setup (name = "mialib",
        description = """Python interface to mialib/jiplib thanks to SWIG""",
        long_description = """Python interface to mialib/jiplib thanks to SWIG: long description""",
        url = "http://jeodpp.ec.europa.eu",
-       ext_modules = [_mialib,
-                      _format_base,
-                      _geometry_base,
-                      _geodesy_base,
-                      _imem_base,
-                      _imstat_base,
-                      _io_base,
-                      _label_base,
-                      _pointop_base],
+       ext_modules = [_mialib ] + modules_list,
        package_dir = {'' : 'packages'},
        packages=['mialib'],
        #py_modules = ["mialib/mialib"],
-       py_modules = ['mialib/mialib',
-                     'mialib/format_base', 'mialib/format',
-                     'mialib/geometry_base','mialib/geometry',
-                     'mialib/geodesy_base', 'mialib/geodesy',
-                     'mialib/imem_base',
-                     'mialib/imstat_base', 'mialib/imstat',
-                     'mialib/io_base', 'mialib/io',
-                     'mialib/label_base',
-                     'mialib/pointop_base', 'mialib/pointop',
+       py_modules = ['mialib/mialib'] +  additional_py_modules + 
+                     ['mialib/format',
+                     'mialib/geometry',
+                     'mialib/geodesy',
+                     'mialib/stats',
+                     'mialib/io',
+                     'mialib/pointop',
                      'mialib/visu'],
        #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
        #
-       package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so',
-                                                        '_format_base.so',
-                                                        '_geometry_base.so',
-                                                        '_geodesy_base.so',
-                                                        '_imem_base.so',
-                                                        '_imstat_base.so',
-                                                        '_io_base.so',
-                                                        '_label_base.so',
-                                                        '_pointop_base.so'
-                                                        ]},
+       package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so'] + sos },
        build_dir = {'' : '../build'}
        )
