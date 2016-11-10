@@ -24,8 +24,8 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG 
 
 
 
-$(BUILDDIR)/mialibxlisp: banner_mialib.h $(BUILDOBJS)
-	g++ -fopenmp -m64 -o $(BUILDDIR)/mialibxlisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
+$(BUILDDIR)/mialisp: banner_mialib.h $(BUILDOBJS)
+	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
 
 
 banner_mialib.h: $(SRCS)
@@ -40,17 +40,17 @@ $(BUILDDIR)/%.o: %.c xlisp.h xlftab.h xlglob.h
 	$(CC) -c $(CFLAGS) $(INCLUDE) -o $@ $<
 
 
-all: $(BUILDDIR)/mialibxlisp
+all: $(BUILDDIR)/mialisp
 
 
 install:
-	cp -a $(BUILDDIR)/mialibxlisp $(PREFIX)/bin/
-	mkdir -p $(PREFIX)/share/mialibxlisp/
-	cp -ar ../lsp $(PREFIX)/share/mialibxlisp/
+	cp -a $(BUILDDIR)/mialisp $(PREFIX)/bin/
+	mkdir -p $(PREFIX)/share/mialisp/
+	cp -ar ../lsp $(PREFIX)/share/mialisp/
 
 uninstall:
-	-rm -f $(PREFIX)/bin/mialibxlisp
-	-rm -rf $(PREFIX)/share/mialibxlisp
+	-rm -f $(PREFIX)/bin/mialisp
+	-rm -rf $(PREFIX)/share/mialisp
 
 
 clean:
