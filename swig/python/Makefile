@@ -169,6 +169,20 @@ clean:
 	-rm -f packages/$(TARGET)/*.pyc
 	-rm -f packages/$(TARGET)/_$(TARGET).so
 	-find . -name "*pyc" -delete
+	-rm -f swig/include/convolve.i
+	-rm -f swig/include/dem.i
+	-rm -f swig/include/dist.i
+	-rm -f swig/include/erodil.i
+	-rm -f swig/include/format.i
+	-rm -f swig/include/geodesy.i
+	-rm -f swig/include/hmt.i
+	-rm -f swig/include/imstat.i
+	-rm -f swig/include/label.i
+	-rm -f swig/include/opclo.i
+	-rm -f swig/include/proj.i
+	-rm -f swig/include/segment.i
+	-rm -f swig/include/stats.i
+
 
 veryclean: clean
 	-rm -f ${WRAPPER}
