@@ -57,7 +57,7 @@ extern IMAGE *sortindex(IMAGE *i0);
 
 /* imem.c */
 extern void free_image(IMAGE *im);
-extern void iminfo(IMAGE *im);
+extern ERROR_TYPE iminfo(IMAGE *im);
 extern IMAGE *create_image(int data_type, long int nx, int ny, int nz);
 extern IMAGE *copy_image(IMAGE *im);
 extern ERROR_TYPE copy_lut(IMAGE *im1, IMAGE *im2);

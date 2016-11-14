@@ -48,7 +48,7 @@ extern ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int forma
 
 
 /* partorp.c */
-extern ERROR_TYPE IsPartitionEqual(IMAGE *, IMAGE *, int *);
+extern ERROR_TYPE IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result);
 extern ERROR_TYPE IsPartitionFiner(IMAGE *im1, IMAGE *im2, int graph, unsigned long int *res);
 
 /* dendro.c */

@@ -13,10 +13,11 @@ extern IMAGE *to_ushort(IMAGE *im);
 extern IMAGE *to_int32(IMAGE *im);
 extern IMAGE *to_float(IMAGE *im);
 extern IMAGE *to_double(IMAGE *im);
-extern ERROR_TYPE to_uchar(IMAGE *);
-extern ERROR_TYPE dbltofloat(IMAGE *);
-extern ERROR_TYPE uint32_to_float(IMAGE *);
+extern ERROR_TYPE to_uchar(IMAGE *im);
+extern ERROR_TYPE dbltofloat(IMAGE *im);
+extern ERROR_TYPE uint32_to_float(IMAGE *im);
 extern ERROR_TYPE swap(IMAGE *im);
+
 
 /* miscel.c */
 extern IMAGE *deinterleave(IMAGE *im);

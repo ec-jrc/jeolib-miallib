@@ -15,16 +15,18 @@ extern IMAGE *lookuprgb(IMAGE *, IMAGE *, IMAGE *, IMAGE *);
 extern IMAGE *class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut);
 extern IMAGE *area(IMAGE*, int, int);
 extern IMAGE *dirsum(IMAGE *im, int dir);
-extern ERROR_TYPE getfirstmaxpos(IMAGE *, unsigned long int *);
 extern G_TYPE *min_max(IMAGE *im);
+
+extern ERROR_TYPE getfirstmaxpos(IMAGE *im, unsigned long int *pos);
 extern ERROR_TYPE histcompress(IMAGE *im);
-extern ERROR_TYPE lookup(IMAGE *, IMAGE *);
-extern ERROR_TYPE lookuptypematch(IMAGE *, IMAGE *);
-extern ERROR_TYPE volume(IMAGE *);
+extern ERROR_TYPE lookup(IMAGE *im, IMAGE *imlut);
+extern ERROR_TYPE lookuptypematch(IMAGE *im, IMAGE *imlut);
+extern ERROR_TYPE volume(IMAGE *im);
 extern ERROR_TYPE dirmax(IMAGE *im, int dir);
-extern ERROR_TYPE imequalp(IMAGE *, IMAGE *);
+extern ERROR_TYPE imequalp(IMAGE *im1, IMAGE *im2);
 extern ERROR_TYPE getmax(IMAGE *im, double *maxval);
 extern ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval);
+
 
 /* histo.c */
 extern IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, IMAGE *cdf_gb_tgt);

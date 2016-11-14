@@ -4788,6 +4788,10 @@ ERROR_TYPE f_modulo(IMAGE *im, int val)
 
 ERROR_TYPE modulo(IMAGE *im, int val)
 {
+  if (val==0){
+    (void)sprintf(buf,"modulo(im, val): val must be different from 0\n"); errputstr(buf);
+    return(ERROR);
+  }
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE

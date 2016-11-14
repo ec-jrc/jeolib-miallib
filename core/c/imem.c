@@ -376,7 +376,7 @@ int GetImBitPerPixel(IMAGE *im)
     @param im IMAGE pointer
     @return void
 */
-void iminfo(IMAGE *im)
+ERROR_TYPE iminfo(IMAGE *im)
 {
   G_TYPE *pg;
   unsigned short int *plut;
@@ -431,6 +431,7 @@ void iminfo(IMAGE *im)
       free_image(imhst);
     }
   }
+  return(NO_ERROR);
 }
 
 /*!

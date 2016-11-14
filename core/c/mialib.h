@@ -350,7 +350,7 @@ extern void errputstr(); /* print a message to the standard error  */
 extern int GetImBitPerPixel(IMAGE *im);
 extern void free_image(IMAGE *);
 extern void free_lut(IMAGE *im);
-extern void iminfo(IMAGE *);
+extern ERROR_TYPE iminfo(IMAGE *);
 extern IMAGE *create_image(int data_type, long int nx, int ny, int nz);
 extern IMAGE *copy_image(IMAGE *im);
 extern ERROR_TYPE copy_lut(IMAGE *im1, IMAGE *im2);

@@ -17,13 +17,13 @@ swig_opts_val =  ['-v', '-Wall',  '-I../include', '-outdir', './packages/mialib'
                   '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                   '-I/usr/local/lib/python2.7',
                   '-I../../core/c',
-                  '-DMCISRG']
+                  '-DMCISRG', '-DCLASSIF']
 libraries_val = ['gdal', 'tiff', 'mialib_python']
 library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib']
 include_dirs_val = ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                     '/usr/local/lib/python2.7',
                     '../../core/c/']
-define_macros_val  = [('MCISRG', None)]
+define_macros_val  = [('MCISRG', None), ('CLASSIF', None)]
 
 
 _mialib = Extension('_mialib', ['mialib.i'],
