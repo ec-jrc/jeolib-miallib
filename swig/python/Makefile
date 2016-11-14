@@ -168,20 +168,25 @@ clean:
 	-rm -f packages/$(TARGET)/$(TARGET).py
 	-rm -f packages/$(TARGET)/*.pyc
 	-rm -f packages/$(TARGET)/_$(TARGET).so
+	-rm -f packages/mialib/*_base.py
 	-find . -name "*pyc" -delete
-	-rm -f swig/include/convolve.i
-	-rm -f swig/include/dem.i
-	-rm -f swig/include/dist.i
-	-rm -f swig/include/erodil.i
-	-rm -f swig/include/format.i
-	-rm -f swig/include/geodesy.i
-	-rm -f swig/include/hmt.i
-	-rm -f swig/include/imstat.i
-	-rm -f swig/include/label.i
-	-rm -f swig/include/opclo.i
-	-rm -f swig/include/proj.i
-	-rm -f swig/include/segment.i
-	-rm -f swig/include/stats.i
+	-rm -f ../include/geometry.i
+	-rm -f ../include/imem.i
+	-rm -f ../include/io.i
+	-rm -f ../include/pointop.i
+	-rm -f ../include/convolve.i
+	-rm -f ../include/dem.i
+	-rm -f ../include/dist.i
+	-rm -f ../include/erodil.i
+	-rm -f ../include/format.i
+	-rm -f ../include/geodesy.i
+	-rm -f ../include/hmt.i
+	-rm -f ../include/imstat.i
+	-rm -f ../include/label.i
+	-rm -f ../include/opclo.i
+	-rm -f ../include/proj.i
+	-rm -f ../include/segment.i
+	-rm -f ../include/stats.i
 
 
 veryclean: clean

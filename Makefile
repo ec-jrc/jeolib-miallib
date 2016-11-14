@@ -34,6 +34,7 @@ uninstall:
 
 clean:
 	-cd core/c && make clean
+	-cd swig/python && make clean
 	-cd swig/python && make veryclean
 	-cd xlisp/c && make clean
 	-cd xlisp/doc && make clean
