@@ -38,7 +38,6 @@ extern void gc();
 #endif
 
 
-
 /** @defgroup group_opclo Opening and closing
  *  Functions dealing with morphological opening and closing.
  *  @{
@@ -494,11 +493,11 @@ void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
 
 
 
-void GreyAttributeClosing( double lambda,int width, int height, greyval *im, greyval *parent, void **auxdata,  void *(*NewAuxData)(int, int), void (*DisposeAuxData)(void *), void (*AddToAuxData)(void *,int, int), void *(*MergeAuxData)(void *, void*), double (*Attribute)(void *), int graph)      
+void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, greyval *parent, void **auxdata,  void *(*NewAuxData)(int, int), void (*DisposeAuxData)(void *), void (*AddToAuxData)(void *,int, int), void *(*MergeAuxData)(void *, void*), double (*Attribute)(void *), int graph)      
 {
 
 
-/* double lambda,    /\* threshold on attribute *\/     */
+/* double lambdaVal,    /\* threshold on attribute *\/     */
 /*                             int width,        /\* image width  *\/  */
 /*                             int height,       /\* image height *\/ */
 /* 		            greyval *im,      /\* input image  *\/ */
@@ -597,7 +596,7 @@ void GreyAttributeClosing( double lambda,int width, int height, greyval *im, gre
         { pixel = *current;
           if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
                &&
-               ( (*Attribute)(auxdata[pixel]) >= lambda) )
+               ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
@@ -624,7 +623,7 @@ void GreyAttributeClosing( double lambda,int width, int height, greyval *im, gre
 }
 
 
-void GreyAttributeOpening( double lambda,    /* threshold on attribute */    
+void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */    
                             int width,        /* image width  */ 
                             int height,       /* image height */
 		            greyval *im,      /* input image  */
@@ -721,7 +720,7 @@ void GreyAttributeOpening( double lambda,    /* threshold on attribute */
         { pixel = *current;
           if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
                &&
-               ( (*Attribute)(auxdata[pixel]) >= lambda) )
+               ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
@@ -928,7 +927,7 @@ double InertiaAttribute ( void *pixeldata )
 
 /*********************************************************************/
 
-IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph)
+IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambdaVal, int graph)
 {
   int width, height;
   IMAGE *imliiarout;
@@ -950,14 +949,14 @@ IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph
   switch (type){
   case 0:  /* surface area */
       if (oporclo==0){
-         GreyAttributeOpening (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewSurfaceData, DisposeSurfaceData, 
                         AddToSurfaceData, MergeSurfaceData,
                         SurfaceAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewSurfaceData, DisposeSurfaceData, 
                         AddToSurfaceData, MergeSurfaceData,
@@ -966,14 +965,14 @@ IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph
       break;
   case 1: /* Inertia */
       if (oporclo==0){
-         GreyAttributeOpening (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewInertiaData, DisposeInertiaData, 
                         AddToInertiaData, MergeInertiaData,
                         InertiaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewInertiaData, DisposeInertiaData, 
                         AddToInertiaData, MergeInertiaData,
@@ -982,14 +981,14 @@ IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph
       break;
   case 2: /* Area of Enclose Rectangle */
       if (oporclo==0){
-         GreyAttributeOpening (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewEnclRectData, DisposeEnclRectData, 
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectAreaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewEnclRectData, DisposeEnclRectData, 
                         AddToEnclRectData, MergeEnclRectData,
@@ -998,14 +997,14 @@ IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambda, int graph
       break;
   case 3: /* Length of diagonal of Enclose Rectangle */
       if (oporclo==0){
-         GreyAttributeOpening (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewEnclRectData, DisposeEnclRectData, 
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectAreaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambda, width, height, imext[0], parentext[0], 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
                         auxdataext[0], 
                         NewEnclRectData, DisposeEnclRectData, 
                         AddToEnclRectData, MergeEnclRectData,
@@ -1121,14 +1120,14 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
             root = opening[root];                                 \
           newroot = root;                                         \
           if (root!=pixel)  {                                      \
-            if ((-opening[root]) < lambda)                         \
+            if ((-opening[root]) < lambdaVal)                         \
             {                                                     \
               opening[pixel] += opening[root];                    \
               opening[root] = pixel;                              \
               newroot = pixel;                                    \
             }                                                     \
             else                                                  \
-              opening[pixel] = -lambda;                           \
+              opening[pixel] = -lambdaVal;                           \
           } \
           r = (p);                                                \
           while (r != root)                                       \
@@ -1146,14 +1145,14 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
             root = opening[root];                                 \
           newroot = root;                                         \
           if (root!=pixel)  {                                      \
-            if ((im[root] == im[pixel]) || ((-opening[root]) < lambda)) \
+            if ((im[root] == im[pixel]) || ((-opening[root]) < lambdaVal)) \
             {                                                     \
               opening[pixel] += opening[root];                    \
               opening[root] = pixel;                              \
               newroot = pixel;                                    \
             }                                                     \
             else                                                  \
-              opening[pixel] = -lambda;                           \
+              opening[pixel] = -lambdaVal;                           \
           } \
           r = (p);                                                \
           while (r != root)                                       \
@@ -1164,7 +1163,7 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
             }                                                     \
 }
 
-IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1229,7 +1228,7 @@ IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambda)
 }
 
 
-IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1322,12 +1321,12 @@ IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambda)
 
 
 
-IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambda, int graph)
+IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4 (imliiar, lambda));
+    return (GreyAreaOpening4 (imliiar, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8 (imliiar, lambda));
+    return (GreyAreaOpening8 (imliiar, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1336,7 +1335,7 @@ IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambda, int graph)
 
 
 
-IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1404,7 +1403,7 @@ IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambda)
   return imliiarout;
 }
 
-IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambdaVal)
 {
   IMAGE *imliiarout;
   int width=GetImNx(imliiar);
@@ -1490,12 +1489,12 @@ IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambda)
 }
 
 
-IMAGE *GreyAreaClosing(IMAGE *imliiar, int lambda, int graph)
+IMAGE *GreyAreaClosing(IMAGE *imliiar, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4 (imliiar, lambda));
+    return (GreyAreaClosing4 (imliiar, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8 (imliiar, lambda));
+    return (GreyAreaClosing8 (imliiar, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosing: graph must be either 4 or 8\n");
   return NULL;
@@ -1518,7 +1517,7 @@ int OUTROI     = 65535;
 
 extern ERROR_TYPE set_seq_shift();
 
-void GreyAttributeClosingROI ( double lambda,    /* threshold on attribute */    
+void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */    
                             int width,        /* image width  */ 
                             int height,       /* image height */
 		            greyval *im,      /* input image  */
@@ -1618,7 +1617,7 @@ void GreyAttributeClosingROI ( double lambda,    /* threshold on attribute */
         { pixel = *current;
           if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
                &&
-               ( (*Attribute)(auxdata[pixel]) >= lambda) )
+               ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
@@ -1647,7 +1646,7 @@ void GreyAttributeClosingROI ( double lambda,    /* threshold on attribute */
 
 
 
-IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1727,7 +1726,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambda)
 
 
 
-IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1820,12 +1819,12 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambda)
 
 
 
-IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambda, int graph)
+IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4ROI (imliiar, lambda));
+    return (GreyAreaOpening4ROI (imliiar, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8ROI (imliiar, lambda));
+    return (GreyAreaOpening8ROI (imliiar, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1833,7 +1832,7 @@ IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambda, int graph)
     
 
 
-IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -1909,7 +1908,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambda)
 }
 
 
-IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambda)
+IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambdaVal)
 {
 
   IMAGE *imliiarout;
@@ -2003,12 +2002,12 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambda)
 
 
 
-IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambda, int graph)
+IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4ROI (imliiar, lambda));
+    return (GreyAreaClosing4ROI (imliiar, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8ROI (imliiar, lambda));
+    return (GreyAreaClosing8ROI (imliiar, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosingROI: graph must be either 4 or 8\n");
   return NULL;

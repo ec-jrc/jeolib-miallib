@@ -1527,7 +1527,6 @@ ERROR_TYPE generic_volume(IMAGE *im)
 #include "g_undef.h"
 #endif /* #ifndef NO_generic_IMAGE */
 
-
 #include "us_def.h"
 ERROR_TYPE us_volume(IMAGE *im)
 {
@@ -1585,8 +1584,6 @@ ERROR_TYPE i32_volume(IMAGE *im)
 }
 #include "i32_undef.h"
 
-
-
 #include "u32_def.h"
 ERROR_TYPE u32_volume(IMAGE *im)
 {
@@ -1605,6 +1602,44 @@ ERROR_TYPE u32_volume(IMAGE *im)
   return(NO_ERROR);
 }
 #include "u32_undef.h"
+
+#include "u64_def.h"
+ERROR_TYPE u64_volume(IMAGE *im)
+{
+  VOL_TYPE sum = (VOL_TYPE)0;
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+
+  p1   = (PIX_TYPE *)GetImPtr(im);
+  npix = GetImNPix(im);
+
+  for (i=0; i<npix; i++, p1++) 
+    sum += *p1;
+  
+  SetImVol(im,sum);
+ 
+  return(NO_ERROR);
+}
+#include "u64_undef.h"
+
+#include "i64_def.h"
+ERROR_TYPE i64_volume(IMAGE *im)
+{
+  VOL_TYPE sum = (VOL_TYPE)0;
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+
+  p1   = (PIX_TYPE *)GetImPtr(im);
+  npix = GetImNPix(im);
+
+  for (i=0; i<npix; i++, p1++) 
+    sum += *p1;
+  
+  SetImVol(im,sum);
+ 
+  return(NO_ERROR);
+}
+#include "i64_undef.h"
 
 #include "f_def.h"
 ERROR_TYPE f_volume(IMAGE *im)
@@ -1662,7 +1697,6 @@ ERROR_TYPE volume(IMAGE *im)
     break;
 #endif
 
-
   case t_USHORT:
     return(us_volume(im));
     break;
@@ -1671,26 +1705,20 @@ ERROR_TYPE volume(IMAGE *im)
     return(s_volume(im));
     break;
 
-
-#ifndef NO_s_IMAGE
-  case t_SHORT:
-    return(s_volume(im));
-    break;
-#endif
-
-#ifndef NO_u32_IMAGE
-  case t_UINT32:
-    return(u32_volume(im));
-    break;
-#endif
-
-
   case t_INT32:
     return(i32_volume(im));
     break;
 
   case t_UINT32:
     return(u32_volume(im));
+    break;
+
+  case t_INT64:
+    return(i64_volume(im));
+    break;
+
+  case t_UINT64:
+    return(u64_volume(im));
     break;
 
   case t_FLOAT:
@@ -1706,12 +1734,6 @@ ERROR_TYPE volume(IMAGE *im)
   }
   return(ERROR);
 }
-
-
-
-
-
-
 
 
 #ifndef NO_generic_IMAGE
