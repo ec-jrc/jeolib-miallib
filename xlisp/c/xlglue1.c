@@ -668,13 +668,13 @@ LVAL irotatefast()
   LVAL xlim1, result, u_ptr, v_ptr;
   double theta;
 /*
-%  \lspfunction{*}{rotatefast}{im theta}
-%  \param{im}{an image node}
-%  \param{theta}{a floating point value for rotation angle in radian}
-%  \return{a list of x- and y- coordinates}
-%  \desc{in development 20110207}
-%  \cfunction{\cfrotatecoor}
-%  \cfile{imio.c}
+  \lspfunction{*}{rotatefast}{im theta}
+  \param{im}{an image node}
+  \param{theta}{a floating point value for rotation angle in radian}
+  \return{a list of x- and y- coordinates}
+  \desc{in development 20110207}
+  \cfunction{\cfrotatecoor}
+  \cfile{imio.c}
 */
   if (!moreargs())
     xlabort("(*rotatefast im theta)\n");
