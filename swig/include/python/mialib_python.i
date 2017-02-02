@@ -30,7 +30,7 @@
     return NO_ERROR;
   }
 
-  ERROR_TYPE _ConvertNumPyArrayToMIALibIMAGE( IMAGE *im, PyArrayObject *psArray) {
+  ERROR_TYPE CConvertNumPyArrayToMIALibIMAGE( IMAGE *im, PyArrayObject *psArray) {
     im->p_im=memcpy( (void *)GetImPtr(im), (void *)(psArray->data), GetImNx(im)*GetImNy(im)*(GetImBitPerPixel(im)/8));
     return NO_ERROR; 
   }
@@ -38,6 +38,7 @@
 
 %pythoncode %{
 import numpy
+import imem_base
 
 t_UCHAR    =  3
 t_SHORT    =  4
@@ -49,30 +50,6 @@ t_UINT64   =  9
 t_FLOAT    = 10
 t_MIAFLOAT = 10
 t_DOUBLE   = 11
-
-def ImDataToNumPyTypeCode(IMAGE_data_type):
-    """Converts a given MIALib image data  type code into the correspondent
-   numpy array data type code."""
-    if IMAGE_data_type == t_UCHAR:
-      return numpy.uint8
-    elif IMAGE_data_type == t_USHORT:
-      return numpy.uint16
-    elif IMAGE_data_type == t_SHORT:
-      return numpy.int16
-    elif IMAGE_data_type == t_UINT32:
-      return numpy.uint32
-    elif IMAGE_data_type == t_INT32:
-      return numpy.int32
-    elif IMAGE_data_type == t_UINT64:
-      return numpy.uint64
-    elif IMAGE_data_type == t_INT64:
-      return numpy.int64
-    elif IMAGE_data_type == t_FLOAT:
-      return numpy.float32
-    elif IMAGE_data_type == t_DOUBLE:
-      return numpy.float64
-    else:
-        raise TypeError("provided IMAGE_data_type with available IMAGE data types")
 
 def NumPyToImDataTypeCode(numeric_type):
     """Converts a given numpy array data type code into the correspondent
@@ -135,7 +112,7 @@ def ConvertToNumPyArray( im ):
     buf_obj = numpy.empty([im.ny,im.nx], dtype = ImDataToNumPyTypeCode(im.DataType))
 
     if RasterIOMIALib(im, buf_obj) != NO_ERROR:
-       return None
+       return buf_obj
 
     return buf_obj
 
@@ -143,10 +120,17 @@ def ConvertNumPyArrayToMIALibImage( psArray ):
     """Pure python implementation of converting a numpy array into
     a MIALib image.  Data values are copied!"""
 
-    im=_mialib.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    # im=create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    #im=_mialib.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
 
-    if _ConvertNumPyArrayToMIALibIMAGE(im, psArray) != NO_ERROR:
-        return None
+    # with import imem_base
+    #im=create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    #im=mialib.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    #im=_imem_base.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    im=imem_base.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+
+    if CConvertNumPyArrayToMIALibIMAGE(im, psArray) != NO_ERROR:
+        return im
 
     return im
 
