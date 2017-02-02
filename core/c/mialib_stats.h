@@ -11,9 +11,9 @@ extern IMAGE *histo1d(IMAGE *im);
 extern IMAGE *histo2d(IMAGE *im1, IMAGE *im2);
 extern IMAGE *histo3d(IMAGE *im1, IMAGE *im2, IMAGE *im3);
 extern IMAGE *rsum(IMAGE *im);
-extern IMAGE *lookuprgb(IMAGE *, IMAGE *, IMAGE *, IMAGE *);
+extern IMAGE *lookuprgb(IMAGE *imr, IMAGE *img, IMAGE *imb, IMAGE *imlut);
 extern IMAGE *class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut);
-extern IMAGE *area(IMAGE*, int, int);
+extern IMAGE *area(IMAGE *im, int r, int type);
 extern IMAGE *dirsum(IMAGE *im, int dir);
 extern G_TYPE *min_max(IMAGE *im);
 
