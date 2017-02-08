@@ -10,6 +10,25 @@
 # and mialib.imem_base.copy_image
 #from imem_base import *
 
+# make all base functions available at top level
+from convolve_base import *
+from dem_base import *
+from dist_base import *
+from erodil_base import *
+from hmt_base import *
+from label_base import *
+from opclo_base import *
+from proj_base import *
+from segment_base import *
+
+# make all extended functions available at top level
+from format import *
+from geometry import *
+from geodesy import *
+from stats import *
+from io import *
+from pointop import *
+from visu import *
 
 
 
