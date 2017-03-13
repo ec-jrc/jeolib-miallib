@@ -503,6 +503,14 @@ extern long int objectpix(IMAGE *im);
 extern long int get_offset_first_pixel(long int nx, long int ny, long int nz, int graph);
 extern long int get_offset_last_pixel(long int nx, long int ny, long int nz, int graph);
 
+/* erodil.c */
+extern ERROR_TYPE erode4(IMAGE *im, int ox, int oy);
+extern ERROR_TYPE dilate4(IMAGE *im, int ox, int oy);
+extern IMAGE *erode(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag);
+extern IMAGE *dilate(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag);
+extern IMAGE *volerode(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz);
+extern IMAGE *rank(IMAGE *im, IMAGE *imse, int rank, int ox, int oy, int oz, int trflag);
+
 /* lerodil.c */
 extern ERROR_TYPE linero(IMAGE *im, int dx, int dy, int n, int line_type);
 extern ERROR_TYPE lindil(IMAGE *im, int dx, int dy, int n,int line_type);

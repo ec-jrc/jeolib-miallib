@@ -15,6 +15,8 @@ extern ERROR_TYPE herkpldil(IMAGE *im, int dx, int dy, int k, int o, int t);
 extern ERROR_TYPE herkplero(IMAGE *im, int dx, int dy, int k, int o, int t);
 
 /* erodil.c */
+extern ERROR_TYPE erode4(IMAGE *im, int ox, int oy);
+extern ERROR_TYPE dilate4(IMAGE *im, int ox, int oy);
 extern IMAGE *erode(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag);
 extern IMAGE *dilate(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag);
 extern IMAGE *volerode(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz);
