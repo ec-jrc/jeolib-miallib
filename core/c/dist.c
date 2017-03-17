@@ -10,8 +10,7 @@
 
 #ifndef NO_generic_IMAGE
 #include "g_def.h"
-ERROR_TYPE generic_dst2d4(im)
-     IMAGE *im;
+ERROR_TYPE generic_dst2d4(IMAGE *im)
 {
   int box[BOXELEM];
   PIX_TYPE *p, *pend, tmp;
@@ -48,6 +47,42 @@ ERROR_TYPE generic_dst2d4(im)
 #endif /* #ifndef NO_generic_IMAGE */
 
 
+#include "us_def.h"
+ERROR_TYPE us_dst2d4(IMAGE *im)
+{
+  int box[BOXELEM];
+  PIX_TYPE *p, *pend, tmp;
+  int nx = GetImNx(im);
+  
+  /* Set borders to zero */
+  box[0]=box[1]=box[2]=box[3]=1;
+  box[4]=box[5]=0;
+  if (us_framebox(im,box,0)==ERROR)
+    return ERROR;
+  
+  /* forward scan */
+  p    = (PIX_TYPE *)GetImPtr(im);
+  pend = p+nx*GetImNy(im)-GetImNx(im)-1;
+  for (p += (nx + 1); p < pend; ++p){
+    if (*p)
+      *p = (*(p-1)+1)<(*(p-nx)+1) ? *(p-1)+1 : *(p-nx)+1;
+  }
+  
+  /* backward scan */
+  pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
+  p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
+  for (p -= (GetImNx(im)-2); p > pend; --p){
+    if (*p){
+      tmp = *p;
+      *p = (*(p+1)+1) < (*(p+nx)+1)  ? *(p+1)+1 : *(p+nx)+1;
+      if (tmp < *p)
+	*p = tmp;
+    }
+  }
+  return(NO_ERROR);
+}
+#include "us_undef.h"
+
 ERROR_TYPE dst2d4(IMAGE *im)
 {
   switch (GetImDataType(im)){
@@ -63,11 +98,11 @@ ERROR_TYPE dst2d4(IMAGE *im)
     return(uc_dst2d4(im));
     break;
 #endif
-#ifndef NO_us_IMAGE
+
   case t_USHORT:
     return(us_dst2d4(im));
     break;
-#endif
+
   default:
     (void)sprintf(buf,"dst2d4(im): invalid pixel type\n"); errputstr(buf);
     return(ERROR);
@@ -79,8 +114,7 @@ ERROR_TYPE dst2d4(IMAGE *im)
 
 #ifndef NO_generic_IMAGE
 #include "g_def.h"
-ERROR_TYPE generic_dst2dchamfer(im)
-     IMAGE *im;
+ERROR_TYPE generic_dst2dchamfer(IMAGE *im)
 {
   int box[BOXELEM];
   PIX_TYPE *p, *pend;
@@ -128,6 +162,53 @@ ERROR_TYPE generic_dst2dchamfer(im)
 #endif /* #ifndef NO_generic_IMAGE */
 
 
+#include "us_def.h"
+ERROR_TYPE us_dst2dchamfer(IMAGE *im)
+{
+  int box[BOXELEM];
+  PIX_TYPE *p, *pend;
+  int nx = GetImNx(im);
+  
+  /* Set borders to zero */
+  box[0]=box[1]=box[2]=box[3]=1;
+  box[4]=box[5]=0;
+  if (us_framebox(im,box,0)==ERROR)
+    return ERROR;
+  
+  /* forward scan */
+  p    = (PIX_TYPE *)GetImPtr(im);
+  pend = p+nx*GetImNy(im)-GetImNx(im)-1;
+  for (p += (nx + 1); p < pend; ++p){
+    if (*p){
+      *p = *(p - nx + 1) + 7;
+      if (*p > *(p - nx) + 5)
+	*p = *(p - nx) + 5;
+      if (*p  > *(p - nx - 1) + 7)
+	*p = *(p - nx - 1) + 7;
+      if (*p  > *(p  - 1) + 5)
+	*p = *(p - 1) + 5;
+    }
+  }
+  
+  /* backward scan */
+  pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
+  p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
+  for (p -= (GetImNx(im)-2); p > pend; --p){
+    if (*p){
+      if (*p > *(p + nx + 1) + 7)
+	*p = *(p + nx + 1) + 7;
+      if (*p > *(p + nx) + 5)
+	*p = *(p + nx) + 5;
+      if (*p > *(p + nx - 1) + 7)
+	*p = *(p + nx - 1) + 7;
+      if (*p > *(p  + 1) + 5)
+	*p = *(p + 1) + 5;
+    }
+  }
+  return(NO_ERROR);
+}
+#include "us_undef.h"
+
 
 ERROR_TYPE dst2dchamfer(IMAGE *im)
 {
@@ -144,21 +225,17 @@ ERROR_TYPE dst2dchamfer(IMAGE *im)
     return(uc_dst2dchamfer(im));
     break;
 #endif
-#ifndef NO_us_IMAGE
+
   case t_USHORT:
     return(us_dst2dchamfer(im));
     break;
-#endif
+
   default:
     (void)sprintf(buf,"dst2dchamfer(im): invalid pixel type\n"); errputstr(buf);
     return(ERROR);
   }
   return(NO_ERROR);
 }
-
-
-
-
 
 
 
