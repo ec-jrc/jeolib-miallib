@@ -8,6 +8,7 @@ from geodesy_base import *
 import imem_base
 
 import geometry
+import pointop
 
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 # Geodesic transformations defined in python only
@@ -44,8 +45,8 @@ def nd_rerodilp(marker, mask, graph, flag, version):
 
 def fillhole(im, graph=4):
     marker=imem_base.create_image(im.DataType, im.nx, im.ny, im.nz)
-    pointop.d_blank(marker, 255)
-    geometry.d_framebox(marker, 2, 2, 2, 2, 0, 0, 0)
+    pointop.d_blank(marker, 255.0)
+    geometry.d_framebox(marker, 2, 2, 2, 2, 0, 0, 0.0)
     return d_rero(marker, im, graph)
 
 

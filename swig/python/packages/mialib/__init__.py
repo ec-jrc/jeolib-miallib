@@ -11,15 +11,25 @@
 #from imem_base import *
 
 # make all base functions available at top level
+from mialib import *
 from convolve_base import *
 from dem_base import *
 from dist_base import *
 from erodil_base import *
+from format_base import *
+from geodesy_base import *
+from geometry_base import *
 from hmt_base import *
+from imem_base import *
+from io_base import *
 from label_base import *
 from opclo_base import *
+from pointop_base import *
 from proj_base import *
 from segment_base import *
+from stats_base import *
+
+
 
 # make all extended functions available at top level
 from format import *
@@ -30,9 +40,6 @@ from io import *
 from pointop import *
 from visu import *
 
-
-
-#from mialib import *
 
 # packages with base only definitions
 import convolve_base

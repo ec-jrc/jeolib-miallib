@@ -1,5 +1,4 @@
-#import mialib
-
+import mialib
 
 from geometry_base import *
 
@@ -12,7 +11,7 @@ def d_framebox(i0, l, r, t, b, u, d, val):
     mialib.intp_setitem(box, 4, u)
     mialib.intp_setitem(box, 5, d)
 
-    r=mialib.framebox(i0, box, val)
+    r=framebox(i0, box, val)
 
     if r==mialib.NO_ERROR:
         return i0
