@@ -941,7 +941,7 @@ IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
 
   if (szcompat(im_m, im_r) != NO_ERROR){
     (void) sprintf(buf, "sqtgsym(): input images must be of same geometry and type\n"); errputstr(buf);
-    return ERROR;
+    return NULL;
   }
   
   switch (GetImDataType(im_m)){

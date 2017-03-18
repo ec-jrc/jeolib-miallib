@@ -201,6 +201,9 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   }
  }
 
+
+
+
 // handling IMAGE array output argument as python list
 %typemap(out) IMAGE **rotatecoor {
   int i;

@@ -23,7 +23,7 @@ extern int GetImBitPerPixel(IMAGE *im);
 extern IMAGE **create_imarray(int);
 
 /* shm.c */
-extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t nbyte, int type);
-extern ERROR_TYPE shmdtimage(void *shm_address, int semkey_flag, key_t semkey);
+// extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t nbyte, int type);
+// extern ERROR_TYPE shmdtimage(void *shm_address, int semkey_flag, key_t semkey);
 
 #endif /* mialib_imem.h */

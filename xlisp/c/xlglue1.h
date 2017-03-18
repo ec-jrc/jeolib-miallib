@@ -294,7 +294,7 @@ extern IMAGE *labelccattr(IMAGE *im, int graph, int rg, int rl);
 extern IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha);
 
 /* projection.c */
-extern ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char *parmso[], int no, IMAGE *imx, IMAGE *imy, double res);
+extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no);
 
 /* remsens.c  */
 extern double julian_date(short int year, short int month, short int day, double hour);

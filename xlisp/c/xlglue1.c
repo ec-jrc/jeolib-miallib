@@ -9543,6 +9543,8 @@ LVAL ics2cs()
   char *parmsi[NPARMS], *parmso[NPARMS], to[3]="to", emptystr[1]="";
   IMAGE *imx=NULL, *imy=NULL;
   int ni=0, no=0, flag=1;
+  IMAGE **imarray=NULL;
+  
 /*
   \lspfunction{*}{cs2cs}{ulc_e ulc_n nx ny res &opt proj4args (flag 1)}
   \param{ulc_e}{floating point value for upper left corner x-coordinate (in m or rad) of target image}
@@ -9554,7 +9556,7 @@ LVAL ics2cs()
   \return{a list containing two images of float data type, the first for the x-ccordinates of the target image, the second for the y coodinates.}
   \desc{wrapper function to \htmladdnormallink{proj4}{http://trac.osgeo.org/proj/} cartographic projection procedures \cite{evenden2003}.}
   \cfunction{\cfcsTWOcs}
-  \cfile{grid.c}
+  \cfile{projection.c}
   \example{}{}
 */
   if (!moreargs())
@@ -9599,22 +9601,15 @@ LVAL ics2cs()
 	break;
     }
   }
-  /* printf("no=%d\n", no); */
-  imx=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imx==NULL){
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NIL;
-  }
-  imy=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imy==NULL){
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NIL;
-  }
 
-  if (cs2cs(ulc_e, ulc_n, parmsi, ni, parmso, no, imx, imy, res) == ERROR){
+  imarray=cs2cs(ulc_e, ulc_n, nx, ny, res, parmsi, ni, parmso, no);
+  if (imarray == NULL){
       sprintf(buf,"error: returned by cs2cs()\n"); errputstr(buf);
       return NIL;
   }
+  imx=imarray[0];
+  imy=imarray[1];
+
   xlstkcheck(3);
   xlsave(u_ptr);
   xlsave(v_ptr);
@@ -9623,6 +9618,7 @@ LVAL ics2cs()
   v_ptr=cvimage(imy);
   result = cons(u_ptr, cons (v_ptr, NIL));
   xlpopn(3);
+  free(imarray);
   return result;
 }
 LVAL ijulian_date()
