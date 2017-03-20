@@ -20,7 +20,7 @@ extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
 extern ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g);
 extern G_TYPE getpixval(IMAGE *im, unsigned long offset);
 extern int GetImBitPerPixel(IMAGE *im);
-extern IMAGE **create_imarray(int);
+// extern IMAGE **create_imarray(int);
 
 /* shm.c */
 // extern IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t nbyte, int type);

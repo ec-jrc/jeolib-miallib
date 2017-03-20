@@ -116,6 +116,68 @@ extern void free_image(IMAGE *);
   PyList_SetItem($result,($argnum)-2,o);
  }
 
+%typemap(out) G_TYPE *min_max {
+  PyObject * o = 0 ;
+  double min, max;
+  if (result==NULL){
+    PyErr_SetString(PyExc_ValueError,"min_max() returned error");
+    return NULL;
+  }
+  $result = PyList_New(2);
+  if (arg1!=NULL){
+    switch (GetImDataType(arg1)){
+    case t_UCHAR:
+      min=result[0].uc_val;
+      max=result[1].uc_val;
+      break;
+    case t_USHORT:
+      min=result[0].us_val;
+      max=result[1].us_val;
+      break;
+    case t_SHORT:
+      min=result[0].s_val;
+      max=result[1].s_val;
+      break;
+    case t_UINT32:
+      min=result[0].u32_val;
+      max=result[1].u32_val;
+      break;
+    case t_INT32:
+      min=result[0].i32_val;
+      max=result[1].i32_val;
+      break;
+    case t_UINT64:
+      min=result[0].u64_val;
+      max=result[1].u64_val;
+      break;
+    case t_INT64:
+      min=result[0].i64_val;
+      max=result[1].i64_val;
+      break;
+    case t_FLOAT:
+      min=result[0].f_val;
+      max=result[1].f_val;
+      break;
+    case t_DOUBLE:
+      min=result[0].d_val;
+      max=result[1].d_val;
+      break;
+    default:
+      PyErr_SetString(PyExc_ValueError,"min_max() invalid data type");
+      return NULL;
+    }
+    o=PyFloat_FromDouble(min);
+    PyList_SetItem($result,0,o);
+    o=PyFloat_FromDouble(max);
+    PyList_SetItem($result,1,o);
+  }
+  else
+    return NULL;
+ }
+
+
+// typemaps for:
+// extern ERROR_TYPE FindPixWithVal(IMAGE *im, G_TYPE gval, unsigned long int *ofs);
 %typemap(check) unsigned long int ofs {
   if ($1 < 0) {
       SWIG_exception(SWIG_ValueError, "Expected non-negative value.");
@@ -184,9 +246,12 @@ extern void free_image(IMAGE *);
   case t_DOUBLE:
     dval=(double)$1.d_val;
     break;
+  default:
+    printf("getpixval(): undefined pixel type (%d) !\n)", GetImDataType(arg1));
   }
   $result=PyFloat_FromDouble(dval);
  }
+
 
 // 20160923
 // define a typemap to handle IMAGE arrays as lists in Python
@@ -222,6 +287,8 @@ extern void free_image(IMAGE *);
   free($1);
 }
 
+// typemaps for:
+// IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no);
 
 // Python String Functions http://swig.org/Doc3.0/SWIGDocumentation.html#Python_nn49
 // PyObject *PyString_FromString(char *);
@@ -233,7 +300,6 @@ extern void free_image(IMAGE *);
 
 %typemap(in) (char *parmsi[], int ni) {
   int i, dim;
-  int res1;
   void *argp1 = 0 ;
   if (!PySequence_Check($input)) {
     PyErr_SetString(PyExc_ValueError,"Expected a sequence");
@@ -266,7 +332,6 @@ extern void free_image(IMAGE *);
 
 %typemap(in) (char *parmso[], int no) {
   int i, dim;
-  int res1;
   void *argp1 = 0 ;
   if (!PySequence_Check($input)) {
     PyErr_SetString(PyExc_ValueError,"Expected a sequence");
@@ -339,7 +404,10 @@ extern void free_image(IMAGE *);
   }
  }
 
+//
 // handling IMAGE array output argument as python list
+//
+
 %typemap(out) IMAGE **cs2cs {
   int i;
   int nc=2;
@@ -430,6 +498,23 @@ extern void free_image(IMAGE *);
   }
   free(imap);
  }
+
+%typemap(out) IMAGE **imgc {
+  int i;
+  int nc=2;
+  IMAGE **imap=(IMAGE **)$1;
+  $result = PyList_New(nc);
+  PyObject * o = 0 ;
+  for (i = 0; i < nc; i++) {
+    o = SWIG_NewPointerObj(SWIG_as_voidptr(imap[i]), SWIGTYPE_p_IMAGE, SWIG_POINTER_OWN |  0 );
+    PyList_SetItem($result,i,o);
+  }
+  free(imap);
+ }
+
+
+
+
 
 
 /* %typemap(argout) ERROR_TYPE to_uchar(IMAGE *) { */

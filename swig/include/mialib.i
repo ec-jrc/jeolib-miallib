@@ -114,8 +114,6 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   PyList_SetItem($result,($argnum)-2,o);
  }
 
-  
-
 // handle G_TYPE arguments as Python Float value in python
 %typemap(in) G_TYPE {
   G_TYPE gt;
