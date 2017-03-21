@@ -10,6 +10,7 @@
 extern ERROR_TYPE dst2d4(IMAGE *im);
 extern ERROR_TYPE dst2dchamfer(IMAGE *im);
 extern ERROR_TYPE chamfer2d(IMAGE *im, int type);
+extern IMAGE *edistfifo2d(IMAGE *im, int graph);
 
 /* efedt.c */
 extern IMAGE *sqedt(IMAGE *im);

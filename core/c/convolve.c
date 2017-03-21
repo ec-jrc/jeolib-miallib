@@ -442,7 +442,7 @@ ERROR_TYPE azimuth(IMAGE *ix, IMAGE *iy)
 }
 
 #include "uc_def.h"
-#define rad2deguchar(x) ((x)*((double)255/(2*PI))) /* radians to uchar values */
+#define rad2deguchar(x) ((x)*((double)PIX_MAX/(2*PI))) /* radians to uchar values */
 ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
@@ -479,7 +479,7 @@ ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
 #include "uc_undef.h"
       
 #include "us_def.h"
-#define rad2degushort(x) ((x)*((double)65535/(2*PI))) /* radians to uchar values */
+#define rad2degushort(x) ((x)*((double)PIX_MAX/(2*PI))) /* radians to uchar values */
 ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
@@ -516,6 +516,14 @@ ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
 #include "us_undef.h"
       
 
+/** 
+ * @synopsis orientation map of a raster with respect to an origin
+ *
+ * @param i0: an IMAGE
+ * @param ox: x-coordinate of an origin in pixel space
+ * @param oy: y-coordinate of an origin in pixel space
+ * @desc sets each pixel of the input image i0 to its orientation with respect to an origin with pixel coordinates (ox,oy).  The values are given in degrees rescaled according to the data type of the input image.
+ */
 ERROR_TYPE mapori(IMAGE *i0, int ox, int oy)
 {
   switch (GetImDataType(i0)){

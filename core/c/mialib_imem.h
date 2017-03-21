@@ -16,6 +16,8 @@ extern ERROR_TYPE create_lut(IMAGE *im);
 extern void free_lut(IMAGE *im);
 extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi);
 extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
+extern ERROR_TYPE FindPixWithVal(IMAGE *im, G_TYPE gval, unsigned long int *ofs);
+
 /* note: not wrapped in mialisp */
 extern ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g);
 extern G_TYPE getpixval(IMAGE *im, unsigned long offset);

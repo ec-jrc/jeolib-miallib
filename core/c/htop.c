@@ -23,7 +23,7 @@
 IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
 { 
   /*
-    This function was created following a discussion with Segion Rosim
+    This function was created following a discussion with Sergio Rosim
     and Joao Oliveira from INPE (visit to JRC on 14--15/11/2013.
 
     by Pierre.Soille@jrc.ec.europa.eu
@@ -156,6 +156,13 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
 
 
 
+/** 
+ * @synopsis upstream maximum height
+ *
+ * @param i0: an image
+ * @param d8: an image holding the D8 flow directions of i0
+ * @desc compute for each pixel the height of its highest upstream pixel
+ */
 IMAGE *htop(IMAGE *dem, IMAGE *d8)
 {
   switch (GetImDataType(dem)){

@@ -26,7 +26,6 @@ extern ERROR_TYPE power2p(IMAGE *im);
 extern ERROR_TYPE blank(IMAGE *im, G_TYPE gval);
 extern ERROR_TYPE shift(IMAGE *im, int val);
 extern ERROR_TYPE setrange(IMAGE *im, G_TYPE gt1, G_TYPE gt2);
-extern ERROR_TYPE FindPixWithVal(IMAGE *im, G_TYPE gval, unsigned long int *ofs);
 
 
 #endif /* mialib_pointop.h */
