@@ -76,6 +76,271 @@ extern void free_image(IMAGE *);
 
 // %rename("nd_%s", regextarget=1, fullname=1) "IMAGE \*\(.*";
 
+/* %rename(convolve) convolve; */
+/* %rename(convolveDownSample) convolvedownsample; */
+/* %rename(runSum2d) rsum2d; */
+/* %rename(runSum3d) rsum3d; */
+/* %rename(runSumInSquareNgb) rsumsq2d; */
+/* %rename(meanInSquareNgb) mean2d; */
+/* %rename(meanFilter2d) mean2dse; */
+/* %rename(varianceFilter2d) variance2dse; */
+/* %rename(gradientAzimuth) azimuth; */
+/* %rename(orientationMap) mapori; */
+/* %rename(phaseCorrelation) phase_correlation; */
+/* %rename(flowDirectionD8) d8; */
+/* %rename(flowDirectionDInf) dinf; */
+/* %rename(slopeD8) slope8; */
+/* %rename(flow) flow; */
+/* %rename(flowNew) flownew; */
+/* %rename(contributingDrainageArea) cda; */
+/* %rename(contributingDrainageAreaStratify) stratify; */
+/* %rename(contributingDrainageAreaDInf) cdainf; */
+/* %rename(slopeDInf) slopeinf; */
+/* %rename(floodDirection) dir; */
+/* %rename(catchmentBasinOutlet) cboutlet; */
+/* %rename(catchmenBasinConfluence) cbconfluence; */
+/* %rename(strahlerOrder) strahler; */
+/* %rename(pitRemovalCarve) aflood; */
+/* %rename(pitRemovalOptimal) fillocarve; */
+/* %rename(flowDirectionFlat) FlatDir; */
+/* %rename(flowDirectionFlatGeodesic) FlatIGeodAFAB; */
+/* %rename(upstreamMaxHeight) htop; */
+/* %rename(shade) shade; */
+/* %rename(lineDilate3d) LineDilate3D; */
+/* %rename(distance2d4) dst2d4; */
+/* %rename(distance2dChamfer57) dst2dchamfer; */
+/* %rename(distance2dChamfer) chamfer2d; */
+/* %rename(distance2dEuclideanFifo) edistfifo2d; */
+/* %rename(distance2dEuclideanSquared) sqedt; */
+/* %rename(influenceZones2dEuclidean) iz; */
+/* %rename(influenceZones2dOrderedIndependent) oiiz; */
+/* %rename(distanceGeodesic) geodist; */
+/* %rename(distance2dEuclideanConstrained) ced; */
+/* %rename(erodeLine) linero; */
+/* %rename(dilateLine) lindil; */
+/* %rename(dilateLinePeriodic) herkpldil; */
+/* %rename(erodeLinePeriodic) herkplero; */
+/* %rename(erodeNgb4) erode4; */
+/* %rename(dilateNgb4) dilate4; */
+/* %rename(erode) erode; */
+/* %rename(dilate) dilate; */
+/* %rename(erodeVolumic) volerode; */
+/* %rename(rankFilter) rank; */
+/* %rename(rankFilterSquare) squarerank; */
+/* %rename(sumInSquareNgb) squarevol; */
+/* %rename(rankFilterLine) linerank; */
+/* %rename(rankFilerLineTI) lrankti; */
+/* %rename(erodeLabel) erodelabel; */
+/* %rename(gradientMultibandSquareNgb) msgradlinf; */
+/* %rename(gradientMultiband) msgradlinfngb; */
+/* %rename(to1bitPerPixel) to_tiff1bitpp; */
+/* %rename(to4bitPerPixel) to_tiff4bitpp; */
+/* %rename(toUint16) to_ushort; */
+/* %rename(toUint32) to_int32; */
+/* %rename(toFloat32) to_float; */
+/* %rename(toDouble64) to_double; */
+/* %rename(toUchar8) to_uchar; */
+/* %rename(double64ToFloat32) dbltofloat; */
+/* %rename(uint32toFloat32) uint32_to_float; */
+/* %rename(swapBytes) swap; */
+/* %rename(deinterleave) deinterleave; */
+/* %rename(hsi2rgb) imhsi2rgb; */
+/* %rename(hls2rgb) imhls2rgb; */
+/* %rename(rgb2hsx) imrgb2hsx; */
+/* %rename(rgbTo3d) crgb2rgb; */
+/* %rename(reconstructionByDilation) rdil; */
+/* %rename(reconstructionByErosion) rero; */
+/* %rename(reconstruction) rerodilp; */
+/* %rename(complete) complete; */
+/* %rename(minima) minima; */
+/* %rename(geodesicTimeFlat) sqtgpla; */
+/* %rename(geodesicTime) sqtg; */
+/* %rename(geodesicTimeSymetric) sqtgsym; */
+/* %rename(frameSet) framebox; */
+/* %rename(frameAdd) addframebox; */
+/* %rename(frameSubtract) subframebox; */
+/* %rename(dumpBox) dumpxyz; */
+/* %rename(imageInsert) imputop; */
+/* %rename(imageInsertCompose) imputcompose; */
+/* %rename(imageCut) imcut; */
+/* %rename(getNonZeroBoundingBox) getboundingbox; */
+/* %rename(magnify) magnify; */
+/* %rename(rotateCoordinates) rotatecoor; */
+/* %rename(sizeAndTypeEqualPredicate) szcompat; */
+/* %rename(sizeEqualPredicate) szgeocompat; */
+/* %rename(plotLine) plotline; */
+/* %rename(overlapMatrix) ovlmatrix; */
+/* %rename(skeleton) skeleton; */
+/* %rename(pruneBinary) bprune; */
+/* %rename(extractPixelConfigurationBinary) epc; */
+/* %rename(extractPixelConfigurationGrey) epcgrey; */
+/* %rename(switchOperator) switchop; */
+/* %rename(skeletonOrderIndependent) oiskeleton; */
+/* %rename(skeletonAnchored) oiask; */
+/* %rename(orderDependentThin) binODthin_noqueue; */
+/* %rename(orderDependentThinFifo) binODthin_FIFO; */
+/* %rename(orderIndependentThin) binOIthin_noqueue; */
+/* %rename(orderIndependentThinFifo) binOIthin_FIFO; */
+/* %rename(imageInfo) iminfo; */
+/* %rename(imageCreate) create_image; */
+/* %rename(imageCopy) copy_image; */
+/* %rename(lutCopy) copy_lut; */
+/* %rename(lutCreate) create_lut; */
+/* %rename(lutFree) free_lut; */
+/* %rename(imageToArray) imtoarray; */
+/* %rename(imageFromArray) arraytoim; */
+/* %rename(setPixVal) setpixval; */
+/* %rename(getPixVal) getpixval; */
+/* %rename(getPixWithVal) FindPixWithVal; */
+/* %rename(getBitsPerPixel) GetImBitPerPixel; */
+/* %rename(probalyNotNeededInJIPLib) GDAL2MIALDataType; */
+/* %rename(GDALInfo) GDALInfoJIP; */
+/* %rename(GDALRead) GDALRead; */
+/* %rename(readImageBinary) read_all; */
+/* %rename(readImage) read_image; */
+/* %rename(readImageToType) read_image_to_type; */
+/* %rename(writeColorMapTiff) write_ColorMap_tiff; */
+/* %rename(writeTiff) write_tiff; */
+/* %rename(writeTiffOneStripPerLine) writeTiffOneStripPerLine; */
+/* %rename(GDALGetGeoKey) GetGeoKey; */
+/* %rename(GDALGetTiffTagGeo) GetTIFFTagGeo; */
+/* %rename(readImageScale) read_image2; */
+/* %rename(readTiffSubset) readTiffSubset; */
+/* %rename(TiffInfoFieldValue) tiffinfo; */
+/* %rename(TiffInfo) tiffinfoJIP; */
+/* %rename(writeGeoTiff) writeGeoTiffOneStripPerLine; */
+/* %rename(writeMultibandGeoTiff) writeMBGeoTiffOneStripPerLine; */
+/* %rename(labelBinary) label; */
+/* %rename(labelFlatZones) labelplat; */
+/* %rename(labelFlatZonesSeeded) seededlabelplat; */
+/* %rename(flatZonesSeeded) seededplat; */
+/* %rename(labelPix) labelpix; */
+/* %rename(labelsResolve) resolveLabels; */
+/* %rename(labelsReorder) gorder; */
+/* %rename(propagate) propagate; */
+/* %rename(labelsSet) set_regions; */
+/* %rename(labelsSetGraph) setregionsgraph; */
+/* %rename(labelsSetArea) tessel_surface; */
+/* %rename(labelRelabel) relabel; */
+/* %rename(labelsGetLut) region_lut; */
+/* %rename(labelsGetLutSeq) region_lut_seq; */
+/* %rename(labelsImageGetLut) region_im_lut; */
+/* %rename(labelsGetContortionLut) contortion_lut; */
+/* %rename(momentsLutsToEllipseLuts) moments_lut_to_ellipse_lut; */
+/* %rename(dissimToAlphaCCs) alphacc; */
+/* %rename(vertexDegreeAlpha) labelvertex; */
+/* %rename(vertexSeparation) vertexseparation; */
+/* %rename(labelVertexConnectedness) labelvertexconnectedness; */
+/* %rename(labelAlphaCCs) labelcc; */
+/* %rename(labelConstrainedCCsMultiband) labelccms; */
+/* %rename(labelStronglyCCs) labelci; */
+/* %rename(labelStronglyCCsMultiband) labelcims; */
+/* %rename(labelConstrainedCCs) labelccdissim; */
+/* %rename(labelConstrainedCCsVariance) labelccvar; */
+/* %rename(labelConstrainedCCsMultibandDissim) labelccmsdissim; */
+/* %rename(labelConstrainedCCsAttr) labelccattr; */
+/* %rename(alphaTreeDissimGet) alphatree; */
+/* %rename(alphaTree) alphatreeincattr; */
+/* %rename(alphaTreeToCCs) alphatreetoCCs; */
+/* %rename(alphaTreeNextLevel) alphatreenextlevel; */
+/* %rename(alphaTreeGetPersistenceLut) alphatreepersistencelut; */
+/* %rename(edgeWeight) edgeweight; */
+/* %rename(dissim) dissim; */
+/* %rename(dbscan) dbscan; */
+/* %rename(labelsGetOuterEdgeLut) outeredgelut; */
+/* %rename(labelsGetOuterEdge) outeredge; */
+/* %rename(labelsGetOuterContour) outercontour; */
+/* %rename(orientationMean) dirmean; */
+/* %rename(orientationCoherence) coherence; */
+/* %rename(paraboloidGetCoordinatesExtremum) coor_extrema_paraboloid; */
+/* %rename(linearFitGSL) fitlinear; */
+/* %rename(gradientTransition) transgrad; */
+/* %rename(julianDate) julian_date; */
+/* %rename(openingAttribute) attribute; */
+/* %rename(openingArea) GreyAreaOpening; */
+/* %rename(closingArea) GreyAreaClosing; */
+/* %rename(openingAreaROI) GreyAreaOpeningROI; */
+/* %rename(closingAreaROI) GreyAreaClosingROI; */
+/* %rename(convexHull) chull; */
+/* %rename(closingHalfplane) hpclose; */
+/* %rename(closingHalfplaneTI) hpcloseti; */
+/* %rename(pointOpBitwise) bitwise_op; */
+/* %rename(pointOpNegation) negation; */
+/* %rename(pointOpArith) arith; */
+/* %rename(pointOpArithCst) arithcst; */
+/* %rename(pointOpAbs) imabs; */
+/* %rename(pointOpSqrt) imsqrt; */
+/* %rename(pointOpLog) imlog; */
+/* %rename(pointOpAtan) imatan; */
+/* %rename(pointOpCos) imcos; */
+/* %rename(pointOpAcos) imacos; */
+/* %rename(pointOpSin) imsin; */
+/* %rename(pointOpAsin) imasin; */
+/* %rename(pointOpThresh) thresh; */
+/* %rename(pointOpSetLevel) setlevel; */
+/* %rename(pointOpModulo) modulo; */
+/* %rename(pointOpComplement) complement; */
+/* %rename(pointOpPower2) power2p; */
+/* %rename(pointOpBlank) blank; */
+/* %rename(pointOpBitShift) shift; */
+/* %rename(pointOpSetRange) setrange; */
+/* %rename(gridding) grid; */
+/* %rename(cs2cs) cs2cs; */
+/* %rename(watershed) ws; */
+/* %rename(watershedFAH) wsfah; */
+/* %rename(skeletonFah) skelfah; */
+/* %rename(skeletonFah2) skelfah2; */
+/* %rename(compose) compose; */
+/* %rename(watershedOrderIndependent) oiws; */
+/* %rename(seededRegionGrowing) srg; */
+/* %rename(seededRegionGrowingMultiband) mssrg; */
+/* %rename(seededRegionGrowingCore) mssrgcore; */
+/* %rename(labelQuasiFlatZones) labelImage; */
+/* %rename(seededRegionGrowingMultiband) mcisrg; */
+/* %rename(segmentImageMultiband) segmentImage; */
+/* %rename(writeGnuPlot3D) writeGnuPlot3D; */
+/* %rename(vectorizeImage) vectorizeImage; */
+/* %rename(partitionEqualPredicate) IsPartitionEqual; */
+/* %rename(partitionFinerPredicate) IsPartitionFiner; */
+/* %rename(imgc) imgc; */
+/* %rename(dendrogram) dendro; */
+/* %rename(partitionSimilarity) PartitionSimilarity; */
+/* %rename(histo1d) histo1d; */
+/* %rename(histo2d) histo2d; */
+/* %rename(histo3d) histo3d; */
+/* %rename(histo1dCumulative) rsum; */
+/* %rename(lookupRgb) lookuprgb; */
+/* %rename(class2d) class2d; */
+/* %rename(surfaceArea) area; */
+/* %rename(runSumDir) dirsum; */
+/* %rename(getMinMax) min_max; */
+/* %rename(getFirstMaxOffset) getfirstmaxpos; */
+/* %rename(histoCompress) histcompress; */
+/* %rename(lookup) lookup; */
+/* %rename(lookupTypeMatch) lookuptypematch; */
+/* %rename(volume) volume; */
+/* %rename(propagateMaxDir) dirmax; */
+/* %rename(equalityPredicate) imequalp; */
+/* %rename(getMax) getmax; */
+/* %rename(getMinMax) getminmax; */
+/* %rename(histoMatchRgb) histrgbmatch; */
+/* %rename(histoMatch3dRgb) histrgb3dmatch; */
+/* %rename(linearCombinationMultiband) mblincomb; */
+/* %rename(meanConditional) condmean; */
+/* %rename(sortIndex) sortindex; */
+/* %rename(classStatsInfo) classstatsinfo; */
+/* %rename(classMinDst) clmindist; */
+/* %rename(classBox) clparpip; */
+/* %rename(classMahanalobis) clmaha; */
+/* %rename(classMaximumLikelihood) clmaxlike; */
+/* %rename(similarityDetectionSequential) ssda; */
+/* %rename(crosscorrNormalisedLewis) ncclewis; */
+/* %rename(crosscorrNormalised) ncc; */
+
+
+
+
+
 
 
 // new object with their constructor and destructor
@@ -94,12 +359,12 @@ extern void free_image(IMAGE *);
 %include mialib_newobjects.i
 
 
-%typemap(in, numinputs=0)  double * (double temp){
-  printf("typemap(in)\n");
-  temp=99.0;
-  $1 = &temp;
-  printf("%g %g\n", temp, *arg2);
-}
+/* %typemap(in, numinputs=0)  double * (double temp){ */
+/*   printf("typemap(in)\n"); */
+/*   temp=99.0; */
+/*   $1 = &temp; */
+/*   printf("%g %g\n", temp, *arg2); */
+/* } */
 
 %typemap(out) ERROR_TYPE getminmax {
   if (result!=NO_ERROR){
@@ -300,7 +565,6 @@ extern void free_image(IMAGE *);
 
 %typemap(in) (char *parmsi[], int ni) {
   int i, dim;
-  void *argp1 = 0 ;
   if (!PySequence_Check($input)) {
     PyErr_SetString(PyExc_ValueError,"Expected a sequence");
     return NULL;
@@ -332,7 +596,6 @@ extern void free_image(IMAGE *);
 
 %typemap(in) (char *parmso[], int no) {
   int i, dim;
-  void *argp1 = 0 ;
   if (!PySequence_Check($input)) {
     PyErr_SetString(PyExc_ValueError,"Expected a sequence");
     return NULL;

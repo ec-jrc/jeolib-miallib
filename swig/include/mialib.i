@@ -22,7 +22,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 // see https://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
-%import "../../../core/build/doc/xml/mial_doxy2swig.i"
+%import "mial_doxy2swig.i"
 
 
 
@@ -89,7 +89,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // (note that for the destructor ~IMAGE() the setting is 'SWIG_POINTER_NEW')
 
 
-%include mialib_newobjects.i
+%include ../include/python/mialib_newobjects.i
 
 
 %typemap(in, numinputs=0)  double * (double temp){
@@ -343,5 +343,5 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 #if defined(SWIGPYTHON)
-%include "mialib_python.i"
+%include mialib_python.i
 #endif
