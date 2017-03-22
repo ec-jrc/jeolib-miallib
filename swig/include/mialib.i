@@ -89,7 +89,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 // (note that for the destructor ~IMAGE() the setting is 'SWIG_POINTER_NEW')
 
 
-%include ../include/python/mialib_newobjects.i
+%include mialib_newobjects.i
 
 
 %typemap(in, numinputs=0)  double * (double temp){
