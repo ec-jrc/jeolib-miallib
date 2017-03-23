@@ -83,7 +83,7 @@ mialib_geodesy.h:extern ERROR_TYPE complete(IMAGE *im_i, IMAGE *im_rmin, int gra
 mialib_geodesy.h:extern IMAGE *minima(IMAGE *imin, int graph); minima
 mialib_geodesy.h:extern ERROR_TYPE sqtgpla(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTimeFlat
 mialib_geodesy.h:extern ERROR_TYPE sqtg(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTime
-mialib_geodesy.h:extern IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTimeSymetric
+mialib_geodesy.h:extern IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTimeSymmetric
 
 mialib_geometry.h:extern ERROR_TYPE framebox(IMAGE *im, int *box, G_TYPE gval); frameSet
 mialib_geometry.h:extern ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval); frameAdd
@@ -149,6 +149,7 @@ mialib_label.h:extern ERROR_TYPE labelplat(IMAGE *im1, IMAGE *im2, int ox, int o
 mialib_label.h:extern ERROR_TYPE seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz); labelFlatZonesSeeded
 mialib_label.h:extern ERROR_TYPE seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz); flatZonesSeeded
 mialib_label.h:extern ERROR_TYPE labelpix(IMAGE *im); labelPix
+mialib_label.h:extern ERROR_TYPE labelpixngb(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz); labelPixNgb
 mialib_label.h:extern ERROR_TYPE resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int graph); labelsResolve
 mialib_label.h:extern ERROR_TYPE gorder(IMAGE *lbl, IMAGE *g, int n); labelsReorder
 mialib_label.h:extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **imap, int nc, int graph); propagate
@@ -167,6 +168,9 @@ mialib_label.h:extern IMAGE *vertexseparation(IMAGE *im, int graph, int type); v
 mialib_label.h:extern IMAGE *labelvertexconnectedness(IMAGE *im, int alpha, int graph, int deg); labelVertexConnectedness
 mialib_label.h:extern IMAGE *labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl); labelAlphaCCs
 mialib_label.h:extern IMAGE *labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2); labelConstrainedCCsMultiband
+mialib_label.h:extern IMAGE *labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz, int rg, int rl); labelConstrainedCCsMi
+mialib_label.h:extern IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl);  labelConstrainedCCsCi
+
 mialib_label.h:extern IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl); labelStronglyCCs
 mialib_label.h:extern IMAGE *labelcims(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int rl); labelStronglyCCsMultiband
 mialib_label.h:extern IMAGE *labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl);  labelConstrainedCCs
