@@ -376,6 +376,7 @@ extern void free_image(IMAGE *);
 
 %typemap(argout) double * {
   PyObject * o = 0 ;
+  double temp$argnum;
   printf("typemap(argout); %d val=%g\n", $argnum, temp$argnum);
   o=PyFloat_FromDouble(temp$argnum);
   PyList_SetItem($result,($argnum)-2,o);
