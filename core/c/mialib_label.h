@@ -16,6 +16,9 @@ extern ERROR_TYPE labelpix(IMAGE *im);
 extern ERROR_TYPE resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int graph);
 extern ERROR_TYPE gorder(IMAGE *lbl, IMAGE *g, int n);
 
+/* mmlabel.c */
+extern IMAGE *erodelabel(IMAGE *im, int graph);
+
 /* propagate.c */
 extern ERROR_TYPE propagate(IMAGE *lbl, IMAGE *dst,  IMAGE **imap, int nc, int graph);
 

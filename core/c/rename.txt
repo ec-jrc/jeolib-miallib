@@ -3,6 +3,7 @@ mialib_convolve.h:extern IMAGE *convolvedownsample(IMAGE *im, IMAGE *imse, IMAGE
 mialib_convolve.h:extern IMAGE *rsum2d(IMAGE *im);  runSum2d
 mialib_convolve.h:extern IMAGE *rsum3d(IMAGE *im);  runSum3d
 mialib_convolve.h:extern IMAGE *rsumsq2d(IMAGE *im); runSumInSquareNgb
+mialib_convolve.h:extern IMAGE *squarevol(IMAGE *im, int k, int ox, int oy); sumInSquareNgb
 mialib_convolve.h:extern IMAGE *mean2d(IMAGE *im, int width); meanInSquareNgb
 mialib_convolve.h:extern IMAGE *mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy); meanFilter2d
 mialib_convolve.h:extern IMAGE *variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy);  varianceFilter2d
@@ -10,77 +11,76 @@ mialib_convolve.h:extern ERROR_TYPE azimuth(IMAGE *ix, IMAGE *iy);  gradientAzim
 mialib_convolve.h:extern ERROR_TYPE mapori(IMAGE *i0, int ox, int oy); orientationMap
 mialib_convolve.h:extern IMAGE *phase_correlation(IMAGE *im, IMAGE *im_template); phaseCorrelation
 
-mialib_dem.h:extern IMAGE *d8(IMAGE *im);  flowDirectionD8
-mialib_dem.h:extern IMAGE *dinf(IMAGE *im); flowDirectionDInf
-mialib_dem.h:extern IMAGE *slope8(IMAGE *im); slopeD8
-mialib_dem.h:extern IMAGE *flow(IMAGE *imin, int graph); flow
-mialib_dem.h:extern IMAGE *flownew(IMAGE *imin, IMAGE *imdir, int graph); flowNew
-mialib_dem.h:extern IMAGE *cda(IMAGE *dir, int graph); contributingDrainageArea
-mialib_dem.h:extern IMAGE *stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir); contributingDrainageAreaStratify
-mialib_dem.h:extern IMAGE *cdainf(IMAGE *dir); contributingDrainageAreaDInf
-mialib_dem.h:extern IMAGE *slopeinf(IMAGE *im); slopeDInf
-mialib_dem.h:extern ERROR_TYPE dir(IMAGE *im, int graph); floodDirection
-mialib_dem.h:extern ERROR_TYPE cboutlet(IMAGE *outlet, IMAGE *d8); catchmentBasinOutlet
-mialib_dem.h:extern ERROR_TYPE cbconfluence(IMAGE *outlet, IMAGE *d8); catchmenBasinConfluence
-mialib_dem.h:extern ERROR_TYPE strahler(IMAGE *d8);  strahlerOrder
-mialib_dem.h:extern IMAGE *aflood(IMAGE *iml, IMAGE *imr, int graph, int maxfl); pitRemovalCarve
-mialib_dem.h:extern IMAGE *fillocarve(IMAGE *iml, IMAGE *imr, int graph, int maxfl, int flag); pitRemovalOptimal
-mialib_dem.h:extern IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph); flowDirectionFlat
-mialib_dem.h:extern ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph); flowDirectionFlatGeodesic
-mialib_dem.h:extern IMAGE *htop(IMAGE *dem, IMAGE *d8); upstreamMaxHeight
-mialib_dem.h:extern IMAGE *shade(IMAGE *im, int dir); shade
-mialib_dem.h:extern IMAGE *LineDilate3D(IMAGE *im, float dh); lineDilate3d
+mialib_dem.h:extern IMAGE *d8(IMAGE *im);  demFlowDirectionD8
+mialib_dem.h:extern IMAGE *dinf(IMAGE *im); demFlowDirectionDInf
+mialib_dem.h:extern IMAGE *slope8(IMAGE *im); demSlopeD8
+mialib_dem.h:extern IMAGE *flow(IMAGE *imin, int graph); demFlow
+mialib_dem.h:extern IMAGE *flownew(IMAGE *imin, IMAGE *imdir, int graph); demFlowNew
+mialib_dem.h:extern IMAGE *cda(IMAGE *dir, int graph); demContributingDrainageArea
+mialib_dem.h:extern IMAGE *stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir); demContributingDrainageAreaStratify
+mialib_dem.h:extern IMAGE *cdainf(IMAGE *dir); demContributingDrainageAreaDInf
+mialib_dem.h:extern IMAGE *slopeinf(IMAGE *im); demSlopeDInf
+mialib_dem.h:extern ERROR_TYPE dir(IMAGE *im, int graph); demFloodDirection
+mialib_dem.h:extern ERROR_TYPE cboutlet(IMAGE *outlet, IMAGE *d8); demCatchmentBasinOutlet
+mialib_dem.h:extern ERROR_TYPE cbconfluence(IMAGE *outlet, IMAGE *d8); demCatchmenBasinConfluence
+mialib_dem.h:extern ERROR_TYPE strahler(IMAGE *d8);  demStrahlerOrder
+mialib_dem.h:extern IMAGE *aflood(IMAGE *iml, IMAGE *imr, int graph, int maxfl); demPitRemovalCarve
+mialib_dem.h:extern IMAGE *fillocarve(IMAGE *iml, IMAGE *imr, int graph, int maxfl, int flag); demPitRemovalOptimal
+mialib_dem.h:extern IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph); demFlowDirectionFlat
+mialib_dem.h:extern ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph); demFlowDirectionFlatGeodesic
+mialib_dem.h:extern IMAGE *htop(IMAGE *dem, IMAGE *d8); demUpstreamMaxHeight
+mialib_dem.h:extern IMAGE *shade(IMAGE *im, int dir); demShade
+mialib_dem.h:extern IMAGE *LineDilate3D(IMAGE *im, float dh); demLineDilate3d
 
 mialib_dist.h:extern ERROR_TYPE dst2d4(IMAGE *im); distance2d4
 mialib_dist.h:extern ERROR_TYPE dst2dchamfer(IMAGE *im); distance2dChamfer57
 mialib_dist.h:extern ERROR_TYPE chamfer2d(IMAGE *im, int type); distance2dChamfer
 mialib_dist.h:extern IMAGE *edistfifo2d(IMAGE *im, int graph); distance2dEuclideanFifo
 mialib_dist.h:extern IMAGE *sqedt(IMAGE *im); distance2dEuclideanSquared
-mialib_dist.h:extern IMAGE *iz(IMAGE *im); influenceZones2dEuclidean
-mialib_dist.h:extern ERROR_TYPE oiiz(IMAGE *im); influenceZones2dOrderedIndependent
+mialib_dist.h:extern IMAGE *iz(IMAGE *im); distanceInfluenceZones2dEuclidean
+mialib_dist.h:extern ERROR_TYPE oiiz(IMAGE *im); distanceInfluenceZones2dOrderedIndependent
 mialib_dist.h:extern ERROR_TYPE geodist(IMAGE *im_m, IMAGE *im_r, int graph); distanceGeodesic
 mialib_dist.h:extern IMAGE *ced(IMAGE *ref, IMAGE *mask); distance2dEuclideanConstrained
 
-mialib_erodil.h:extern ERROR_TYPE linero(IMAGE *im, int dx, int dy, int n, int line_type); erodeLine
-mialib_erodil.h:extern ERROR_TYPE lindil(IMAGE *im, int dx, int dy, int n,int line_type); dilateLine
-mialib_erodil.h:extern ERROR_TYPE herkpldil(IMAGE *im, int dx, int dy, int k, int o, int t); dilateLinePeriodic
-mialib_erodil.h:extern ERROR_TYPE herkplero(IMAGE *im, int dx, int dy, int k, int o, int t); erodeLinePeriodic
-mialib_erodil.h:extern ERROR_TYPE erode4(IMAGE *im, int ox, int oy); erodeNgb4
-mialib_erodil.h:extern ERROR_TYPE dilate4(IMAGE *im, int ox, int oy); dilateNgb4
-mialib_erodil.h:extern IMAGE *erode(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag); erode
-mialib_erodil.h:extern IMAGE *dilate(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag); dilate
-mialib_erodil.h:extern IMAGE *volerode(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz); erodeVolumic
-mialib_erodil.h:extern IMAGE *rank(IMAGE *im, IMAGE *imse, int rank, int ox, int oy, int oz, int trflag); rankFilter
-mialib_erodil.h:extern IMAGE *squarerank(IMAGE *im, int k, int rank, int ox, int oy); rankFilterSquare
-mialib_erodil.h:extern IMAGE *squarevol(IMAGE *im, int k, int ox, int oy); sumInSquareNgb
-mialib_erodil.h:extern ERROR_TYPE linerank(IMAGE *im, int dx, int dy, int k, int rank, int o); rankFilterLine
-mialib_erodil.h:extern IMAGE *lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int tr); rankFilerLineTI
-mialib_erodil.h:extern IMAGE *erodelabel(IMAGE *im, int graph); erodeLabel
-mialib_erodil.h:extern IMAGE *msgradlinf(IMAGE **imap, int nc, int graph); gradientMultibandSquareNgb
-mialib_erodil.h:extern IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz); gradientMultiband
+mialib_erodil.h:extern ERROR_TYPE linero(IMAGE *im, int dx, int dy, int n, int line_type); mmErodeLine
+mialib_erodil.h:extern ERROR_TYPE lindil(IMAGE *im, int dx, int dy, int n,int line_type); mmDilateLine
+mialib_erodil.h:extern ERROR_TYPE herkpldil(IMAGE *im, int dx, int dy, int k, int o, int t); mmDilateLinePeriodic
+mialib_erodil.h:extern ERROR_TYPE herkplero(IMAGE *im, int dx, int dy, int k, int o, int t); mmErodeLinePeriodic
+mialib_erodil.h:extern ERROR_TYPE erode4(IMAGE *im, int ox, int oy); mmErodeNgb4
+mialib_erodil.h:extern ERROR_TYPE dilate4(IMAGE *im, int ox, int oy); mmDilateNgb4
+mialib_erodil.h:extern IMAGE *erode(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag); mmErode
+mialib_erodil.h:extern IMAGE *dilate(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag); mmDilate
+mialib_erodil.h:extern IMAGE *volerode(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz); mmErodeVolumic
+mialib_erodil.h:extern IMAGE *rank(IMAGE *im, IMAGE *imse, int rank, int ox, int oy, int oz, int trflag); mmRankFilter
+mialib_erodil.h:extern IMAGE *squarerank(IMAGE *im, int k, int rank, int ox, int oy); mmRankFilterSquare
+mialib_erodil.h:extern ERROR_TYPE linerank(IMAGE *im, int dx, int dy, int k, int rank, int o); mmRankFilterLine
+mialib_erodil.h:extern IMAGE *lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int tr); mmRankFilerLineTI
+
+mialib_erodil.h:extern IMAGE *msgradlinf(IMAGE **imap, int nc, int graph); mmGradientMultibandSquareNgb
+mialib_erodil.h:extern IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz); mmGradientMultiband
 
 
-mialib_format.h:extern IMAGE *to_tiff1bitpp(IMAGE *im); to1bitPerPixel
-mialib_format.h:extern IMAGE *to_tiff4bitpp(IMAGE *im); to4bitPerPixel
-mialib_format.h:extern IMAGE *to_ushort(IMAGE *im); toUint16
-mialib_format.h:extern IMAGE *to_int32(IMAGE *im); toUint32
-mialib_format.h:extern IMAGE *to_float(IMAGE *im); toFloat32
-mialib_format.h:extern IMAGE *to_double(IMAGE *im); toDouble64
-mialib_format.h:extern ERROR_TYPE to_uchar(IMAGE *im); toUchar8
-mialib_format.h:extern ERROR_TYPE dbltofloat(IMAGE *im); double64ToFloat32
-mialib_format.h:extern ERROR_TYPE uint32_to_float(IMAGE *im); uint32toFloat32
-mialib_format.h:extern ERROR_TYPE swap(IMAGE *im); swapBytes
-mialib_format.h:extern IMAGE *deinterleave(IMAGE *im); deinterleave
-mialib_format.h:extern IMAGE *imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); hsi2rgb
-mialib_format.h:extern IMAGE *imhls2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); hls2rgb
-mialib_format.h:extern IMAGE **imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type); rgb2hsx
-mialib_format.h:extern IMAGE *crgb2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); rgbTo3d
+mialib_format.h:extern IMAGE *to_tiff1bitpp(IMAGE *im); convertTo1bitPerPixel
+mialib_format.h:extern IMAGE *to_tiff4bitpp(IMAGE *im); convertTo4bitPerPixel
+mialib_format.h:extern IMAGE *to_ushort(IMAGE *im); convertToUint16
+mialib_format.h:extern IMAGE *to_int32(IMAGE *im);  convertToUint32
+mialib_format.h:extern IMAGE *to_float(IMAGE *im); convertToFloat32
+mialib_format.h:extern IMAGE *to_double(IMAGE *im); convertToDouble64
+mialib_format.h:extern ERROR_TYPE to_uchar(IMAGE *im); convertToUchar8
+mialib_format.h:extern ERROR_TYPE dbltofloat(IMAGE *im); convertDouble64ToFloat32
+mialib_format.h:extern ERROR_TYPE uint32_to_float(IMAGE *im); convertUint32toFloat32
+mialib_format.h:extern ERROR_TYPE swap(IMAGE *im); convertSwapBytes
+mialib_format.h:extern IMAGE *deinterleave(IMAGE *im); convertDeinterleave
+mialib_format.h:extern IMAGE *imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); convertHsiToRgb
+mialib_format.h:extern IMAGE *imhls2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); convertHlsToRgb
+mialib_format.h:extern IMAGE **imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type); convertRgbToHsx
+mialib_format.h:extern IMAGE *crgb2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi); convertRgbTo3d
 
-mialib_geodesy.h:extern ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag); reconstructionByDilation
-mialib_geodesy.h:extern ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag); reconstructionByErosion
-mialib_geodesy.h:extern ERROR_TYPE rerodilp(IMAGE *mark, IMAGE *mask, int graph, int flag, int version); reconstruction
-mialib_geodesy.h:extern ERROR_TYPE complete(IMAGE *im_i, IMAGE *im_rmin, int graph); complete
-mialib_geodesy.h:extern IMAGE *minima(IMAGE *imin, int graph); minima
+mialib_geodesy.h:extern ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag); geodesicReconstructionByDilation
+mialib_geodesy.h:extern ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag); geodesicReconstructionByErosion
+mialib_geodesy.h:extern ERROR_TYPE rerodilp(IMAGE *mark, IMAGE *mask, int graph, int flag, int version); geodesicReconstruction
+mialib_geodesy.h:extern ERROR_TYPE complete(IMAGE *im_i, IMAGE *im_rmin, int graph); geodesicComplete
+mialib_geodesy.h:extern IMAGE *minima(IMAGE *imin, int graph); getRegionalMinima
 mialib_geodesy.h:extern ERROR_TYPE sqtgpla(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTimeFlat
 mialib_geodesy.h:extern ERROR_TYPE sqtg(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTime
 mialib_geodesy.h:extern IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph); geodesicTimeSymmetric
@@ -123,26 +123,28 @@ mialib_imem.h:extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi); imageToArray
 mialib_imem.h:extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi); imageFromArray
 mialib_imem.h:extern ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g); setPixVal
 mialib_imem.h:extern G_TYPE getpixval(IMAGE *im, unsigned long offset); getPixVal
-mialib_imem.h:extern ERROR_TYPE FindPixWithVal(IMAGE *im, G_TYPE gval, unsigned long int *ofs); getPixWithVal
+mialib_imem.h:extern ERROR_TYPE FindPixWithVal(IMAGE *im, G_TYPE gval, unsigned long int *ofs); getFirstPixWithVal
 mialib_imem.h:extern int GetImBitPerPixel(IMAGE *im); getBitsPerPixel
 
-mialib_io.h:extern int GDAL2MIALDataType(int aGDALDataType);  probalyNotNeededInJIPLib
-mialib_io.h:extern IMAGE *GDALInfoJIP(char *imfn); GDALInfo
-mialib_io.h:extern IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize); GDALRead
+
+mialib_io.h:extern int GDAL2MIALDataType(int aGDALDataType);  probablyNotNeededInJIPLib
+mialib_io.h:extern IMAGE *GDALInfoJIP(char *imfn); gdalInfo
+mialib_io.h:extern IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize); gdalRead
 mialib_io.h:extern IMAGE *read_all(char *fn, int nx, int ny, int nz, int data_type, int header_size, int pc); readImageBinary
 mialib_io.h:extern IMAGE *read_image(char *fn); readImage
 mialib_io.h:extern IMAGE *read_image_to_type(char *fn, int data_type); readImageToType
 mialib_io.h:extern ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn); writeColorMapTiff
 mialib_io.h:extern ERROR_TYPE write_tiff(IMAGE *im, char *fn); writeTiff
 mialib_io.h:extern ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc); writeTiffOneStripPerLine
-mialib_io.h:extern IMAGE *GetGeoKey(char *fname, char *keyname); GDALGetGeoKey
-mialib_io.h:extern IMAGE *GetTIFFTagGeo(char *fn, char *tagname); GDALGetTiffTagGeo
+mialib_io.h:extern IMAGE *GetGeoKey(char *fname, char *keyname); gdalGetGeoKey
+mialib_io.h:extern IMAGE *GetTIFFTagGeo(char *fn, char *tagname); gdalGetTiffTagGeo
 mialib_io.h:extern IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale); readImageScale
 mialib_io.h:extern IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy); readTiffSubset
-mialib_io.h:extern ERROR_TYPE tiffinfo(char *fn, char *field, float *val); TiffInfoFieldValue
-mialib_io.h:extern IMAGE *tiffinfoJIP(char *fn); TiffInfo
+mialib_io.h:extern ERROR_TYPE tiffinfo(char *fn, char *field, float *val); tiffInfoFieldValue
+mialib_io.h:extern IMAGE *tiffinfoJIP(char *fn); tiffInfo
 mialib_io.h:extern ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str); writeGeoTiff
 mialib_io.h:extern ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCSCode, double xoff, double yoff, double scale, unsigned short RasterType, int nodata_flag, int nodata_val, int metadata_flag, char *metadata_str); writeMultibandGeoTiff
+
 
 mialib_label.h:extern ERROR_TYPE label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz); labelBinary
 mialib_label.h:extern ERROR_TYPE labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz); labelFlatZones
@@ -170,7 +172,7 @@ mialib_label.h:extern IMAGE *labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int
 mialib_label.h:extern IMAGE *labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2); labelConstrainedCCsMultiband
 mialib_label.h:extern IMAGE *labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz, int rg, int rl); labelConstrainedCCsMi
 mialib_label.h:extern IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl);  labelConstrainedCCsCi
-
+mialib_label.h:extern IMAGE *erodelabel(IMAGE *im, int graph); labelErode
 mialib_label.h:extern IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl); labelStronglyCCs
 mialib_label.h:extern IMAGE *labelcims(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, int rl); labelStronglyCCsMultiband
 mialib_label.h:extern IMAGE *labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl);  labelConstrainedCCs
@@ -202,8 +204,8 @@ mialib_opclo.h:extern IMAGE *GreyAreaClosing(IMAGE *imliiar, int lambdaVal, int 
 mialib_opclo.h:extern IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph); openingAreaROI
 mialib_opclo.h:extern IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambdaVal, int graph); closingAreaROI
 mialib_opclo.h:extern IMAGE *chull(IMAGE *ilbl, int graph); convexHull
-mialib_opclo.h:extern IMAGE *hpclose(IMAGE *im, int dx, int dy); closingHalfplane
-mialib_opclo.h:extern IMAGE *hpcloseti(IMAGE *im, int dx, int dy); closingHalfplaneTI
+mialib_opclo.h:extern IMAGE *hpclose(IMAGE *im, int dx, int dy); closingHalfPlane
+mialib_opclo.h:extern IMAGE *hpcloseti(IMAGE *im, int dx, int dy); closingHalfPlaneTI
 
 mialib_pointop.h:extern ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op); pointOpBitwise
 mialib_pointop.h:extern ERROR_TYPE negation(IMAGE *im); pointOpNegation

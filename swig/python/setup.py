@@ -19,7 +19,7 @@ swig_opts_val =  ['-v', '-Wall',  '-I../include', '-outdir', './packages/mialib'
                   '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                   '-I/usr/local/lib/python2.7',
                   '-I../../core/c',
-                  '-I../../core/build/doc/xml/,
+                  '-I../../core/build/doc/xml/',
                   '-DMCISRG', '-DCLASSIF']
 libraries_val = ['gdal', 'tiff', 'mialib_python']
 library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib']

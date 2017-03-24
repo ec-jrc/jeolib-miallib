@@ -15,6 +15,7 @@ extern IMAGE *rsumsq2d(IMAGE *im);
 extern IMAGE *mean2d(IMAGE *im, int width);
 extern IMAGE *mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy);
 extern IMAGE *variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy);
+extern IMAGE *squarevol(IMAGE *im, int k, int ox, int oy);
 extern ERROR_TYPE azimuth(IMAGE *ix, IMAGE *iy);
 extern ERROR_TYPE mapori(IMAGE *i0, int ox, int oy);
 
