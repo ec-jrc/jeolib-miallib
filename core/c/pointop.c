@@ -53,6 +53,13 @@ ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op)
     for (i=0; i<nword; i++)
       pim1[i] ^= pim2[i];
     break;
+  case NAND_op: /* bitwise AND */
+#pragma omp parallel for
+    for (i=0; i<nword; i++){
+      pim1[i] &= pim2[i];
+      pim1[i] = ~pim1[i];
+    }
+    break;
   default:
     (void)sprintf(buf, "ERROR in bitwise_op(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
