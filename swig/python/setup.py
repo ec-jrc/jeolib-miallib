@@ -7,6 +7,8 @@ setup.py file for SWIG mialib
 # see also https://docs.python.org/2/distutils/setupscript.html
 # see also https://docs.python.org/2/tutorial/modules.html
 
+# nur master.i ist zu editieren !!!
+
 from distutils.core import setup, Extension
 
 #from setuptools import setup, find_packages
@@ -17,6 +19,7 @@ swig_opts_val =  ['-v', '-Wall',  '-I../include', '-outdir', './packages/mialib'
                   '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
                   '-I/usr/local/lib/python2.7',
                   '-I../../core/c',
+                  '-I../../core/build/doc/xml/',
                   '-DMCISRG', '-DCLASSIF']
 libraries_val = ['gdal', 'tiff', 'mialib_python']
 library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu', '/usr/local/lib']
@@ -94,7 +97,7 @@ setup (name = "mialib",
        license = "(c) European Commission. Exact licence to be defined",
        description = """Python interface to mialib/jiplib thanks to SWIG""",
        long_description = """Python interface to mialib/jiplib thanks to SWIG: long description""",
-       url = "http://jeodpp.ec.europa.eu",
+       url = "http://jeodpp.jrc.ec.europa.eu",
        ext_modules = [_mialib ] + modules_list,
        package_dir = {'' : 'packages'},
        packages=['mialib'],

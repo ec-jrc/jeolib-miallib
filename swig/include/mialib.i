@@ -22,7 +22,7 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 // see https://stackoverflow.com/questions/11435102/is-there-a-good-way-to-produce-documentation-for-swig-interfaces
-%import "../../../core/build/doc/xml/mial_doxy2swig.i"
+%import "mial_doxy2swig.i"
 
 
 
@@ -114,8 +114,6 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
   PyList_SetItem($result,($argnum)-2,o);
  }
 
-  
-
 // handle G_TYPE arguments as Python Float value in python
 %typemap(in) G_TYPE {
   G_TYPE gt;
@@ -200,6 +198,9 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
     }
   }
  }
+
+
+
 
 // handling IMAGE array output argument as python list
 %typemap(out) IMAGE **rotatecoor {
@@ -342,5 +343,5 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 
 #if defined(SWIGPYTHON)
-%include "mialib_python.i"
+%include mialib_python.i
 #endif

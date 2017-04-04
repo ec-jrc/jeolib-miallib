@@ -3031,12 +3031,86 @@ IMAGE *uc_getboundingbox(IMAGE *im)
 }
 #include "uc_undef.h"
 
+#include "us_def.h"
+IMAGE *us_getboundingbox(IMAGE *im)
+{
+  IMAGE *bb_im;
+  PIX_TYPE *pim;
+  INT32 *pbb, ulcx=GetImNx(im), ulcy=GetImNy(im), lrcx=0, lrcy=0;
+  int x,y,nx=GetImNx(im),ny=GetImNy(im);
+
+  bb_im=create_image(t_INT32, 4, 1, 1);
+  pbb=(INT32 *)GetImPtr(bb_im);
+  pim=(PIX_TYPE *)GetImPtr(im);
+
+  for (y=0;y<ny;y++){
+    for (x=0;x<nx;x++){
+      if (*pim++){
+	if (x<ulcx)
+	  ulcx=x;
+	if (x>lrcx)
+	  lrcx=x;
+	if (y<ulcy)
+	  ulcy=y;
+	if (y>lrcy)
+	  lrcy=y;
+      }
+    }
+  }
+  pbb[0]=ulcx;
+  pbb[1]=ulcy;
+  pbb[2]=lrcx;
+  pbb[3]=lrcy;
+  return bb_im;
+}
+#include "us_undef.h"
+
+#include "f_def.h"
+IMAGE *f_getboundingbox(IMAGE *im)
+{
+  IMAGE *bb_im;
+  PIX_TYPE *pim;
+  INT32 *pbb, ulcx=GetImNx(im), ulcy=GetImNy(im), lrcx=0, lrcy=0;
+  int x,y,nx=GetImNx(im),ny=GetImNy(im);
+
+  bb_im=create_image(t_INT32, 4, 1, 1);
+  pbb=(INT32 *)GetImPtr(bb_im);
+  pim=(PIX_TYPE *)GetImPtr(im);
+
+  for (y=0;y<ny;y++){
+    for (x=0;x<nx;x++){
+      if (*pim++){
+	if (x<ulcx)
+	  ulcx=x;
+	if (x>lrcx)
+	  lrcx=x;
+	if (y<ulcy)
+	  ulcy=y;
+	if (y>lrcy)
+	  lrcy=y;
+      }
+    }
+  }
+  pbb[0]=ulcx;
+  pbb[1]=ulcy;
+  pbb[2]=lrcx;
+  pbb[3]=lrcy;
+  return bb_im;
+}
+#include "f_undef.h"
+
 
 IMAGE *getboundingbox(IMAGE *im)
 {
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(uc_getboundingbox(im));
+    break;
+  case t_USHORT:
+    return(us_getboundingbox(im));
+    break;
+  case t_FLOAT:
+    return(f_getboundingbox(im));
     break;
   default:
     (void)sprintf(buf,"getboundingbox(im): invalid pixel type\n"); errputstr(buf);

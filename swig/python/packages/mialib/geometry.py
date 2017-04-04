@@ -1,16 +1,10 @@
 import mialib
 
+
 from geometry_base import *
+import imem_base
 
-def d_framebox(i0, l, r, t, b, u, d, val):
-    box=mialib.new_intp(6)
-    mialib.intp_setitem(box, 0, l)
-    mialib.intp_setitem(box, 1, r)
-    mialib.intp_setitem(box, 2, t)
-    mialib.intp_setitem(box, 3, b)
-    mialib.intp_setitem(box, 4, u)
-    mialib.intp_setitem(box, 5, d)
-
+def d_framebox(i0, box, val):
     r=framebox(i0, box, val)
 
     if r==mialib.NO_ERROR:
@@ -18,25 +12,24 @@ def d_framebox(i0, l, r, t, b, u, d, val):
     else:
         return 'd_framebox(): invalid data type'
 
+def nd_framebox(i0, box, val):
+    d_framebox(imem_base.copy_image(i0), box, val)
 
-def nd_framebox(i0, l, r, t, b, u, d, val):
-    d_framebox(mialib.copy_image(i0), l, r, t, b, u, d, val)
 
-
-def d_subframebox(i0, l, r, t, b, u, d):
-    box=mialib.new_intp(6)
-    mialib.intp_setitem(box, 0, l)
-    mialib.intp_setitem(box, 1, r)
-    mialib.intp_setitem(box, 2, t)
-    mialib.intp_setitem(box, 3, b)
-    mialib.intp_setitem(box, 4, u)
-    mialib.intp_setitem(box, 5, d)
-    mialib.subframebox(i0, box)
+def d_subframebox(i0, box):
+    subframebox(i0, box)
     return i0
 
 
-def nd_subframebox(i0, l, r, t, b, u, d):
-    d_subframebox(mialib.copy_image(i0), l, r, t, b, u, d)
+def nd_subframebox(i0, box):
+    d_subframebox(imem_base.copy_image(i0), box)
+
+def d_addframebox(i0, box, val):
+    addframebox(i0, box, val)
+    return i0
+
+def nd_addframebox(i0, box, val):
+    d_addframebox(imem_base.copy_image(i0), box, val)
 
 
 def d_imputintopgeo(im1, im2, op, geotifffn1, geotifffn2, multfactor=1):
@@ -156,7 +149,7 @@ def d_imputintop(im1, im2, x, y, z, op):
     if xaxisparaml:
         if yaxisparaml:
             if zaxisparaml:
-                mialib.imputop(im1,
+                imputop(im1,
                           nd_subframebox(im2, \
                                               xaxisparaml[0], xaxisparaml[1], \
                                               yaxisparaml[0], yaxisparaml[1], \

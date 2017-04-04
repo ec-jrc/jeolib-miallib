@@ -49,7 +49,7 @@
  *   ERROR          if connectivity was not equal to 4 or 8
  *                  if the dimensions of the input images and the label image are not equal
 */
-ERROR_TYPE OpenClose(IMAGE ** imap, int nc, IMAGE * labelIm, int connectivity, int varianz, int version)
+ERROR_TYPE OpenClose(IMAGE **imap, int nc, IMAGE * labelIm, int connectivity, int varianz, int version)
 {
     IMAGE * imse, * erodeIm, * dilateIm1, * dilateIm2;
     UCHAR * imsePtr;

@@ -442,7 +442,7 @@ ERROR_TYPE azimuth(IMAGE *ix, IMAGE *iy)
 }
 
 #include "uc_def.h"
-#define rad2deguchar(x) ((x)*((double)255/(2*PI))) /* radians to uchar values */
+#define rad2deguchar(x) ((x)*((double)PIX_MAX/(2*PI))) /* radians to uchar values */
 ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
@@ -479,7 +479,7 @@ ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
 #include "uc_undef.h"
       
 #include "us_def.h"
-#define rad2degushort(x) ((x)*((double)65535/(2*PI))) /* radians to uchar values */
+#define rad2degushort(x) ((x)*((double)PIX_MAX/(2*PI))) /* radians to uchar values */
 ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
@@ -516,6 +516,14 @@ ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
 #include "us_undef.h"
       
 
+/** 
+ * @synopsis orientation map of a raster with respect to an origin
+ *
+ * @param i0: an IMAGE
+ * @param ox: x-coordinate of an origin in pixel space
+ * @param oy: y-coordinate of an origin in pixel space
+ * @desc sets each pixel of the input image i0 to its orientation with respect to an origin with pixel coordinates (ox,oy).  The values are given in degrees rescaled according to the data type of the input image.
+ */
 ERROR_TYPE mapori(IMAGE *i0, int ox, int oy)
 {
   switch (GetImDataType(i0)){
@@ -1159,6 +1167,108 @@ IMAGE *variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
     (void)sprintf(buf,"variance2dse(): invalid pixel type\n"); errputstr(buf);
   }
   return NULL;
+}
+
+
+
+
+#include "uc_def.h"
+IMAGE *uc_squarevol(PIX_TYPE *pi, int ncol, int nlin, int k, int ox, int oy)
+{
+  /*
+   ** pi: input image data as a 1D array
+   ** ncol: number of image columns
+   ** nlin: number of image lines
+   ** k: width of square SE in pixels
+   ** ox: origin in x
+   ** oy: origin in y
+   ** returns: pointer to created image holding the computed volumes (INT32 data type)
+   ** comment: we assume that borders of appropriate width have been added
+   ** to the image to handle border effects (value=255 should be in fact PIX_MAX+1!!!)
+   ** (c) by Pierre Soille.  ALl rights reserved.  This programme can only
+   ** be obtained directly from its author.
+   ** see also: uc_squarerank() in rank.c
+   */
+
+
+  IMAGE *imo;
+  PIX_TYPE *picrt;
+  INT32 *po, *pocrt, vol;
+  int *shft, *shfti, *shfto, nshft;
+  int x, y;
+
+  int i;
+  
+
+  if (ox < 0 || ox > k-1 || oy < 0 || oy > k-1){
+    (void)sprintf(buf,"Invalid origin, must be in SE\n"); stdputstr(buf);
+    return NULL;
+  }
+
+  /* create output image */
+  imo = create_image((int)t_INT32, ncol, nlin, (int)1);
+  if (imo==NULL){
+    (void)sprintf(buf,"Not enough memory in uc_squarevol()\n"); stdputstr(buf);
+    return NULL;
+  }
+  po = (INT32 *)GetImPtr(imo);
+    
+
+  /* allocate and initialise shifts arrays */
+  nshft=k*k;
+  shft=(int *)calloc(nshft, sizeof(int)); /* all pixels of SE */
+  for (y=0, i=0; y<k ; y++)
+    for (x=0; x<k; x++, i++)
+      shft[i]=x-ox+(y-oy)*ncol;
+  shfti=(int *)calloc(k, sizeof(int));    /* entering pixels */
+  for (i=0; i<k; i++)
+    shfti[i]=(i-oy)*ncol-ox+k-1;
+  shfto=(int *)calloc(k, sizeof(int));    /* exiting pixels */
+  for (i=0; i<k; i++)
+    shfto[i]=(i-oy)*ncol-ox-1;
+
+  /* here we go */
+  for (y=oy; y<nlin-k+oy; y++){
+    picrt=pi+ox+y*ncol;
+    pocrt=po+ox+y*ncol;
+    /* initialize volume of first pixel to process */
+    vol=0;
+    for (i=0; i<nshft; i++)
+      vol+=*(picrt+shft[i]);
+
+    *pocrt++=vol; picrt++;
+
+    /* process along line */
+    for (x=ox; x<ncol-k+ox; x++, picrt++, pocrt++){
+      for (i=0; i<k; i++) /* exiting pixels */
+	vol-=*(picrt+shfto[i]);
+      for (i=0; i<k; i++) /* entering pixels */
+	vol+=*(picrt+shfti[i]);
+      *pocrt=vol;
+    }
+
+  }
+  
+
+  free((void *) shft); free((void *) shfti); free((void *) shfto);
+  return imo;
+  }
+#include "uc_undef.h"
+
+
+
+IMAGE *squarevol(IMAGE *im, int k, int ox, int oy)
+{
+  switch (GetImDataType(im)){
+
+  case t_UCHAR:
+    return(uc_squarevol((UCHAR *)GetImPtr(im), GetImNx(im), GetImNy(im), k, ox, oy));
+    break;
+    
+  default:
+    (void)sprintf(buf,"*squarevol(IMAGE *im, int k, int ox, int oy): invalid pixel type\n"); errputstr(buf);
+  }
+  return(NULL);
 }
 
 

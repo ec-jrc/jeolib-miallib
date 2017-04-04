@@ -3948,7 +3948,7 @@ LVAL iFindPixWithVal()
   \return{nonnegative integer corresponding to the offset of first pixel of im with value val, nil if no such pixel is found.}
   \desc{}
   \cfunction{\cfFindPixWithVal}
-  \cfile{pointop.c}
+  \cfile{imem.c}
 */
   xlim1 = xlgaimage();
   gt  = getgenericnum(GetImDataType((IMAGE *)getimage(xlim1)));
@@ -3997,7 +3997,7 @@ LVAL imblincomb()
 /*
   \lspfunction{@}{mblincomb}{imlist matrix}
   \param{imlist}{a list of image nodes holding the channels of a multichannel image}
-  \param{matirx}{an image holding the transformation matrix (nb of list elements x nb of list elements) coefficients (double) }
+  \param{matrix}{an image holding the transformation matrix (nb of list elements x nb of list elements) coefficients (double) }
   \return{}
   \desc{}
   \cfunction{\cfmblincomb}
@@ -5229,7 +5229,7 @@ LVAL imoments2ellipse()
   \param{lut_list}{a list with five luts in the form of 1D images with the moments m00, m10, m01, m11, m20, m02}
   \return{an image with 3 lines, containing the length of the semi-major, semi-minor, and tilt angle (in degrees) of the ellipse with the given moments.}
   \cfunction{\cflabelccmsdissim}
-  \cfile{label.c}
+  \cfile{setreglut.c}
   */
   arg=xlgetarg();
   if (listp(arg)){
@@ -7625,6 +7625,18 @@ LVAL imapori()
   if (!moreargs())
     xlabort("(@mapori im ox oy)");
 
+/*
+  \lspfunction{@}{mapori}{im ox oy}
+  \param{im}{an image node}
+  \param{ox}{integer for x-coordinate}
+  \param{oy}{integer for y-coordinate}
+  \return{im}
+  \desc{Sets each pixel of the input image i0 to its orientation with respect to an origin with pixel coordinates (ox,oy).  The values are given in degrees rescaled according to the data type of the input image.}
+  \cfunction{\cfoiws}
+  \cfile{oiiz.c}
+  \example{}{}
+*/
+
   xlim1 = xlgaimage();
   ox = (int) getfixnum(xlgafixnum());
   oy = (int) getfixnum(xlgafixnum());
@@ -7992,7 +8004,7 @@ LVAL ithresholdRegion_Size()
 /*
   \lspfunction{@}{thresholdregionsize}{im size}
   \param{im}{an image node}
-  \param{size}{}
+  \param{size}{region size must be bigger than this threshold value. Otherwise the values of the pixels of this region are set to 0}
   \return{im1}
   \desc{Algorithm to determine the size of the regions. If the thresholdvalue is 0, then the values of the pixels in the image are replaced by the corresponding size values of the region the pixel belongs to.  Otherwise the region gets an increasing region number if the size is bigger then the threshold.}
   %\cfunction{\cfthresholdRegionUDSize}
@@ -9038,11 +9050,11 @@ LVAL irsum3d()
   if (!moreargs())
     xlabort("(*rsum3d im)");
 /*
-  \lspfunction{*}{rsum2d}{im}
+  \lspfunction{*}{rsum3d}{im}
   \param{im}{an image node}
   \return{an image holding the running sum of im}
   \desc{This function is used for RGB histogram matching based on cumulative distribution functions, see *hstrgbmatch.}
-  \cfunction{\cfrsumTWOd}
+  \cfunction{\cfrsumTHREEd}
   \cfile{convolve.c}
   \example{}{}
 */
@@ -9283,7 +9295,7 @@ LVAL incc()
   \return{an image node holding normalised cross-correlation function, see details in \citep{barnea-silverman72}.}
   \desc{}
   \cfunction{\cfncc}
-  \cfile{imem.c}
+  \cfile{registration.c}
 */
 
   xlim1 = xlgaimage();
@@ -9316,7 +9328,7 @@ LVAL incclewis()
   \return{an image node holding normalised cross-correlation function, see details in \citep{barnea-silverman72}.}
   \desc{based on the use of sum-tables as suggested in \cite{lewis95}.}
   \cfunction{\cfncc}
-  \cfile{imem.c}
+  \cfile{registration.c}
 */
 
   xlim1 = xlgaimage();
@@ -9349,7 +9361,7 @@ LVAL issda()
   \return{an image node}
   \desc{}
   \cfunction{\cfssda}
-  \cfile{imem.c}
+  \cfile{registration.c}
 */
 
   xlim1 = xlgaimage();
@@ -9376,7 +9388,7 @@ LVAL iphase_correlation()
   \return{an image node holding the phase correlation}
   \desc{Based on method originally described in \cite{kuglin-hines75}.  Uses FFTW3 library to compute the inverse FT of the cross-product of the FT of the input images.}
   \cfunction{\cfphaseUDcorrelation}
-  \cfile{imem.c}
+  \cfile{registration.c}
   \authors{Pierre Soille}
   \creationdate{20120808}
 */
@@ -9543,6 +9555,8 @@ LVAL ics2cs()
   char *parmsi[NPARMS], *parmso[NPARMS], to[3]="to", emptystr[1]="";
   IMAGE *imx=NULL, *imy=NULL;
   int ni=0, no=0, flag=1;
+  IMAGE **imarray=NULL;
+  
 /*
   \lspfunction{*}{cs2cs}{ulc_e ulc_n nx ny res &opt proj4args (flag 1)}
   \param{ulc_e}{floating point value for upper left corner x-coordinate (in m or rad) of target image}
@@ -9554,7 +9568,7 @@ LVAL ics2cs()
   \return{a list containing two images of float data type, the first for the x-ccordinates of the target image, the second for the y coodinates.}
   \desc{wrapper function to \htmladdnormallink{proj4}{http://trac.osgeo.org/proj/} cartographic projection procedures \cite{evenden2003}.}
   \cfunction{\cfcsTWOcs}
-  \cfile{grid.c}
+  \cfile{projection.c}
   \example{}{}
 */
   if (!moreargs())
@@ -9599,22 +9613,15 @@ LVAL ics2cs()
 	break;
     }
   }
-  /* printf("no=%d\n", no); */
-  imx=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imx==NULL){
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NIL;
-  }
-  imy=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imy==NULL){
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NIL;
-  }
 
-  if (cs2cs(ulc_e, ulc_n, parmsi, ni, parmso, no, imx, imy, res) == ERROR){
+  imarray=cs2cs(ulc_e, ulc_n, nx, ny, res, parmsi, ni, parmso, no);
+  if (imarray == NULL){
       sprintf(buf,"error: returned by cs2cs()\n"); errputstr(buf);
       return NIL;
   }
+  imx=imarray[0];
+  imy=imarray[1];
+
   xlstkcheck(3);
   xlsave(u_ptr);
   xlsave(v_ptr);
@@ -9623,6 +9630,7 @@ LVAL ics2cs()
   v_ptr=cvimage(imy);
   result = cons(u_ptr, cons (v_ptr, NIL));
   xlpopn(3);
+  free(imarray);
   return result;
 }
 LVAL ijulian_date()

@@ -24,16 +24,12 @@ extern IMAGE *rank(IMAGE *im, IMAGE *imse, int rank, int ox, int oy, int oz, int
 
 /* rank.c */
 extern IMAGE *squarerank(IMAGE *im, int k, int rank, int ox, int oy);
-extern IMAGE *squarevol(IMAGE *im, int k, int ox, int oy);
 
 /* linerank.c */
 extern ERROR_TYPE linerank(IMAGE *im, int dx, int dy, int k, int rank, int o);
 
 /* herkbl.c */
 extern IMAGE *lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int tr);
-
-/* mmlabel.c */
-extern IMAGE *erodelabel(IMAGE *im, int graph);
 
 /* msmm.c */
 extern IMAGE *msgradlinf(IMAGE **imap, int nc, int graph);

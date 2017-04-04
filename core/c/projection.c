@@ -58,7 +58,8 @@ XY proj(XY idata, char *parms[], int n, int flag)
   return odata;
 }
 
-ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char *parmso[], int no, IMAGE *imx, IMAGE *imy, double res)
+IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no)
+// , IMAGE *imx, IMAGE *imy, double res
 {
   /*
   ** Author:  Pierre Soille [EC-Joint Research Centre 2005 (first 2005-08-12)]
@@ -75,21 +76,39 @@ ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char *parms
   */
 
   PJ *fromProj, *toProj;
-  int i,j,nx,ny;
+  int i,j;
+  // int nx,ny;
   double x, y;
   double *pimx, *pimy, *z=NULL;
-  
-  nx=GetImNx(imx);
-  ny=GetImNy(imx);
+  IMAGE *imx=NULL, *imy=NULL, **imap=NULL;
 
   if( ! (fromProj=pj_init(ni, parmsi)) ){ /* init backward projection */
     sprintf(buf,"error in cs2cs() error when calling backward pj_init()\n"); errputstr(buf);
-    return ERROR;
+    return NULL;
   }
   if( ! (toProj=pj_init(no, parmso)) ){ /* init forward projection */
     sprintf(buf,"error in cs2cs() error when calling forward pj_init()\n"); errputstr(buf);
-    return ERROR;
+    return NULL;
   }
+
+  imx=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
+  if (imx==NULL){
+      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
+      return NULL;
+  }
+  imy=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
+  if (imy==NULL){
+    free_image(imx);
+      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
+      return NULL;
+  }
+
+  imap=(IMAGE **)calloc(2,sizeof(IMAGE *));
+  imap[0]=imx;
+  imap[1]=imy;
+
+  nx=GetImNx(imx);
+  ny=GetImNy(imx);
 
   pimx=(double *)GetImPtr(imx);
   pimy=(double *)GetImPtr(imy);
@@ -101,9 +120,13 @@ ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char *parms
   }
   pimx=(double *)GetImPtr(imx);
   pimy=(double *)GetImPtr(imy);
-/*   printf("before transform *pimx=%f20\n", (float) *pimx); */
-/*   printf("before transform *pimy=%f20\n", (float) *pimy); */
-/*   printf("number of points to process =%d\n", nx*ny); */
+
+#ifdef DEBUG
+  printf("before transform *pimx=%f20\n", (float) *pimx);
+  printf("before transform *pimy=%f20\n", (float) *pimy);
+  printf("number of points to process =%d\n", nx*ny);
+#endif
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -117,12 +140,16 @@ ERROR_TYPE cs2cs(double ulc_e, double ulc_n, char *parmsi[], int ni, char *parms
       sprintf(buf,"warning: cs2cs error when calling pj_transform()\n"); errputstr(buf);
     }
   }
-/*   printf("after transform *pimx=%f20\n", (float) *pimx); */
-/*   printf("after transform *pimy=%f20\n", (float) *pimy); */
+
+#ifdef DEBUG
+  printf("after transform *pimx=%f20\n", (float) *pimx);
+  printf("after transform *pimy=%f20\n", (float) *pimy);
+#endif
+
   pj_free((void *) fromProj);
   pj_free((void *) toProj);
   
-  return NO_ERROR;
+  return imap;
 }
 #endif
 
