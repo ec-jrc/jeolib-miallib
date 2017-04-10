@@ -10,7 +10,6 @@
 extern ERROR_TYPE framebox(IMAGE *im, int *box, G_TYPE gval);
 extern ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval);
 extern ERROR_TYPE subframebox(IMAGE *im, int *box);
-extern ERROR_TYPE dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy);
 extern ERROR_TYPE imputop(IMAGE *im1, IMAGE *im2, int x, int y, int z, int op);
 extern ERROR_TYPE imputcompose(IMAGE *im1, IMAGE *imlbl, IMAGE *im2, int x, int y, int z, int val);
 extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);

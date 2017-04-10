@@ -626,41 +626,6 @@ LVAL iwrite_ColorMap_tiff()
   return(s_true);
 }
 
-LVAL idumpxyz()
-{
-  LVAL xlim1;
-  int x, y, z, dx, dy;
-
-  if (!moreargs())
-    xlabort("(*dumpxyz im x y z dx dy)\n");
-/*
-  \lspfunction{*}{dumpxyz}{im x y z dx dy}
-  \param{im}{an image node}
-  \param{x}{x coordinate}
-  \param{y}{y coordinate}
-  \param{z}{z coordinate}
-  \param{dx}{integer for size of window along x-axis}
-  \param{dy}{integer for size of window along y-axis}
-  \return{true on success, NIL otherwise}
-  \desc{dumps on screen a dx$\times$dy window with the image values around coordinates (x,y) and within the plane z.}
-  \cfunction{\cfdumpxyz}
-  \cfile{geom.c}
-*/
-
-  xlim1 = xlgaimage();
-  x     = (int)getfixnum(xlgafixnum());
-  y     = (int)getfixnum(xlgafixnum());
-  z     = (int)getfixnum(xlgafixnum());
-  dx    = (int)getfixnum(xlgafixnum());
-  dy    = (int)getfixnum(xlgafixnum());
-
-  xllastarg();
-
-  dumpxyz((IMAGE *)getimage(xlim1),x,y,z,dx,dy);
-  return s_true;
-}
-
-
 
 LVAL irotatefast()
 {
@@ -874,6 +839,40 @@ LVAL iiminfo()
   
   iminfo((IMAGE *)getimage(xlim1));
   return(xlim1);
+}
+
+LVAL idumpxyz()
+{
+  LVAL xlim1;
+  int x, y, z, dx, dy;
+
+  if (!moreargs())
+    xlabort("(*dumpxyz im x y z dx dy)\n");
+/*
+  \lspfunction{*}{dumpxyz}{im x y z dx dy}
+  \param{im}{an image node}
+  \param{x}{x coordinate}
+  \param{y}{y coordinate}
+  \param{z}{z coordinate}
+  \param{dx}{integer for size of window along x-axis}
+  \param{dy}{integer for size of window along y-axis}
+  \return{true on success, NIL otherwise}
+  \desc{dumps on screen a dx$\times$dy window with the image values around coordinates (x,y) and within the plane z.}
+  \cfunction{\cfdumpxyz}
+  \cfile{geom.c}
+*/
+
+  xlim1 = xlgaimage();
+  x     = (int)getfixnum(xlgafixnum());
+  y     = (int)getfixnum(xlgafixnum());
+  z     = (int)getfixnum(xlgafixnum());
+  dx    = (int)getfixnum(xlgafixnum());
+  dy    = (int)getfixnum(xlgafixnum());
+
+  xllastarg();
+
+  dumpxyz((IMAGE *)getimage(xlim1),x,y,z,dx,dy);
+  return s_true;
 }
 
 LVAL inx()
