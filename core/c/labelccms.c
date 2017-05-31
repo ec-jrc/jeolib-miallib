@@ -514,6 +514,18 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
 
 
 
+/** 
+ * @synopsis computes the alpha-omega connected components of a multiband image
+ *
+ * @param ima: a array of images of the same type and size
+ * @param imse: an image defining the neighbourhood of a pixel (origin pixel must be set to 0)
+ * @param ox: integer for x-coordinate of origin
+ * @param oy: integer for y-coordinate of origin
+ * @param oz: integer for z-coordinate of origin
+ * @param r1: integer for global range (also referred to as omega)
+ * @param r2: integer for local range (also referred to as alpha)
+ * @desc returns a new image containing the labelled alpha-omega connected components of the input multiband image.  The labels are of type UINT32.  Typically, imse defines an elementary neighbourhood such as a 3x3x1 image with the orgin at coordiantes 1,1,0 and the 4-neighbour pixels of the origin set to 1, all other pixels being set to 0.  Based on algorithm described in~\citep{soille2008pami}, see also http://dx.doi.org/10.1007/978-3-540-79126-3_38
+ */
 IMAGE *labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int r1, int r2)
 {
   switch (GetImDataType(*ima)){
