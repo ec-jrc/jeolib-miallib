@@ -1,9 +1,9 @@
-# python specific interface file
+// python specific interface file
 
 // provide support for numpy array with mial
 
 
-%{
+%inline %{
   //#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include "Python.h"
 #include "numpy/arrayobject.h"

@@ -924,7 +924,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   int box[6];
 
   int acounter;
-  char fn[9];
+  char fn[23];
 
   /* table of homotopic configurations generated automatically once for all */
   int homotab[256] = { 0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,0,1,1,1,1,0,1,0,1,0,1,1,0,1,\

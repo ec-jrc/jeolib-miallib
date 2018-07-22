@@ -98,7 +98,7 @@ DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
 
 
 
-INCLUDE    = -I./ -I/usr/include/python2.7/
+INCLUDE    = -I./ -I/usr/include/python2.7/ -I/usr/include/gdal/
 
 # TODO: add -lcsa -lnn 
 

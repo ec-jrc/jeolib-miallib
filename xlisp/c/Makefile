@@ -25,7 +25,7 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG 
 
 
 $(BUILDDIR)/mialisp: banner_mialib.h $(BUILDOBJS)
-	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c
+	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lgdal -lopenjp2 -ljpeg -lgeotiff -ltiff -lz -lproj -lpng -lgsl -lgslcblas -lexpat -lgif -lpq -lssl -lcrypto -lcurl -lfftw3_omp -lfftw3 -ldl -lm -lsqlite3 -lcrypt -lxml2 -lgeos_c -lshp
 
 
 banner_mialib.h: $(SRCS)

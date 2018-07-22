@@ -1,6 +1,17 @@
 Welcomne to mialib!
 
-Try 'make build' and good luck!
+Please make sure that the following libraries are installed: libgdal-dev, libfftw3-dev, libgsl-dev, libshp-dev, libssl-dev:
+sudo apt-get install libgdal-dev
+sudo apt-get install libfftw3-dev
+sudo apt-get install libgsl-dev
+sudo apt-get install libshp-dev
+sudo apt-get install libssl-dev
+
+Also, please install swig:
+sudo apt-get install swig
+
+
+Then, try 'make build' and good luck!
 
 
 Then cd to 'swig/build/python' and try ipython

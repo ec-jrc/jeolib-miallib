@@ -681,8 +681,9 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
     im = NULL;
 #endif
   }      
-  else
+  else{
     (void)sprintf(buf,"read_file(): unable to read %s on disk\n", fn); errputstr(buf);
+  }
 
   (void) fclose(fp);
   return(im);

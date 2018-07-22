@@ -293,32 +293,41 @@ ERROR_TYPE binODthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanchor)
       {*(psimple+i)=1; fifo4_add(qcurrent,(long int) i);/*counter++;*/} else *(psimple+i)=0;
   // printf (" grskel - initial simple pixels = %d ", counter);
   deleted=1;
-  while (deleted)
-    {
+  while (deleted){
       // counter = 0;  
       deleted = 0;
-      while (fifo4_empty(qcurrent) == FALSE) 
-       { i = fifo4_remove(qcurrent);
-         if (simple_pixel(pimin,stype,i,nx))
-	 {
+      while (fifo4_empty(qcurrent) == FALSE){
+	i = fifo4_remove(qcurrent);
+	if (simple_pixel(pimin,stype,i,nx)){
 	     deleted = 1; // counter ++;
              *(psimple+i) = 0;   
              *(pimin+i) = 0;
              fifo4_add(q2, (long int) i);
 	 } else fifo4_add(qnext, (long int) i); /* back to the queue */ 
        }
-       if (deleted)
-	 while (fifo4_empty(q2) == FALSE)
-	    {
+      if (deleted){
+	 while (fifo4_empty(q2) == FALSE){
 	     i = fifo4_remove(q2);
              for (j=0; j<8; j++)  
 	      if ((test_anchor(pimanchor,atype,i + sh[j])) && (simple_pixel(pimin,stype,i + sh[j],nx)) 
-                                                           && (*(psimple + i + sh[j]) == 0)) 
-               {*(psimple+i+sh[j]) = 1; fifo4_add(qnext,(long int) (i+sh[j]));}
+                                                           && (*(psimple + i + sh[j]) == 0)){
+		 *(psimple+i+sh[j]) = 1;
+		 fifo4_add(qnext,(long int) (i+sh[j]));
+	       }
 	    } 
           // printf("\n k = %d, counter = %d", kk++, counter); 
-         if (qswitch){qcurrent=q_a;qnext=q_b;qswitch=0;} else{qcurrent=q_b;qnext=q_a;qswitch=1;}
-     }
+         if (qswitch){
+	   qcurrent=q_a;
+	   qnext=q_b;
+	   qswitch=0;
+	 }
+	 else{
+	   qcurrent=q_b;
+	   qnext=q_a;
+	   qswitch=1;
+	 }
+      }
+  }
   // PS if (atype == 1) subframebox(imanchor,box);
   // PS subframebox(imin,box);
 
