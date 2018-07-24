@@ -102,7 +102,7 @@ INCLUDE    = -I./ -I/usr/include/python2.7/ -I/usr/include/gdal/
 
 # TODO: add -lcsa -lnn 
 
-LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
+LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
 INTERFACE  = imem.i
 SWIGOPT    =
 SWIG       = swig

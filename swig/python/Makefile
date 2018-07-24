@@ -62,7 +62,7 @@ SWIGARGS = -Wall -I../include -I../include/$(BINDING)
 SWIGDEFINES = -DCLASSIF -DODOITHIN -DMCISRG 
 CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
 INCLUDE    = -I./  -I$(MIALIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
-LIBS       = -lgdal -ltiff -ldl ../../core/build/lib/lib$(TARGET)_python.so
+LIBS       = -lgdal -ltiff -lshp -ldl ../../core/build/lib/lib$(TARGET)_python.so
 LIBDIR	   = ../../core/build/lib/
 INTERFACE  = $(TARGET).i
 SWIGOPT    =
