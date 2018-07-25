@@ -1,6 +1,6 @@
 /*
 ** Header file for image analysis routines
-** by Pierre.Soille@jrc.it  1988--2016
+** by Pierre.Soille@ec.europa.eu  1988--2018
 */
 
 #ifndef _MIALIB_H
@@ -447,6 +447,8 @@ extern ERROR_TYPE generic_setlevel(IMAGE *im, GENERICPIX t1, GENERICPIX t2, GENE
 extern ERROR_TYPE us_setlevel(IMAGE *im, USHORT t1, USHORT t2, USHORT val);
 extern ERROR_TYPE s_setlevel(IMAGE *im, SHORT t1, SHORT t2, SHORT val);
 extern ERROR_TYPE us_setrange(IMAGE *im, USHORT t1, USHORT t2);
+extern ERROR_TYPE generic_thresh(IMAGE *, UCHAR, UCHAR, UCHAR, UCHAR);
+extern ERROR_TYPE f_thresh(IMAGE *, MIAFLOAT, MIAFLOAT, MIAFLOAT, MIAFLOAT);
 
 /* efedt.c */
 extern IMAGE *sqedt(IMAGE *);
