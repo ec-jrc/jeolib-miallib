@@ -522,9 +522,8 @@ ERROR_TYPE framebox(IMAGE *im, int *box, G_TYPE gval)
     return(i32_framebox(im, box, gval.i32_val));
     break;
 
-
   case t_UINT32:
-    return(u32_framebox(im, box, gval.i32_val));
+    return(u32_framebox(im, box, gval.u32_val));
     break;
 
   case t_FLOAT:
@@ -1022,7 +1021,7 @@ ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval)
     break;
 
   case t_SHORT:
-    return(us_addframebox(im, box, gval.us_val));
+    return(s_addframebox(im, box, gval.s_val));
     break;
 
   case t_UINT32:

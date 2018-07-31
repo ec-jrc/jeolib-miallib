@@ -48,6 +48,7 @@ int type;
 
   if (type == t_UCHAR){
     gval.uc_val = (UCHAR) getfixnum(xlgafixnum());
+    gval.generic_val = gval.uc_val;
   }
   else if  (type == t_USHORT){
     gval.us_val  = (USHORT) getfixnum(xlgafixnum());
