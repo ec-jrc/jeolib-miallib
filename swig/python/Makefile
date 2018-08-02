@@ -49,6 +49,8 @@ MIALIB_ROOT = ../../core/c/
 BUILDDIR = ./build/
 BUILDDIRBASE = ../build/
 
+PREFIX=/usr/local
+INSTALLDOCDIR=${PREFIX}/share/doc/mialib/python/
 
 
 CC         = gcc
@@ -148,10 +150,12 @@ all: build doc
 
 install:
 	python setup.py install --record $(BUILDDIR)/installed_files.txt
+	mkdir -p ${INSTALLDOCDIR}/pdf && cp -a ./build/doc/mialib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
 
 uninstall:
 	cat $(BUILDDIR)/installed_files.txt | xargs rm -f
 	-rm -rf /usr/local/lib/python2.7/dist-packages/mialib
+	-rm -rf ${INSTALLDOCDIR}/pdf/
 
 clean:
 	-rm -rf $(SWIGOUTPUTDIR)

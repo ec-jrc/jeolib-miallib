@@ -26,11 +26,13 @@ install:
 	cd core/c && make install
 	cd swig/python && make install
 	cd xlisp/c && make install
+	cd xlisp/doc && make install
 
 uninstall:
 	cd core/c && make uninstall
 	cd swig/python && make uninstall
 	cd xlisp/c && make uninstall
+	cd xlisp/doc && make uninstall
 
 clean:
 	-cd core/c && make clean

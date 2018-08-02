@@ -1,6 +1,6 @@
 # 
 # Makefile for generating LaTeX documents
-# send comments and suggestions to Pierre.Soille@jrc.it
+# send comments and suggestions to Pierre.Soille@ec.europa.eu
 #
 
 
@@ -20,6 +20,7 @@ SRCXLISPDIR = ../c
 BUILDDOCDIR = ../build/doc
 BUILDDOCDIRTEX = $(BUILDDOCDIR)/texinputs
 BUILDDOCDIRHTML = $(BUILDDOCDIR)/html
+PREFIX=/usr/local/
 
 export TEXINPUTS:=.:../build/doc/texinputs/:${TEXINPUTS}
 
@@ -72,5 +73,18 @@ $(BUILDDOCDIRTEX)/cfvt.tex: $(BUILDDOCDIRTEX)/xlglue1.tex
 
 all: ${FN}.dvi $(BUILDDOCDIRHTML)/${FN}.html ${FN}.pdf
 
+DOCDIR = $(PREFIX)/share/doc/mialib/lisp
+
+install:
+	mkdir -p ${DOCDIR}/html/
+	cp -a $(BUILDDOCDIRHTML)/* ${DOCDIR}/html/
+	mkdir -p ${DOCDIR}/pdf/
+	cp -a miadocxlisp.pdf ${DOCDIR}/pdf/
+
+uninstall:
+	-rm -rf ${DOCDIR}/html
+	-rm -rf ${DOCDIR}/pdf
+	-rmdir ${DOCDIR}
+
 clean:
-	rm -rf $(BUILDDOCDIR); rm -f ${FN}.aux ${FN}.ilg $(FN).pdf ${FN}.log ${FN}.blg ${FN}.dvi ${FN}.toc ${FN}.idx ${FN}.ind ${FN}.bbl ${FN}.out ${FN}.ps $(EPS_FILES) $(XPS_FILES) core ; rm -rf .xvpics cfet.tex cfit.tex cfvt.tex
+	-rm -rf $(BUILDDOCDIR); rm -f ${FN}.aux ${FN}.ilg $(FN).pdf ${FN}.log ${FN}.blg ${FN}.dvi ${FN}.toc ${FN}.idx ${FN}.ind ${FN}.bbl ${FN}.out ${FN}.ps $(EPS_FILES) $(XPS_FILES) core ; rm -rf .xvpics cfet.tex cfit.tex cfvt.tex

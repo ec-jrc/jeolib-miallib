@@ -1,5 +1,8 @@
 
 BUILDDIR=../build/doc/
+PREFIX=/usr/local
+
+INSTALLDOCDIR=${PREFIX}/share/doc/mialib/lib/
 
 doc: Doxyfile
 	make -p $(BUILDDIR)
@@ -11,4 +14,11 @@ clean:
 
 
 all: doc
+
+install:
+	mkdir -p ${INSTALLDOCDIR}/pdf && cp -a ../build/doc/latex/mialib.pdf ${INSTALLDOCDIR}/pdf/
+
+uninstall:
+	-rm -rf ${INSTALLDOCDIR}/pdf
+	-rmdir ${INSTALLDOCDIR}
 

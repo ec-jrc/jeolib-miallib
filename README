@@ -1,6 +1,6 @@
 Welcomne to mialib!
 
-Please make sure that the following libraries are installed: libgdal-dev, libfftw3-dev, libgsl-dev, libshp-dev, libssl-dev:
++ Please make sure that the following libraries are installed: libgdal-dev, libfftw3-dev, libgsl-dev, libshp-dev, libssl-dev:
 sudo apt-get install libgdal-dev
 sudo apt-get install libfftw3-dev
 sudo apt-get install libgsl-dev
@@ -11,8 +11,23 @@ Also, please install swig:
 sudo apt-get install swig
 
 
-Then, try 'make build' and good luck!
++ Then, try 
+
+make build
+sudo make install
 
 
-Then cd to 'swig/build/python' and try ipython
-followed by import mialmodule as mial.
++ Upon successful completion of these steps, you can use mialib:
+
+- from a python interpreter, simply type
+import mialib
+The doc can be found here:  /usr/local/share/doc/mialib/python/pdf/api.pdf
+
+- together with a LISP interpreter by typing
+mialisp /usr/local/share/mialisp/lsp/init.lsp
+The doc can be found here: /usr/local/share/doc/mialib/lisp/pdf/miadocxlisp.pdf
+
+- or binding the mialib libraries directly with your preferred software:
+/usr/local/lib/libmialib_generic.so
+The doc can be found here:  /usr/local/share/doc/mialib/lib/pdf/mialibpdf
+
