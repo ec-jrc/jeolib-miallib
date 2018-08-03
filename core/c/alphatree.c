@@ -1,6 +1,11 @@
-/* by Pierre.Soille@jrc.ec.europa.eu
-   first: 20120219  with a male alla costa dopo caduta a Crampiolo
-   second: 20120220 a casa con Simon!  carnavale 2012!!!  Narie a appele ce matin pour CI,
+/** @file
+ *  Computation of the tree of alpha-connected components \cite soille2008pami
+ *  @author Pierre Soille
+ */
+
+/* by Pierre.Soille@ec.europa.eu
+   first: 20120219  
+   second: 20120220
 */
 
 #include <stdio.h>

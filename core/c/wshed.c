@@ -1,3 +1,7 @@
+/** @file
+ *  Watershed computation by immersion simulation \cite soille-vincent90
+ *  @author Pierre Soille
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "mialib.h"
@@ -14,9 +18,8 @@
 **  Distributive sort.
 */
 
-#ifndef NO_generic_IMAGE
-#include "g_def.h"
-IMAGE *generic_pixsort(IMAGE *im, IMAGE *imrsum)
+#include "uc_def.h"
+IMAGE *uc_pixsort(IMAGE *im, IMAGE *imrsum)
 {
   IMAGE *imsort;
   PIX_TYPE *pim, **psort;
@@ -41,9 +44,7 @@ IMAGE *generic_pixsort(IMAGE *im, IMAGE *imrsum)
 
   return(imsort);
 }
-#include "g_undef.h"
-#endif /* #ifndef NO_generic_IMAGE */
-
+#include "uc_undef.h"
 
 #include "u32_def.h"
 IMAGE *u32_pixsort(IMAGE *im, IMAGE *imrsum)
@@ -130,22 +131,19 @@ IMAGE *i32_pixsort(IMAGE *im, IMAGE *imrsum)
 }
 #include "i32_undef.h"
 
+/*!
+ * @param im an IMAGE pointer argument.
+ * @param imrsum an IMAGE pointer argument holding the running sum of the histogram of the values in im.
 
+ Sort the image pixels in increasing order of their pixel value and output an array of pointers to the sorted pixel values.
+ */
 IMAGE *pixsort(IMAGE *im, IMAGE *imrsum)
 { 
   switch (GetImDataType(im)){
 
-#ifndef NO_generic_IMAGE
-  case t_GENERIC:
-    return(generic_pixsort(im, imrsum));
-    break;
-#endif
-
-#ifndef NO_uc_IMAGE
   case t_UCHAR:
     return(uc_pixsort(im, imrsum));
     break;
-#endif
 
   case t_USHORT:
     return(us_pixsort(im, imrsum));
@@ -158,7 +156,6 @@ IMAGE *pixsort(IMAGE *im, IMAGE *imrsum)
   case t_UINT32:
     return(u32_pixsort(im, imrsum));
     break;
-
 
   default:
     (void)sprintf(buf,"pixsort(): invalid pixel type\n"); errputstr(buf);
