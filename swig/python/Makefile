@@ -1,4 +1,4 @@
-# Makefile adapted by Pierre.Soille@jrc.ec.europa.eu
+# Makefile adapted by Pierre.Soille@.ec.europa.eu
 # for testing jipl C library binding to python
 
 # 20160419: added automatic documentation generation using epydoc
@@ -47,7 +47,6 @@ SWIGOUTPUTDIR = extensions
 MIALIB_ROOT = ../../core/c/
 #BUILDDIR = ../build/python/
 BUILDDIR = ./build/
-BUILDDIRBASE = ../build/
 
 PREFIX=/usr/local
 INSTALLDOCDIR=${PREFIX}/share/doc/mialib/python/
@@ -158,9 +157,8 @@ uninstall:
 	-rm -rf ${INSTALLDOCDIR}/pdf/
 
 clean:
-	-rm -rf $(SWIGOUTPUTDIR)
-	-rm -rf $(BUILDDIR)
-	-rm -rf $(BUILDDIRBASE)
+	if [ x$(SWIGOUTPUTDIR) != 'x' ] && [ -d $(SWIGOUTPUTDIR) ]; then rm -rf ${SWIGOUTPUTDIR}; fi
+	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
 	-rm -f ../include/$(BINDING)/$(TARGET)_newobjects.i
 	-rm -f *.pyc
 	-rm -rf *.egg-info
@@ -195,6 +193,6 @@ clean:
 
 veryclean: clean
 	-rm -f ${WRAPPER}
-	-rm -rf ${SWIGOUTPUTDIR}
+	if [ x$(SWIGOUTPUTDIR) != 'x' ] && [ -d $(SWIGOUTPUTDIR) ]; then rm -rf ${SWIGOUTPUTDIR}; fi
 
 

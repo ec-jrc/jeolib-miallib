@@ -5,7 +5,7 @@ PREFIX=/usr/local
 INSTALLDOCDIR=${PREFIX}/share/doc/mialib/lib/
 
 doc: Doxyfile
-	make -p $(BUILDDIR)
+	mkdir -p $(BUILDDIR)
 	doxygen Doxyfile && ./doxy2swig.py -t $(BUILDDIR)/xml/index.xml  $(BUILDDIR)/xml/mial_doxy2swig.i
 	cd ../build/doc/latex && make all && mv refman.pdf mialib.pdf
 

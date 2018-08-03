@@ -273,11 +273,7 @@ uninstall:
 	-rm -f $(prefix)/include/$(BASE)/op.h
 
 clean:
-	-rm -rf $(BUILDDIR)
+	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
 	-rm -f banner.h
 
-
-
-	#rm -rf $(SDIR-GENERIC)/*.o $(DDIR-GENERIC)/*.o $(SDIR)/*.o $(SDIR-XLISP)/*.o $(DDIR)/*.o $(LDIR)/*.a $(LDIR)/*.so $(SDIR-GENERIC)/*.o
-	# cd $(DOCDIR) && make clean
 

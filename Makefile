@@ -12,7 +12,7 @@ build:
 
 
 #
-# documentation generation for python requires epydoc  to be installed!
+# documentation generation for python requires epydoc to be installed!
 # documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
 #
 doc:
