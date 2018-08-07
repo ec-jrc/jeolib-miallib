@@ -12,42 +12,42 @@ from io_base import *
 
 # this makes imem_base functions available in this file, e.g., imem_base.copy_image()
 # but also as mialib.imem_base in ipython
-import imem_base
+import imem_base as _imem_base
 
 def getnx(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return int(imem_base.getpixval(gdi, 6))
+        return int(_imem_base.getpixval(gdi, 6))
         return None
 
 def getny(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return int(imem_base.getpixval(gdi, 7))
+        return int(_imem_base.getpixval(gdi, 7))
         return None
 
 def getulcx(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return imem_base.getpixval(gdi, 0)
+        return _imem_base.getpixval(gdi, 0)
         return None
 
 def getulcy(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return imem_base.getpixval(gdi, 3)
+        return _imem_base.getpixval(gdi, 3)
         return None
 
 def getepsg(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return int(imem_base.getpixval(gdi, 9))
+        return int(_imem_base.getpixval(gdi, 9))
         return None
 
 def getscale(fn):
     gdi=GDALInfoJIP(fn)
     if gdi:
-        return imem_base.getpixval(gdi, 1)
+        return _imem_base.getpixval(gdi, 1)
         return None
 
 def MyGDALRead(fn, band_number=0):

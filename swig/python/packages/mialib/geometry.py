@@ -1,19 +1,19 @@
-import mialib
+import mialib as _mialib
 
 
 from geometry_base import *
-import imem_base
+import imem_base as _imem_base
 
 def d_framebox(i0, box, val):
     r=framebox(i0, box, val)
 
-    if r==mialib.NO_ERROR:
+    if r==_mialib.NO_ERROR:
         return i0
     else:
         return 'd_framebox(): invalid data type'
 
 def nd_framebox(i0, box, val):
-    d_framebox(imem_base.copy_image(i0), box, val)
+    d_framebox(_imem_base.copy_image(i0), box, val)
 
 
 def d_subframebox(i0, box):
@@ -22,14 +22,14 @@ def d_subframebox(i0, box):
 
 
 def nd_subframebox(i0, box):
-    d_subframebox(imem_base.copy_image(i0), box)
+    d_subframebox(_imem_base.copy_image(i0), box)
 
 def d_addframebox(i0, box, val):
     addframebox(i0, box, val)
     return i0
 
 def nd_addframebox(i0, box, val):
-    d_addframebox(imem_base.copy_image(i0), box, val)
+    d_addframebox(_imem_base.copy_image(i0), box, val)
 
 
 def d_imputintopgeo(im1, im2, op, geotifffn1, geotifffn2, multfactor=1):
