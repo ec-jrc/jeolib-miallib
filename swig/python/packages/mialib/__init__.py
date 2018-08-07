@@ -40,6 +40,7 @@
 # from io import *
 # from pointop import *
 # from visu import *
+# from dist import *
 
 
 # packages with base only definitions
@@ -61,7 +62,7 @@ import stats
 import io
 import pointop
 import visu
-
+import dist
 
 
 
