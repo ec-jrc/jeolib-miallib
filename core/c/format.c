@@ -1074,6 +1074,42 @@ ERROR_TYPE us_to_double(IMAGE *im, IMAGE *imout)
 }
 #include "us_undef.h"
 
+#include "u32_def.h"
+ERROR_TYPE u32_to_double(IMAGE *im, IMAGE *imout)
+{
+  mia_size_t i, npix;
+  double *p2;
+  PIX_TYPE *p1;
+
+  p1   = (PIX_TYPE *)GetImPtr(im);
+  p2   = (double *)GetImPtr(imout);
+  npix = GetImNPix(im);
+
+  /* potential bug (depending on data type): no range check */
+  for (i=0; i<npix; i++, p1++, p2++)
+    *p2 = (double)*p1;
+  return(NO_ERROR);
+}
+#include "u32_undef.h"
+
+#include "i32_def.h"
+ERROR_TYPE i32_to_double(IMAGE *im, IMAGE *imout)
+{
+  mia_size_t i, npix;
+  double *p2;
+  PIX_TYPE *p1;
+
+  p1   = (PIX_TYPE *)GetImPtr(im);
+  p2   = (double *)GetImPtr(imout);
+  npix = GetImNPix(im);
+
+  /* potential bug (depending on data type): no range check */
+  for (i=0; i<npix; i++, p1++, p2++)
+    *p2 = (double)*p1;
+  return(NO_ERROR);
+}
+#include "i32_undef.h"
+
 #include "f_def.h"
 ERROR_TYPE f_to_double(IMAGE *im, IMAGE *imout)
 {
@@ -1111,6 +1147,12 @@ IMAGE *to_double(IMAGE *im)
     break;
   case t_USHORT:
     rval = us_to_double(im, imout);
+    break;
+  case t_UINT32:
+    rval = u32_to_double(im, imout);
+    break;
+  case t_INT32:
+    rval = i32_to_double(im, imout);
     break;
   case t_FLOAT:
     rval = f_to_double(im, imout);

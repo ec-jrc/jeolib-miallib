@@ -1,3 +1,8 @@
+/** @file
+ *  Erosion and dilation along arbitrary (periodic) line segments \cite soille-breen-jones96
+ *  @author Pierre Soille
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -1,3 +1,8 @@
+/** @file
+ *  Optimal removal of spurious pits in digital elevation models \cite soille2004wrr
+ *  @author Pierre Soille
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "mialib.h"

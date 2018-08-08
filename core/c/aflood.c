@@ -1,3 +1,9 @@
+/** @file
+ *  Morphological carving \cite soille-vogt-colombo2003wrr \cite soille2004prl
+ *  @author Pierre Soille
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "mialib.h"
