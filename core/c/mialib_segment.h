@@ -58,4 +58,7 @@ extern ERROR_TYPE dendro(IMAGE **imap, int nc, char *fn);
 /* partition.c */
 extern IMAGE **PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph);
 
+/* mspa.c */
+extern IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transition, int internal);
+
 #endif /* mialib_segment.h */

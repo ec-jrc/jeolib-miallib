@@ -1,7 +1,8 @@
+#!/bin/bash
 
 grep -h "^IMAGE *" ../../core/c/*.c | sed 's/^/\{/' | sed 's/$/\}/' | sed 's/_/\\_/g' > /tmp/Bi
 
-grep -h "^IMAGE *" ../../core/c/*.c | sed 's/IMAGE \*\*//' | sed 's/IMAGE \*//' | awk -F\( '{ print "\\newcommand\{\\cf" $1"\}" }' | sed 's/_/UD/g'| sed 's/1/ONE/g'| sed 's/2/TWO/g' | sed 's/3/THREE/g' | sed 's/4/FOUR/g' | sed 's/5/FIVE/g' | sed 's/6/SIX/g'  | sed 's/7/SEVEN/g' | sed 's/8/EIGHT/g' | sed 's/9/NINE/g' > /tmp/Ai
+grep -h "^IMAGE *" ../../core/c/*.c | sed 's/IMAGE \*\*//' | sed 's/IMAGE \*//' | awk -F\( '{ print "\\newcommand{\\cf" $1"}" }' | sed 's/_/UD/g'| sed 's/1/ONE/g'| sed 's/2/TWO/g' | sed 's/3/THREE/g' | sed 's/4/FOUR/g' | sed 's/5/FIVE/g' | sed 's/6/SIX/g'  | sed 's/7/SEVEN/g' | sed 's/8/EIGHT/g' | sed 's/9/NINE/g' > /tmp/Ai
 
 paste /tmp/Ai /tmp/Bi | sed '/cfgenericUD/d' | sed '/cfucUD/d' | sed '/cfusUD/d'  | sed '/cflUD/d'  | sed '/cfulUD/d'  | sed '/cffUD/d' | sed '/cfdUD/d' | sort -u > ../build/doc/texinputs/cfit.tex
 

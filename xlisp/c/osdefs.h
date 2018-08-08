@@ -283,9 +283,6 @@ extern LVAL iwriteGnuPlot3D();
 #ifdef MORF
 #include "osd_morf.h"
 #endif /* #ifdef MORF  */
-#ifdef EERIE
-#include "osdeerie.h"
-#endif /* #ifdef EERIE  */
 #ifdef MARCIN
 #include "osdefs_marcin.h"
 #endif

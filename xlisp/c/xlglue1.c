@@ -9671,10 +9671,6 @@ LVAL ijulian_date()
   \input{remsens.tex}  % Functions defined in lisp
 */
 
-#ifdef EERIE
-#include "xlgeerie.c"
-#endif 
-
 
 /*
   % Now inserted in imstat and hmtskel
