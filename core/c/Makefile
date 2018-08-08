@@ -71,7 +71,8 @@ SRCS	   = imem.c shm.c pointop.c \
 		ovlmatrix.c \
 		msmm.c \
 		natngbint.c \
-		remsens.c 
+		remsens.c  \
+		mspa.c
 
 # problem with libnn and libcsa:
 #		natngbint.c # requires NNI to be defined

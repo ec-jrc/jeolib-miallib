@@ -398,9 +398,6 @@
 #ifdef MORF
 #include "osp_morf.h"
 #endif /* #ifdef MORF  */
-#ifdef EERIE
-#include "ospeerie.h"
-#endif /* #ifdef TTI   */
 #ifdef MARCIN
 #include "osptrs_marcin.h"
 #endif

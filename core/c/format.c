@@ -611,6 +611,42 @@ ERROR_TYPE f_to_ushort(IMAGE *im, IMAGE *imout)
 }
 #include "f_undef.h"
 
+#include "d_def.h"
+ERROR_TYPE d_to_ushort(IMAGE *im, IMAGE *imout)
+{
+  mia_size_t i, npix;
+  USHORT *p2;
+  PIX_TYPE *p1, mini, maxi;
+  double range;
+  G_TYPE *pg;
+  
+  p1    = (PIX_TYPE *)GetImPtr(im);
+  p2    = (USHORT *)GetImPtr(imout);
+  npix  = GetImNPix(im);
+  pg    = min_max(im);
+  if (pg == NULL)
+    return(ERROR);
+  mini  = pg[0].f_val;
+  maxi  = pg[1].f_val;
+  range = (double)maxi - mini;
+  
+  if (((double)maxi-mini) < (double)USHORT_MAX + 1){
+    if (maxi <= USHORT_MAX)
+      for (i=0; i<npix; i++, p1++, p2++)
+	*p2 = (USHORT)(*p1);
+    else
+      for (i=0; i<npix; i++, p1++, p2++)
+	*p2 = (USHORT)(*p1 - mini);
+  }
+  else{
+    for (i=0; i<npix; i++, p1++, p2++)
+      *p2 = (USHORT)(((double)*p1 - mini)/range * USHORT_MAX);
+  }
+  free((char *)pg);
+  return(NO_ERROR);
+}
+#include "d_undef.h"
+
 IMAGE *to_ushort(IMAGE *im)
 {
   ERROR_TYPE rval;
@@ -657,11 +693,9 @@ IMAGE *to_ushort(IMAGE *im)
     rval = f_to_ushort(im, imout);
     break;
 
-#ifndef NO_d_IMAGE
   case t_DOUBLE:
     rval = d_to_ushort(im, imout);
     break;
-#endif
 
   default:
     (void)sprintf(buf,"to_ushort(im): invalid pixel type\n"); errputstr(buf);
