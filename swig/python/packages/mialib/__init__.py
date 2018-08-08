@@ -65,6 +65,8 @@ import visu
 import dist
 
 
+import mialib as base_functions
+
 
 # use . to secure that the local subpackage is imported
 # from .format import *
