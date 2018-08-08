@@ -25,14 +25,14 @@
 
 
 %inline %{
-  ERROR_TYPE RasterIOMIALib( IMAGE* im, PyArrayObject *psArray) {
-    psArray->data = memcpy((void *)(psArray->data), (void *)GetImPtr(im), GetImNx(im)*GetImNy(im)*(GetImBitPerPixel(im)/8) );
-    return NO_ERROR;
+  void RasterIOMIALib( IMAGE* im, PyArrayObject *psArray) {
+    psArray->data = memcpy((void *)(psArray->data), (void *)GetImPtr(im), GetImNx(im)*GetImNy(im)*GetImNz(im)*(GetImBitPerPixel(im)/8) );
+    // return NO_ERROR;
   }
 
-  ERROR_TYPE CConvertNumPyArrayToMIALibIMAGE( IMAGE *im, PyArrayObject *psArray) {
-    im->p_im=memcpy( (void *)GetImPtr(im), (void *)(psArray->data), GetImNx(im)*GetImNy(im)*(GetImBitPerPixel(im)/8));
-    return NO_ERROR; 
+  void CConvertNumPyArrayToMIALibIMAGE( IMAGE *im, PyArrayObject *psArray) {
+    im->p_im=memcpy( (void *)GetImPtr(im), (void *)(psArray->data), GetImNx(im)*GetImNy(im)*GetImNz(im)*(GetImBitPerPixel(im)/8));
+    // return NO_ERROR; 
   }
 %}
 
@@ -109,7 +109,7 @@ def ConvertToNumPyArray( im ):
     """Pure python implementation of converting a MIALib image
     into a numpy array.  Data values are copied!"""
 
-    buf_obj = numpy.empty([im.ny,im.nx], dtype = ImDataToNumPyTypeCode(im.DataType))
+	  buf_obj = numpy.empty([im.ny,im.nx,im.nz], dtype = ImDataToNumPyTypeCode(im.DataType))
 
     if RasterIOMIALib(im, buf_obj) != NO_ERROR:
        return buf_obj
