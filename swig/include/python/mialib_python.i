@@ -108,8 +108,7 @@ def ImDataToNumPyTypeCode(ImDataType):
 def ConvertToNumPyArray( im ):
     """Pure python implementation of converting a MIALib image
     into a numpy array.  Data values are copied!"""
-
-	  buf_obj = numpy.empty([im.ny,im.nx,im.nz], dtype = ImDataToNumPyTypeCode(im.DataType))
+    buf_obj = numpy.empty([im.ny,im.nx,im.nz], dtype = ImDataToNumPyTypeCode(im.DataType))
 
     if RasterIOMIALib(im, buf_obj) != NO_ERROR:
        return buf_obj
