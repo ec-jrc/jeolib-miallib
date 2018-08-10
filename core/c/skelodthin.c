@@ -437,6 +437,7 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
   }
   return(NO_ERROR);
 }
+#include "uc_undef.h"
 
 ERROR_TYPE bprune(IMAGE *im, int occa, int graph)
 {

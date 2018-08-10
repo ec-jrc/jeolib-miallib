@@ -124,7 +124,7 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
 #include "uc_undef.h"
 
 
-#include "uc_def.h"
+#include "us_def.h"
 #define DST_TYPE     UCHAR
 #define PIX_DST_MSB  0x80
 #define PIX_DST      0x7F

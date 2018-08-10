@@ -29,5 +29,5 @@ The doc can be found here: /usr/local/share/doc/mialib/lisp/pdf/miadocxlisp.pdf
 
 - or binding the mialib libraries directly with your preferred software:
 /usr/local/lib/libmialib_generic.so
-The doc can be found here:  /usr/local/share/doc/mialib/lib/pdf/mialibpdf
+The doc can be found here:  /usr/local/share/doc/mialib/lib/pdf/mialib.pdf
 

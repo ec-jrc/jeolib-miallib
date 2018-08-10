@@ -547,7 +547,7 @@ IMAGE *u32_iz(IMAGE *im)
 }
 #undef t_ATYPE
 #undef ATYPE
-#include "uc_undef.h"
+#include "u32_undef.h"
 
 
 IMAGE *iz(IMAGE *im)

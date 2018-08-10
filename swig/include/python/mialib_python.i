@@ -112,7 +112,6 @@ def ConvertToNumPyArray( im ):
 
     if RasterIOMIALib(im, buf_obj) != NO_ERROR:
        return buf_obj
-
     return buf_obj
 
 def ConvertNumPyArrayToMIALibImage( psArray ):
@@ -126,11 +125,10 @@ def ConvertNumPyArrayToMIALibImage( psArray ):
     #im=create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
     #im=mialib.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
     #im=_imem_base.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
-    im=imem_base.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],1)
+    im=imem_base.create_image(NumPyToImDataTypeCode(psArray.dtype),psArray.shape[0],psArray.shape[1],psarray.shape[2])
 
     if CConvertNumPyArrayToMIALibIMAGE(im, psArray) != NO_ERROR:
         return im
-
     return im
 
 %}

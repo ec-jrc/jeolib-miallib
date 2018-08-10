@@ -930,7 +930,7 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
   }
   return imout;
 }
-#include "u32_undef.h"
+#include "uc_undef.h"
 #undef MSK
 #undef PIX_TYPE_OUT
 #undef t_PIX_TYPE_OUT

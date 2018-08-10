@@ -282,7 +282,7 @@ void free_image(IMAGE *im)
 {
   void *p;
 
-  printf("message: entering free_image()\n");
+  // printf("message: entering free_image()\n");
 #ifdef DMALLOC
   malloc_debug(2);
   (void)sprintf(buf,"malloc_debug returns %d in free_image\n",malloc_debug()); errputstr(buf);
@@ -719,7 +719,7 @@ ERROR_TYPE i32_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
 #include "i32_undef.h"
 
 
-#include "d_def.h"
+#include "f_def.h"
 ERROR_TYPE f_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
 {
   PIX_TYPE *p, *pend;

@@ -916,7 +916,7 @@ ERROR_TYPE s_to_float(IMAGE *im, IMAGE *imout)
     *p2 = (MIAFLOAT)*p1;
   return(NO_ERROR);
 }
-#include "us_undef.h"
+#include "s_undef.h"
 
 #include "us_def.h"
 ERROR_TYPE us_to_float(IMAGE *im, IMAGE *imout)
