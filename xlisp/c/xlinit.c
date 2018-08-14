@@ -478,8 +478,8 @@ noEnterNecessary: ;
     xlputprop(a_randomstate,sym,s_sslots);
 #endif
 
-    /* enter liiar symbols */
 #ifdef MIAL
+    /* enter mialib symbols */
     kl_type = senter(":TYPE");
     kl_nodata = senter(":NODATA");
     kl_metadata = senter(":METADATA");

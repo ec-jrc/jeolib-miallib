@@ -8,13 +8,13 @@
 
 struct apoint { double u, v; };
 
-#include "xlglue1.h"    /* external declarations of liiar functions */
+#include "xlglue1.h"    /* external declarations of mialib functions */
 #ifdef MARCIN
 #include "xlglue1_marcin.h"
 #endif
 #ifdef GRAZZJA
 #include "xlglue1_grazzja.h"
-#include "liiar_grazzja.h"
+#include "mialib_grazzja.h"
 #endif 
 
 /****************************************************************/
@@ -1505,36 +1505,36 @@ LVAL isetpixtruncate()
       fval=UCHAR_MIN;
     else if (fval>UCHAR_MAX)
       fval=UCHAR_MAX;
-      *((UCHAR *) a->n_info.n_image->p_im + offset) = (UCHAR)fval;
-      return s_true;
+    *((UCHAR *) a->n_info.n_image->p_im + offset) = (UCHAR)fval;
+    return s_true;
   case t_USHORT:
     if (fval<USHORT_MIN)
       fval=USHORT_MIN;
     else if (fval>USHORT_MAX)
       fval=USHORT_MAX;
-      *((USHORT *) a->n_info.n_image->p_im + offset) = (USHORT)fval;
-      return s_true;
+    *((USHORT *) a->n_info.n_image->p_im + offset) = (USHORT)fval;
+    return s_true;
   case t_SHORT:
     if (fval<SHORT_MIN)
       fval=SHORT_MIN;
     else if (fval>SHORT_MAX)
       fval=SHORT_MAX;
-      *((SHORT *) a->n_info.n_image->p_im + offset) = (SHORT)fval;
-      return s_true;
+    *((SHORT *) a->n_info.n_image->p_im + offset) = (SHORT)fval;
+    return s_true;
   case t_INT32:
     if (fval<INT32_MIN)
       fval=INT32_MIN;
     else if (fval>INT32_MAX)
       fval=INT32_MAX;
-      *((INT32 *) a->n_info.n_image->p_im + offset) = (INT32)fval;
-      return s_true;
+    *((INT32 *) a->n_info.n_image->p_im + offset) = (INT32)fval;
+    return s_true;
   case t_UINT32:
     if (fval<UINT32_MIN)
       fval=UINT32_MIN;
     else if (fval>UINT32_MAX)
       fval=UINT32_MAX;
-      *((UINT32 *) a->n_info.n_image->p_im + offset) = (INT32)fval;
-      return s_true;
+    *((UINT32 *) a->n_info.n_image->p_im + offset) = (INT32)fval;
+    return s_true;
   case t_FLOAT:
       *((MIAFLOAT *) a->n_info.n_image->p_im + offset) = (MIAFLOAT)fval;
       return s_true;
@@ -9691,9 +9691,6 @@ LVAL ijulian_date()
 #include "xlglue1_leftover.c"
 #endif
 
-#ifdef CONRAD
-#include "xlglue1_conrad.c"
-#endif 
 
 #ifdef GRAZZJA
 #include "xlglue1_grazzja.c"

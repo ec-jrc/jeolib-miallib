@@ -286,9 +286,6 @@ extern LVAL iwriteGnuPlot3D();
 #ifdef MARCIN
 #include "osdefs_marcin.h"
 #endif
-#ifdef CONRAD
-#include "osdefs_conrad.h"
-#endif
 #ifdef GRAZZJA
 #include "osdefs_grazzja.h"
 #endif

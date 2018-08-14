@@ -17,7 +17,7 @@ build:
 #
 doc:
 	cd swig/python && make -j 1 doc
-	cd xlisp/doc && make -j 1 all
+	#cd xlisp/doc && make -j 1 all
 
 all: build doc
 
@@ -26,7 +26,7 @@ install:
 	cd core/c && make install
 	cd swig/python && make install
 	cd xlisp/c && make install
-	cd xlisp/doc && make install
+	#cd xlisp/doc && make install
 
 uninstall:
 	cd core/c && make uninstall

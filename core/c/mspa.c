@@ -417,7 +417,7 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
   IMAGE **iml;
   IMAGE *tmp, *tmp2;
   IMAGE *out;
-  int disk = 0; /* use 1 to store intermediate results on disk */
+  int disk = 0; /* use 1 to store intermediate results on disk: no files can be written for interapro */
   float edu = sqrt(2.0);  /* fixed value */
   int index;
   int box[6];
@@ -458,8 +458,8 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
     i0=fm_preproc(im, 1, edu); 
     allHoles=uc_fillhole(i0, graphbg);
     arith(allHoles, i0, SUB_op);
-    writeTiffOneStripPerLine(allHoles, "allHoles.tif", NULL);
-    free_image(allHoles);
+    //writeTiffOneStripPerLine(allHoles, "allHoles.tif", NULL);
+    //free_image(allHoles);
   }
     
   // (setq i0 (*fm_preproc im size))
@@ -628,8 +628,8 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
     shift(core, 4);
     tmp=uc_fillhole(core, graphbg);
 
-    allHoles=(IMAGE *)read_image("allHoles.tif");
-    remove("allHoles.tif");
+    // allHoles=(IMAGE *)read_image("allHoles.tif");
+    // remove("allHoles.tif");
     coreHoles=copy_image(tmp);
     arith(coreHoles, core, SUB_op);
     arith(allHoles, coreHoles, SUB_op);

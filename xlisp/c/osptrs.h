@@ -401,9 +401,6 @@
 #ifdef MARCIN
 #include "osptrs_marcin.h"
 #endif
-#ifdef CONRAD
-#include "osptrs_conrad.h"
-#endif
 #ifdef GRAZZJA
 #include "osptrs_grazzja.h"
 #endif
