@@ -149,7 +149,8 @@ all: build doc
 
 install:
 	python setup.py install --record $(BUILDDIR)/installed_files.txt
-	mkdir -p ${INSTALLDOCDIR}/pdf && cp -a ./build/doc/mialib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
+	mkdir -p ${INSTALLDOCDIR}/pdf
+	-find ./build/doc/mialib_docs_tex/ -name api.pdf && cp -a ./build/doc/mialib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
 
 uninstall:
 	cat $(BUILDDIR)/installed_files.txt | xargs rm -f

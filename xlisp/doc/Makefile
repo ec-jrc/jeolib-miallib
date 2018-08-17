@@ -71,15 +71,15 @@ $(BUILDDOCDIRTEX)/cfvt.tex: $(BUILDDOCDIRTEX)/xlglue1.tex
 
 
 
-all: ${FN}.dvi $(BUILDDOCDIRHTML)/${FN}.html ${FN}.pdf
+all: ${FN}.pdf # ${FN}.dvi $(BUILDDOCDIRHTML)/${FN}.html
 
 DOCDIR = $(PREFIX)/share/doc/mialib/lisp
 
 install:
 	mkdir -p ${DOCDIR}/html/
-	cp -a $(BUILDDOCDIRHTML)/* ${DOCDIR}/html/
+	-cp -a $(BUILDDOCDIRHTML)/* ${DOCDIR}/html/
 	mkdir -p ${DOCDIR}/pdf/
-	cp -a miadocxlisp.pdf ${DOCDIR}/pdf/
+	-cp -a miadocxlisp.pdf ${DOCDIR}/pdf/
 
 uninstall:
 	-test -d ${DOCDIR}/html && rm -rf ${DOCDIR}/html
