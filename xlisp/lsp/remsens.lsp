@@ -1081,7 +1081,7 @@
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}
-  (*index b4 b3)
+  (*ndi b4 b3)
   )
 
 (defun *ndsi (b2 b5)
@@ -1093,13 +1093,7 @@
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}
-  (if  (= (*getdatatype b2) (*getdatatype b5) t_FLOAT)
-      (*ndi b2 b5)
-    (@ndi
-     (*tofloat b2)
-     (*tofloat b5)
-     )
-    )
+  (*ndi b2 b5)
   )
 
 (defun getparam (param fname)

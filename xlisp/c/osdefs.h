@@ -133,6 +133,7 @@ extern LVAL icomplement();
 extern LVAL iblank();
 extern LVAL ishift();
 extern LVAL isetrange();
+extern LVAL indi();
 extern LVAL iFindPixWithVal();
 extern LVAL iIsPartitionEqual();
 extern LVAL iIsPartitionFiner();

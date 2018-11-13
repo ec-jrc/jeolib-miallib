@@ -26,6 +26,7 @@ extern IMAGE *iz(IMAGE *im);
 extern ERROR_TYPE to_uchar(IMAGE *);
 extern IMAGE *to_ushort(IMAGE *), *to_int32(IMAGE *), *to_float(IMAGE *), *to_double(IMAGE *) ;
 extern ERROR_TYPE dbltofloat(IMAGE *), uint32_to_float(IMAGE *);
+extern ERROR_TYPE swap(IMAGE *im);
 
 /* geom.c */
 extern IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2);
@@ -65,6 +66,7 @@ extern ERROR_TYPE create_lut(IMAGE *im);
 extern void free_lut(IMAGE *im);
 extern IMAGE *imtoarray(IMAGE *im, IMAGE *imroi);
 extern IMAGE *arraytoim(IMAGE *im, IMAGE *imroi);
+extern ERROR_TYPE FindPixWithVal(IMAGE *, G_TYPE, unsigned long int *);
 
 /* imio_gdal.c */
 extern int GDAL2MIALDataType(int aGDALDataType); 
@@ -136,8 +138,7 @@ extern ERROR_TYPE complement(IMAGE *im);
 extern ERROR_TYPE blank(IMAGE *im, G_TYPE gval);
 extern ERROR_TYPE shift(IMAGE *im, int val);
 extern ERROR_TYPE setrange(IMAGE *im, G_TYPE gt1, G_TYPE gt2);
-extern ERROR_TYPE FindPixWithVal(IMAGE *, G_TYPE, unsigned long int *);
-extern ERROR_TYPE swap(IMAGE *im);
+extern IMAGE *ndi(IMAGE *im1, IMAGE *im2);
 
 /* recons.c */
 extern ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag);

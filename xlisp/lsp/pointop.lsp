@@ -561,22 +561,6 @@
    (@mask2 (*imcopy im1) im2)
    )
 
-(defun @ndi (im1 im2)
-  "(@ndi im1 im2) normalised difference index"
-; \lspfunction{@}{ndi}{im1 im2}
-; \param{im1}{an image node}
-; \param{im2}{an image node}
-; \return{im1}
-; \desc{produces the normalised difference index defined as follows im1=(im1-im2)/(im1+im2).  If im1+im2 equals 0, the output value is set to PIX_MAX.}
-; \myseealso{}
-; \lspfile{\crtlspfile}
-  (@arithop im1 im2 NDI_op)
-  )
-
-(defun *ndi (im1 im2)
-   (@ndi (*imcopy im1) im2)
-   )
-
 (defun *rgbmin (im)
 ; \lspfunction{*}{rgbmin}{im}
 ; \param{im}{an image node with nz greater or equal to 3 and 3 first planes matching the RGB planes}

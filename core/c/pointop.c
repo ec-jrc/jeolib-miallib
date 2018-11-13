@@ -5637,4 +5637,264 @@ ERROR_TYPE setrange(IMAGE *im, G_TYPE gt1, G_TYPE gt2)
   return(NO_ERROR);
 }
 
+/*************************************************************************/
+/*                     imout[i] = ndi(im1[i], im2[i])                    */
+
+#ifndef NO_generic_IMAGE
+#include "g_def.h"
+IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
+{
+  mia_size_t i, ovfl = 0, npix;
+  IMAGE *imout;
+  PIX_TYPE *p1, *p2;
+  MIAFLOAT *pout;
+  MIAFLOAT dval;
+
+  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  if (imout == NULL){
+    (void)sprintf(buf,"generic_ndi(im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  
+  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p2 = (PIX_TYPE *)GetImPtr(im2);
+  pout = (MIAFLOAT *)GetImPtr(imout);
+
+  npix = GetImNPix(im1);
+
+#pragma omp parallel for reduction(+:ovfl) 
+  for (i=0; i<npix; i++){
+    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    if (dval==0.0){
+      pout[i]=-2;
+      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* if (dval==0.0) */
+      /* 	pout[i]=FP_NAN; */
+      /* else */
+      /* 	pout[i]=FP_INFINITE; */
+      ovfl+=1;
+    }
+    else
+      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in generic_ndi(im1, im2): \
+             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+  }
+  return(imout);
+}
+#include "g_undef.h"
+#endif /* #ifndef NO_generic_IMAGE */
+
+#include "us_def.h"
+IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
+{
+  mia_size_t i, ovfl = 0, npix;
+  IMAGE *imout;
+  PIX_TYPE *p1, *p2;
+  MIAFLOAT *pout;
+  MIAFLOAT dval;
+
+  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  if (imout == NULL){
+    (void)sprintf(buf,"us_ndi(im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  
+  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p2 = (PIX_TYPE *)GetImPtr(im2);
+  pout = (MIAFLOAT *)GetImPtr(imout);
+
+  npix = GetImNPix(im1);
+
+#pragma omp parallel for reduction(+:ovfl) 
+  for (i=0; i<npix; i++){
+    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    if (dval==0.0){
+      pout[i]=-2;
+      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* if (dval==0.0) */
+      /* 	pout[i]=FP_NAN; */
+      /* else */
+      /* 	pout[i]=FP_INFINITE; */
+      ovfl+=1;
+    }
+    else
+      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in us_ndi(im1, im2): \
+             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+  }
+  return(imout);
+}
+#include "us_undef.h"
+
+#include "i32_def.h"
+IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
+{
+  mia_size_t i, ovfl = 0, npix;
+  IMAGE *imout;
+  PIX_TYPE *p1, *p2;
+  MIAFLOAT *pout;
+  MIAFLOAT dval;
+
+  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  if (imout == NULL){
+    (void)sprintf(buf,"i32_ndi(im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  
+  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p2 = (PIX_TYPE *)GetImPtr(im2);
+  pout = (MIAFLOAT *)GetImPtr(imout);
+
+  npix = GetImNPix(im1);
+
+#pragma omp parallel for reduction(+:ovfl) 
+  for (i=0; i<npix; i++){
+    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    if (dval==0.0){
+      pout[i]=-2;
+      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* if (dval==0.0) */
+      /* 	pout[i]=FP_NAN; */
+      /* else */
+      /* 	pout[i]=FP_INFINITE; */
+      ovfl+=1;
+    }
+    else
+      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in i32_ndi(im1, im2): \
+             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+  }
+  return(imout);
+}
+#include "i32_undef.h"
+
+#include "u32_def.h"
+IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
+{
+  mia_size_t i, ovfl = 0, npix;
+  IMAGE *imout;
+  PIX_TYPE *p1, *p2;
+  MIAFLOAT *pout;
+  MIAFLOAT dval;
+
+  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  if (imout == NULL){
+    (void)sprintf(buf,"u32_ndi(im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  
+  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p2 = (PIX_TYPE *)GetImPtr(im2);
+  pout = (MIAFLOAT *)GetImPtr(imout);
+
+  npix = GetImNPix(im1);
+
+#pragma omp parallel for reduction(+:ovfl) 
+  for (i=0; i<npix; i++){
+    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    if (dval==0.0){
+      pout[i]=-2;
+      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* if (dval==0.0) */
+      /* 	pout[i]=FP_NAN; */
+      /* else */
+      /* 	pout[i]=FP_INFINITE; */
+      ovfl+=1;
+    }
+    else
+      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in u32_ndi(im1, im2): \
+             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+  }
+  return(imout);
+}
+#include "u32_undef.h"
+
+#include "f_def.h"
+IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
+{
+  mia_size_t i, ovfl = 0, npix;
+  IMAGE *imout;
+  PIX_TYPE *p1, *p2;
+  MIAFLOAT *pout;
+  MIAFLOAT dval;
+
+  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  if (imout == NULL){
+    (void)sprintf(buf,"f_ndi(im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  
+  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p2 = (PIX_TYPE *)GetImPtr(im2);
+  pout = (MIAFLOAT *)GetImPtr(imout);
+
+  npix = GetImNPix(im1);
+
+#pragma omp parallel for reduction(+:ovfl) 
+  for (i=0; i<npix; i++){
+    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    if (dval==0.0){
+      pout[i]=-2;
+      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* if (dval==0.0) */
+      /* 	pout[i]=FP_NAN; */
+      /* else */
+      /* 	pout[i]=FP_INFINITE; */
+      ovfl+=1;
+    }
+    else
+      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in f_ndi(im1, im2): \
+             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+  }
+  return(imout);
+}
+#include "f_undef.h"
+
+IMAGE *ndi(IMAGE *im1, IMAGE *im2)
+{
+
+  /* check for possible errors */
+  if (szcompat(im1, im2) != NO_ERROR){
+    (void)sprintf(buf,"ERROR in arith(im1, im2, op): \
+                images of different size or type\n"); errputstr(buf);
+    return(NULL);
+  }
+
+  switch (GetImDataType(im1)){
+
+#ifndef NO_generic_IMAGE
+  case t_GENERIC:
+    return(generic_ndi(im1, im2));
+    break;
+#endif
+  case t_USHORT:
+    return(us_ndi(im1, im2));
+    break;
+  case t_INT32:
+    return(i32_ndi(im1, im2));
+    break;
+  case t_UINT32:
+    return(u32_ndi(im1, im2));
+    break;
+  case t_FLOAT:
+    return(f_ndi(im1, im2));
+    break;
+  default:
+    (void)sprintf(buf,"ndi(im, im2): invalid pixel type\n"); errputstr(buf);
+    return(NULL);
+  }
+}
+
 /**@}*/

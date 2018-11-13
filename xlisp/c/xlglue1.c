@@ -3933,6 +3933,30 @@ LVAL isetrange()
   return(xlim1);
 }
 
+LVAL indi()
+{
+  LVAL xlim1, xlim2;
+
+  if (!moreargs())
+    xlabort("(*ndi im1 im2)");
+/*
+  \lspfunction{*}{ndi}{im1 im2}
+  \param{im1}{an image node}
+  \param{im2}{an image node}
+  \return{a float image holding the normalised difference index: (im1-im1)/(im1+im2)}
+  \desc{Normalised difference index computation.  The output image is of type float.}
+  \cfunction{\cfarith}
+  \cfile{pointop.c}
+*/
+
+  xlim1 = xlgaimage();
+  xlim2 = xlgaimage();
+
+  xllastarg();
+
+  return(cvimage(ndi((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2))));
+}
+
 LVAL iFindPixWithVal()
 {
   LVAL xlim1;

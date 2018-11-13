@@ -234,6 +234,7 @@
 {   "@BLANK",       S,  iblank           },
 {   "@SHIFT",       S,  ishift           },
 {   "@SETRANGE",    S,  isetrange        },
+{   "*NDI",         S,  indi             },
 {   "FINDPIXWITHVAL",   S,  iFindPixWithVal        },
 {   "ISPARTITIONEQUAL",   S,  iIsPartitionEqual     },
 {   "ISPARTITIONFINER",   S,  iIsPartitionFiner     },
