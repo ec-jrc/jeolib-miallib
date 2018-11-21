@@ -1077,7 +1077,7 @@
 ; \param{b2}{image node for Landsat band 4}
 ; \param{b5}{image node for Landsat band 3}
 ; \return{float image containing normalised difference vegetation index}
-; \desc{outputs normalised difference vegetation index (values between -1.0 and 1.0) where NDVI=(b4-b3)/(b4+b3), see \citep{tucker79}.}
+; \desc{outputs normalised difference vegetation index (values between -1.0 and 1.0) where NDVI=(b4-b3)/(b4+b3), see \citep{tucker79}.  The value -2.0 is reserved for divisions by 0 (typically in case no data is coded with 0).}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}
@@ -1089,7 +1089,7 @@
 ; \param{b2}{image node for Landsat band 2}
 ; \param{b5}{image node for Landsat band 5}
 ; \return{float image containing normalised difference snow index}
-; \desc{outputs normalised difference snow index (values between -1.0 and 1.0) where NDSI=(b2-b5)/(b2+b5), see \citep{hall-riggs-salomonson95}.}
+; \desc{outputs normalised difference snow index (values between -1.0 and 1.0) where NDSI=(b2-b5)/(b2+b5), see \citep{hall-riggs-salomonson95}. The value -2.0 is reserved for divisions by 0 (typically in case no data is coded with 0).}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}
