@@ -3945,7 +3945,7 @@ LVAL indi()
   \param{im2}{an image node}
   \return{a float image holding the normalised difference index: (im1-im1)/(im1+im2)}
   \desc{Normalised difference index computation.  The output image is of type float.}
-  \cfunction{\cfarith}
+  \cfunction{\cfndi}
   \cfile{pointop.c}
 */
 
