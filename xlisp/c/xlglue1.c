@@ -8846,7 +8846,7 @@ LVAL ihtop()
   if (!moreargs())
     xlabort("(*htop dem imdir)");
 /*
-  \lspfunction{*}{flownew}{im imdir graph}
+  \lspfunction{*}{htop}{im imdir graph}
   \param{im}{an image node}
   \param{imdir}{the d8 drainage directions for each pixel of im}
   \return{an image node of the same data type as im and indicating for each pixel the maximum height of its upstream}
