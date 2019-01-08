@@ -61,7 +61,7 @@
 	 )
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
-    (setq i2 (@label8 (*toushort i0)))
+    (setq i2 (@labelgraph (*toushort i0) 8))
     (*iminfo i2)
     (*imfree i0)
     (@or i2 (*toushort i1))
@@ -88,7 +88,7 @@
 	 )
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
-    (setq i2 (@label8 (*toushort i0)))
+    (setq i2 (@labelgraph (*toushort i0) 8))
     (*imfree i0)
     (@or i2 (*toushort i1))
     (*imfree i1)
@@ -122,13 +122,15 @@
 	 )
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
-    (setq i2 (@label8 (*toushort i0)))
+    (setq i2 (@labelgraph (*toushort i0) 8))
     (*imfree i0)
     (@or i2 (*toushort i1))
     (*imfree i1)
     (setq maxfl (*getmax im))
     (print "max flood level =")
     (print maxfl)
+    (print "flag =")
+    (print flag)
     (*@fillocarve i2 im 8 maxfl flag)	; returns *flood* directions
     im
     )
@@ -158,7 +160,7 @@
 	 )
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
-    (setq i2 (@label8 (*toushort i0)))
+    (setq i2 (@labelgraph (*toushort i0) 8))
     (*imfree i0)
     (@or i2 (*toushort i1))
     (*imfree i1)

@@ -13,9 +13,7 @@
 #include "g_def.h"
 IMAGE *generic_minima(IMAGE *im1, int graph)
 {
-
   IMAGE *im2;
-  G_TYPE gval;
   int box[6];
 
   long int i, k, nelem, shft[27];
@@ -34,8 +32,7 @@ IMAGE *generic_minima(IMAGE *im1, int graph)
   }
 
   /* set to 1 im2 */
-  gval.uc_val=1;
-  blank(im2, gval);
+  generic_blank(im2, 1);
   
   /* draw frames */
   if ( GetImNz(im1) > 1)
@@ -86,7 +83,6 @@ IMAGE *us_minima(IMAGE *im1, int graph)
 {
 
   IMAGE *im2;
-  G_TYPE gval;
   int box[6];
 
   long int i, k, nelem, shft[27];
@@ -105,8 +101,7 @@ IMAGE *us_minima(IMAGE *im1, int graph)
   }
 
   /* set to 1 im2 */
-  gval.uc_val=1;
-  blank(im2, gval);
+  generic_blank(im2, 1);
   
   /* draw frames */
   if ( GetImNz(im1) > 1)
@@ -156,9 +151,7 @@ IMAGE *us_minima(IMAGE *im1, int graph)
 #include "i32_def.h"
 IMAGE *i32_minima(IMAGE *im1, int graph)
 {
-
   IMAGE *im2;
-  G_TYPE gval;
   int box[6];
 
   long int i, k, nelem, shft[27];
@@ -177,8 +170,7 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
   }
 
   /* set to 1 im2 */
-  gval.uc_val=1;
-  blank(im2, gval);
+  generic_blank(im2, 1);
   
   /* draw frames */
   if ( GetImNz(im1) > 1)
@@ -187,12 +179,10 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
     {BOX_2D;}
   i32_framebox(im1, box, PIX_MAX);
   uc_framebox(im2, box, 0);
-
   
   /* set shift array */
   set_seq_shift(GetImNx(im1), GetImNy(im1), GetImNz(im1), graph, shft);
- 
-      
+       
   /* Here we go */
   nelem = GetImNPix(im1);
   pim2=(UCHAR *)GetImPtr(im2);

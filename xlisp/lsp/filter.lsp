@@ -785,18 +785,18 @@
 
 ; ouverture surfacique pour une image binaire
 (defun @openarea8 (im seuil &aux i0)
-  (setq i0 (@label8 (*toshort im)))
+  (setq i0 (@labelgraph (*toshort im) 8))
   (@surface i0)
   (@sub im (*touchar (@thresh i0 1 seuil 0 1))))
 
 (defun @us_openarea8 (im seuil &aux i0)
-  (setq i0 (@label8 (*imcopy im)))
+  (setq i0 (@labelgraph (*imcopy im) 8))
   (@surface i0)
   (@sub im (@thresh i0 1 seuil 0 1)))
 
 ; ouverture surfacique pour une image binaire
 (defun *openarea8 (im seuil &aux i0)
-  (setq i0 (@label8 (*toshort im)))
+  (setq i0 (@labelgraph (*toshort im) 8))
   (@surface i0) (*iminfo i0)
   (@sub (*imcopy im) (*touchar (@thresh i0 1 seuil 0 1))))
 
@@ -829,7 +829,7 @@
 (defun @openareavn (im n seuil &aux i0 i1 i2)
   (setq i0 (*imcopy im))
   (@8dil i0 n)
-  (setq i1 (@label8 (*toshort i0)))
+  (setq i1 (@labelgraph (*toshort i0) 8))
   (setq i2 (*toshort im))
   (@mult i1 i2)
   (*imfree i2)

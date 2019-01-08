@@ -79,8 +79,8 @@
   (@srg im
 	imseeds
 	(case graph
-	  (4 (*readimage (concatenate 'string sepath "2dngb4.tif")))
-	  (8 (*readimage (concatenate 'string sepath "2dngb8.tif")))
+	  (4 (*readimage (concatenate 'string se-path "2dngb4.tif")))
+	  (8 (*readimage (concatenate 'string se-path "2dngb8.tif")))
 	  (t "invalid graph value in @srggraph (must either 4 or 8)")
 	  )
 	1 1 0)

@@ -55,8 +55,8 @@
 ; \lspfile{\crtlspfile}
   (@label im
 	  (case graph
-	    (4 (setq i0 (*readimage (concatenate 'string sepath "2dngb4.tif"))))
-	    (8 (setq i0 (*readimage (concatenate 'string sepath "2dngb8.tif"))))
+	    (4 (setq i0 (*readimage (concatenate 'string se-path "2dngb4.tif"))))
+	    (8 (setq i0 (*readimage (concatenate 'string se-path "2dngb8.tif"))))
 	    (t (print "invalid graph in @labelgraph"))
 	    )
 	  1 1 0)
@@ -94,8 +94,8 @@
 ; \lspfile{\crtlspfile}
   (@labelplat im
 	  (case graph
-	    (4 (setq i0 (*readimage (concatenate 'string sepath "2dngb4.tif"))))
-	    (8 (setq i0 (*readimage (concatenate 'string sepath "2dngb8.tif"))))
+	    (4 (setq i0 (*readimage (concatenate 'string se-path "2dngb4.tif"))))
+	    (8 (setq i0 (*readimage (concatenate 'string se-path "2dngb8.tif"))))
 	    (t (print "invalid graph in @labelgraph"))
 	    )
 	  1 1 0)
@@ -116,8 +116,8 @@
 ; \lspfile{\crtlspfile}
   (@seededplat im
 	  (case graph
-	    (4 (setq i0 (*readimage (concatenate 'string sepath "2dngb4.tif"))))
-	    (8 (setq i0 (*readimage (concatenate 'string sepath "2dngb8.tif"))))
+	    (4 (setq i0 (*readimage (concatenate 'string se-path "2dngb4.tif"))))
+	    (8 (setq i0 (*readimage (concatenate 'string se-path "2dngb8.tif"))))
 	    (t (print "invalid graph in @labelgraph"))
 	    )
 	  imseeds
@@ -139,8 +139,8 @@
 ; \lspfile{\crtlspfile}
   (@seededlabelplat im
 	  (case graph
-	    (4 (setq i0 (*readimage (concatenate 'string sepath "2dngb4.tif"))))
-	    (8 (setq i0 (*readimage (concatenate 'string sepath "2dngb8.tif"))))
+	    (4 (setq i0 (*readimage (concatenate 'string se-path "2dngb4.tif"))))
+	    (8 (setq i0 (*readimage (concatenate 'string se-path "2dngb8.tif"))))
 	    (t (print "invalid graph in @labelgraph"))
 	    )
 	  imseeds
@@ -167,8 +167,8 @@
 ; \lspfile{\crtlspfile}
   (*labelcc im
 	  (case graph
-	    (4 (*readimage (concatenate 'string sepath "2dngb4.tif")))
-	    (8 (*readimage (concatenate 'string sepath "2dngb8.tif")))
+	    (4 (*readimage (concatenate 'string se-path "2dngb4.tif")))
+	    (8 (*readimage (concatenate 'string se-path "2dngb8.tif")))
 	    (t (print "invalid graph in @labelccgraph"))
 	    )
 	  1 1 0 rg rl)
@@ -184,8 +184,8 @@
 ; \lspfile{\crtlspfile}
   (*labelci im
 	  (case graph
-	    (4 (*readimage (concatenate 'string sepath "2dngb4.tif")))
-	    (8 (*readimage (concatenate 'string sepath "2dngb8.tif")))
+	    (4 (*readimage (concatenate 'string se-path "2dngb4.tif")))
+	    (8 (*readimage (concatenate 'string se-path "2dngb8.tif")))
 	    (t (print "invalid graph in @labelgraph"))
 	    )
 	  1 1 0 rl)

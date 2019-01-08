@@ -38,7 +38,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 {
   /*
   ** author: Pierre SOILLE 20-11-2002 (1st)
-  ** iml: pointer to an image of labels whith LABEL_MAX valued border
+  ** iml: pointer to an image of labels with LABEL_MAX valued border
      (relevant minima)
   ** imr: pointer to a reference image
   ** nx: number of columns
@@ -160,7 +160,6 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
 
   /* here we go */
   for (i=0; i<maxfl; i++){  // flood from relevant minima
@@ -183,9 +182,9 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	    } 
 	  if (*(imr+ofsk)<maxfl){
 	    crtlevel=*(imr+ofsk);
-	    // printf("test whether we go down, i=%d, crtlevel=%d\n", i, crtlevel);
+	    // printf("test whether we go down, i=%ld, crtlevel=%ld\n", i, crtlevel);
 	    if (i>crtlevel){ /* perhaps should simply follow steepest slope path */
-	      /*     printf("We go down\n"); */
+	      // printf("We go down\n");
 	      if (flag){
 		iori=i;
 		ofsi=ofs;
@@ -219,10 +218,10 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	    if (*(iml+ofsk)==1){   /* ! should only occur when going down ! irrelevant minima reached */
 	      flag=1;
 	      flage=0;
-	      /* printf("irrelevant n=minimum reached\n"); */
+	      // printf("irrelevant n=minimum reached\n");
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
-	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%d, x=%d, y=%d, i=%d, ix=%d, iy=%d\n", minval, iori, dyn, crtlevel, ofsk-(int)(ofsk/nx)*nx, (int)(ofsk/nx), i, ofs-(int)(ofs/nx)*nx, (int)(ofs/nx)); 
+	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%ld, x=%ld, y=%ld, i=%ld, ix=%ld, iy=%ld\n", minval, iori, dyn, crtlevel, ofsk-(long int)(ofsk/nx)*nx, (long int)(ofsk/nx), i, ofs-(long int)(ofs/nx)*nx, (long int)(ofs/nx)); 
 	      if ( (ofsk==11566)  || (dyn<1) ){
 		printf("non-positive dynamyic, ofsk=%ld!!!\n", ofsk);
 		printf("iori=%d\t minval=%d\n", iori, minval);
@@ -338,7 +337,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		      casea++;  /* pure plain carving */
 		    else{
 		      caseae++; /* embedded  carving (should not occur) */
-		      printf("h=%d ec[0]=%d\t ec[1]+ef[1]=%d\n", h, ec[0], ec[1]+ef[1]);
+		      // printf("h=%d ec[0]=%d\t ec[1]+ef[1]=%d\n", h, ec[0], ec[1]+ef[1]);
 		    }
 		  else
 		    if (flage == 0)
