@@ -340,7 +340,7 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 #endif
 
   if (szgeocompat(im, flat) != NO_ERROR){
-    (void) sprintf(buf, "FlatIGeodAFAB(): input images must be of same type\n"); errputstr(buf);
+    (void) sprintf(buf, "us_FlatDir(): input images must be of same type\n"); errputstr(buf);
     return NULL;
   }
   
@@ -352,13 +352,11 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
 
-  printf("coucou1 in flatdir\n");
   imdir = (IMAGE *)create_image(t_UCHAR, nx, ny, nz);
   if (imdir == NULL){
     (void)sprintf(buf,"us_FlatDir(): not enough memory!\n"); errputstr(buf);
     return NULL;
   }
-  printf("coucou2 in flatdir\n");
 
     
   pim=(PIX_TYPE *)GetImPtr(im);
@@ -731,8 +729,6 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 #endif
 
 
-  printf("coucou before reset flat image\n");
-
   /* reset flat image */
   for (j=nx*ny*nz; j > 0; j--, pflat0++)
     if (*pflat0)
@@ -806,7 +802,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   int graphcrt;
   
   if (szgeocompat(im, flat) != NO_ERROR){
-    (void) sprintf(buf, "l_FlatDir(): input images must be of same type\n"); errputstr(buf);
+    (void) sprintf(buf, "i32_FlatDir(): input images must be of same type\n"); errputstr(buf);
     return NULL;
   }
 
@@ -820,13 +816,11 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
 
-  printf("coucou1 in i32_FlatDir\n");
   imdir = (IMAGE *)create_image(t_UCHAR, nx, ny, nz);
   if (imdir == NULL){
-    (void)sprintf(buf,"l_FlatDir(): not enough memory!\n"); errputstr(buf);
+    (void)sprintf(buf,"i32_FlatDir(): not enough memory!\n"); errputstr(buf);
     return NULL;
   }
-  printf("coucou2 in i32_flatdir\n");
 
     
   pim=(PIX_TYPE *)GetImPtr(im);
@@ -891,8 +885,6 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	dumpxyz(flat, x, y, 0, dx, dx);
 #endif
 
-  printf("coucou3 in i32_flatdir\n");
-
     
 
   for (j=nx*ny*nz; j > 0; j--, pflat++, pim++){
@@ -909,9 +901,6 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       fifo4_add(q, (long int)(pflat));
       fifo4_add(qflat, (long int)(pflat));
 
-      /* printf("coucou4 in i32_flatdir j=%d\n", j); */
-
-    
 
       while (fifo4_empty(q) == 0){ /* fill in flat region and initialize queues */
 	ptr = (FLAT_TYPE *)fifo4_remove(q);
@@ -1091,7 +1080,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	      if (*p_k > pr_max){
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		  (void) printf("l_FlatDir(): not enough memory for the FAH\n");
+		  (void) printf("i32_FlatDir(): not enough memory for the FAH\n");
 		  return (NULL);
 		}
 		for (i = 0; i <= pr_max; ++i)
@@ -1259,9 +1248,6 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 #endif
   }
 
-
-
-  printf("coucou before reset flat image in i32_flatdir\n");
 
   /* reset flat image */
   for (j=nx*ny*nz; j > 0; j--, pflat0++)

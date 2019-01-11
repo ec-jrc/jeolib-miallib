@@ -1070,6 +1070,10 @@ IMAGE *rsum(IMAGE *im)
     break;
 #endif
 
+  case t_UINT32:
+    return(u32_rsum(im));
+    break;
+
   case t_INT32:
     return(i32_rsum(im));
     break;
