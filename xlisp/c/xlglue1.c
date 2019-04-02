@@ -8072,7 +8072,7 @@ LVAL imciasrg()
   \param{version}{nonnegative integer for algorithm version}
   \param{datfn}{optional string for filename (without extension) to store statistics}
   \return{im1}
-  \desc{The contrast threshold value is used for merging the regions with similar contrast as follows: < 0 (don't make merging of regions), 0 (determine best contrast value automatically), and > 0 (use this value as threshold value).  Authorised version values are: 0  (compare to whole region), 1 (compare to original seeds), and 2  (compare to pixel neighbours).  If the optional string datfn is given, data files to use with gnuplot are stored in datfn.dat, otherwise no dat files are generates (default).  Details can be found in \cite{brunner-soille2007}.}
+  \desc{The contrast threshold value is used for merging the regions with similar contrast as follows: $< 0$ (don't make merging of regions), 0 (determine best contrast value automatically), and $> 0$ (use this value as threshold value).  Authorised version values are: 0  (compare to whole region), 1 (compare to original seeds), and 2  (compare to pixel neighbours).  If the optional string datfn is given, data files to use with gnuplot are stored in datfn_xxx.dat, otherwise data files are not generated (default).  Details can be found in \cite{brunner-soille2007}.}
   \cfunction{\cfsegmentImage}
   \cfile{\cfsegmentImage}
   \example{}{}
@@ -8534,7 +8534,7 @@ LVAL icbconfluence()
   \return{im (destructive function)}
   \desc{}
   \myseealso{}
-  \cfunction{\cfcboutlet}
+  \cfunction{\cfcbconfluence}
   \cfile{flow.c}
 */
   xlim1 = xlgaimage();

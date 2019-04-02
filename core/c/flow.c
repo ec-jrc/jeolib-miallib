@@ -2587,7 +2587,7 @@ ERROR_TYPE cbconfluence(IMAGE *outlet, IMAGE *d8)
   */
 
   if ( szgeocompat(outlet, d8) != NO_ERROR ){
-    (void)sprintf(buf," *cboutlet(IMAGE *outlet, IMAGE *d8): outlet and d8 images must have the same x-y dimensions!\n"); errputstr(buf);
+    (void)sprintf(buf," *cbconfluence(IMAGE *outlet, IMAGE *d8): outlet and d8 images must have the same x-y dimensions!\n"); errputstr(buf);
     return ERROR;
   }
   
