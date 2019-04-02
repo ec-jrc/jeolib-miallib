@@ -1011,7 +1011,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
       /* Create an array of FIFO	*/
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
-        (void) printf("us_FlatIGeodAFAB(): not enough memory for the FAH\n");
+        (void) printf("i32_FlatDir(): not enough memory for the FAH\n");
         return NULL;
       }
 
@@ -1028,7 +1028,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
           
 	    if (*p_k > pr_max){
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		(void) printf("us_FlatIGeodAFAB(): not enough memory for the FAH\n");
+		(void) printf("i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
 		return (NULL);
 	      }
 	      for (i = 0; i <= pr_max; ++i)
@@ -1080,7 +1080,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	      if (*p_k > pr_max){
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		  (void) printf("i32_FlatDir(): not enough memory for the FAH\n");
+		(void) printf("i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
 		  return (NULL);
 		}
 		for (i = 0; i <= pr_max; ++i)
