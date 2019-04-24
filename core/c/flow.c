@@ -1900,7 +1900,7 @@ IMAGE *cdainf(IMAGE *dir)
 
   /* check data type and pixel value range of image dir */
   if (GetImDataType(dir) != t_FLOAT){
-    (void)sprintf(buf,"*cdainf(IMAGE *dir): image dir must be of type t_UCHAR\n"); errputstr(buf);
+    (void)sprintf(buf,"*cdainf(IMAGE *dir): image dir must be of type t_FLOAT\n"); errputstr(buf);
     return NULL;
   }
   
@@ -2679,7 +2679,7 @@ ERROR_TYPE uc_strahler(IMAGE *d8)
       }	
     }
     ocrt++;
-    printf("ocrt=%d\n", (int) ocrt+1);
+    // printf("ocrt=%d\n", (int) ocrt+1);
 
     while (fifo4_empty(q) == 0){
       ofs=fifo4_remove(q);
