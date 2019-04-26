@@ -1,3 +1,9 @@
+/** @file
+ *  Lower completion of an image \cite soille-gratin94
+ *  @author Pierre Soille
+ */
+
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

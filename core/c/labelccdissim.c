@@ -1,3 +1,9 @@
+/** @file
+ *  Dissimilarity based alpha-omega connected components \cite soille2011ismm
+ *  [Version suitable for grey level images]
+ *  @author Pierre Soille
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
