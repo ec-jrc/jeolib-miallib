@@ -130,7 +130,7 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
   pr = (UCHAR *)GetImPtr(ref);
   pm = (UCHAR *)GetImPtr(mask);
   for (i=0;i<npix;i++){
-    if (pr[i]){
+    if (pr[i] && pm[i]){
       pm[i]=3;
       for (k=0;k<graph;k++){
 	ofsk=i+shft[k];
