@@ -189,22 +189,31 @@ IMAGE *uc_iz(IMAGE *im)
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
+  long int i;
 
   unsigned long int offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
   bigval=m+n;
+
+  /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
+  b=(PIX_TYPE *)GetImPtr(im);
+  for(i=m*n; i>0; i--)
+    if (*b++ &= PIX_MSB){
+      (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): the image values must be <=127 (2^7 - 1)!\n"); errputstr(buf);
+      return(NULL);
+    }
   
   /* create temporary and output images */
   img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
-    (void)sprintf(buf,"IMAGE  *uc_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
+    (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
   imiz = create_image(GetImDataType(im), GetImNx(im), GetImNy(im), GetImNz(im));
   if (imiz == NULL){
-    (void)sprintf(buf,"IMAGE  *uc_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
+    (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
     free_image(img);
     return(NULL);
   }
@@ -288,7 +297,7 @@ IMAGE *uc_iz(IMAGE *im)
   }
 
   /* reset input image */
-  for(x=m*n; x>0; x--)
+  for(i=m*n; i>0; i--)
    *b++ &= ~PIX_MSB;
 
 #ifndef OPENMP
@@ -313,12 +322,21 @@ IMAGE *us_iz(IMAGE *im)
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
+  long int i;
 
   unsigned long int offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
-  bigval=m+n;
+  bigval=m+n;  
+
+  /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
+  b=(PIX_TYPE *)GetImPtr(im);
+  for(i=m*n; i>0; i--)
+    if (*b++ &= PIX_MSB){
+      (void)sprintf(buf,"IMAGE *us_iz(IMAGE *im): the image values must be <= 32767 (2^15 - 1) !\n"); errputstr(buf);
+      return(NULL);
+    }
   
   /* create temporary and output images */
   img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
@@ -412,7 +430,7 @@ IMAGE *us_iz(IMAGE *im)
   }
 
   /* reset input image */
-  for(x=m*n; x>0; x--)
+  for(i=m*n; i>0; i--)
    *b++ &= ~PIX_MSB;
 
 #ifndef OPENMP
@@ -437,12 +455,22 @@ IMAGE *u32_iz(IMAGE *im)
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
+  long int i;
 
   unsigned long int offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
   bigval=m+n;
+
+  /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
+  b=(PIX_TYPE *)GetImPtr(im);
+  for(i=m*n; i>0; i--)
+    if (*b++ &= PIX_MSB){
+      (void)sprintf(buf,"IMAGE *us_iz(IMAGE *im): the image values must be <= 2147483647 (2^31 - 1) !\n"); errputstr(buf);
+      return(NULL);
+    }
+  
   
   /* create temporary and output images */
   img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
@@ -536,7 +564,7 @@ IMAGE *u32_iz(IMAGE *im)
   }
 
   /* reset input image */
-  for(x=m*n; x>0; x--)
+  for(i=m*n; i>0; i--)
    *b++ &= ~PIX_MSB;
 
 #ifndef OPENMP

@@ -9,15 +9,10 @@
 
 
 /* computes a discrete geodesic distance function from a reference set
-within a geodesic mask.  The resulting distance function is
-overwritten in the geodesic mask.
+   within a geodesic mask.  The resulting distance function is
+   overwritten in the geodesic mask.
 
-!!! It is ASSUMED that the geodesic mask has a zero valued border
-accordingly to shft */
-
-
-
-
+   !!! The border of the geodesic mask is set to zero beforehand to avoid border effects */
 
 
 #ifndef NO_generic_IMAGE
@@ -34,6 +29,14 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   UCHAR *pr;
   long int i, k;
   FIFO4 *q;
+  int box[6];
+
+  if (GetImNz(im_m) == 1)
+    {BOX_2D;}
+  else
+    {BOX_3D;}
+  generic_framebox(im_m, box, 0);
+
 
   nx =GetImNx(im_m);
   ny =GetImNy(im_m);
@@ -105,6 +108,13 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   UCHAR *pr;
   long int i, k;
   FIFO4 *q;
+  int box[6];
+
+  if (GetImNz(im_m) == 1)
+    {BOX_2D;}
+  else
+    {BOX_3D;}
+  us_framebox(im_m, box, 0);
 
   nx =GetImNx(im_m);
   ny =GetImNy(im_m);
@@ -166,7 +176,7 @@ ERROR_TYPE geodist(IMAGE *im_m, IMAGE *im_r, int graph)
 {
 
   if (GetImDataType(im_r) != t_UCHAR){
-    (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_m (im_r MUST be UCHAR)\n"); errputstr(buf);
+    (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_r (im_r MUST be UCHAR)\n"); errputstr(buf);
     return ERROR;
   }
   
@@ -182,7 +192,7 @@ ERROR_TYPE geodist(IMAGE *im_m, IMAGE *im_r, int graph)
     break;
 
   default:
-    (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_m (im_r MUST be UCHAR)\n"); errputstr(buf);
+    (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_m (valid types are UCHAR or USHORT)\n"); errputstr(buf);
     return ERROR;
   }
   return ERROR;
