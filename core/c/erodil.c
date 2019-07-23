@@ -676,12 +676,10 @@ ERROR_TYPE uc_erode4(IMAGE *im, int ox, int oy)
   p1=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p2=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p3=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
-  if (PIX_MIN != 0){
-    for(i=0; i<bnx;i++){
-      p1[i]=PIX_MIN;
-      p2[i]=PIX_MIN;
-      p3[i]=PIX_MIN;
-    }
+  for(i=0; i<bnx;i++){
+    p1[i]=PIX_MAX;
+    p2[i]=PIX_MAX;
+    p3[i]=PIX_MAX;
   }
   p[0]=p1;
   p[1]=p2;
@@ -718,7 +716,7 @@ ERROR_TYPE uc_erode4(IMAGE *im, int ox, int oy)
       memcpy(p3+ox,(pim+(i-oy+3)*nx),nx*sizeof(PIX_TYPE));
     else
       for (x=0; x<bnx; x++)
-	p3[x]=PIX_MIN;
+	p3[x]=PIX_MAX;
   }
   free(p1); free(p2); free(p3);
   return NO_ERROR;
@@ -738,12 +736,10 @@ ERROR_TYPE us_erode4(IMAGE *im, int ox, int oy)
   p1=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p2=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p3=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
-  if (PIX_MIN != 0){
-    for(i=0; i<bnx;i++){
-      p1[i]=PIX_MIN;
-      p2[i]=PIX_MIN;
-      p3[i]=PIX_MIN;
-    }
+  for(i=0; i<bnx;i++){
+    p1[i]=PIX_MAX;
+    p2[i]=PIX_MAX;
+    p3[i]=PIX_MAX;
   }
   p[0]=p1;
   p[1]=p2;
@@ -780,7 +776,7 @@ ERROR_TYPE us_erode4(IMAGE *im, int ox, int oy)
       memcpy(p3+ox,(pim+(i-oy+3)*nx),nx*sizeof(PIX_TYPE));
     else
       for (x=0; x<bnx; x++)
-	p3[x]=PIX_MIN;
+	p3[x]=PIX_MAX;
   }
   free(p1); free(p2); free(p3);
   return NO_ERROR;
@@ -800,12 +796,10 @@ ERROR_TYPE i32_erode4(IMAGE *im, int ox, int oy)
   p1=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p2=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p3=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
-  if (PIX_MIN != 0){
-    for(i=0; i<bnx;i++){
-      p1[i]=PIX_MIN;
-      p2[i]=PIX_MIN;
-      p3[i]=PIX_MIN;
-    }
+  for(i=0; i<bnx;i++){
+    p1[i]=PIX_MAX;
+    p2[i]=PIX_MAX;
+    p3[i]=PIX_MAX;
   }
   p[0]=p1;
   p[1]=p2;
@@ -842,7 +836,7 @@ ERROR_TYPE i32_erode4(IMAGE *im, int ox, int oy)
       memcpy(p3+ox,(pim+(i-oy+3)*nx),nx*sizeof(PIX_TYPE));
     else
       for (x=0; x<bnx; x++)
-	p3[x]=PIX_MIN;
+	p3[x]=PIX_MAX;
   }
   free(p1); free(p2); free(p3);
   return NO_ERROR;
@@ -862,12 +856,10 @@ ERROR_TYPE u32_erode4(IMAGE *im, int ox, int oy)
   p1=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p2=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p3=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
-  if (PIX_MIN != 0){
-    for(i=0; i<bnx;i++){
-      p1[i]=PIX_MIN;
-      p2[i]=PIX_MIN;
-      p3[i]=PIX_MIN;
-    }
+  for(i=0; i<bnx;i++){
+    p1[i]=PIX_MAX;
+    p2[i]=PIX_MAX;
+    p3[i]=PIX_MAX;
   }
   p[0]=p1;
   p[1]=p2;
@@ -904,7 +896,7 @@ ERROR_TYPE u32_erode4(IMAGE *im, int ox, int oy)
       memcpy(p3+ox,(pim+(i-oy+3)*nx),nx*sizeof(PIX_TYPE));
     else
       for (x=0; x<bnx; x++)
-	p3[x]=PIX_MIN;
+	p3[x]=PIX_MAX;
   }
   free(p1); free(p2); free(p3);
   return NO_ERROR;
@@ -925,12 +917,10 @@ ERROR_TYPE f_erode4(IMAGE *im, int ox, int oy)
   p1=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p2=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
   p3=(PIX_TYPE *)calloc(bnx, sizeof(PIX_TYPE));
-  if (PIX_MIN != 0){
-    for(i=0; i<bnx;i++){
-      p1[i]=PIX_MIN;
-      p2[i]=PIX_MIN;
-      p3[i]=PIX_MIN;
-    }
+  for(i=0; i<bnx;i++){
+    p1[i]=PIX_MAX;
+    p2[i]=PIX_MAX;
+    p3[i]=PIX_MAX;
   }
   p[0]=p1;
   p[1]=p2;
@@ -967,7 +957,7 @@ ERROR_TYPE f_erode4(IMAGE *im, int ox, int oy)
       memcpy(p3+ox,(pim+(i-oy+3)*nx),nx*sizeof(PIX_TYPE));
     else
       for (x=0; x<bnx; x++)
-	p3[x]=PIX_MIN;
+	p3[x]=PIX_MAX;
   }
   free(p1); free(p2); free(p3);
   return NO_ERROR;
