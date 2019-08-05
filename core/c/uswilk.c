@@ -1,9 +1,10 @@
 /**
  * @file   uswilk.c
+ * Based on max-tree algorithm described in \cite wilkinson-roerdink2000, see also \cite meijster-wilkinson2002
  * @author (c) Michael Wilkinson, and Jos Roerdink 18-09-2000
  * @date  
  * 
- * @brief  adapted by Pierre Soille on 20/21-09-2000 (see macro functions AddToNeighbour() and Link()).
+ * @brief  adapted by Pierre Soille on 20/21-09-2000 to fit mialib (see macro functions AddToNeighbour() and Link()).
  * 
  * 
  */
@@ -17,11 +18,7 @@
  * number of pixels.
  *
  * (c) Michael Wilkinson, and Jos Roerdink 18-09-2000
- * Debugged by Pierre Soille on 20/21-09-2000
- * (see macro functions AddToNeighbour() and Link()).
  *
- * Specific code for area morphology by the same
- * authors and adapted to xliiar by P. Soille on 2000-11-21
  */
 
 #include <stdio.h>
@@ -268,23 +265,23 @@ ByteImage CreateByteImage (int width, int height)
   return im;
 }
 
-Image ReadLiiarIm(IMAGE *imliiar, int *width, int *height)
+Image ReadMialibIm(IMAGE *im_mialib, int *width, int *height)
 {
   int i, j;
   Image im;
   byte *buf;
   im = CreateImage (*width, *height);
-  buf = (byte *)GetImPtr(imliiar);
+  buf = (byte *)GetImPtr(im_mialib);
   for (i=0; i< *height; i++)
     for (j=0; j< *width; j++, buf++)
       im[i][j]= *buf;
   return im;
 }
 
-void CreateImages(IMAGE *imliiar, int *width, int *height)
+void CreateImages(IMAGE *im_mialib, int *width, int *height)
 {
   // printf("coucou1 in CreateImages\n");
-  imext = ReadLiiarIm (imliiar, width, height);
+  imext = ReadMialibIm (im_mialib, width, height);
   // printf("coucou2 in CreateImages\n");
   parentext    = CreateImage (*width, *height);
   // printf("coucou3 in CreateImages\n");
@@ -305,11 +302,11 @@ void FreeImages()
   free(SortPixelsext);
 }
 
-void WriteLiiarIm(Image im, IMAGE *imliiarout, int width, int height)
+void WriteMialibIm(Image im, IMAGE *im_mialibout, int width, int height)
 {
   byte *buf;
   int i, j;
-  buf = (byte *)GetImPtr(imliiarout);
+  buf = (byte *)GetImPtr(im_mialibout);
   for (i=0; i<height; i++)
     for (j=0; j<width; j++)
       *buf++ = im[i][j];
@@ -389,35 +386,6 @@ void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
              auxdata[pixel] =(*MergeAuxData)( auxdata[root], auxdata[pixel] );\
              printf("in AddToNeighbour!!!!!!!!!!!! %d\n", (int)auxdata[pixel]); \
 */
-
-
-#define AddToNeighbourMODIFIEDBYPS(p)                                         \
-{                                                                 \
-   root = (p);                                                    \
-   while ( parent[root] >= 0)                                     \
-     root = parent[root];                                         \
-   newroot = root;                                                \
-   if ( (im[root] == im[pixel]) ||                                \
-        (parent[root] == ACTIVE_ROOT))                            \
-     { if ( parent[root] == DONE_ROOT )                           \
-         parent[pixel] = DONE_ROOT;                               \
-       else                                                       \
-	 { /* printf("in AddToNeighbour!!!!!!!!!!!! %d\n", (int)auxdata[pixel]);*/ \
-           auxdata[pixel]=NewAuxData(x,y);                        \
-           auxdata[pixel]=(*MergeAuxData)(auxdata[root], auxdata[pixel]);   \
-         }                                                        \
-       parent[root] = pixel;                                      \
-       newroot = pixel;                                           \
-     }                                                            \
-   else                                                           \
-     parent[pixel] = DONE_ROOT;                                   \
-   r = (p);                                                       \
-   while (r != root)                                              \
-     { h=parent[r];                                               \
-       parent[r] = newroot;                                       \
-       r = h;                                                     \
-     }                                                            \
-}
 
 
 #define AddToNeighbour(p)                                         \
@@ -927,20 +895,20 @@ double InertiaAttribute ( void *pixeldata )
 
 /*********************************************************************/
 
-IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambdaVal, int graph)
+IMAGE *attribute(IMAGE *im_mialib, int type, int oporclo, double lambdaVal, int graph)
 {
   int width, height;
-  IMAGE *imliiarout;
+  IMAGE *im_mialibout;
 
-  width=GetImNx(imliiar);
-  height=GetImNy(imliiar);
+  width=GetImNx(im_mialib);
+  height=GetImNy(im_mialib);
 
-  CreateImages (imliiar, &width, &height);
+  CreateImages (im_mialib, &width, &height);
   auxdataext=CreateAuxData(width,height);
 
-  imliiarout=(IMAGE *)create_image(5, width, height, 1);
+  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
 
-  if (imliiarout==NULL){
+  if (im_mialibout==NULL){
     fprintf(stderr, "Not enough memorey in *attribute\n");
     FreeImages();
     return NULL;
@@ -1015,9 +983,9 @@ IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambdaVal, int gr
 	 (void)sprintf(buf, "ERROR in Attribute(): \
     			     invalid attribute type\n"); errputstr(buf);
   }
-  WriteLiiarIm(parentext, imliiarout, width, height);
+  WriteMialibIm(parentext, im_mialibout, width, height);
   FreeImages();
-  return imliiarout;
+  return im_mialibout;
 
 }
 
@@ -1045,22 +1013,22 @@ Image openingext;
 
 
 
-ByteImage ReadLiiarImArea(IMAGE *imliiar, int *width, int *height)
+ByteImage ReadMialibImArea(IMAGE *im_mialib, int *width, int *height)
 {
   int i, j;
   ByteImage im;
   byte *buf;
   im = CreateByteImage (*width, *height);
-  buf = (byte *)GetImPtr(imliiar);
+  buf = (byte *)GetImPtr(im_mialib);
   for (i=0; i< *height; i++)
     for (j=0; j< *width; j++, buf++)
       im[i][j]= *buf;
   return im;
 }
 
-void CreateImagesArea(IMAGE *imliiar, int *width, int *height)
+void CreateImagesArea(IMAGE *im_mialib, int *width, int *height)
 {
-  imextarea = ReadLiiarImArea (imliiar, width, height);
+  imextarea = ReadMialibImArea (im_mialib, width, height);
   openingext    = CreateImage (*width, *height);
   SortPixelsext = (int *)malloc ((*width)*(*height)*sizeof(int));
   return;
@@ -1163,12 +1131,12 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
             }                                                     \
 }
 
-IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaOpening4(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1177,13 +1145,13 @@ IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambdaVal)
   int x, h, r, root,newroot,neigh;
   greyval *current;
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
-  if (imliiarout==NULL){
+  if (im_mialibout==NULL){
     fprintf(stderr, "Not enough memorey in GreyAreaOpening4\n");
     free(openingext[0]);
     free(openingext);
@@ -1216,7 +1184,7 @@ IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1224,16 +1192,16 @@ IMAGE *GreyAreaOpening4(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
-IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaOpening8(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1248,16 +1216,16 @@ IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambdaVal)
   int n8=width+1;
 
   // printf("coucou1 in GreyAreaOpening8\n");
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   // printf("coucou2 in GreyAreaOpening8\n");
   opening=openingext[0];
   im=imextarea[0];
   
   // printf("coucou3 in GreyAreaOpening8\n");
-  imliiarout=(IMAGE *)create_image(5, width, height, 1);
+  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
 
   //printf("coucou4 in GreyAreaOpening8\n");
-  if (imliiarout==NULL){
+  if (im_mialibout==NULL){
     fprintf(stderr, "Not enough memory in GreyAreaOpening8\n");
     free(openingext[0]);
     free(openingext);
@@ -1308,7 +1276,7 @@ IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1316,17 +1284,17 @@ IMAGE *GreyAreaOpening8(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
 
-IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambdaVal, int graph)
+IMAGE *GreyAreaOpening(IMAGE *im_mialib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4 (imliiar, lambdaVal));
+    return (GreyAreaOpening4 (im_mialib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8 (imliiar, lambdaVal));
+    return (GreyAreaOpening8 (im_mialib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1335,12 +1303,12 @@ IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambdaVal, int graph)
 
 
 
-IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaClosing4(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1350,14 +1318,14 @@ IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambdaVal)
   greyval *current;
 
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
 
-  if (imliiarout==NULL){
+  if (im_mialibout==NULL){
     fprintf(stderr, "Not enough memorey in GreyAreaClosing4\n");
     free(openingext[0]);
     free(openingext);
@@ -1392,7 +1360,7 @@ IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1400,14 +1368,14 @@ IMAGE *GreyAreaClosing4(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
-IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaClosing8(IMAGE *im_mialib, int lambdaVal)
 {
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1421,13 +1389,13 @@ IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
-  if (imliiarout==NULL){
+  if (im_mialibout==NULL){
     fprintf(stderr, "Not enough memory in GreyAreaClosing8\n");
     free(openingext[0]);
     free(openingext);
@@ -1477,7 +1445,7 @@ IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1485,16 +1453,16 @@ IMAGE *GreyAreaClosing8(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
-IMAGE *GreyAreaClosing(IMAGE *imliiar, int lambdaVal, int graph)
+IMAGE *GreyAreaClosing(IMAGE *im_mialib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4 (imliiar, lambdaVal));
+    return (GreyAreaClosing4 (im_mialib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8 (imliiar, lambdaVal));
+    return (GreyAreaClosing8 (im_mialib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosing: graph must be either 4 or 8\n");
   return NULL;
@@ -1646,12 +1614,12 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
 
 
 
-IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaOpening4ROI(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1665,11 +1633,11 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambdaVal)
 /*   int n7=width-1; */
 /*   int n8=width+1; */
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1711,7 +1679,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1719,19 +1687,19 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
 
 
 
-IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaOpening8ROI(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1745,11 +1713,11 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=(IMAGE *)create_image(5, width, height, 1);
+  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1806,7 +1774,7 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1814,17 +1782,17 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
 
-IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph)
+IMAGE *GreyAreaOpeningROI(IMAGE *im_mialib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4ROI (imliiar, lambdaVal));
+    return (GreyAreaOpening4ROI (im_mialib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8ROI (imliiar, lambdaVal));
+    return (GreyAreaOpening8ROI (im_mialib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1832,12 +1800,12 @@ IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph)
     
 
 
-IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaClosing4ROI(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1851,11 +1819,11 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambdaVal)
 /*   int n7=width-1; */
 /*   int n8=width+1; */
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1896,7 +1864,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1904,16 +1872,16 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
-IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambdaVal)
+IMAGE *GreyAreaClosing8ROI(IMAGE *im_mialib, int lambdaVal)
 {
 
-  IMAGE *imliiarout;
-  int width=GetImNx(imliiar);
-  int height=GetImNy(imliiar);
+  IMAGE *im_mialibout;
+  int width=GetImNx(im_mialib);
+  int height=GetImNy(im_mialib);
   greyval *opening;
   byte *im;
   
@@ -1927,11 +1895,11 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(imliiar, &width, &height);
+  CreateImagesArea(im_mialib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  imliiarout=create_image(5, width, height, 1);
+  im_mialibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1988,7 +1956,7 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteLiiarIm(openingext, imliiarout, width, height);
+  WriteMialibIm(openingext, im_mialibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1996,18 +1964,18 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *imliiar, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return imliiarout;
+  return im_mialibout;
 }
 
 
 
 
-IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambdaVal, int graph)
+IMAGE *GreyAreaClosingROI(IMAGE *im_mialib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4ROI (imliiar, lambdaVal));
+    return (GreyAreaClosing4ROI (im_mialib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8ROI (imliiar, lambdaVal));
+    return (GreyAreaClosing8ROI (im_mialib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosingROI: graph must be either 4 or 8\n");
   return NULL;

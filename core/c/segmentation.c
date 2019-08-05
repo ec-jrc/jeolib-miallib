@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "mslabel.h"
 #include "mialib.h"
-#include "OpenClose.h"
+//#include "OpenClose.h"
 #include "fifo.h"
 #include "pqueue.h"
 #include "determineSize.h"
@@ -294,30 +294,6 @@ IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regio
       return NULL;
     }
   }
-  sprintf(fname,"/tmp/mcisrgINIT.tif");
-  /* write_tiff(imap[0], fname); */
-
-  /* make open and closing */
-  /*if(OpenClose(imap, nc, labelIm, graph, varianz, version)==ERROR){
-    free_image(labelIm);
-    return ERROR;
-    }
-    //delete regions which are too small
-    if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
-    free_image(labelIm);
-    return ERROR;
-    }
-    if ((regionNumber = thresholdRegion_Size(labelIm, regionSize)) == 0){
-    free_image(labelIm);
-    return ERROR;
-    }
-    if(mcisrg(imap, nc, labelIm, graph, regionNumber, version) == ERROR){
-    free_image(labelIm);
-    return ERROR;
-    }   */
-
-  //  free_image(labelIm);
-  //  return regionNumber;
   return labelIm;
 }
 
