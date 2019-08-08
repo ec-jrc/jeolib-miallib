@@ -124,6 +124,7 @@ IMAGE *uc_erode2(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
 void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
@@ -134,6 +135,7 @@ void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
   lsty = ny - box[3];
   lstz = nz - box[5];
 
+  im_frame = getframebox(im, box);
   generic_framebox(im, box, PIX_MAX);
 
   for (z = box[4]; z < lstz; z++){
@@ -157,6 +159,8 @@ void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "uc_undef.h"
 
@@ -165,6 +169,7 @@ void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
@@ -175,6 +180,7 @@ void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
   lsty = ny - box[3];
   lstz = nz - box[5];
 
+  im_frame = getframebox(im, box);
   us_framebox(im, box, PIX_MAX);
 
   for (z = box[4]; z < lstz; z++){
@@ -198,6 +204,8 @@ void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "us_undef.h"
 
@@ -205,6 +213,7 @@ void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 void i32_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
@@ -215,6 +224,7 @@ void i32_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
   lsty = ny - box[3];
   lstz = nz - box[5];
 
+  im_frame = getframebox(im, box);
   i32_framebox(im, box, PIX_MAX);
 
   for (z = box[4]; z < lstz; z++){
@@ -238,6 +248,8 @@ void i32_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "i32_undef.h"
 
@@ -315,6 +327,7 @@ IMAGE *erode(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
 void uc_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int x, y, z;
   long int lstx, lsty, lstz;
   long int *pshft, *pshftfin;
@@ -329,7 +342,8 @@ void uc_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
   lsty = ny - box[3];
   lstz = nz - box[5];
 
-  generic_framebox(im, box, PIX_MIN);
+  im_frame = getframebox(im, box);
+  uc_framebox(im, box, PIX_MIN);
 
   pshftfin=shft+n;
 
@@ -358,6 +372,8 @@ void uc_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "uc_undef.h"
 
@@ -366,6 +382,7 @@ void uc_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 void us_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
@@ -377,6 +394,7 @@ void us_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
   lsty = ny - box[3];
   lstz = nz - box[5];
   
+  im_frame = getframebox(im, box);
   us_framebox(im, box, PIX_MIN);
 
   for (z = box[4]; z < lstz; z++){
@@ -400,6 +418,8 @@ void us_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "us_undef.h"
 
@@ -408,6 +428,7 @@ void us_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 void i32_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long int *shft, int n)
 {
   PIX_TYPE *im1, *im2, *p1, *p2;
+  IMAGE *im_frame;
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
@@ -419,6 +440,7 @@ void i32_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long 
   lsty = ny - box[3];
   lstz = nz - box[5];
 
+  im_frame = getframebox(im, box);
   i32_framebox(im, box, PIX_MIN);
 
   for (z = box[4]; z < lstz; z++){
@@ -442,6 +464,8 @@ void i32_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long 
       p2 += box[0] + box[1];
     }
   }
+  setframebox(im, im_frame, box);
+  free_image(im_frame);
 }
 #include "i32_undef.h"
 

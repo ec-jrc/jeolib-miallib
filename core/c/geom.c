@@ -176,6 +176,421 @@ IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2)
 }
 
 
+#include "uc_def.h"
+IMAGE *uc_getframebox(IMAGE *im, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  IMAGE *imout;
+  PIX_TYPE *p, *pim, *pout;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "getframebox(): invalid parameters\n"); errputstr(buf);
+    return(NULL);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* create output image */
+  imout = (IMAGE *)create_image(GetImDataType(im), (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny, 1, 1);
+  if (imout == NULL){
+    (void)sprintf(buf,"getframebox(): not enough memory!\n"); errputstr(buf);
+    return(imout);
+  }
+
+  pout = (PIX_TYPE *)GetImPtr(imout);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*pout++ = *p++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *pout++ = *p++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *pout++ = *p++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *pout++ = *p++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *pout++ = *p++;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *pout++ = *p++;
+  return imout;
+}
+#include "uc_undef.h"
+
+#include "us_def.h"
+IMAGE *us_getframebox(IMAGE *im, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  IMAGE *imout;
+  PIX_TYPE *p, *pim, *pout;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "getframebox(): invalid parameters\n"); errputstr(buf);
+    return(NULL);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* create output image */
+  imout = (IMAGE *)create_image(GetImDataType(im), (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny, 1, 1);
+  if (imout == NULL){
+    (void)sprintf(buf,"getframebox(): not enough memory!\n"); errputstr(buf);
+    return(imout);
+  }
+
+  pout = (PIX_TYPE *)GetImPtr(imout);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*pout++ = *p++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *pout++ = *p++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *pout++ = *p++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *pout++ = *p++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *pout++ = *p++;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *pout++ = *p++;
+  return imout;
+}
+#include "us_undef.h"
+
+#include "i32_def.h"
+IMAGE *i32_getframebox(IMAGE *im, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  IMAGE *imout;
+  PIX_TYPE *p, *pim, *pout;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "getframebox(): invalid parameters\n"); errputstr(buf);
+    return(NULL);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* create output image */
+  imout = (IMAGE *)create_image(GetImDataType(im), (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny, 1, 1);
+  if (imout == NULL){
+    (void)sprintf(buf,"getframebox(): not enough memory!\n"); errputstr(buf);
+    return(imout);
+  }
+
+  pout = (PIX_TYPE *)GetImPtr(imout);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*pout++ = *p++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *pout++ = *p++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *pout++ = *p++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *pout++ = *p++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *pout++ = *p++;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *pout++ = *p++;
+  return imout;
+}
+#include "i32_undef.h"
+
+
+
+IMAGE *getframebox(IMAGE *im, int *box)
+{
+  if ( (box[0]+box[1]+box[2]+box[3]+box[4]+box[5]) == 0)
+    return NULL;
+  
+  switch (GetImDataType(im)){
+
+  case t_UCHAR:
+    return(uc_getframebox(im, box));
+    break;
+
+  case t_USHORT:
+    return(us_getframebox(im, box));
+    break;
+
+  case t_INT32:
+    return(i32_getframebox(im, box));
+    break;
+
+  default:
+    (void) sprintf(buf, "getframebox(): invalid pixel type\n"); errputstr(buf);
+    return NULL;
+  }
+  return NULL;
+}
+
+
+ERROR_TYPE setframebox(IMAGE *im, IMAGE *im_frame, int *box)
+{
+  switch (GetImDataType(im)){
+
+  case t_UCHAR:
+    return(uc_setframebox(im, im_frame, box));
+    break;
+
+  case t_USHORT:
+    return(us_setframebox(im, im_frame, box));
+    break;
+
+  case t_INT32:
+    return(i32_setframebox(im, im_frame, box));
+    break;
+
+  default:
+    (void) sprintf(buf, "setframebox(): invalid pixel type\n"); errputstr(buf);
+    return ERROR;
+  }
+  return ERROR;
+}
+
+
+
+
+#include "uc_def.h"
+ERROR_TYPE uc_setframebox(IMAGE *im, IMAGE *imframe, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  PIX_TYPE *p, *pim, *pframe;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "setframebox(): invalid parameters\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* check size of imframe  */
+  if ( GetImNx(imframe) != (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny ){
+    (void)sprintf(buf,"setframebox(): frame image not matching border geometry (box)!\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  pframe  =  (PIX_TYPE *)GetImPtr(imframe);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*p++ = *pframe++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *p++ = *pframe++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *p++ = *pframe++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *p++ = *pframe++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *p++ = *pframe++;;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *p++ = *pframe++;
+  return NO_ERROR;
+}
+#include "uc_undef.h"
+
+#include "us_def.h"
+ERROR_TYPE us_setframebox(IMAGE *im, IMAGE *imframe, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  PIX_TYPE *p, *pim, *pframe;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "setframebox(): invalid parameters\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* check size of imframe  */
+  if ( GetImNx(imframe) != (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny ){
+    (void)sprintf(buf,"setframebox(): frame image not matching border geometry (box)!\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  pframe  =  (PIX_TYPE *)GetImPtr(imframe);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*p++ = *pframe++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *p++ = *pframe++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *p++ = *pframe++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *p++ = *pframe++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *p++ = *pframe++;;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *p++ = *pframe++;
+  return NO_ERROR;
+}
+#include "us_undef.h"
+
+#include "i32_def.h"
+ERROR_TYPE i32_setframebox(IMAGE *im, IMAGE *imframe, int *box)
+{
+  long int nx, ny, nz;
+  long int x, y, z, l1, l2;
+  PIX_TYPE *p, *pim, *pframe;
+
+  /* check the validity of input parmaters */
+  if (box[0] > GetImNx(im) || box[1] > GetImNx(im) ||
+      box[2] > GetImNy(im) || box[3] > GetImNy(im) ||
+      box[4] > GetImNz(im) || box[5] > GetImNz(im)){
+    (void)sprintf(buf, "setframebox(): invalid parameters\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  nx = GetImNx(im);
+  ny = GetImNy(im);
+  nz = GetImNz(im);
+  /* check size of imframe  */
+  if ( GetImNx(imframe) != (box[0]+box[1])*ny*nz + (box[2]+box[3])*nx*nz + (box[4]+box[5])*nx*ny ){
+    (void)sprintf(buf,"setframebox(): frame image not matching border geometry (box)!\n"); errputstr(buf);
+    return(ERROR);
+  }
+
+  pframe  =  (PIX_TYPE *)GetImPtr(imframe);
+  pim  = (PIX_TYPE *)GetImPtr(im);
+  
+  l1 = box[0]; l2 = box[1];	/* left and right borders */
+  for (z = 0; z < nz; z++){
+    for (y = 0; y < ny; y++){
+      p = pim + z * nx * ny + y * nx;
+      for (x = 0; x < l1; x++)
+	*p++ = *pframe++;
+      p = pim + z * nx * ny + y * nx + nx - l2;
+      for (x = 0; x < l2; x++)
+        *p++ = *pframe++;
+    }
+  }
+  l1 = box[2] * nx; l2 = box[3] * nx;	/* top and bottom borders */
+  for (z = 0; z < nz; z++){
+    p = pim + z * nx * ny;
+    for (x = 0; x < l1; x++)
+      *p++ = *pframe++;
+    p = pim + z * nx * ny + nx * (ny - box[3]);
+    for (x = 0; x < l2; x++)
+      *p++ = *pframe++;
+  }
+
+  l1 = box[4] * nx * ny; l2 = box[5] * nx * ny;	/* up and down borders */
+  p = pim;
+  for (x = 0; x < l1; x++)
+    *p++ = *pframe++;;
+  p = pim + nx * ny * (nz - box[5]);
+  for (x = 0; x < l2; x++)
+    *p++ = *pframe++;
+  return NO_ERROR;
+}
+#include "i32_undef.h"
+
 
 #ifndef NO_generic_IMAGE
 #include "g_def.h"
