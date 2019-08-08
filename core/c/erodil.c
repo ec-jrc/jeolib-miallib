@@ -991,9 +991,12 @@ ERROR_TYPE f_erode4(IMAGE *im, int ox, int oy)
 
 ERROR_TYPE erode4(IMAGE *im, int ox, int oy)
 {
+  if ( (ox > 2) || (oy > 2) ){
+    (void)sprintf(buf,"erode4(im): ox and oy must be <= 2\n"); errputstr(buf);
+    return(ERROR);
+  }
 
   switch (GetImDataType(im)){
-
   case t_UCHAR:
     return(uc_erode4(im, ox, oy));
     break;
@@ -1329,6 +1332,11 @@ ERROR_TYPE f_dilate4(IMAGE *im, int ox, int oy)
 
 ERROR_TYPE dilate4(IMAGE *im, int ox, int oy)
 {
+  if ( (ox > 2) || (oy > 2) ){
+    (void)sprintf(buf,"dilate4(im): ox and oy must be <= 2\n"); errputstr(buf);
+    return(ERROR);
+  }
+  
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(uc_dilate4(im, ox, oy));
