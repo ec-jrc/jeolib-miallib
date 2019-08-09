@@ -387,33 +387,6 @@ IMAGE *getframebox(IMAGE *im, int *box)
   return NULL;
 }
 
-
-ERROR_TYPE setframebox(IMAGE *im, IMAGE *im_frame, int *box)
-{
-  switch (GetImDataType(im)){
-
-  case t_UCHAR:
-    return(uc_setframebox(im, im_frame, box));
-    break;
-
-  case t_USHORT:
-    return(us_setframebox(im, im_frame, box));
-    break;
-
-  case t_INT32:
-    return(i32_setframebox(im, im_frame, box));
-    break;
-
-  default:
-    (void) sprintf(buf, "setframebox(): invalid pixel type\n"); errputstr(buf);
-    return ERROR;
-  }
-  return ERROR;
-}
-
-
-
-
 #include "uc_def.h"
 ERROR_TYPE uc_setframebox(IMAGE *im, IMAGE *imframe, int *box)
 {
@@ -590,6 +563,30 @@ ERROR_TYPE i32_setframebox(IMAGE *im, IMAGE *imframe, int *box)
   return NO_ERROR;
 }
 #include "i32_undef.h"
+
+ERROR_TYPE setframebox(IMAGE *im, IMAGE *im_frame, int *box)
+{
+  switch (GetImDataType(im)){
+
+  case t_UCHAR:
+    return(uc_setframebox(im, im_frame, box));
+    break;
+
+  case t_USHORT:
+    return(us_setframebox(im, im_frame, box));
+    break;
+
+  case t_INT32:
+    return(i32_setframebox(im, im_frame, box));
+    break;
+
+  default:
+    (void) sprintf(buf, "setframebox(): invalid pixel type\n"); errputstr(buf);
+    return ERROR;
+  }
+  return ERROR;
+}
+
 
 
 #ifndef NO_generic_IMAGE

@@ -155,8 +155,8 @@ IMAGE *uc_sqedt(IMAGE *im)
   free_image(img);
   return(imdt);
 }
+#undef BIGVAL
 #undef GTYPE
-#undef GTYPE_max
 #undef t_GTYPE
 #undef DTYPE
 #undef t_DTYPE
@@ -179,13 +179,22 @@ IMAGE *sqedt(IMAGE *im)
 }
 
 #include "uc_def.h"
-#define ATYPE USHORT
-#define t_ATYPE t_USHORT
+#ifdef  EFEDT_G_IS_UINT32
+#define GTYPE UINT32
+#define t_GTYPE t_UINT32
+#define GTYPE_MAX UINT32_MAX
+#define BIGVAL (m+n)
+#else
+#define GTYPE USHORT
+#define t_GTYPE t_USHORT
+#define GTYPE_MAX USHORT_MAX
+#define BIGVAL (GTYPE_MAX/2)
+#endif
 IMAGE *uc_iz(IMAGE *im)
 {
   IMAGE *img, *imiz;
   PIX_TYPE *b, *iz;
-  ATYPE *g, bigval;
+  GTYPE *g, bigval;
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
@@ -195,18 +204,18 @@ IMAGE *uc_iz(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-  bigval=m+n;
+  bigval=BIGVAL;
 
   /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
   b=(PIX_TYPE *)GetImPtr(im);
   for(i=m*n; i>0; i--)
-    if (*b++ &= PIX_MSB){
+    if (*b++ >= PIX_MSB){
       (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): the image values must be <=127 (2^7 - 1)!\n"); errputstr(buf);
       return(NULL);
     }
   
   /* create temporary and output images */
-  img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
+  img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
     (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -225,7 +234,7 @@ IMAGE *uc_iz(IMAGE *im)
 #endif
  
   b=(PIX_TYPE *)GetImPtr(im);
-  g=(ATYPE *)GetImPtr(img);
+  g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);
 
   /* scans 1 and 2 */
@@ -295,10 +304,10 @@ IMAGE *uc_iz(IMAGE *im)
   free(s); free(t);
 #endif
   }
-
+  
   /* reset input image */
   for(i=m*n; i>0; i--)
-   *b++ &= ~PIX_MSB;
+    *b++ &= ~PIX_MSB;
 
 #ifndef OPENMP
   free(s); free(t);
@@ -306,19 +315,30 @@ IMAGE *uc_iz(IMAGE *im)
   free_image(img);
   return(imiz);
 }
-#undef t_ATYPE
-#undef ATYPE
+#undef BIGVAL
+#undef GTYPE
+#undef t_GTYPE
+#undef GTYPE_MAX
 #include "uc_undef.h"
 
 
 #include "us_def.h"
-#define ATYPE USHORT
-#define t_ATYPE t_USHORT
+#ifdef  EFEDT_G_IS_UINT32
+#define GTYPE UINT32
+#define t_GTYPE t_UINT32
+#define GTYPE_MAX UINT32_MAX
+#define BIGVAL (m+n)
+#else
+#define GTYPE USHORT
+#define t_GTYPE t_USHORT
+#define GTYPE_MAX USHORT_MAX
+#define BIGVAL (GTYPE_MAX/2)
+#endif
 IMAGE *us_iz(IMAGE *im)
 {
   IMAGE *img, *imiz;
   PIX_TYPE *b, *iz;
-  ATYPE *g, bigval;
+  GTYPE *g, bigval;
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
@@ -328,7 +348,7 @@ IMAGE *us_iz(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-  bigval=m+n;  
+  bigval=BIGVAL;  
 
   /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
   b=(PIX_TYPE *)GetImPtr(im);
@@ -339,7 +359,7 @@ IMAGE *us_iz(IMAGE *im)
     }
   
   /* create temporary and output images */
-  img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
+  img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
     (void)sprintf(buf,"IMAGE  *us_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -358,7 +378,7 @@ IMAGE *us_iz(IMAGE *im)
 #endif
  
   b=(PIX_TYPE *)GetImPtr(im);
-  g=(ATYPE *)GetImPtr(img);
+  g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);
 
   /* scans 1 and 2 */
@@ -439,19 +459,30 @@ IMAGE *us_iz(IMAGE *im)
   free_image(img);
   return(imiz);
 }
-#undef t_ATYPE
-#undef ATYPE
+#undef BIGVAL
+#undef GTYPE
+#undef t_GTYPE
+#undef GTYPE_MAX
 #include "us_undef.h"
 
 
 #include "u32_def.h"
-#define ATYPE USHORT
-#define t_ATYPE t_USHORT
+#ifdef  EFEDT_G_IS_UINT32
+#define GTYPE UINT32
+#define t_GTYPE t_UINT32
+#define GTYPE_MAX UINT32_MAX
+#define BIGVAL (m+n)
+#else
+#define GTYPE USHORT
+#define t_GTYPE t_USHORT
+#define GTYPE_MAX USHORT_MAX
+#define BIGVAL (GTYPE_MAX/2)
+#endif
 IMAGE *u32_iz(IMAGE *im)
 {
   IMAGE *img, *imiz;
   PIX_TYPE *b, *iz;
-  ATYPE *g, bigval;
+  GTYPE *g, bigval;
 
   long int *t, *s;
   int x, y, w, m, n, q, sep;
@@ -461,19 +492,19 @@ IMAGE *u32_iz(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-  bigval=m+n;
+  bigval=BIGVAL;
 
   /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
   b=(PIX_TYPE *)GetImPtr(im);
   for(i=m*n; i>0; i--)
-    if (*b++ &= PIX_MSB){
+    if (*b++ >= PIX_MSB){
       (void)sprintf(buf,"IMAGE *us_iz(IMAGE *im): the image values must be <= 2147483647 (2^31 - 1) !\n"); errputstr(buf);
       return(NULL);
     }
   
   
   /* create temporary and output images */
-  img = create_image(t_ATYPE, GetImNx(im), GetImNy(im), GetImNz(im));
+  img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
     (void)sprintf(buf,"IMAGE  *u32_iz(IMAGE *im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -492,7 +523,7 @@ IMAGE *u32_iz(IMAGE *im)
 #endif
  
   b=(PIX_TYPE *)GetImPtr(im);
-  g=(ATYPE *)GetImPtr(img);
+  g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);
 
   /* scans 1 and 2 */
@@ -573,8 +604,10 @@ IMAGE *u32_iz(IMAGE *im)
   free_image(img);
   return(imiz);
 }
-#undef t_ATYPE
-#undef ATYPE
+#undef BIGVAL
+#undef GTYPE
+#undef t_GTYPE
+#undef GTYPE_MAX
 #include "u32_undef.h"
 
 
