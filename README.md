@@ -4,7 +4,7 @@ Welcomne to mialib!
 
 ```
 sudo apt update
-DEBIAN_FRONTEND='noninteractive' sudo apt install -yq
+DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     git \
     build-essential \
     libgsl-dev \

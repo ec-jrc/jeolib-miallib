@@ -140,6 +140,10 @@ CXXSHARED=      gcc -shared
 ##################################################################
 
 
+banner.h: $(SRCS)
+	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
+	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
+
 
 
 ##################################################################
@@ -150,19 +154,11 @@ CXXSHARED=      gcc -shared
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-GENERIC)/imio2.o: $(SRCS) mialib.h
-	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h && echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h && $(CC) -c $(CCSTATIC) $(CFLAGS) $(INCLUDE) -o $(SDIR-GENERIC)/imio2.o imio2.c
-
-$(DDIR-GENERIC)/imio2.o: $(SRCS) mialib.h
-	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h && echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h && $(CC) -c $(CCSHARED) $(CFLAGS) $(INCLUDE) -o $(DDIR-GENERIC)/imio2.o imio2.c
-
-$(SDIR-GENERIC)/%.o: %.c mialib.h
+$(SDIR-GENERIC)/%.o: %.c mialib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -o $@ $<
 
-$(DDIR-GENERIC)/%.o: %.c mialib.h
+$(DDIR-GENERIC)/%.o: %.c mialib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
 
@@ -183,13 +179,7 @@ $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-XLISP)/imio2.o: $(SRCS) mialib.h
-	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-XLISP) $(INCLUDE) -o $(SDIR-XLISP)/imio2.o imio2.c
-
-$(SDIR-XLISP)/%.o: %.c mialib.h
+$(SDIR-XLISP)/%.o: %.c mialib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-XLISP)  $(INCLUDE) -o $@ $<
 
@@ -214,24 +204,11 @@ PYTHON_DLNK   =
 # Build static and dynamic libraries
 # ----------------------------------------------------------------
 
-
-$(SDIR)/imio2.o: $(SRCS) mialib.h
-	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $(SDIR)/imio2.o imio2.c
-
-$(DDIR)/imio2.o: $(SRCS) mialib.h
-	@mkdir -p $(@D)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $(DDIR)/imio2.o imio2.c
-
-$(SDIR)/%.o: %.c mialib.h
+$(SDIR)/%.o: %.c mialib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 
-$(DDIR)/%.o: %.c mialib.h
+$(DDIR)/%.o: %.c mialib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 

@@ -106,7 +106,7 @@ int fprintfgenericnum(G_TYPE gval, int type)
     (void)sprintf(buf,"%f\n", gval.f_val); stdputstr(buf);
   }
   else if (type == t_DOUBLE){
-    (void)sprintf(buf,"%f\n", (float)gval.d_val); stdputstr(buf); 
+    (void)sprintf(buf,"%lf\n", (float)gval.d_val); stdputstr(buf); 
   }
   else
     return(ERROR);

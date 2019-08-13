@@ -12,6 +12,12 @@
    
  */
 
+/** @file
+ *  Error free Euclidean distance transform (square of) following the pseudo-code described in
+ *  \cite meijster-roerdink-hesselink2000 following the original idea of \cite saito-toriwaki94
+ *  @author Pierre Soille
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
