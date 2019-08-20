@@ -1,7 +1,7 @@
 /**
  * @file   uswilk.c
  * Based on max-tree algorithm described in \cite wilkinson-roerdink2000, see also \cite meijster-wilkinson2002
- * @author (c) Michael Wilkinson, and Jos Roerdink 18-09-2000
+ * @author (c) Michael Wilkinson, Arnold Meijster, and Jos Roerdink 18-09-2000
  * @date  
  * 
  * @brief  adapted by Pierre Soille on 20/21-09-2000 to fit mialib (see macro functions AddToNeighbour() and Link()).
@@ -17,7 +17,7 @@
  * The time complexity of this algorithm is linear in the 
  * number of pixels.
  *
- * (c) Michael Wilkinson, and Jos Roerdink 18-09-2000
+ * (c) Michael Wilkinson, Arnold Meijster,and Jos Roerdink 18-09-2000
  *
  */
 

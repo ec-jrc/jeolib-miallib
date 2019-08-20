@@ -14,6 +14,7 @@ CXX        = c++
 CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON 
+pver=2.7
 prefix     = /usr/local
 exec_prefix= ${prefix}
 
@@ -99,7 +100,7 @@ DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
 
 
 
-INCLUDE    = -I./ -I/usr/include/python2.7/ -I/usr/include/gdal/
+INCLUDE    = -I./ -I/usr/include/python${pver}/ -I/usr/include/gdal/
 
 # TODO: add -lcsa -lnn 
 
@@ -193,7 +194,7 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 ##################################################################
 
 # Make sure these locate your Python installation
-PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python2.7
+PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python${pver}
 PYTHON_LIB    = 
 
 # Extra Python specific dynamic linking options
