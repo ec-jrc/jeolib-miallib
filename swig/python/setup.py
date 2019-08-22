@@ -13,21 +13,35 @@ from distutils.core import setup, Extension
 import re
 import os
 
+pyver = os.environ.get('PYVER', '3.6')
+
+
 # from setuptools import setup, find_packages
 
 
-swig_opts_val = ['-v', '-Wall',  '-I../include', '-outdir',
-                 './packages/mialib', '-I../include/python',
-                 '-I/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                 '-I/usr/local/lib/python2.7',
-                 '-I../../core/c',
-                 '-I../../core/build/doc/xml/',
-                 '-DMCISRG', '-DCLASSIF']
+if int(pyver[0]) == 3:
+    swig_opts_val = ['-py3', '-v', '-Wall',  '-I../include', '-outdir',
+                     './packages/mialib', '-I../include/python',
+                     '-I/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
+                     '-I/usr/local/lib/python'+pyver,
+                     '-I../../core/c',
+                     '-I../../core/build/doc/xml/',
+                     '-DMCISRG', '-DCLASSIF']
+else:
+    swig_opts_val = ['-v', '-Wall',  '-I../include', '-outdir',
+                     './packages/mialib', '-I../include/python',
+                     '-I/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
+                     '-I/usr/local/lib/python'+pyver,
+                     '-I../../core/c',
+                     '-I../../core/build/doc/xml/',
+                     '-DMCISRG', '-DCLASSIF']
+
+
 libraries_val = ['gdal', 'tiff', 'mialib_python']
 library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu',
                     '/usr/local/lib']
-include_dirs_val = ['/usr/local/lib/python2.7/dist-packages/numpy/core/include',
-                    '/usr/local/lib/python2.7',
+include_dirs_val = ['/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
+                    '/usr/local/lib/python'+pyver,
                     '../../core/c/']
 define_macros_val = [('MCISRG', None), ('CLASSIF', None)]
 
@@ -93,7 +107,7 @@ for idx in ext_modules_list:
 setup(name="mialib",
       version="0.1",
       author="Pierre Soille",
-      author_email="Pierre.Soille@jrc.ec.europa.eu",
+      author_email="Pierre.Soille@ec.europa.eu",
       copyright="(c) European Commission",
       license="(c) European Commission. Exact licence to be defined",
       description="""Python interface to mialib/jiplib thanks to SWIG""",
@@ -113,6 +127,7 @@ setup(name="mialib",
       #               'mialib/visu'],
       #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
       #
-      package_data={'./build/lib.linux-x86_64-2.7/': ['_mialib.so']},  # + sos
-      build_dir={'': '../build'}
+      package_data={'./build/lib.linux-x86_64-'+pyver+'/': ['_mialib.so']},  # + sos
+      build_dir={'': './build'},
+      build_base={'': './build'}
       )

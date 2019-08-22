@@ -131,7 +131,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
 
   if (((mia_size_t)nx*ny*nz) == 0){
     (void)sprintf(buf,"ERROR in create_image(data_type=%d, nx=%ld, ny=%d, nz=%d)\t \
-                       invalid size parameters (must be positve) \n", \
+                       invalid size parameters (must be positive) \n", \
 		       data_type, nx, ny, nz); errputstr(buf);
     return(NULL);
   }

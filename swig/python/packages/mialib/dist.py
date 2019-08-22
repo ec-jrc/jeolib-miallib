@@ -1,7 +1,7 @@
-import mialib as _mialib
+from . import mialib as _mialib
 
-from dist_base import *
-import imem_base as _imem_base
+from .dist_base import *
+from . import imem_base as _imem_base
 
 def nd_sqedt(i0):
     i1 = _imem_base.copy_image(i0)

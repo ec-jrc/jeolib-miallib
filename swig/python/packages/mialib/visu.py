@@ -3,7 +3,7 @@
 
 import os as _os
 
-import io as _io
+from . import io as _io
 
 def xv(i0):
     _io.write_tiff(i0,"/tmp/toto.tif")

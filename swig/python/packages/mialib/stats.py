@@ -1,8 +1,8 @@
-import pointop as _pointop
-import imem_base as _imem_base
-import format as _format
+from . import pointop as _pointop
+from . import imem_base as _imem_base
+from . import format as _format
 
-from stats_base import *
+from .stats_base import *
 
 
 
@@ -21,7 +21,7 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
     """
     hst=histo1d(im)
     if (noData!=None):
-        print "noData given"
+        print("noData given")
         if isinstance(noData,list):
             for i in noData:
                 _imem_base.setpixval(hst,i,0.0)
@@ -45,8 +45,8 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
     cutlow=round(vol*percentageLow/100.0)
     cuthigh=round(vol*(percentageHigh)/100.0)
 
-    print "cutlow=%d" % cutlow
-    print "cuthigh=%d" % cuthigh
+    print("cutlow=%d" % cutlow)
+    print("cuthigh=%d" % cuthigh)
 
     sum=0
     for i in range(valmin, valmax+1):
@@ -63,14 +63,14 @@ def d_histostretch(im, percentageLow, percentageHigh, noData=None, minStretch=0,
             high=i
             break
 
-    print "valmin=%d" % valmin
-    print "valmax=%d" % valmax
+    print("valmin=%d" % valmin)
+    print("valmax=%d" % valmax)
 
-    print "low=%d" % low
-    print "high=%d" % high
+    print("low=%d" % low)
+    print("high=%d" % high)
 
-    print "minStretch=%d" % minStretch
-    print "maxStretch=%d" % maxStretch
+    print("minStretch=%d" % minStretch)
+    print('maxStretch=%d' %  maxStretch)
 
 
     _pointop.setlevel(im, float(valmin), float(low), float(low))
