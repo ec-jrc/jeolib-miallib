@@ -3,6 +3,7 @@
 #include <math.h>
 #if (defined(LIBPROJ) || defined(LIBPROJ4))
 #include <proj_api.h>
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #endif
 #ifdef OPENMP
 #include <omp.h>
