@@ -3,8 +3,7 @@
  * @author Pierre SOILLE
  * @date   Mon Oct 18 14:00:02 2010
  * 
- * @brief  
- * 
+ * @details See also \cite soille2011ismm
  * 
  */
 

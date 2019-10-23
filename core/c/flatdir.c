@@ -1,3 +1,10 @@
+/** @file
+ *  Flow directions on plateaus \cite soille-gratin94
+ *  @author Pierre Soille
+ */
+
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

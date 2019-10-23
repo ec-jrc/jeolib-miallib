@@ -1,3 +1,13 @@
+/**
+ * @file   skel.c
+ * @author Pierre Soille
+ * @date   
+ * 
+ * @details see also \cite soille94
+ * 
+ */
+
+
 /*
 ** INT32 sqtgg(im_m, im_r, graph)
 ** INT32 sqdgg(im_m, im_r, graph)

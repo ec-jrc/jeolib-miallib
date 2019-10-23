@@ -1,3 +1,11 @@
+/** @file
+ *  Functions dealing with distance calculations inlcuding geodesic distances and influence zones.
+ *  For the Euclidean distance function edistfifo2d using a FIFO, see \cite soille91
+ *  @author Pierre Soille
+ */
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -331,7 +339,7 @@ ERROR_TYPE cqentercontour(IMAGE *im, int obj, int bgd, int graph, int inqueue, F
 }
 
 
-/* distance function using a FIFO \cite{soille91} */
+/* distance function using a FIFO \cite soille91 */
 #include "us_def.h" /* for output */
 IMAGE *edistfifo2d(IMAGE *im, int graph)
 {

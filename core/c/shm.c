@@ -3,7 +3,7 @@
  * @author Pierre SOILLE
  * @date   Wed Sep 25 14:30:49 2013
  * 
- * @brief  
+ * @details
  * 
  * 
  */

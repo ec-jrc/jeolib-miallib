@@ -1,3 +1,14 @@
+/**
+ * @file   skel.c 
+ *
+ * @date   
+ * 
+ * @details see also \cite iwanowski-soille2005caip1
+ *
+ */
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

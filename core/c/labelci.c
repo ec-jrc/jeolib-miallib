@@ -1,3 +1,15 @@
+/**
+ * @file   labelci.c
+ * @author Pierre Soille
+ * @date   
+ * 
+ * @details see also \cite soille2008pami
+ */
+
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

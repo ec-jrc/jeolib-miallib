@@ -1,3 +1,9 @@
+/** @file labelccvar.c
+ *  Connected component labelling using variance predicate \cite soille2007iciap
+ *  @author Pierre Soille
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

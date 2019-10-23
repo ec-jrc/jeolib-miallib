@@ -19,6 +19,7 @@
 
 /** @defgroup group_label Connected component labelling
  *  Functions labelling image connected components based on pre-defined connectivity relations.
+ *  The labelling of flat zones (labelplat function) is described in \cite soille2004sv
  *  @{
  */
 
@@ -748,6 +749,8 @@ ERROR_TYPE i32_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
 #include "i32_undef.h"
 
 
+
+/* labelplat function is described in \cite soille2004sv */
 ERROR_TYPE labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
 {
   switch (GetImDataType(im1)){

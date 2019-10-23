@@ -1,3 +1,10 @@
+
+/** @file
+ *  See also \cite soille2005ivc
+ *  @author Pierre Soille
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "mialib.h"

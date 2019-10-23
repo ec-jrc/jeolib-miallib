@@ -1,3 +1,17 @@
+/**
+ * @file  mcisrg.c
+ * @author Dominik Brunner and Pierre Soille
+ * @date   
+ * 
+ * @details see also \cite brunner-soille2007
+ * 
+ */
+
+
+
+
+
+
 /***************************************************************************
                             mcisrg.c  -  description
                             

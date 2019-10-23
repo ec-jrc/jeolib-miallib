@@ -3,9 +3,7 @@
  * @author Pierre SOILLE <soillpi@D01RI1600821>
  * @date   Wed Aug 10 14:03:41 2016
  * 
- * @brief  
- * 
- * 
+ * @details see also \cite ranwez-soille99 and \cite ranwez-soille2002
  */
 
 #include <stdio.h>
