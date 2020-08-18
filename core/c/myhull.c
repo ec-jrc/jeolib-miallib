@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* first 20101004 for convex hull and enclosing rectangle for building detection */
 
 #include <stdio.h>
@@ -15,7 +35,7 @@ typedef struct {
     INT32 b;
 } intpair_t;
 
-#include "utarray.h"
+#include <utarray.h>
 
 int intsort(const void *a,const void*b) {
     int _a = *(int*)a;
@@ -48,7 +68,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
      only points with change of direction are kept.
      Use MSB for flagging.
      assumes border is set to zero to avoid border overflow.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100930 (for building footprint characterisation)
 
      Use utarray for convex hull computations: beware that it exits in case

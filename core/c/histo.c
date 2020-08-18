@@ -1,7 +1,27 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2013-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /*
   Histrogram matching routines.
 
-  by Pierre.Soille@jrc.ec.europa.eu
+  by Pierre Soille
 
   first 20130430
 
@@ -35,7 +55,7 @@ int match2d(long int cf, IMAGE *cdf_2d, int x, int y, int dir)
     Note that for arbitrary scan, the cf values need to be rescaled
     accordingly.
 
-    By: Pierre.Soille@jrc.ec.europa.eu
+    By: Pierre Soille
 
     First: 20130430
   */
@@ -225,7 +245,7 @@ int match3d(int cf, IMAGE *cdf_2d, int x, int y, int dir)
     Note that for arbitrary scan, the cf values need to be rescaled
     accordingly.
 
-    By: Pierre.Soille@jrc.ec.europa.eu
+    By: Pierre Soille
 
     First: 20130430
   */

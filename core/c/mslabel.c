@@ -1,14 +1,42 @@
+/***********************************************************************
+Author(s): Dominik Brunner Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+
+/**
+ * @file  mslabel.c
+ * @author Dominik Brunner and Pierre Soille
+ * @date   
+ * 
+ * @details see also \cite brunner-soille2005 \cite brunner-soille2007
+ * 
+ */
+
+
 /***************************************************************************
-                          label.c  -  description
+                          mslabel.c  -  description
 
   Extended version of fast breadth first stack algorithm (labeling algorithm)
   to find regions with same Pixel values following Pierre Soille.
   This version supports multispectral images!
                            -------------------
     begin                : Tue Apr 13 2004
-    authors:             : Dominik Brunner and Pierre.Soille@jrc.it
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.it
  ***************************************************************************/
 
 

@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #if !defined(__APPLE__)
@@ -1991,7 +2011,7 @@ IMAGE *us_area(IMAGE *im, int r, int type)
 #include "us_undef.h"
 
 
-/* 2003-03-17 (War declaration to Irak? St Patrizio @ jrc)
+/* 2003-03-17
    computes the surface area of a grey tone image by setting
    the corner of each square cell to the area of its square influence
    zone.  It follows that the returned image is one pixel less in x

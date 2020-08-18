@@ -143,7 +143,7 @@ CXXSHARED=      gcc -shared
 
 banner.h: $(SRCS)
 	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALib version as of `date`\"" >> banner.h
+	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
 
 
 

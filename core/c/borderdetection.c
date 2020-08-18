@@ -1,12 +1,30 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           borderdetection.c  -  description
                              -------------------
 
  border detection algorithm for detecting the exact boundary lines of the region
  
-    begin                : Thu May 13 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it Pierre.Soille@jrc.ec.europa.eu
+    begin                : Thu May 13 2004
  ***************************************************************************/
 
 #include <stdio.h>
@@ -1028,9 +1046,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
 /***************************************************************************
                           writeShapeFile.h  -  description
                              -------------------
-    begin                : Thu May 27 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it  Pierre.Soille@jrc.ec.europa.eu
+    begin                : Thu May 27 2004
  ***************************************************************************/
 
 #ifndef init_writeShapeFile
@@ -1046,9 +1062,7 @@ extern SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif);
 /***************************************************************************
                           writeSVG.h  -  description
                              -------------------
-    begin                : Fri May 14 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it Pierre.Soille@jrc.ec.europa.eu
+    begin                : Fri May 14 2004
  ***************************************************************************/
 
 #ifndef init_writeSVG

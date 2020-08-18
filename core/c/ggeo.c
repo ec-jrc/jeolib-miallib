@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /**
  * @file   skel.c
  * @author Pierre Soille
@@ -809,7 +829,7 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
 
   ** assume that reference points have a zero value in im_m !!!
   ** Note: symmetric version of sqtg achieved on 20150814
-  ** by Pierre.Soille @ jrc.ec.europa.eu
+  ** by Pierre Soille
   ** Adpated from http://10.1016/0167-8655(94)90113-9
   ** see also http://10.1007/978-3-662-05088-0
   */

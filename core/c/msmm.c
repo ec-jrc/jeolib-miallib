@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /**
  * @file   msmm.c
  * @author Pierre SOILLE <soillpi@D01RI1600821>
@@ -123,7 +143,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
  * @param nc integer for number of images in array
  * @param graph integer for 2-D connectivity (either 4 or 8) 
  * 
- * @return graph-connected multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite{soille96}.
+ * @return graph-connected multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite soille96
  */
 IMAGE *msgradlinf(IMAGE **imap, int nc, int graph)
 {

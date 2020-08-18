@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2006-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,7 +38,7 @@
   pages = 	 {179-186},
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 #include "uc_def.h"
@@ -202,7 +222,7 @@ IMAGE *ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
 /* Normalised cross-correlation with sum tables as proposed by Lewis
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 
@@ -343,7 +363,7 @@ IMAGE *ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, int y
 /* Normalised cross-correlation
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 #include "uc_def.h"
