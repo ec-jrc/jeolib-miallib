@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 #include "uc_def.h"

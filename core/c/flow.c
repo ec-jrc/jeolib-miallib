@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fah.h"
 #include "fifo.h"
 
@@ -1652,14 +1652,14 @@ IMAGE *uc_dinf(IMAGE *im)
 {
   int k, kmax=0;
   int box[6];
-  MIAFLOAT ac[8]= { 0.0, PI/2.0, PI/2.0, PI, PI, 3.0*PI/2.0, 3.0*PI/2.0, 2.0*PI };
+  MIALFLOAT ac[8]= { 0.0, PI/2.0, PI/2.0, PI, PI, 3.0*PI/2.0, 3.0*PI/2.0, 2.0*PI };
   int af[8]= { 1, -1 , 1, -1, 1, -1, 1, -1 };
   long int i, shft1[8], shft2[8], e0, npix;
   int nx;
   int s1, s2;
-  MIAFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
+  MIALFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
   PIX_TYPE *pim;
-  MIAFLOAT *pdir, r, rmax=0.0;
+  MIALFLOAT *pdir, r, rmax=0.0;
   IMAGE *imdir;
 
   /* frame input to avoid border overflows */
@@ -1683,7 +1683,7 @@ IMAGE *uc_dinf(IMAGE *im)
 
   /* here we go */
   pim=(PIX_TYPE *)GetImPtr(im);
-  pdir=(MIAFLOAT *)GetImPtr(imdir);
+  pdir=(MIALFLOAT *)GetImPtr(imdir);
   npix=GetImNPix(im);
   for (i=0; i<npix; i++, pim++, pdir++){
     e0= *pim;
@@ -1752,14 +1752,14 @@ IMAGE *us_dinf(IMAGE *im)
 {
   int k, kmax=0;
   int box[6];
-  MIAFLOAT ac[8]= { 0.0, PI/2.0, PI/2.0, PI, PI, 3.0*PI/2.0, 3.0*PI/2.0, 2.0*PI };
+  MIALFLOAT ac[8]= { 0.0, PI/2.0, PI/2.0, PI, PI, 3.0*PI/2.0, 3.0*PI/2.0, 2.0*PI };
   int af[8]= { 1, -1 , 1, -1, 1, -1, 1, -1 };
   long int i, shft1[8], shft2[8], e0, npix;
   int nx;
   int s1, s2;
-  MIAFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
+  MIALFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
   PIX_TYPE *pim;
-  MIAFLOAT *pdir, r, rmax=0.0;
+  MIALFLOAT *pdir, r, rmax=0.0;
   IMAGE *imdir;
 
   /* frame input to avoid border overflows */
@@ -1782,7 +1782,7 @@ IMAGE *us_dinf(IMAGE *im)
 
 
   pim=(PIX_TYPE *)GetImPtr(im);
-  pdir=(MIAFLOAT *)GetImPtr(imdir);
+  pdir=(MIALFLOAT *)GetImPtr(imdir);
   npix=GetImNPix(im);
   for (i=0; i<npix; i++, pim++, pdir++){
     e0= *pim;
@@ -1874,7 +1874,7 @@ IMAGE *dinf(IMAGE *im)
 
 
 
-#define CDA_TYPE MIAFLOAT
+#define CDA_TYPE MIALFLOAT
 IMAGE *cdainf(IMAGE *dir)
 {
   /*
@@ -1886,8 +1886,8 @@ IMAGE *cdainf(IMAGE *dir)
 
   UCHAR *pn, *pn0;
   CDA_TYPE *pcda0;
-  MIAFLOAT *pdir, *pdir0, dircrt;
-  MIAFLOAT pi=PI, pio2=PI/2.0, pio34=3.0*PI/4.0, pio4=PI/4.0, \
+  MIALFLOAT *pdir, *pdir0, dircrt;
+  MIALFLOAT pi=PI, pio2=PI/2.0, pio34=3.0*PI/4.0, pio4=PI/4.0, \
     pio54=5.0*PI/4.0, pio32=3.0*PI/2.0, pio74=7.0*PI/4.0;
 
   long int nx, ny, nz;
@@ -1928,12 +1928,12 @@ IMAGE *cdainf(IMAGE *dir)
   if (q == NULL)
     return NULL;
 
-  pdir0 = (MIAFLOAT *)GetImPtr(dir);
+  pdir0 = (MIALFLOAT *)GetImPtr(dir);
   pn0   = (UCHAR *)GetImPtr(imn);
   pcda0  = (CDA_TYPE *)GetImPtr(imcda);
 
   /* initialize imn and queue */
-  pdir = (MIAFLOAT *)GetImPtr(dir);
+  pdir = (MIALFLOAT *)GetImPtr(dir);
   pn   = (UCHAR *)GetImPtr(imn);
   for (i=nx*ny*nz; i>0; i--, pdir++, pn++){
 
@@ -2157,9 +2157,9 @@ IMAGE *uc_slopeinf(IMAGE *im)
   long int shft1[8], shft2[8], e0, npix;
   int nx;
   int s1, s2;
-  MIAFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
+  MIALFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
   PIX_TYPE *pim;
-  MIAFLOAT *pdir, r;
+  MIALFLOAT *pdir, r;
   IMAGE *imdir;
 
   /* frame input to avoid border overflows */
@@ -2182,7 +2182,7 @@ IMAGE *uc_slopeinf(IMAGE *im)
 
 
   pim=(PIX_TYPE *)GetImPtr(im);
-  pdir=(MIAFLOAT *)GetImPtr(imdir);
+  pdir=(MIALFLOAT *)GetImPtr(imdir);
   npix=GetImNPix(im);
   for (i=0; i<npix; i++, pim++, pdir++){
     e0= *pim;
@@ -2246,9 +2246,9 @@ IMAGE *us_slopeinf(IMAGE *im)
   long int shft1[8], shft2[8], e0, npix;
   int nx;
   int s1, s2;
-  MIAFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
+  MIALFLOAT s, smax, pi=PI, pio2=PI/2.0, pio4=PI/4.0;
   PIX_TYPE *pim;
-  MIAFLOAT *pdir, r;
+  MIALFLOAT *pdir, r;
   IMAGE *imdir;
 
   /* frame input to avoid border overflows */
@@ -2271,7 +2271,7 @@ IMAGE *us_slopeinf(IMAGE *im)
 
 
   pim=(PIX_TYPE *)GetImPtr(im);
-  pdir=(MIAFLOAT *)GetImPtr(imdir);
+  pdir=(MIALFLOAT *)GetImPtr(imdir);
   npix=GetImNPix(im);
   for (i=0; i<npix; i++, pim++, pdir++){
     e0= *pim;

@@ -4,7 +4,7 @@
  * @author (c) Michael Wilkinson, Arnold Meijster, and Jos Roerdink 18-09-2000
  * @date  
  * 
- * @brief  adapted by Pierre Soille on 20/21-09-2000 to fit mialib (see macro functions AddToNeighbour() and Link()).
+ * @brief  adapted by Pierre Soille on 20/21-09-2000 to fit miallib (see macro functions AddToNeighbour() and Link()).
  * 
  * 
  */
@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "mialib.h"
+#include "miallib.h"
 
 #ifdef DMALLOC
 #include <dmalloc.h>
@@ -265,23 +265,23 @@ ByteImage CreateByteImage (int width, int height)
   return im;
 }
 
-Image ReadMialibIm(IMAGE *im_mialib, int *width, int *height)
+Image ReadMialibIm(IMAGE *im_miallib, int *width, int *height)
 {
   int i, j;
   Image im;
   byte *buf;
   im = CreateImage (*width, *height);
-  buf = (byte *)GetImPtr(im_mialib);
+  buf = (byte *)GetImPtr(im_miallib);
   for (i=0; i< *height; i++)
     for (j=0; j< *width; j++, buf++)
       im[i][j]= *buf;
   return im;
 }
 
-void CreateImages(IMAGE *im_mialib, int *width, int *height)
+void CreateImages(IMAGE *im_miallib, int *width, int *height)
 {
   // printf("coucou1 in CreateImages\n");
-  imext = ReadMialibIm (im_mialib, width, height);
+  imext = ReadMialibIm (im_miallib, width, height);
   // printf("coucou2 in CreateImages\n");
   parentext    = CreateImage (*width, *height);
   // printf("coucou3 in CreateImages\n");
@@ -302,11 +302,11 @@ void FreeImages()
   free(SortPixelsext);
 }
 
-void WriteMialibIm(Image im, IMAGE *im_mialibout, int width, int height)
+void WriteMialibIm(Image im, IMAGE *im_miallibout, int width, int height)
 {
   byte *buf;
   int i, j;
-  buf = (byte *)GetImPtr(im_mialibout);
+  buf = (byte *)GetImPtr(im_miallibout);
   for (i=0; i<height; i++)
     for (j=0; j<width; j++)
       *buf++ = im[i][j];
@@ -895,20 +895,20 @@ double InertiaAttribute ( void *pixeldata )
 
 /*********************************************************************/
 
-IMAGE *attribute(IMAGE *im_mialib, int type, int oporclo, double lambdaVal, int graph)
+IMAGE *attribute(IMAGE *im_miallib, int type, int oporclo, double lambdaVal, int graph)
 {
   int width, height;
-  IMAGE *im_mialibout;
+  IMAGE *im_miallibout;
 
-  width=GetImNx(im_mialib);
-  height=GetImNy(im_mialib);
+  width=GetImNx(im_miallib);
+  height=GetImNy(im_miallib);
 
-  CreateImages (im_mialib, &width, &height);
+  CreateImages (im_miallib, &width, &height);
   auxdataext=CreateAuxData(width,height);
 
-  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
+  im_miallibout=(IMAGE *)create_image(5, width, height, 1);
 
-  if (im_mialibout==NULL){
+  if (im_miallibout==NULL){
     fprintf(stderr, "Not enough memorey in *attribute\n");
     FreeImages();
     return NULL;
@@ -983,9 +983,9 @@ IMAGE *attribute(IMAGE *im_mialib, int type, int oporclo, double lambdaVal, int 
 	 (void)sprintf(buf, "ERROR in Attribute(): \
     			     invalid attribute type\n"); errputstr(buf);
   }
-  WriteMialibIm(parentext, im_mialibout, width, height);
+  WriteMialibIm(parentext, im_miallibout, width, height);
   FreeImages();
-  return im_mialibout;
+  return im_miallibout;
 
 }
 
@@ -1013,22 +1013,22 @@ Image openingext;
 
 
 
-ByteImage ReadMialibImArea(IMAGE *im_mialib, int *width, int *height)
+ByteImage ReadMialibImArea(IMAGE *im_miallib, int *width, int *height)
 {
   int i, j;
   ByteImage im;
   byte *buf;
   im = CreateByteImage (*width, *height);
-  buf = (byte *)GetImPtr(im_mialib);
+  buf = (byte *)GetImPtr(im_miallib);
   for (i=0; i< *height; i++)
     for (j=0; j< *width; j++, buf++)
       im[i][j]= *buf;
   return im;
 }
 
-void CreateImagesArea(IMAGE *im_mialib, int *width, int *height)
+void CreateImagesArea(IMAGE *im_miallib, int *width, int *height)
 {
-  imextarea = ReadMialibImArea (im_mialib, width, height);
+  imextarea = ReadMialibImArea (im_miallib, width, height);
   openingext    = CreateImage (*width, *height);
   SortPixelsext = (int *)malloc ((*width)*(*height)*sizeof(int));
   return;
@@ -1131,12 +1131,12 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
             }                                                     \
 }
 
-IMAGE *GreyAreaOpening4(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaOpening4(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1145,13 +1145,13 @@ IMAGE *GreyAreaOpening4(IMAGE *im_mialib, int lambdaVal)
   int x, h, r, root,newroot,neigh;
   greyval *current;
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
-  if (im_mialibout==NULL){
+  if (im_miallibout==NULL){
     fprintf(stderr, "Not enough memorey in GreyAreaOpening4\n");
     free(openingext[0]);
     free(openingext);
@@ -1184,7 +1184,7 @@ IMAGE *GreyAreaOpening4(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1192,16 +1192,16 @@ IMAGE *GreyAreaOpening4(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
-IMAGE *GreyAreaOpening8(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaOpening8(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1216,16 +1216,16 @@ IMAGE *GreyAreaOpening8(IMAGE *im_mialib, int lambdaVal)
   int n8=width+1;
 
   // printf("coucou1 in GreyAreaOpening8\n");
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   // printf("coucou2 in GreyAreaOpening8\n");
   opening=openingext[0];
   im=imextarea[0];
   
   // printf("coucou3 in GreyAreaOpening8\n");
-  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
+  im_miallibout=(IMAGE *)create_image(5, width, height, 1);
 
   //printf("coucou4 in GreyAreaOpening8\n");
-  if (im_mialibout==NULL){
+  if (im_miallibout==NULL){
     fprintf(stderr, "Not enough memory in GreyAreaOpening8\n");
     free(openingext[0]);
     free(openingext);
@@ -1276,7 +1276,7 @@ IMAGE *GreyAreaOpening8(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1284,17 +1284,17 @@ IMAGE *GreyAreaOpening8(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
 
-IMAGE *GreyAreaOpening(IMAGE *im_mialib, int lambdaVal, int graph)
+IMAGE *GreyAreaOpening(IMAGE *im_miallib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4 (im_mialib, lambdaVal));
+    return (GreyAreaOpening4 (im_miallib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8 (im_mialib, lambdaVal));
+    return (GreyAreaOpening8 (im_miallib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1303,12 +1303,12 @@ IMAGE *GreyAreaOpening(IMAGE *im_mialib, int lambdaVal, int graph)
 
 
 
-IMAGE *GreyAreaClosing4(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaClosing4(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1318,14 +1318,14 @@ IMAGE *GreyAreaClosing4(IMAGE *im_mialib, int lambdaVal)
   greyval *current;
 
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
 
-  if (im_mialibout==NULL){
+  if (im_miallibout==NULL){
     fprintf(stderr, "Not enough memorey in GreyAreaClosing4\n");
     free(openingext[0]);
     free(openingext);
@@ -1360,7 +1360,7 @@ IMAGE *GreyAreaClosing4(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1368,14 +1368,14 @@ IMAGE *GreyAreaClosing4(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
-IMAGE *GreyAreaClosing8(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaClosing8(IMAGE *im_miallib, int lambdaVal)
 {
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1389,13 +1389,13 @@ IMAGE *GreyAreaClosing8(IMAGE *im_mialib, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
-  if (im_mialibout==NULL){
+  if (im_miallibout==NULL){
     fprintf(stderr, "Not enough memory in GreyAreaClosing8\n");
     free(openingext[0]);
     free(openingext);
@@ -1445,7 +1445,7 @@ IMAGE *GreyAreaClosing8(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1453,16 +1453,16 @@ IMAGE *GreyAreaClosing8(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
-IMAGE *GreyAreaClosing(IMAGE *im_mialib, int lambdaVal, int graph)
+IMAGE *GreyAreaClosing(IMAGE *im_miallib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4 (im_mialib, lambdaVal));
+    return (GreyAreaClosing4 (im_miallib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8 (im_mialib, lambdaVal));
+    return (GreyAreaClosing8 (im_miallib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosing: graph must be either 4 or 8\n");
   return NULL;
@@ -1614,12 +1614,12 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
 
 
 
-IMAGE *GreyAreaOpening4ROI(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaOpening4ROI(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1633,11 +1633,11 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_mialib, int lambdaVal)
 /*   int n7=width-1; */
 /*   int n8=width+1; */
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1679,7 +1679,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1687,19 +1687,19 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
 
 
 
-IMAGE *GreyAreaOpening8ROI(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaOpening8ROI(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1713,11 +1713,11 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_mialib, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=(IMAGE *)create_image(5, width, height, 1);
+  im_miallibout=(IMAGE *)create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1774,7 +1774,7 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1782,17 +1782,17 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
 
-IMAGE *GreyAreaOpeningROI(IMAGE *im_mialib, int lambdaVal, int graph)
+IMAGE *GreyAreaOpeningROI(IMAGE *im_miallib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaOpening4ROI (im_mialib, lambdaVal));
+    return (GreyAreaOpening4ROI (im_miallib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaOpening8ROI (im_mialib, lambdaVal));
+    return (GreyAreaOpening8ROI (im_miallib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
@@ -1800,12 +1800,12 @@ IMAGE *GreyAreaOpeningROI(IMAGE *im_mialib, int lambdaVal, int graph)
     
 
 
-IMAGE *GreyAreaClosing4ROI(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1819,11 +1819,11 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_mialib, int lambdaVal)
 /*   int n7=width-1; */
 /*   int n8=width+1; */
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1864,7 +1864,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1872,16 +1872,16 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
-IMAGE *GreyAreaClosing8ROI(IMAGE *im_mialib, int lambdaVal)
+IMAGE *GreyAreaClosing8ROI(IMAGE *im_miallib, int lambdaVal)
 {
 
-  IMAGE *im_mialibout;
-  int width=GetImNx(im_mialib);
-  int height=GetImNy(im_mialib);
+  IMAGE *im_miallibout;
+  int width=GetImNx(im_miallib);
+  int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
   
@@ -1895,11 +1895,11 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_mialib, int lambdaVal)
   int n7=width-1;
   int n8=width+1;
 
-  CreateImagesArea(im_mialib, &width, &height);
+  CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
   
-  im_mialibout=create_image(5, width, height, 1);
+  im_miallibout=create_image(5, width, height, 1);
 
 
   /* Sort pixels first */
@@ -1956,7 +1956,7 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_mialib, int lambdaVal)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
-  WriteMialibIm(openingext, im_mialibout, width, height);
+  WriteMialibIm(openingext, im_miallibout, width, height);
   
   free(openingext[0]);
   free(openingext);
@@ -1964,18 +1964,18 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_mialib, int lambdaVal)
   free(imextarea);
   free(SortPixelsext);
 
-  return im_mialibout;
+  return im_miallibout;
 }
 
 
 
 
-IMAGE *GreyAreaClosingROI(IMAGE *im_mialib, int lambdaVal, int graph)
+IMAGE *GreyAreaClosingROI(IMAGE *im_miallib, int lambdaVal, int graph)
 {
   if (graph==4)
-    return (GreyAreaClosing4ROI (im_mialib, lambdaVal));
+    return (GreyAreaClosing4ROI (im_miallib, lambdaVal));
   else if (graph==8)
-    return (GreyAreaClosing8ROI (im_mialib, lambdaVal));
+    return (GreyAreaClosing8ROI (im_miallib, lambdaVal));
   else
     fprintf (stderr, "GreyAreaClosingROI: graph must be either 4 or 8\n");
   return NULL;

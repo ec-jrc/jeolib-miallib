@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #define NO_BUF
 #include "borderdetection.h"
-#include "mialib.h"
+#include "miallib.h"
 #include "base.h"
 
 /*

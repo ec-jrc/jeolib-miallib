@@ -14,7 +14,7 @@
 #include <omp.h>
 #endif
 #include <fftw3.h>
-#include "mialib.h"
+#include "miallib.h"
 
 /** \addtogroup group_convolve
  *  @{

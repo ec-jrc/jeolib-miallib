@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 /** \addtogroup group_stat
@@ -105,7 +105,7 @@ IMAGE *sortindex(IMAGE *i0)
     return NULL;
   }   
 
-  f_indexx(GetImNPix(i0), ((MIAFLOAT *)GetImPtr(itmp))-1, ((int *)GetImPtr(imidx))-1);
+  f_indexx(GetImNPix(i0), ((MIALFLOAT *)GetImPtr(itmp))-1, ((int *)GetImPtr(imidx))-1);
   if (flag)
     free_image(itmp);
   return imidx;

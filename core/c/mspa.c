@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "op.h"
 
 extern ERROR_TYPE binOIthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanchor);

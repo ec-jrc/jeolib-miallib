@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 
 

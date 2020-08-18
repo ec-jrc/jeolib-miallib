@@ -15,7 +15,7 @@
 #include <math.h>
 
 #include "regionMean.h"
-#include "mialib.h"
+#include "miallib.h"
 
 /*
  *	rminit: initialize region mean

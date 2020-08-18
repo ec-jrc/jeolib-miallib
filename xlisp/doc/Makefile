@@ -5,7 +5,7 @@
 
 
 # insert the filename of your filename.tex
-FN = miadocxlisp
+FN = mialdocxlisp
 
 ########################################################
 # one should not need to edit this file beyond this line
@@ -73,13 +73,13 @@ $(BUILDDOCDIRTEX)/cfvt.tex: $(BUILDDOCDIRTEX)/xlglue1.tex
 
 all: ${FN}.pdf # ${FN}.dvi $(BUILDDOCDIRHTML)/${FN}.html
 
-DOCDIR = $(PREFIX)/share/doc/mialib/lisp
+DOCDIR = $(PREFIX)/share/doc/miallib/lisp
 
 install:
 	mkdir -p ${DOCDIR}/html/
 	-cp -a $(BUILDDOCDIRHTML)/* ${DOCDIR}/html/
 	mkdir -p ${DOCDIR}/pdf/
-	-cp -a miadocxlisp.pdf ${DOCDIR}/pdf/
+	-cp -a mialdocxlisp.pdf ${DOCDIR}/pdf/
 
 uninstall:
 	-test -d ${DOCDIR}/html && rm -rf ${DOCDIR}/html

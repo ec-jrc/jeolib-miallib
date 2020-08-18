@@ -30,7 +30,7 @@
 #      'method' describes what is being built.
 #---------------------------------------------------------------
 
-TARGET     = mialib
+TARGET     = miallib
 
 ifndef PYTHON
         PYTHON=python
@@ -44,12 +44,12 @@ WRAPPER = $(TARGET)_wrap.c
 PACKAGE_DIR = ./packages
 
 SWIGOUTPUTDIR = extensions
-MIALIB_ROOT = ../../core/c/
+MIALLIB_ROOT = ../../core/c/
 #BUILDDIR = ../build/python/
 BUILDDIR = ./build/
 
 PREFIX=/usr/local
-INSTALLDOCDIR=${PREFIX}/share/doc/mialib/python/
+INSTALLDOCDIR=${PREFIX}/share/doc/miallib/python/
 
 
 CC         = gcc
@@ -62,7 +62,7 @@ exec_prefix= ${prefix}
 SWIGARGS = -Wall -I../include -I../include/$(BINDING) 
 SWIGDEFINES = -DCLASSIF -DODOITHIN -DMCISRG 
 CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
-INCLUDE    = -I./  -I$(MIALIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
+INCLUDE    = -I./  -I$(MIALLIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
 LIBS       = -lgdal -ltiff -lshp -ldl ../../core/build/lib/lib$(TARGET)_python.so
 LIBDIR	   = ../../core/build/lib/
 INTERFACE  = $(TARGET).i
@@ -121,8 +121,8 @@ PYTHON_DLNK   =
 #	cd ../ljip/src && make $@
 
 
-build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALIB_ROOT)/$(TARGET)_swig.h
-	cat $(MIALIB_ROOT)/$(TARGET)_*.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' | uniq > ../include/$(BINDING)/$(TARGET)_newobjects.i
+build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALLIB_ROOT)/$(TARGET)_swig.h
+	cat $(MIALLIB_ROOT)/$(TARGET)_*.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' | uniq > ../include/$(BINDING)/$(TARGET)_newobjects.i
 	python setup.py build
 	mv packages/$(TARGET)/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
 	mv packages/$(TARGET)/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
@@ -150,11 +150,11 @@ all: build doc
 install:
 	python setup.py install --record $(BUILDDIR)/installed_files.txt
 	mkdir -p ${INSTALLDOCDIR}/pdf
-	-find ./build/doc/mialib_docs_tex/ -name api.pdf && cp -a ./build/doc/mialib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
+	-find ./build/doc/miallib_docs_tex/ -name api.pdf && cp -a ./build/doc/miallib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
 
 uninstall:
 	cat $(BUILDDIR)/installed_files.txt | xargs rm -f
-	-rm -rf /usr/local/lib/python2.7/dist-packages/mialib
+	-rm -rf /usr/local/lib/python2.7/dist-packages/miallib
 	-rm -rf ${INSTALLDOCDIR}/pdf/
 
 clean:
@@ -171,7 +171,7 @@ clean:
 	-rm -f packages/$(TARGET)/$(TARGET).py
 	-rm -f packages/$(TARGET)/*.pyc
 	-rm -f packages/$(TARGET)/_$(TARGET).so
-	-rm -f packages/mialib/*_base.py
+	-rm -f packages/miallib/*_base.py
 	-find . -name "*pyc" -delete
 	-rm -f ../include/geometry.i
 	-rm -f ../include/imem.i

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "mialib.h"
+#include "miallib.h"
 
 
 /** @addtogroup group_geom
@@ -222,7 +222,7 @@ void set_shift_and_box(unsigned char *im1, int *box, long int x, long int y, lon
 }
 
 
-void set_shift_and_box_and_weight(unsigned char *im1, MIAFLOAT *im2, int *box, long int x, long int y, long int *shift, MIAFLOAT *weight)
+void set_shift_and_box_and_weight(unsigned char *im1, MIALFLOAT *im2, int *box, long int x, long int y, long int *shift, MIALFLOAT *weight)
 {
   long int i, j, k;
   long int cnt = 0;

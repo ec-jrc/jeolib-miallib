@@ -8,7 +8,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include "fifo.h"
-#include "mialib.h"
+#include "miallib.h"
 
 #include "pqueue.h"	
 

@@ -26,10 +26,10 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 %{
 /* Put header files here or function declarations like below */
-#include "mialib_swig.h"
-#include "mialib_master.h"
+#include "miallib_swig.h"
+#include "miallib_master.h"
 #include "op.h"
-#include "mialib_imem.h" // for functions called in %extend
+#include "miallib_imem.h" // for functions called in %extend
 #define printf PySys_WriteStdout
 extern void free_image(IMAGE *);
 %}
@@ -350,13 +350,13 @@ extern void free_image(IMAGE *);
 //%typemap(newfree) IMAGE * "free_image($1);";
 
 // 20160922
-// define each mialib function returning a new IMAGE as a new object
+// define each miallib function returning a new IMAGE as a new object
 // this triggers the setting of 'SWIG_POINTER_OWN' for the new IMAGE
 // rather than '0' previously
 // (note that for the destructor ~IMAGE() the setting is 'SWIG_POINTER_NEW')
 
 
-%include mialib_newobjects.i
+%include miallib_newobjects.i
 
 
 /* %typemap(in, numinputs=0)  double * (double temp){ */
@@ -506,7 +506,7 @@ extern void free_image(IMAGE *);
   case t_UINT64:
     dval=(double)$1.u64_val;
     break;
-  case t_MIAFLOAT:
+  case t_MIALFLOAT:
     dval=(double)$1.f_val;
     break;
   case t_DOUBLE:
@@ -795,10 +795,10 @@ extern void free_image(IMAGE *);
 
 // These are the headers with the declarations that will be warped
 // It needs to be inserted before the extend declaration
-//%include "mialib_swig.h"
+//%include "miallib_swig.h"
 //%include "op.h"
-%include "miatypes.h" // this is needed to secure garbage collection !
-%include "mialib_master.h"
+%include "mialtypes.h" // this is needed to secure garbage collection !
+%include "miallib_master.h"
 
 // 20160922
 // Allow for automatic garbage collection (no need to patch!)
@@ -831,5 +831,5 @@ extern void free_image(IMAGE *);
 
 
 #if defined(SWIGPYTHON)
-//%include "mialib_python.i"
+//%include "miallib_python.i"
 #endif

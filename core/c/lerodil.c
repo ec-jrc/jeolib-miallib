@@ -10,7 +10,7 @@
 #include <omp.h>
 #endif
 #include "math.h"
-#include "mialib.h"
+#include "miallib.h"
 
 
 #ifndef min

@@ -14,7 +14,7 @@
 //#include "xtiffio.h" /* 2005-10-24 */
 // #include "geotiff.h" /* 2005-10-24 */
 #include "banner.h"  /* 2007-12-10 */
-#include "mialib.h"
+#include "miallib.h"
 #include "imio.h"
 
 #define BYTE_ORDER      1234

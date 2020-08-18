@@ -10,7 +10,7 @@
 #include <omp.h>
 #endif
 
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 
 

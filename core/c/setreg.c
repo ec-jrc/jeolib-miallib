@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 
 
@@ -181,7 +181,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	  set_sum_type(INT32,  USHORT , ival, ilbl);
 	  break;
 	case t_FLOAT: 
-	  set_sum_type(MIAFLOAT,  USHORT, ival, ilbl);
+	  set_sum_type(MIALFLOAT,  USHORT, ival, ilbl);
 	  break;
 	case t_DOUBLE: 
 	  set_sum_type(DOUBLE, USHORT, ival, ilbl);
@@ -205,7 +205,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	  set_sum_type(INT32,  INT32, ival, ilbl);
 	  break;
 	case t_FLOAT: 
-	  set_sum_type(MIAFLOAT,  INT32, ival, ilbl);
+	  set_sum_type(MIALFLOAT,  INT32, ival, ilbl);
 	  break;
 	case t_DOUBLE: 
 	  set_sum_type(DOUBLE, INT32, ival, ilbl);
@@ -229,7 +229,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	  set_sum_type(INT32,  UINT32, ival, ilbl);
 	  break;
 	case t_FLOAT: 
-	  set_sum_type(MIAFLOAT,  UINT32, ival, ilbl);
+	  set_sum_type(MIALFLOAT,  UINT32, ival, ilbl);
 	  break;
 	case t_DOUBLE: 
 	  set_sum_type(DOUBLE, UINT32, ival, ilbl);
@@ -296,7 +296,7 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 	  set_range_type(INT32,  USHORT , ival, ilbl);
 	  break;
 	case t_FLOAT: 
-	  set_range_type(MIAFLOAT,  USHORT, ival, ilbl);
+	  set_range_type(MIALFLOAT,  USHORT, ival, ilbl);
 	  break;
 	case t_DOUBLE: 
 	  set_range_type(DOUBLE, USHORT, ival, ilbl);
@@ -323,7 +323,7 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 	  set_range_type(INT32,  INT32, ival, ilbl);
 	  break;
 	case t_FLOAT: 
-	  set_range_type(MIAFLOAT,  INT32, ival, ilbl);
+	  set_range_type(MIALFLOAT,  INT32, ival, ilbl);
 	  break;
 	case t_DOUBLE: 
 	  set_range_type(DOUBLE, INT32, ival, ilbl);

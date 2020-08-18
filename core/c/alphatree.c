@@ -15,7 +15,7 @@
 #include <omp.h>
 #endif
 
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 #include "pqueue.h"
 
@@ -577,7 +577,7 @@ IMAGE *uc_alphatreeincattr(IMAGE **atree, IMAGE **attr0cc, int type)
 {
   // GLOUP: accumulation on the last label!!!
   IMAGE *iattr;
-  MIAFLOAT *pattr, *pattr0cc;
+  MIALFLOAT *pattr, *pattr0cc;
   CC_LBL_TYPE lbl, *prtlbl;
   unsigned long n=GetImNx(atree[0]);
   unsigned long nbase=GetImNx(atree[2]);
@@ -592,14 +592,14 @@ IMAGE *uc_alphatreeincattr(IMAGE **atree, IMAGE **attr0cc, int type)
     (void)sprintf(buf,"alphatreeincattr(): not enough memory for iattr!\n"); errputstr(buf);
     return NULL;
   }
-  pattr=(MIAFLOAT *)GetImPtr(iattr);
+  pattr=(MIALFLOAT *)GetImPtr(iattr);
   prtlbl=(CC_LBL_TYPE* )GetImPtr(atree[0]);
 
   switch (type){
   case 0: /* minimum value */
-    f_blank(iattr, MIAFLOAT_MAX);
+    f_blank(iattr, MIALFLOAT_MAX);
     pattr[0]=0.0;
-    pattr0cc=(MIAFLOAT *)GetImPtr(attr0cc[0]);
+    pattr0cc=(MIALFLOAT *)GetImPtr(attr0cc[0]);
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -609,8 +609,8 @@ IMAGE *uc_alphatreeincattr(IMAGE **atree, IMAGE **attr0cc, int type)
       pattr[prtlbl[lbl]]=MIN(pattr[prtlbl[lbl]],pattr[lbl]);
     break;
   case 1: /* maximum value */
-    f_blank(iattr, MIAFLOAT_MIN);
-    pattr0cc=(MIAFLOAT *)GetImPtr(attr0cc[0]);
+    f_blank(iattr, MIALFLOAT_MIN);
+    pattr0cc=(MIALFLOAT *)GetImPtr(attr0cc[0]);
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -620,7 +620,7 @@ IMAGE *uc_alphatreeincattr(IMAGE **atree, IMAGE **attr0cc, int type)
       pattr[prtlbl[lbl]]=MAX(pattr[prtlbl[lbl]],pattr[lbl]);
     break;
   case 2: /* sum of values */
-    pattr0cc=(MIAFLOAT *)GetImPtr(attr0cc[0]);
+    pattr0cc=(MIALFLOAT *)GetImPtr(attr0cc[0]);
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -681,7 +681,7 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
   long int i, k;
   unsigned long int npix=GetImNPix(imblbl);
   IMAGE *imout, *iofs;
-  MIAFLOAT *pflut;
+  MIALFLOAT *pflut;
   UINT32 *pofs, ofs, ofsk;
   CC_LBL_TYPE lbl, blbl, lblofsk, *prtlbl, *pimblbl, *pout, *pblbl, maxlbl;
   PIX_TYPE *palphalbl, alphacrt;
@@ -722,7 +722,7 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
   prtlbl=(CC_LBL_TYPE* )GetImPtr(atree[0]);
   pblbl=(CC_LBL_TYPE* )GetImPtr(atree[1]);
   palphalbl=(PIX_TYPE* )GetImPtr(atree[3]);
-  pflut=(MIAFLOAT *)GetImPtr(flaglut);
+  pflut=(MIALFLOAT *)GetImPtr(flaglut);
   pimblbl=(CC_LBL_TYPE* )GetImPtr(imblbl);
   pout=(CC_LBL_TYPE* )GetImPtr(imout);
 

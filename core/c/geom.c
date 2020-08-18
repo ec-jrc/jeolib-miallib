@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "op.h"
 
 
@@ -3074,7 +3074,7 @@ IMAGE *magnify(IMAGE *im, int n)
     return(us_magnify(im, n));
     break;
   case t_UINT32:
-  case t_MIAFLOAT:
+  case t_MIALFLOAT:
     return(u32_magnify(im, n));
     break;
   default:
@@ -3094,7 +3094,7 @@ IMAGE *magnify(IMAGE *im, int n)
 IMAGE **uc_rotatecoor(IMAGE *im, double theta)
 {
   IMAGE *imx, *imy, **imout;
-  MIAFLOAT *pimx, *pimy;
+  MIALFLOAT *pimx, *pimy;
   int nx=GetImNx(im);
   int ny=GetImNy(im);
   int x, y, xc, yc, nxp, nyp;
@@ -3129,8 +3129,8 @@ IMAGE **uc_rotatecoor(IMAGE *im, double theta)
   f_blank(imx, -100.0);
   f_blank(imy, -100.0);
 
-  pimx=(MIAFLOAT *)GetImPtr(imx);
-  pimy=(MIAFLOAT *)GetImPtr(imy);
+  pimx=(MIALFLOAT *)GetImPtr(imx);
+  pimy=(MIALFLOAT *)GetImPtr(imy);
   // printf("xmin=%d xmax=%d ymin=%d ymax=%d", (int)xmin, (int)xmax, (int)ymin, (int)ymax);
   for (x=floor(xmin),xc=0; x<=xmax; x++, xc++){
     for (y=floor(ymin),yc=0; y<=ymax; y++, yc++){
@@ -3152,7 +3152,7 @@ IMAGE **uc_rotatecoor(IMAGE *im, double theta)
 IMAGE **us_rotatecoor(IMAGE *im, double theta)
 {
   IMAGE *imx, *imy, **imout;
-  MIAFLOAT *pimx, *pimy;
+  MIALFLOAT *pimx, *pimy;
   int nx=GetImNx(im);
   int ny=GetImNy(im);
   int x, y, xc, yc, nxp, nyp;
@@ -3187,8 +3187,8 @@ IMAGE **us_rotatecoor(IMAGE *im, double theta)
   f_blank(imx, -100.0);
   f_blank(imy, -100.0);
 
-  pimx=(MIAFLOAT *)GetImPtr(imx);
-  pimy=(MIAFLOAT *)GetImPtr(imy);
+  pimx=(MIALFLOAT *)GetImPtr(imx);
+  pimy=(MIALFLOAT *)GetImPtr(imy);
   // printf("xmin=%d xmax=%d ymin=%d ymax=%d", (int)xmin, (int)xmax, (int)ymin, (int)ymax);
   for (x=floor(xmin),xc=0; x<=xmax; x++, xc++){
     for (y=floor(ymin),yc=0; y<=ymax; y++, yc++){

@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 /** \addtogroup group_hmtsk

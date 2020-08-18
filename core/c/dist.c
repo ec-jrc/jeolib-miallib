@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 
 /** @defgroup group_dist Distance and distance based functions
  *  Functions dealing with distance calculations inlcuding geodesic distances and influence zones.

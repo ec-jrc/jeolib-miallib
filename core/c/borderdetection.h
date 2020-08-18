@@ -10,7 +10,7 @@
 #ifndef init_borderdetection
 #define init_borderdetection
 
-#include "mialib.h"
+#include "miallib.h"
 #include <zlib.h>
 #include <shapefil.h>
 

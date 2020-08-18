@@ -27,7 +27,7 @@
 #include <unistd.h>
 #endif
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 #ifdef DMALLOC /* INCOMPATIBLE WITH EFENCE */
@@ -217,7 +217,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
     nbyte = sizeof(INT64)*(mia_size_t)nx*ny*nz;
     break;
   case t_FLOAT:
-    nbyte = sizeof(MIAFLOAT)*(mia_size_t)nx*ny*nz;
+    nbyte = sizeof(MIALFLOAT)*(mia_size_t)nx*ny*nz;
     break;
   case t_DOUBLE:
     nbyte = sizeof(DOUBLE)*(mia_size_t)nx*ny*nz;
@@ -597,7 +597,7 @@ ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g)
     *((UINT64 *) GetImPtr(im) + offset) = g.u64_val;
     return NO_ERROR;
   case t_FLOAT:
-    *((MIAFLOAT *) GetImPtr(im) + offset) = g.f_val;
+    *((MIALFLOAT *) GetImPtr(im) + offset) = g.f_val;
     return NO_ERROR;
   case t_DOUBLE:
     *((DOUBLE *) GetImPtr(im) + offset) = g.d_val;
@@ -642,7 +642,7 @@ G_TYPE getpixval(IMAGE *im, unsigned long offset)
     g.u64_val= *((UINT64 *) GetImPtr(im) + offset);
     break;
   case t_FLOAT:
-    g.f_val= *((MIAFLOAT *) GetImPtr(im) + offset);
+    g.f_val= *((MIALFLOAT *) GetImPtr(im) + offset);
     break;
   case t_DOUBLE:
     g.d_val= *((DOUBLE *) GetImPtr(im)  + offset);

@@ -10,7 +10,7 @@
 #ifndef init_label
 #define init_label
 
-#include "mialib.h"
+#include "miallib.h"
 extern IMAGE *labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int lambda);
 
 #endif

@@ -1146,7 +1146,7 @@ extern VOID osclose _((int i)); /* we must define this */
 
 
 #ifdef MIAL
-#include "mialib.h"
+#include "miallib.h"
 #endif
 
 /* $putpatch.c$: "MODULE_XLISP_H_PROVIDES" */

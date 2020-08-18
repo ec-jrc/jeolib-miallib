@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_fit.h>
-#include "mialib.h"
+#include "miallib.h"
 
 
 double *solve(double *a_data, double *b_data, int size)

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "mialib.h"
+#include "miallib.h"
 
 
 #ifdef OPENMP
@@ -330,17 +330,17 @@ IMAGE *us_LineDilate3D(IMAGE *im, float dh)
   */
   PIX_TYPE *pi, *picrt, a;
   IMAGE *imout;
-  MIAFLOAT *po, *pocrt, b;
+  MIALFLOAT *po, *pocrt, b;
   
   int i, j, nx, ny;
 
   nx=GetImNx(im);
   ny=GetImNy(im);
 
-  imout=(IMAGE *)create_image(t_MIAFLOAT, nx, ny, 1);
+  imout=(IMAGE *)create_image(t_MIALFLOAT, nx, ny, 1);
   if (imout==NULL)
     return NULL;
-  po=(MIAFLOAT *)GetImPtr(imout);
+  po=(MIALFLOAT *)GetImPtr(imout);
   pi=(PIX_TYPE *)GetImPtr(im);
 
   printf("dh=%f\n", dh);

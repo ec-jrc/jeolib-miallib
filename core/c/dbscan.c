@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 
 #ifdef OPENMP
@@ -10,7 +10,7 @@
 
 #include "f_def.h"
 #define NCMAX 255 /* maximum number of channels */
-#define SIM_PIX_TYPE   MIAFLOAT
+#define SIM_PIX_TYPE   MIALFLOAT
 #define t_SIM_PIX_TYPE t_FLOAT
 IMAGE *f_dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
 {
@@ -37,7 +37,7 @@ IMAGE *f_dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
     (void)sprintf(buf,"sim(): not enough memory!\n"); errputstr(buf);
     return(sim);
   }
-  f_blank(sim,MIAFLOAT_MAX);
+  f_blank(sim,MIALFLOAT_MAX);
   psim=(SIM_PIX_TYPE *)GetImPtr(sim);
   pmask=(UCHAR *)GetImPtr(mask);
 

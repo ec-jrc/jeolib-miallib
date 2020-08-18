@@ -21,7 +21,7 @@
 
 /* #include <cpl_conv.h>  for CPLMalloc() but I use standard malloc */
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 /** \addtogroup group_io
