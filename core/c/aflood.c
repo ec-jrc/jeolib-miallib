@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fah.h"
 #include "fifo.h"
 

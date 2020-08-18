@@ -14,7 +14,7 @@ Modified by Thomas Almy and others.\n\
 See also http://almy.us/ and http://www.xlisp.org/"
 
 #ifdef MIAL
-#include "banner_mialib.h"
+#include "banner_miallib.h"
 #endif
 
 
@@ -129,7 +129,7 @@ int CDECL main(argc,argv)
     /* initialize and print the banner line */
     osinit(BANNER);
 #ifdef MIAL
-    osinit(BANNER_MIALIB);
+    osinit(BANNER_MIALLIB);
 #endif
 
     /* setup initialization error handler */

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "op.h"
 
 #ifdef OPENMP
@@ -5647,10 +5647,10 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   mia_size_t i, ovfl = 0, npix;
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
-  MIAFLOAT *pout;
-  MIAFLOAT dval;
+  MIALFLOAT *pout;
+  MIALFLOAT dval;
 
-  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
     (void)sprintf(buf,"generic_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -5658,16 +5658,16 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   
   p1 = (PIX_TYPE *)GetImPtr(im1); 
   p2 = (PIX_TYPE *)GetImPtr(im2);
-  pout = (MIAFLOAT *)GetImPtr(imout);
+  pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
 #pragma omp parallel for reduction(+:ovfl) 
   for (i=0; i<npix; i++){
-    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
-      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
       /* if (dval==0.0) */
       /* 	pout[i]=FP_NAN; */
       /* else */
@@ -5675,7 +5675,7 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
       ovfl+=1;
     }
     else
-      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_ndi(im1, im2): \
@@ -5692,10 +5692,10 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   mia_size_t i, ovfl = 0, npix;
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
-  MIAFLOAT *pout;
-  MIAFLOAT dval;
+  MIALFLOAT *pout;
+  MIALFLOAT dval;
 
-  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
     (void)sprintf(buf,"us_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -5703,16 +5703,16 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   
   p1 = (PIX_TYPE *)GetImPtr(im1); 
   p2 = (PIX_TYPE *)GetImPtr(im2);
-  pout = (MIAFLOAT *)GetImPtr(imout);
+  pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
 #pragma omp parallel for reduction(+:ovfl) 
   for (i=0; i<npix; i++){
-    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
-      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
       /* if (dval==0.0) */
       /* 	pout[i]=FP_NAN; */
       /* else */
@@ -5720,7 +5720,7 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
       ovfl+=1;
     }
     else
-      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in us_ndi(im1, im2): \
@@ -5736,10 +5736,10 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   mia_size_t i, ovfl = 0, npix;
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
-  MIAFLOAT *pout;
-  MIAFLOAT dval;
+  MIALFLOAT *pout;
+  MIALFLOAT dval;
 
-  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
     (void)sprintf(buf,"i32_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -5747,16 +5747,16 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   
   p1 = (PIX_TYPE *)GetImPtr(im1); 
   p2 = (PIX_TYPE *)GetImPtr(im2);
-  pout = (MIAFLOAT *)GetImPtr(imout);
+  pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
 #pragma omp parallel for reduction(+:ovfl) 
   for (i=0; i<npix; i++){
-    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
-      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
       /* if (dval==0.0) */
       /* 	pout[i]=FP_NAN; */
       /* else */
@@ -5764,7 +5764,7 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
       ovfl+=1;
     }
     else
-      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in i32_ndi(im1, im2): \
@@ -5780,10 +5780,10 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
   mia_size_t i, ovfl = 0, npix;
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
-  MIAFLOAT *pout;
-  MIAFLOAT dval;
+  MIALFLOAT *pout;
+  MIALFLOAT dval;
 
-  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
     (void)sprintf(buf,"u32_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -5791,16 +5791,16 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
   
   p1 = (PIX_TYPE *)GetImPtr(im1); 
   p2 = (PIX_TYPE *)GetImPtr(im2);
-  pout = (MIAFLOAT *)GetImPtr(imout);
+  pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
 #pragma omp parallel for reduction(+:ovfl) 
   for (i=0; i<npix; i++){
-    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
-      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
       /* if (dval==0.0) */
       /* 	pout[i]=FP_NAN; */
       /* else */
@@ -5808,7 +5808,7 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
       ovfl+=1;
     }
     else
-      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in u32_ndi(im1, im2): \
@@ -5824,10 +5824,10 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   mia_size_t i, ovfl = 0, npix;
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
-  MIAFLOAT *pout;
-  MIAFLOAT dval;
+  MIALFLOAT *pout;
+  MIALFLOAT dval;
 
-  imout = create_image(t_MIAFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
+  imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
     (void)sprintf(buf,"f_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
@@ -5835,16 +5835,16 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   
   p1 = (PIX_TYPE *)GetImPtr(im1); 
   p2 = (PIX_TYPE *)GetImPtr(im2);
-  pout = (MIAFLOAT *)GetImPtr(imout);
+  pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
 #pragma omp parallel for reduction(+:ovfl) 
   for (i=0; i<npix; i++){
-    dval=(MIAFLOAT)p1[i]+(MIAFLOAT)p2[i];
+    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
-      /* dval=(MIAFLOAT)p1[i]-(MIAFLOAT)p2[i]; */
+      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
       /* if (dval==0.0) */
       /* 	pout[i]=FP_NAN; */
       /* else */
@@ -5852,7 +5852,7 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
       ovfl+=1;
     }
     else
-      pout[i]=((MIAFLOAT)p1[i]-(MIAFLOAT)p2[i])/dval;
+      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in f_ndi(im1, im2): \

@@ -10,7 +10,7 @@
 #ifndef init_determineSize
 #define init_determineSize
 
-#include "mialib.h"
+#include "miallib.h"
 
 #define SIZE 0x01
 #define CONTRAST 0x02

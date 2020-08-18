@@ -4,7 +4,7 @@
 #include <malloc.h>
 #endif
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 
 extern float roundf(float x);
 

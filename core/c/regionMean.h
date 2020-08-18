@@ -10,7 +10,7 @@
 #ifndef init_regionMean
 #define init_regionMean
 
-#include "mialib.h"
+#include "miallib.h"
 
 struct regionMean 
 {

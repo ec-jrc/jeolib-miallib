@@ -4,7 +4,7 @@
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include "mialib.h"
+#include "miallib.h"
 #include "op.h"
 
 
@@ -14,11 +14,11 @@
  */
 
 #define PIX_TYPE unsigned char
-void uc_convolve(PIX_TYPE *im1, MIAFLOAT *im2, int nx, int ny, int nz, \
-		 int *box, long int *shft, MIAFLOAT *weight, int n)
+void uc_convolve(PIX_TYPE *im1, MIALFLOAT *im2, int nx, int ny, int nz, \
+		 int *box, long int *shft, MIALFLOAT *weight, int n)
 {
   PIX_TYPE *p1;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   long int i, k, y, z, nxi, ofs;
   long int lsty, lstz;
 
@@ -45,11 +45,11 @@ void uc_convolve(PIX_TYPE *im1, MIAFLOAT *im2, int nx, int ny, int nz, \
 #undef PIX_TYPE
 
 #define PIX_TYPE unsigned short
-void us_convolve(PIX_TYPE *im1, MIAFLOAT *im2, int nx, int ny, int nz, \
-		 int *box, long int *shft, MIAFLOAT *weight, int n)
+void us_convolve(PIX_TYPE *im1, MIALFLOAT *im2, int nx, int ny, int nz, \
+		 int *box, long int *shft, MIALFLOAT *weight, int n)
 {
   PIX_TYPE *p1;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   long int i, k, y, z, nxi, ofs;
   long int lsty, lstz;
 
@@ -77,11 +77,11 @@ void us_convolve(PIX_TYPE *im1, MIAFLOAT *im2, int nx, int ny, int nz, \
 
 
 #define PIX_TYPE float
-void f_convolve(PIX_TYPE *im1, MIAFLOAT *im2, int nx, int ny, int nz, \
-		 int *box, long int *shft, MIAFLOAT *weight, int n)
+void f_convolve(PIX_TYPE *im1, MIALFLOAT *im2, int nx, int ny, int nz, \
+		 int *box, long int *shft, MIALFLOAT *weight, int n)
 {
   PIX_TYPE *p1;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   long int i, k, y, z, nxi, ofs;
   long int lsty, lstz;
 
@@ -113,7 +113,7 @@ IMAGE *convolve(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz)
   int box[BOXELEM];
   int n;
   long int *shft;
-  MIAFLOAT *ptrf, *weight;
+  MIALFLOAT *ptrf, *weight;
 
 
   /* create shift array */
@@ -123,7 +123,7 @@ IMAGE *convolve(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz)
   shft = (long int *)calloc(n, sizeof(long int));
   if (shft == NULL)
     return NULL;
-  weight = (MIAFLOAT *)calloc(n, sizeof(MIAFLOAT));
+  weight = (MIALFLOAT *)calloc(n, sizeof(MIALFLOAT));
   if (weight == NULL){
     free(shft);
     return NULL;
@@ -137,13 +137,13 @@ IMAGE *convolve(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz)
     return(imout);
   }
 
-  /* make sure image of weights is of MIAFLOAT type */
+  /* make sure image of weights is of MIALFLOAT type */
   if (GetImDataType(imweight)!=t_FLOAT){
       imtmp=to_float(imweight);
-      ptrf=(MIAFLOAT *)GetImPtr(imtmp);
+      ptrf=(MIALFLOAT *)GetImPtr(imtmp);
   }
   else
-      ptrf=(MIAFLOAT *)GetImPtr(imweight);
+      ptrf=(MIALFLOAT *)GetImPtr(imweight);
 
   /*  Take SE  into account  */
   box[0] = GetImNx(imse);
@@ -161,15 +161,15 @@ IMAGE *convolve(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz)
   switch (GetImDataType(im)){
 
   case t_UCHAR:
-    uc_convolve((UCHAR *)GetImPtr(im), (MIAFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
+    uc_convolve((UCHAR *)GetImPtr(im), (MIALFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
     break;
 
   case t_USHORT:
-    us_convolve((USHORT *)GetImPtr(im), (MIAFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
+    us_convolve((USHORT *)GetImPtr(im), (MIALFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
     break;
 
   case t_FLOAT:
-    f_convolve((MIAFLOAT *)GetImPtr(im), (MIAFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
+    f_convolve((MIALFLOAT *)GetImPtr(im), (MIALFLOAT *)GetImPtr(imout), GetImNx(im), GetImNy(im), GetImNz(im), box, shft, weight, n);
     break;
 
   default:
@@ -183,8 +183,8 @@ IMAGE *convolve(IMAGE *im, IMAGE *imse, IMAGE *imweight, int ox, int oy, int oz)
 
 
 #include "uc_def.h"
-#define PIX_TYPE_OUT MIAFLOAT
-void uc_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIAFLOAT *weight, int n, int w)
+#define PIX_TYPE_OUT MIALFLOAT
+void uc_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIALFLOAT *weight, int n, int w)
 {
   PIX_TYPE *pim1, *p1, *p1tmp;
   PIX_TYPE_OUT *pim2, *p2;
@@ -229,8 +229,8 @@ void uc_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIA
 
 
 #include "us_def.h"
-#define PIX_TYPE_OUT MIAFLOAT
-void us_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIAFLOAT *weight, int n, int w)
+#define PIX_TYPE_OUT MIALFLOAT
+void us_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIALFLOAT *weight, int n, int w)
 {
   PIX_TYPE *pim1, *p1, *p1tmp;
   PIX_TYPE_OUT *pim2, *p2;
@@ -280,18 +280,18 @@ IMAGE *convolvedownsample(IMAGE *im, IMAGE *imse, IMAGE *imweight, int w, int ox
   int box[BOXELEM];
   int n;
   long int *shft;
-  MIAFLOAT *ptrf, *weight;
+  MIALFLOAT *ptrf, *weight;
 
   // int w=GetImNx(imse); // quick way for testing, assuming 2D images see below
 
 
-  /* make sure image of weights is of MIAFLOAT type */
+  /* make sure image of weights is of MIALFLOAT type */
   if (GetImDataType(imweight)!=t_FLOAT){
       imtmp=to_float(imweight);
-      ptrf=(MIAFLOAT *)GetImPtr(imtmp);
+      ptrf=(MIALFLOAT *)GetImPtr(imtmp);
   }
   else
-      ptrf=(MIAFLOAT *)GetImPtr(imweight);
+      ptrf=(MIALFLOAT *)GetImPtr(imweight);
 
   /* create shift array */
   n = objectpix(imse);
@@ -300,7 +300,7 @@ IMAGE *convolvedownsample(IMAGE *im, IMAGE *imse, IMAGE *imweight, int w, int ox
   shft = (long int *)calloc(n, sizeof(long int));
   if (shft == NULL)
     return NULL;
-  weight = (MIAFLOAT *)calloc(n, sizeof(MIAFLOAT));
+  weight = (MIALFLOAT *)calloc(n, sizeof(MIALFLOAT));
   if (weight == NULL){
     free(shft);
     return NULL;
@@ -782,7 +782,7 @@ IMAGE *uc_mean2d(IMAGE *im, int width)
   long int  x, y;
   IMAGE *imrsum, *imout;
   UINT32 *p;
-  MIAFLOAT *s;
+  MIALFLOAT *s;
 
   imrsum=(IMAGE *)uc_rsum2d(im);
   if (imrsum == NULL){
@@ -800,7 +800,7 @@ IMAGE *uc_mean2d(IMAGE *im, int width)
   nx=GetImNx(imrsum);
   ny=GetImNy(imrsum);
   p=(UINT32 *)GetImPtr(imrsum);
-  s=(MIAFLOAT *)GetImPtr(imout);
+  s=(MIALFLOAT *)GetImPtr(imout);
 
   wd2=(int)width/2;
 
@@ -813,7 +813,7 @@ IMAGE *uc_mean2d(IMAGE *im, int width)
   for (y=ymin;y<ymax;y++){
     ofs=y*nx+xmin;
     for(x=xmin;x<xmax;x++,ofs++){
-      s[ofs]=((MIAFLOAT)p[ofs+wd2+nx*wd2]-(MIAFLOAT)p[ofs+wd2-nx*(wd2+1)]-(MIAFLOAT)p[ofs-wd2-1+nx*wd2]+(MIAFLOAT)p[ofs-wd2-1-nx*(wd2+1)])/n;
+      s[ofs]=((MIALFLOAT)p[ofs+wd2+nx*wd2]-(MIALFLOAT)p[ofs+wd2-nx*(wd2+1)]-(MIALFLOAT)p[ofs-wd2-1+nx*wd2]+(MIALFLOAT)p[ofs-wd2-1-nx*(wd2+1)])/n;
     }
   }
   return(imout);
@@ -846,7 +846,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   int k, n, nio;
   unsigned long int ofs;
   IMAGE *imout, *imse_tmp1, *imse_tmp2;
-  MIAFLOAT *s;
+  MIALFLOAT *s;
   double sum;
 
   int box[BOXELEM], boxtmp[BOXELEM];
@@ -947,7 +947,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   nx=GetImNx(im);
   ny=GetImNy(im);
   p=(PIX_TYPE *)GetImPtr(im);
-  s=(MIAFLOAT *)GetImPtr(imout);
+  s=(MIALFLOAT *)GetImPtr(imout);
 
   xmin = box[0];
   ymin = box[2];
@@ -1005,7 +1005,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   int k, n, nio;
   unsigned long int ofs;
   IMAGE *imout, *imse_tmp1, *imse_tmp2;
-  MIAFLOAT *s;
+  MIALFLOAT *s;
   double sum, sumsq;  // float leads to rounding and then errors!!
 
   int box[BOXELEM], boxtmp[BOXELEM];
@@ -1111,7 +1111,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   nx=GetImNx(im);
   ny=GetImNy(im);
   p=(PIX_TYPE *)GetImPtr(im);
-  s=(MIAFLOAT *)GetImPtr(imout);
+  s=(MIALFLOAT *)GetImPtr(imout);
 
   xmin = box[0];
   ymin = box[2];

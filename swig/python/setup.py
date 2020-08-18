@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-setup.py file for SWIG mialib
+setup.py file for SWIG miallib
 """
 
 # see also https://docs.python.org/2/distutils/setupscript.html
@@ -21,7 +21,7 @@ pyver = os.environ.get('PYVER', '3.6')
 
 if int(pyver[0]) == 3:
     swig_opts_val = ['-py3', '-v', '-Wall',  '-I../include', '-outdir',
-                     './packages/mialib', '-I../include/python',
+                     './packages/miallib', '-I../include/python',
                      '-I/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
                      '-I/usr/local/lib/python'+pyver,
                      '-I../../core/c',
@@ -29,7 +29,7 @@ if int(pyver[0]) == 3:
                      '-DMCISRG', '-DCLASSIF']
 else:
     swig_opts_val = ['-v', '-Wall',  '-I../include', '-outdir',
-                     './packages/mialib', '-I../include/python',
+                     './packages/miallib', '-I../include/python',
                      '-I/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
                      '-I/usr/local/lib/python'+pyver,
                      '-I../../core/c',
@@ -37,7 +37,7 @@ else:
                      '-DMCISRG', '-DCLASSIF']
 
 
-libraries_val = ['gdal', 'tiff', 'mialib_python']
+libraries_val = ['gdal', 'tiff', 'miallib_python']
 library_dirs_val = ['../../core/build/lib', '/usr/lib/x86_64-linux-gnu',
                     '/usr/local/lib']
 include_dirs_val = ['/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/include',
@@ -46,7 +46,7 @@ include_dirs_val = ['/usr/local/lib/python'+pyver+'/dist-packages/numpy/core/inc
 define_macros_val = [('MCISRG', None), ('CLASSIF', None)]
 
 
-_mialib = Extension('_mialib', ['mialib.i'],
+_miallib = Extension('_miallib', ['miallib.i'],
                     swig_opts=swig_opts_val,
                     libraries=libraries_val,
                     library_dirs=library_dirs_val,
@@ -87,7 +87,7 @@ for idx in ext_modules_list:
 
 additional_py_modules = []
 for idx in ext_modules_list:
-    additional_py_modules.append('mialib/' + idx + '_base')
+    additional_py_modules.append('miallib/' + idx + '_base')
 
 # sos = []
 # for idx in ext_modules_list:
@@ -104,30 +104,30 @@ for idx in ext_modules_list:
                 sources.write(re.sub('master', idx, line))
 
 
-setup(name="mialib",
+setup(name="miallib",
       version="0.1",
       author="Pierre Soille",
       author_email="Pierre.Soille@ec.europa.eu",
       copyright="(c) European Commission",
       license="(c) European Commission. Exact licence to be defined",
-      description="""Python interface to mialib/jiplib thanks to SWIG""",
-      long_description="""Python interface to mialib/jiplib thanks to SWIG: long description""",
+      description="""Python interface to miallib/jiplib thanks to SWIG""",
+      long_description="""Python interface to miallib/jiplib thanks to SWIG: long description""",
       url="http://jeodpp.jrc.ec.europa.eu",
-      ext_modules=[_mialib] + modules_list,
+      ext_modules=[_miallib] + modules_list,
       package_dir={'': 'packages'},
-      packages=['mialib'],
-      # #py_modules = ["mialib/mialib"],
-      # py_modules = ['mialib/mialib'] +  additional_py_modules +
-      #               ['mialib/format',
-      #               'mialib/geometry',
-      #               'mialib/geodesy',
-      #               'mialib/stats',
-      #               'mialib/io',
-      #               'mialib/pointop',
-      #               'mialib/visu'],
+      packages=['miallib'],
+      # #py_modules = ["miallib/miallib"],
+      # py_modules = ['miallib/miallib'] +  additional_py_modules +
+      #               ['miallib/format',
+      #               'miallib/geometry',
+      #               'miallib/geodesy',
+      #               'miallib/stats',
+      #               'miallib/io',
+      #               'miallib/pointop',
+      #               'miallib/visu'],
       #data_files=[('bitmaps', ['bm/b1.gif', 'bm/b2.gif'])],
       #
-      package_data={'./build/lib.linux-x86_64-'+pyver+'/': ['_mialib.so']},  # + sos
+      package_data={'./build/lib.linux-x86_64-'+pyver+'/': ['_miallib.so']},  # + sos
       build_dir={'': './build'},
       build_base={'': './build'}
       )

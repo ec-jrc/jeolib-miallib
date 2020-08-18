@@ -479,7 +479,7 @@ noEnterNecessary: ;
 #endif
 
 #ifdef MIAL
-    /* enter mialib symbols */
+    /* enter miallib symbols */
     kl_type = senter(":TYPE");
     kl_nodata = senter(":NODATA");
     kl_metadata = senter(":METADATA");

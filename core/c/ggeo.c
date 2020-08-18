@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fah.h"
 #include "pqueue.h"
 

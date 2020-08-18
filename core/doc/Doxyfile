@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Morphological Image Analysis Library"
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = mialib_logo.png
+PROJECT_LOGO           = miallib_logo.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -756,7 +756,7 @@ LAYOUT_FILE            =
 # LATEX_BIB_STYLE. To use this feature you need bibtex and perl available in the
 # search path. See also \cite for info how to create references.
 
-CITE_BIB_FILES         = ../../xlisp/doc/miadocxlisp.bib
+CITE_BIB_FILES         = ../../xlisp/doc/mialdocxlisp.bib
 
 #---------------------------------------------------------------------------
 # Configuration options related to warning and progress messages

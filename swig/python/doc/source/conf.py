@@ -20,7 +20,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../../build/lib.linux-x86_64-3.6/mialib'))
+sys.path.insert(0, os.path.abspath('../../build/lib.linux-x86_64-3.6/miallib'))
 sys.path.insert(0, os.path.abspath('./_templates'))
 
 
@@ -126,7 +126,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pymiadoc'
+htmlhelp_basename = 'pymialdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------

@@ -10,7 +10,7 @@
 #include <omp.h>
 #endif
 
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 #include "pqueue.h"
 
@@ -38,7 +38,7 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
   long int i, j, k, l;
   unsigned long int npix=GetImNPix(imblbl);
   IMAGE *imout, *iofs;
-  MIAFLOAT *pflut;
+  MIALFLOAT *pflut;
   UINT32 *pofs, ofs, ofsk, *hst;
   int alphamax;
   CC_LBL_TYPE lbl, blbl, lblofsk, *prtlbl, *pimblbl, *pout, *pblbl, maxlbl;
@@ -82,7 +82,7 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
   pblbl=(CC_LBL_TYPE* )GetImPtr(atree[1]);
   palphalbl=(PIX_TYPE* )GetImPtr(atree[3]);
   hst=(UINT32* )GetImPtr(atree[4]);
-  pflut=(MIAFLOAT *)GetImPtr(flaglut);
+  pflut=(MIALFLOAT *)GetImPtr(flaglut);
   pimblbl=(CC_LBL_TYPE* )GetImPtr(imblbl);
   pout=(CC_LBL_TYPE* )GetImPtr(imout);
 

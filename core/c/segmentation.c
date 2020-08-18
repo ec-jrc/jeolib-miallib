@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mslabel.h"
-#include "mialib.h"
+#include "miallib.h"
 //#include "OpenClose.h"
 #include "fifo.h"
 #include "pqueue.h"

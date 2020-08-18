@@ -1,4 +1,4 @@
-Welcomne to mialib!
+Welcomne to miallib!
 
 ## Build time dependencies
 
@@ -44,9 +44,9 @@ The documentation generation for pymia used epydoc for python2.7 and sphinx for 
 ### Local builds only!!!
 
 Our docker containers use a customized gdal build which links to `libshp`.
-When we use that, we shouldn't link `mialib` to `libshp`.
+When we use that, we shouldn't link `miallib` to `libshp`.
 
-For local builds though, we also need to link `mialib` with `libshp`. So:
+For local builds though, we also need to link `miallib` with `libshp`. So:
 
 ```
 sudo apt install -y libshp-dev
@@ -75,9 +75,9 @@ index 8e6910a..e1bb369 100755
 @@ -25,7 +25,7 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG
 
 
- $(BUILDDIR)/mialisp: banner_mialib.h $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a
--       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj
-+       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj -lshp
+ $(BUILDDIR)/mialisp: banner_miallib.h $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a
+-       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj
++       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj -lshp
 ```
 
 ## Install
@@ -89,16 +89,16 @@ sudo make install
 
 ## Usage
 
-Upon successful completion of these steps, you can use mialib:
+Upon successful completion of these steps, you can use miallib:
 
 ### Python
 - from a python interpreter, simply type
 
 ``` python
-import mialib
+import miallib
 ```
 
-The doc can be found here: `/usr/local/share/doc/mialib/python/pdf/api.pdf`
+The doc can be found here: `/usr/local/share/doc/miallib/python/pdf/api.pdf`
 
 
 ### Lisp
@@ -109,14 +109,14 @@ Together with a LISP interpreter by typing:
 mialisp /usr/local/share/mialisp/lsp/init.lsp
 ```
 
-The doc can be found here: `/usr/local/share/doc/mialib/lisp/pdf/miadocxlisp.pdf`
+The doc can be found here: `/usr/local/share/doc/miallib/lisp/pdf/miadocxlisp.pdf`
 
 ### Others
 
-You can also try to bind the mialib libraries directly with your preferred software:
+You can also try to bind the miallib libraries directly with your preferred software:
 ```
-/usr/local/lib/libmialib_generic.so
+/usr/local/lib/libmiallib_generic.so
 ```
 
-The doc can be found here: `/usr/local/share/doc/mialib/lib/pdf/mialib.pdf`
+The doc can be found here: `/usr/local/share/doc/miallib/lib/pdf/miallib.pdf`
 

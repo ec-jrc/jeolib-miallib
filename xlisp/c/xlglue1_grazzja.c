@@ -141,7 +141,7 @@ LVAL itexfeat() {
   int n, nlab, nfeat;
   IMAGE **imarray_feat;
   int gltx, glty, glres, wsize;
-  MIAFLOAT ascale[3], nscales;
+  MIALFLOAT ascale[3], nscales;
   float sigma; int type; 
 
   if (!moreargs())

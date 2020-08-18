@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 
 #ifdef OPENMP
 #include <omp.h>
@@ -883,16 +883,16 @@ IMAGE *to_int32(IMAGE *im)
 ERROR_TYPE generic_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* potential bug (depending on data type): no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "g_undef.h"
@@ -904,16 +904,16 @@ ERROR_TYPE generic_to_float(IMAGE *im, IMAGE *imout)
 ERROR_TYPE s_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* bug: no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "s_undef.h"
@@ -922,16 +922,16 @@ ERROR_TYPE s_to_float(IMAGE *im, IMAGE *imout)
 ERROR_TYPE us_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* bug: no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "us_undef.h"
@@ -941,16 +941,16 @@ ERROR_TYPE us_to_float(IMAGE *im, IMAGE *imout)
 ERROR_TYPE i32_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* bug: no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "i32_undef.h"
@@ -960,16 +960,16 @@ ERROR_TYPE i32_to_float(IMAGE *im, IMAGE *imout)
 ERROR_TYPE u32_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* bug: no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "u32_undef.h"
@@ -979,16 +979,16 @@ ERROR_TYPE u32_to_float(IMAGE *im, IMAGE *imout)
 ERROR_TYPE d_to_float(IMAGE *im, IMAGE *imout)
 {
   mia_size_t i, npix;
-  MIAFLOAT *p2;
+  MIALFLOAT *p2;
   PIX_TYPE *p1;
 
   p1   = (PIX_TYPE *)GetImPtr(im);
-  p2   = (MIAFLOAT *)GetImPtr(imout);
+  p2   = (MIALFLOAT *)GetImPtr(imout);
   npix = GetImNPix(im);
 
   /* bug: no range check */
   for (i=0; i<npix; i++, p1++, p2++)
-    *p2 = (MIAFLOAT)*p1;
+    *p2 = (MIALFLOAT)*p1;
   return(NO_ERROR);
 }
 #include "d_undef.h"

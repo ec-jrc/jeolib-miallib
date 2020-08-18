@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 
 

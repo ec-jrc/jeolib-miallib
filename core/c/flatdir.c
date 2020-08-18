@@ -10,7 +10,7 @@
 #include <math.h>
 
 
-#include "mialib.h"
+#include "miallib.h"
 #include "fah.h"
 #include "fifo.h"
 #include "pqueue.h"

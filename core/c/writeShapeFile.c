@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "borderdetection.h"
 #include "writeShapeFile.h"
-#include "mialib.h"
+#include "miallib.h"
 #include "base.h"
 #include <geotiff/xtiffio.h>
 #include <tiffio.h>

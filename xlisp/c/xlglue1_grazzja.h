@@ -8,13 +8,13 @@ IMAGE** texfeat ( IMAGE *im, IMAGE* ilabel, UINT32 *llab, int nlab,
                   char *afeat, int nfeat, 
                   char gltype, int gltx, int glty, int glres, 
                   char weitype, double sigma, 
-                  int wsize, IMAGE* imap, MIAFLOAT *ascale, 
+                  int wsize, IMAGE* imap, MIALFLOAT *ascale, 
                   char flper );
 IMAGE** texfeatQ ( IMAGE *im, IMAGE* ilabel, UINT32 *llab, int nlab,
                    char *afeat, int nfeat, 
                    char gltype, int gltx, int glty, int glres, 
                    char weitype, double sigma, 
-                   int wsize, IMAGE* imap, MIAFLOAT *ascale, 
+                   int wsize, IMAGE* imap, MIALFLOAT *ascale, 
                    char flper );
 
 #endif

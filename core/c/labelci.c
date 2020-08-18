@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "mialib.h"
+#include "miallib.h"
 #include "pqueue.h"
 #include "fifo.h"
 #include "op.h"

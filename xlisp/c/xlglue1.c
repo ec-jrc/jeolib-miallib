@@ -8,13 +8,13 @@
 
 struct apoint { double u, v; };
 
-#include "xlglue1.h"    /* external declarations of mialib functions */
+#include "xlglue1.h"    /* external declarations of miallib functions */
 #ifdef MARCIN
 #include "xlglue1_marcin.h"
 #endif
 #ifdef GRAZZJA
 #include "xlglue1_grazzja.h"
-#include "mialib_grazzja.h"
+#include "miallib_grazzja.h"
 #endif 
 
 /****************************************************************/
@@ -63,7 +63,7 @@ int type;
     gval.u32_val = (UINT32) getfixnum(xlgafixnum());
   }
   else if (type == t_FLOAT){
-    gval.f_val = (MIAFLOAT) getflonum(xlgaflonum());
+    gval.f_val = (MIALFLOAT) getflonum(xlgaflonum());
   }
   else if (type == t_DOUBLE){
     gval.d_val = (DOUBLE) getflonum(xlgaflonum());
@@ -888,7 +888,7 @@ LVAL inx()
   \param{im}{an image node}
   \return{the number of columns of im}
   \cfunction{macro GetImNx(IMAGE *im)}
-  \cfile{mialib.h}
+  \cfile{miallib.h}
 */
   a = xlgaimage();
   xllastarg();
@@ -907,7 +907,7 @@ LVAL iny()
   \param{im}{an image node}
   \return{the number of lines of im}
   \cfunction{macro GetImNy(IMAGE *im)}
-  \cfile{mialib.h}
+  \cfile{miallib.h}
 */
   a = xlgaimage();
   xllastarg();
@@ -925,7 +925,7 @@ LVAL inz()
   \param{im}{an image node}
   \return{the number of x-y planes of im}
   \cfunction{macro GetImNz(IMAGE *im)}
-  \cfile{mialib.h}
+  \cfile{miallib.h}
 */
   a = xlgaimage();
   xllastarg();
@@ -944,7 +944,7 @@ LVAL iimdatatype()
   \param{im}{an image node}
   \return{an integer value corresponding to the image data type (e.g., t_UCHAR for unsigned char)}
   \cfunction{macro GetImDataType(IMAGE *im)}
-  \cfile{mialib.h}
+  \cfile{miallib.h}
 */
   a = xlgaimage();
   xllastarg();
@@ -1107,7 +1107,7 @@ LVAL igetpix()
   case t_UINT64:
       return(cvfixnum((int) *((UINT64 *) a->n_info.n_image->p_im + offset)));
   case t_FLOAT:
-      return(cvflonum((float) *((MIAFLOAT *) a->n_info.n_image->p_im + offset)));
+      return(cvflonum((float) *((MIALFLOAT *) a->n_info.n_image->p_im + offset)));
   case t_DOUBLE:
       return(cvflonum((float) *((DOUBLE *) a->n_info.n_image->p_im + offset)));
   default:
@@ -1147,9 +1147,9 @@ LVAL igetpixi()
   case t_INT32:
       return(cvfixnum((int) *((INT32 *) a->n_info.n_image->p_im + offset)));
   case t_FLOAT:
-    // printf("val=%20.40g\n", (double) *((MIAFLOAT *) (a->n_info.n_image->p_im) + offset));
-    // printf("val=%20.40f\n",  *((MIAFLOAT *) (a->n_info.n_image->p_im) + offset));
-    return(cvflonum((FLOTYPE) *((MIAFLOAT *) a->n_info.n_image->p_im + offset)));
+    // printf("val=%20.40g\n", (double) *((MIALFLOAT *) (a->n_info.n_image->p_im) + offset));
+    // printf("val=%20.40f\n",  *((MIALFLOAT *) (a->n_info.n_image->p_im) + offset));
+    return(cvflonum((FLOTYPE) *((MIALFLOAT *) a->n_info.n_image->p_im + offset)));
   case t_DOUBLE:{
     // printf("val=%20.40g\n", *((DOUBLE *) (a->n_info.n_image->p_im) + offset));
     // printf("val=%20.40f\n", (float) *((DOUBLE *) (a->n_info.n_image->p_im) + offset));
@@ -1186,7 +1186,7 @@ LVAL igetpixmin()
   case t_UINT32:
       return(cvfixnum((int) UINT32_MIN));
   case t_FLOAT:
-      return(cvflonum((float) MIAFLOAT_MIN));
+      return(cvflonum((float) MIALFLOAT_MIN));
   case t_DOUBLE:
       return(cvflonum((float) DOUBLE_MIN));
   default:
@@ -1220,7 +1220,7 @@ LVAL igetpixmax()
   case t_UINT32:
       return(cvfixnum((int) INT32_MAX));
   case t_FLOAT:
-      return(cvflonum((float) MIAFLOAT_MAX));
+      return(cvflonum((float) MIALFLOAT_MAX));
   case t_DOUBLE:
       return(cvflonum((float) DOUBLE_MAX));
   default:
@@ -1438,7 +1438,7 @@ LVAL isetpix()
   case t_FLOAT:
       valflo = (DOUBLE) getflonum(xlgaflonum());
       xllastarg();
-      *((MIAFLOAT *) a->n_info.n_image->p_im + offset) = (MIAFLOAT)valflo;
+      *((MIALFLOAT *) a->n_info.n_image->p_im + offset) = (MIALFLOAT)valflo;
       return s_true;
   case t_DOUBLE:
       valflo = (DOUBLE) getflonum(xlgaflonum());
@@ -1536,7 +1536,7 @@ LVAL isetpixtruncate()
     *((UINT32 *) a->n_info.n_image->p_im + offset) = (INT32)fval;
     return s_true;
   case t_FLOAT:
-      *((MIAFLOAT *) a->n_info.n_image->p_im + offset) = (MIAFLOAT)fval;
+      *((MIALFLOAT *) a->n_info.n_image->p_im + offset) = (MIALFLOAT)fval;
       return s_true;
   case t_DOUBLE:
       *((DOUBLE *) a->n_info.n_image->p_im + offset) = (DOUBLE)fval;
@@ -1601,9 +1601,9 @@ LVAL isetpixi()
       *((INT32 *) a->n_info.n_image->p_im + offset) = (UINT32)val;
       return s_true;
   case t_FLOAT:
-      valflo = (MIAFLOAT) getflonum(xlgaflonum());
+      valflo = (MIALFLOAT) getflonum(xlgaflonum());
       xllastarg();
-      *((MIAFLOAT *) a->n_info.n_image->p_im + offset) = (MIAFLOAT)valflo;
+      *((MIALFLOAT *) a->n_info.n_image->p_im + offset) = (MIALFLOAT)valflo;
       return s_true;
   case t_DOUBLE:
       valdbl = (DOUBLE) getflonum(xlgaflonum());
@@ -9021,7 +9021,7 @@ LVAL iconvolvedownsample()
   \desc{performs the convolution of im using the convolution kernel defined as follows: points of imse set to 1 define the definition domain of the kernel while the corresponding weigth is defined by the value in imweight at the same position.  Note that the kernel is not reflected so that *convolve actually returns the cross-correlation of im with the image defined by imse and imweight.  The kernel is assumed to be square and convolution is computed for points w apart in both x and y directions.  Computations are only performed at the grid nodes for which the kernel fully fits the image domain.}
   \history{20121128: parameter w added (before it was hardcoded as the width of imse)}
   \history{20121130: openmp added.}
-  \feature{20121128: the output image data type is always MIAFLOAT.  It would make sense to have the possibility to have the same data type as input for the output so as to save memory and do calculations at the level of each pixel in double.}
+  \feature{20121128: the output image data type is always MIALFLOAT.  It would make sense to have the possibility to have the same data type as input for the output so as to save memory and do calculations at the level of each pixel in double.}
   \cfunction{\cfconvolvedownsample}
   \cfile{convolve.c}
   \example{}{}

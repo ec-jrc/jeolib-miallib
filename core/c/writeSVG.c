@@ -18,7 +18,7 @@
 #define NO_BUF
 #include "borderdetection.h"
 #include "writeSVG.h"
-#include "mialib.h"
+#include "miallib.h"
 #include "base.h"
 #include <geotiff/xtiffio.h>
 #include <tiffio.h>

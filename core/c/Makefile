@@ -3,7 +3,7 @@
 # note: compile with -DCLUSTER for additional types in set_regions but requires dcluster.c
 #
 
-BASE       = mialib
+BASE       = miallib
 TARGET     = lib$(BASE)
 CC         = gcc
 CXX        = c++
@@ -155,11 +155,11 @@ banner.h: $(SRCS)
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-GENERIC)/%.o: %.c mialib.h banner.h
+$(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -o $@ $<
 
-$(DDIR-GENERIC)/%.o: %.c mialib.h banner.h
+$(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
 
@@ -180,7 +180,7 @@ $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-XLISP)/%.o: %.c mialib.h banner.h
+$(SDIR-XLISP)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-XLISP)  $(INCLUDE) -o $@ $<
 
@@ -205,11 +205,11 @@ PYTHON_DLNK   =
 # Build static and dynamic libraries
 # ----------------------------------------------------------------
 
-$(SDIR)/%.o: %.c mialib.h banner.h
+$(SDIR)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 
-$(DDIR)/%.o: %.c mialib.h banner.h
+$(DDIR)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 
@@ -241,14 +241,14 @@ all: build doc
 install:
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
 	mkdir -p $(prefix)/include/$(BASE)/
-	cp -a miatypes.h $(prefix)/include/$(BASE)/
-	cp -a mialib_*.h $(prefix)/include/$(BASE)/
+	cp -a mialtypes.h $(prefix)/include/$(BASE)/
+	cp -a miallib_*.h $(prefix)/include/$(BASE)/
 	cp -a op.h $(prefix)/include/$(BASE)/
 
 uninstall:
-	-rm -f $(prefix)/lib/*mialib*
-	-rm -f $(prefix)/include/$(BASE)/miatypes.h
-	-rm -f $(prefix)/include/$(BASE)/mialib_*.h
+	-rm -f $(prefix)/lib/*miallib*
+	-rm -f $(prefix)/include/$(BASE)/mialtypes.h
+	-rm -f $(prefix)/include/$(BASE)/miallib_*.h
 	-rm -f $(prefix)/include/$(BASE)/op.h
 
 clean:

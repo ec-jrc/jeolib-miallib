@@ -1,7 +1,7 @@
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <math.h>
-#include  "mialib.h"
+#include  "miallib.h"
 #include  "fifo.h"
 #ifdef OPENMP
 #include <omp.h>
@@ -173,12 +173,12 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
   pb=(float *)GetImPtr(imb);
   while (fifo4_empty(q)==FALSE){
     fifo4_add(q,FICTITIOUS);
-    dmin=MIAFLOAT_MAX;
+    dmin=MIALFLOAT_MAX;
     fifo4_lookreset(q);
     while( (ofs=fifo4_look(q)) != FICTITIOUS ){
       if( px[ofs] != SHORT_MAX)
 	continue;
-      dp=MIAFLOAT_MAX;
+      dp=MIALFLOAT_MAX;
       for(k=0;k<graph;k++){
 	ofsk=ofs+shft[k];
 	if( px[ofsk] != SHORT_MAX ){
@@ -230,7 +230,7 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
 #endif
   for (i=0;i<npix;i++){
     if (px[i] != SHORT_MAX)
-      pb[i] += (MIAFLOAT)sqrt((double)((INT64)px[i] * px[i] + (INT64)py[i] * py[i]));
+      pb[i] += (MIALFLOAT)sqrt((double)((INT64)px[i] * px[i] + (INT64)py[i] * py[i]));
   }
 
   free_image(imx);

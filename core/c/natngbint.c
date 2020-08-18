@@ -7,7 +7,7 @@
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include "mialib.h"
+#include "miallib.h"
 
 #include <nn.h> /* installed from nn-c-master/nn */
 #include <csa.h> /* installed from csa-c-master/csa */

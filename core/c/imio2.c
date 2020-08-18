@@ -7,7 +7,7 @@
 // #include "bytesex.h" /* <endian.h> only for linux ... */
 #include  <endian.h>
 #endif
-#include "mialib.h"
+#include "miallib.h"
 #include "imio.h"
 #include <geotiff/xtiffio.h>
 #include <tiffio.h>

@@ -19,7 +19,7 @@
 #include <sys/shm.h>
 #include <semaphore.h>
 
-#include "mialib.h"
+#include "miallib.h"
 
 
 /** \addtogroup group_mem

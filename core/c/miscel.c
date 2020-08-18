@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "mialib.h"
+#include "miallib.h"
 
 #ifdef XLISP
 extern void xlabort(char *);    /* serious XLISP error handler */

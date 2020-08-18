@@ -32,7 +32,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 #include "pqueueExact.h"
 #include "regionMean.h"

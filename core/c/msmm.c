@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "mialib.h"
+#include "miallib.h"
 
 
 
@@ -24,7 +24,7 @@ IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
 
   PIX_TYPE **pim;
   IMAGE *imout;
-  MIAFLOAT *pout, dmax, dcrt, db;
+  MIALFLOAT *pout, dmax, dcrt, db;
   
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
@@ -34,7 +34,7 @@ IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
     (void)sprintf(buf,"uc_msgradlinf(): not enough memory for output image\n"); errputstr(buf);
     return(NULL);
   }
-  pout=(MIAFLOAT *)GetImPtr(imout);
+  pout=(MIALFLOAT *)GetImPtr(imout);
 
   
   for (i=0; i<nc; i++)
@@ -58,7 +58,7 @@ IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
       if (dcrt>dmax)
 	dmax=dcrt;
     }
-    *(pout+ofs)=(MIAFLOAT)sqrt((double)dmax);
+    *(pout+ofs)=(MIALFLOAT)sqrt((double)dmax);
   }
 
   return imout;
@@ -75,7 +75,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
 
   PIX_TYPE **pim;
   IMAGE *imout;
-  MIAFLOAT *pout, dmax, dcrt, db;
+  MIALFLOAT *pout, dmax, dcrt, db;
   
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
@@ -85,7 +85,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
     (void)sprintf(buf,"uc_msgradlinf(): not enough memory for output image\n"); errputstr(buf);
     return(NULL);
   }
-  pout=(MIAFLOAT *)GetImPtr(imout);
+  pout=(MIALFLOAT *)GetImPtr(imout);
 
   for (i=0; i<nc; i++)
     pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
@@ -108,7 +108,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
       if (dcrt>dmax)
 	dmax=dcrt;
     }
-    *(pout+ofs)=(MIAFLOAT)sqrt((double)dmax);
+    *(pout+ofs)=(MIALFLOAT)sqrt((double)dmax);
   }
 
   return imout;
@@ -158,7 +158,7 @@ IMAGE *msgradlinf(IMAGE **imap, int nc, int graph)
 
 #include "uc_def.h"
 #define t_OUT t_FLOAT
-#define PIX_OUT MIAFLOAT
+#define PIX_OUT MIALFLOAT
 IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz)
 {
   int i, k, n;

@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "math.h"
-#include "mialib.h"
+#include "miallib.h"
 #ifdef TIMING
 #include <sys/types.h>
 #include <sys/times.h>

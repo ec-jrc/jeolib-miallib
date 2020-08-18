@@ -4,7 +4,7 @@ CC =gcc -m64 -O3 -Wall # -Or26 # -pg
 
 PREFIX=/usr/local
 BUILDDIR = ../build
-LIBMIADIR= ../../core/build/lib
+LIBMIALDIR= ../../core/build/lib
 
 SRCS = xlisp.c xlbfun.c xlcont.c xldbug.c xldmem.c xleval.c \
 	xlfio.c xlglob.c xlimage.c xlinit.c xlio.c xljump.c xllist.c \
@@ -24,12 +24,12 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG 
 
 
 
-$(BUILDDIR)/mialisp: banner_mialib.h $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a
-	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIADIR)/libmialib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj -lshp
+$(BUILDDIR)/mialisp: banner_miallib.h $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a
+	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj -lshp
 
 
-banner_mialib.h: $(SRCS)
-	echo "#define BANNER_MIALIB \"Version as of `date`\"" > banner_mialib.h;
+banner_miallib.h: $(SRCS)
+	echo "#define BANNER_MIALLIB \"Version as of `date`\"" > banner_miallib.h;
 
 
 $(BUILDDIR)/xlftab.o : xlftab.c osdefs.h osptrs.h
@@ -55,5 +55,5 @@ uninstall:
 
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete
-	test -f banner_mialib.h && rm banner_mialib.h
+	test -f banner_miallib.h && rm banner_miallib.h
 

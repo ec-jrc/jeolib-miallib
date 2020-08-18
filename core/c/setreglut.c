@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "mialib.h"
+#include "miallib.h"
 #include "fifo.h"
 #include "pqueue.h"
 
@@ -20,7 +20,7 @@
 
 
 #include "u32_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
 {
   // first: 20100914
@@ -242,7 +242,7 @@ IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
 //                20120423: tried tasks 
 //                20120424: schedule(dynamic) seems to enable load balancing without the need to 'compress' labels
 #include "u32_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 #define PIX_NMSB 0x7FFFFFFF
 IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int param2)
 {
@@ -957,7 +957,7 @@ IMAGE *region_lut(IMAGE *ilbl, int graph, int type, int param1, int param2)
 
 
 #include "u32_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 IMAGE *u32_region_lut_seq_omp(IMAGE *ilbl, int graph, int type)
 {
   // first: 20100914
@@ -1042,7 +1042,7 @@ IMAGE *region_lut_seq(IMAGE *ilbl, int graph, int type)
 }
 
 #include "uc_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 #define LBL_PIX_TYPE UINT32
 #define LBL_PIX_MSB 0x80000000
 IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
@@ -1348,7 +1348,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     if (lut==NULL)
       return NULL;
     plut=(LUT_TYPE *)GetImPtr(lut);
-    f_blank(lut, MIAFLOAT_MAX);
+    f_blank(lut, MIALFLOAT_MAX);
     for (i=0; i<npix; i++){
       if (plut[plbl[i]]>pim[i])
 	plut[plbl[i]]=pim[i];
@@ -1456,7 +1456,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (lut==NULL)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
-      f_blank(lut, MIAFLOAT_MIN);
+      f_blank(lut, MIALFLOAT_MIN);
     
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
@@ -1464,7 +1464,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut2=(LUT_TYPE *)GetImPtr(lut2);
-      f_blank(lut2, MIAFLOAT_MAX);
+      f_blank(lut2, MIALFLOAT_MAX);
       for (i=0; i<npix; i++){
 	if (plut[plbl[i]]<pim[i])
 	  plut[plbl[i]]=pim[i];
@@ -1492,7 +1492,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
 
 #include "us_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 #define LBL_PIX_TYPE UINT32
 #define LBL_PIX_MSB 0x80000000
 IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
@@ -1800,7 +1800,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     if (lut==NULL)
       return NULL;
     plut=(LUT_TYPE *)GetImPtr(lut);
-    f_blank(lut, MIAFLOAT_MAX);
+    f_blank(lut, MIALFLOAT_MAX);
     for (i=0; i<npix; i++){
       if (plut[plbl[i]]>pim[i])
 	plut[plbl[i]]=pim[i];
@@ -1908,7 +1908,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (lut==NULL)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
-      f_blank(lut, MIAFLOAT_MIN);
+      f_blank(lut, MIALFLOAT_MIN);
     
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
@@ -1916,7 +1916,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut2=(LUT_TYPE *)GetImPtr(lut2);
-      f_blank(lut2, MIAFLOAT_MAX);
+      f_blank(lut2, MIALFLOAT_MAX);
       for (i=0; i<npix; i++){
 	if (plut[plbl[i]]<pim[i])
 	  plut[plbl[i]]=pim[i];
@@ -1944,7 +1944,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
 
 #include "f_def.h"
-#define LUT_TYPE MIAFLOAT
+#define LUT_TYPE MIALFLOAT
 #define LBL_PIX_TYPE UINT32
 #define LBL_PIX_MSB 0x80000000
 IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
@@ -2251,7 +2251,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     if (lut==NULL)
       return NULL;
     plut=(LUT_TYPE *)GetImPtr(lut);
-    f_blank(lut, MIAFLOAT_MAX);
+    f_blank(lut, MIALFLOAT_MAX);
     for (i=0; i<npix; i++){
       if (plut[plbl[i]]>pim[i])
 	plut[plbl[i]]=pim[i];
@@ -2350,7 +2350,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (lut==NULL)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
-      f_blank(lut, MIAFLOAT_MIN);
+      f_blank(lut, MIALFLOAT_MIN);
     
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
@@ -2358,7 +2358,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut2=(LUT_TYPE *)GetImPtr(lut2);
-      f_blank(lut2, MIAFLOAT_MAX);
+      f_blank(lut2, MIALFLOAT_MAX);
       for (i=0; i<npix; i++){
 	if (plut[plbl[i]]<pim[i])
 	  plut[plbl[i]]=pim[i];
@@ -2705,18 +2705,18 @@ IMAGE *contortion_lut(IMAGE *ilbl, int graph)
 IMAGE *f_moments_lut_to_ellipse_lut(IMAGE **impq)
 {
   mia_size_t i,n;
-  MIAFLOAT *m00, *m10, *m01, *m11, *m20, *m02;
+  MIALFLOAT *m00, *m10, *m01, *m11, *m20, *m02;
   double mu11, mu20, mu02;
   double denom, a, b, theta, rad2deg=180.0/PI;; 
   IMAGE *lut;
-  MIAFLOAT *plut;
+  MIALFLOAT *plut;
 
-  m00=(MIAFLOAT *)GetImPtr(impq[0]);
-  m10=(MIAFLOAT *)GetImPtr(impq[1]);
-  m01=(MIAFLOAT *)GetImPtr(impq[2]);
-  m11=(MIAFLOAT *)GetImPtr(impq[3]);
-  m20=(MIAFLOAT *)GetImPtr(impq[4]);
-  m02=(MIAFLOAT *)GetImPtr(impq[5]);
+  m00=(MIALFLOAT *)GetImPtr(impq[0]);
+  m10=(MIALFLOAT *)GetImPtr(impq[1]);
+  m01=(MIALFLOAT *)GetImPtr(impq[2]);
+  m11=(MIALFLOAT *)GetImPtr(impq[3]);
+  m20=(MIALFLOAT *)GetImPtr(impq[4]);
+  m02=(MIALFLOAT *)GetImPtr(impq[5]);
   n=GetImNPix(impq[0]);
 
 

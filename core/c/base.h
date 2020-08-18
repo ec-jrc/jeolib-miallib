@@ -9,7 +9,7 @@
 
 #ifndef init_base
 #define init_base
-#include "mialib.h"
+#include "miallib.h"
 
 #define SEED		0x04  
 #define NOSEED		0x00
