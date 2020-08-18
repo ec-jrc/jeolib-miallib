@@ -38,7 +38,7 @@ endif
 
 BINDING = python
 
-PYVER      = 3.6
+PYVER      = 3.5
 PYVERSHORT = 3
 
 #GDAL include ../SWIGmake.base

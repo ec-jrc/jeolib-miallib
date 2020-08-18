@@ -13,8 +13,8 @@ CXX        = c++
 # to be done:  -Wextra -Wno-sign-compare
 CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
-CFLAGS-PYTHON = -DPYTHON 
-PYVER=3.6
+CFLAGS-PYTHON = -DPYTHON
+PYVER=3.5
 prefix     = /usr/local
 exec_prefix= ${prefix}
 
@@ -192,7 +192,7 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 ##################################################################
 #####                       PYTHON                          ######
 ##################################################################
-PYVER = 3.6
+
 # Make sure these locate your Python installation
 PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python${PYVER}
 PYTHON_LIB    = 
