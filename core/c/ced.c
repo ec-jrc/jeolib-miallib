@@ -42,13 +42,13 @@ int inmaskp(IMAGE *buf_n, long int offset_r, long int x2, long int y2)
   **  x1 y1  :  coordinates of first point
   **  x2 y2  :  coordinates of second point
   */
-  
+
   long int d, dx, dy, s1, s2, incr1, incr2, x, y, temp, der;
   long int *pp;
   UCHAR *p  = (UCHAR *)GetImPtr(buf_n) + offset_r;
   int interchange  = TRUE;
   long int ncol = GetImNx(buf_n);
-  
+
   dx = abs(x2);  dy = abs(y2);
   s1 = SGN(x2);  s2 = SGN(y2);
   if (dy > dx)
@@ -118,7 +118,7 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
   if ( (GetImDataType(ref)!=t_UCHAR) || (GetImDataType(mask)!=t_UCHAR) ){
     (void)sprintf(buf, "ERROR in ced(): \
                both the ref and mask images must be of type t_UCHAR\n"); errputstr(buf);
-    return NULL;    
+    return NULL;
   }
   if (graph == 4){
     dx[0] = 0;  dy[0] = 1;
@@ -140,7 +140,7 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
 
   nx = GetImNx(ref);
   npix=GetImNPix(ref);
-  
+
   q = create_fifo4((npix)/100L+1024);
   if (q == NULL){
     return NULL;
@@ -267,6 +267,6 @@ IMAGE *ced(IMAGE *ref, IMAGE *mask)
 #undef FICTITIOUS
 #undef DXY_TYPE
 #undef t_DXY_TYPE
- 
+
 
 /*@}*/

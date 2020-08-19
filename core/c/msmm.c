@@ -22,10 +22,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  * @file   msmm.c
  * @author Pierre SOILLE <soillpi@D01RI1600821>
  * @date   Tue Oct 18 11:56:17 2016 [First 2004-04-20 snow down to sasso del ferro a Laveno yesterday!]
- * 
+ *
  * @brief  Multispectral gradient calculations
- * 
- * 
+ *
+ *
  */
 
 #include <stdio.h>
@@ -45,7 +45,7 @@ IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
   PIX_TYPE **pim;
   IMAGE *imout;
   MIALFLOAT *pout, dmax, dcrt, db;
-  
+
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
 
@@ -56,13 +56,13 @@ IMAGE *uc_msgradlinf(IMAGE **imap, int nc, int graph)
   }
   pout=(MIALFLOAT *)GetImPtr(imout);
 
-  
+
   for (i=0; i<nc; i++)
     pim[i]=(PIX_TYPE *)GetImPtr(imap[i]);
 
   /* set shift array */
   set_seq_shift(GetImNx(imout), GetImNy(imout), GetImNz(imout), graph, shft);
- 
+
 
   /* here we go */
   ofsmax=GetImNx(imout)*GetImNy(imout)-GetImNx(imout)-1;
@@ -96,7 +96,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
   PIX_TYPE **pim;
   IMAGE *imout;
   MIALFLOAT *pout, dmax, dcrt, db;
-  
+
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
 
@@ -112,7 +112,7 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
 
   /* set shift array */
   set_seq_shift(GetImNx(imout), GetImNy(imout), GetImNz(imout), graph, shft);
- 
+
 
   /* here we go */
   ofsmax=GetImNx(imout)*GetImNy(imout)-GetImNx(imout)-1;
@@ -136,13 +136,13 @@ IMAGE *f_msgradlinf(IMAGE **imap, int nc, int graph)
 #include "f_undef.h"
 
 
-/** 
- * 
- * 
+/**
+ *
+ *
  * @param imap array of images
  * @param nc integer for number of images in array
- * @param graph integer for 2-D connectivity (either 4 or 8) 
- * 
+ * @param graph integer for 2-D connectivity (either 4 or 8)
+ *
  * @return graph-connected multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite soille96
  */
 IMAGE *msgradlinf(IMAGE **imap, int nc, int graph)
@@ -214,12 +214,12 @@ IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int 
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imngb), box, \
 		    GetImNx(*imap), GetImNy(*imap), shft);
-  
+
   nx = GetImNx(*imap);
   ny = GetImNy(*imap);
   nz = GetImNz(*imap);
 
-  
+
   /* create output image */
   imout = (IMAGE *)create_image(t_OUT, GetImNx(*imap), GetImNy(*imap), GetImNz(*imap));
   if (imout == NULL){
@@ -244,7 +244,7 @@ IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int 
 /*   else box[4] = oz; */
 /*   if (oz >= nz) box[5] = 0; */
 /*   else box[5] = GetImNz(imngb) - 1 - oz; */
-  
+
   /* here we go */
   lstx = nx - box[1];
   lsty = ny - box[3];
@@ -282,16 +282,16 @@ IMAGE *uc_msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int 
 }
 #include "uc_undef.h"
 
-/** 
- * 
- * 
- * @param imap 
- * @param nc 
+/**
+ *
+ *
+ * @param imap
+ * @param nc
  * @param imngb image defining the neighbourhood with values in $\{0,1\}$
  * @param ox integer for x-coordinate of origin of neighbourhood image
  * @param oy integer for x-coordinate of origin of neighbourhood image
  * @param oz integer for x-coordinate of origin of neighbourhood image
- * 
+ *
  * @return multispectral gradient of input multi-channel image (up to 255 channels) using definition of \cite{soille96} and arbitrary neighbourhood.
  */
 IMAGE *msgradlinfngb(IMAGE **imap, int nc, IMAGE *imngb, int ox, int oy, int oz)

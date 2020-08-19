@@ -22,10 +22,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  * @file   shm.c
  * @author Pierre SOILLE
  * @date   Wed Sep 25 14:30:49 2013
- * 
+ *
  * @details
- * 
- * 
+ *
+ *
  */
 
 #define _GNU_SOURCE
@@ -121,7 +121,7 @@ IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t nbyte, i
   SetImPtr(im, (char *)shm_address+nbyte-nx*ny*nz*bpp);
   SetImNx(im,nx);
   SetImNy(im,ny);
-  SetImNz(im,nz);   
+  SetImNz(im,nz);
 
   return im;
 }
@@ -238,7 +238,7 @@ IMAGE *shmatimage_named_semaphores(key_t semkey, key_t shmkey, size_t nx, size_t
     SetImPtr(im,shm_address);
     SetImNx(im,nx);
     SetImNy(im,ny);
-    SetImNz(im,nz);   
+    SetImNz(im,nz);
 
     return im;
 }
@@ -273,7 +273,7 @@ ERROR_TYPE shmdtimage_named_semaphores(key_t semkey, void *shm_address)
     printf("shmdtimage: semget() failed\n");
     return -1;
   }
- 
+
   rc = semop( semid, operations, 2 );
 
   if (rc == -1)      {

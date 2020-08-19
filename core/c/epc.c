@@ -46,11 +46,11 @@ IMAGE *epc(IMAGE *im, IMAGE *lut)
   if (imout==NULL)
     return(NULL);
 
-  /* set shift array */   			   
+  /* set shift array */
   shft[5] = -GetImNx(im) -1; shft[1] = -GetImNx(im); shft[4] = -GetImNx(im) +1;
   shft[2] = -1;                                      shft[0] = +1;
-  shft[6] = +GetImNx(im) -1; shft[3] = +GetImNx(im); shft[7] = +GetImNx(im) +1; 
-  
+  shft[6] = +GetImNx(im) -1; shft[3] = +GetImNx(im); shft[7] = +GetImNx(im) +1;
+
 
   pcrt = (PIX_TYPE *)GetImPtr(im)+GetImNx(im)+1;;
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNPix(im)-GetImNx(im)-1;;
@@ -65,7 +65,7 @@ IMAGE *epc(IMAGE *im, IMAGE *lut)
      008 001 002
      128 016 256
   */
-  
+
   for (; pcrt<pend; pcrt++){
     code=*pcrt;
     for (pshft = &shft[0], k=1; k<9; k++, pshft++)
@@ -80,7 +80,7 @@ IMAGE *epc(IMAGE *im, IMAGE *lut)
 
 
 #include "uc_def.h"
-/* 
+/*
   epcgrey: extract pixel configurations in a grey level image (given by a LUT stored in an image)
   pixel lower than current define the background
   pixel greater or equal define the foreground
@@ -102,11 +102,11 @@ IMAGE *epcgrey(IMAGE *im, IMAGE *lut)
   if (imout==NULL)
     return(NULL);
 
-  /* set shift array */   			   
+  /* set shift array */
   shft[5] = -GetImNx(im) -1; shft[1] = -GetImNx(im); shft[4] = -GetImNx(im) +1;
   shft[2] = -1;                                      shft[0] = +1;
-  shft[6] = +GetImNx(im) -1; shft[3] = +GetImNx(im); shft[7] = +GetImNx(im) +1; 
-  
+  shft[6] = +GetImNx(im) -1; shft[3] = +GetImNx(im); shft[7] = +GetImNx(im) +1;
+
 
   pcrt = (PIX_TYPE *)GetImPtr(im)+GetImNx(im)+1;;
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNPix(im)-GetImNx(im)-1;;
@@ -121,7 +121,7 @@ IMAGE *epcgrey(IMAGE *im, IMAGE *lut)
      008 001 002
      128 016 256
   */
-  
+
   for (; pcrt<pend; pcrt++){
     code=1;
     for (pshft = &shft[0], k=1; k<9; k++, pshft++){

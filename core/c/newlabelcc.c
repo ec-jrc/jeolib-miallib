@@ -55,11 +55,11 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
 
   FIFO4 *q;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -70,7 +70,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
     (void)sprintf(buf,"_labelccdissim(): not enough memory!\n"); errputstr(buf);
     return NULL;
   }
-  
+
   pq = pqinit(NULL, GetImNPix(imlbl)/100L);  /* priority queue */
   if (pq == NULL){
     free_image(imlbl);
@@ -93,7 +93,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
   shft[2]=1;
   shft[3]=nx;
 
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_pq(pq);
@@ -103,7 +103,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
 
   /*  Take SE  into account  */
   BOX_2D;
-   
+
   u32_blank(imlbl,1);
   if (u32_framebox(imlbl,box,0)==ERROR){
     free_image(imlbl);
@@ -112,7 +112,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
     free_fifo4(q);
     return NULL;
   }
-  
+
   /* scan the image while labelling 0-CCs and
    insert first pixel with priority equal to external isolation */
   p   = (PIX_TYPE *)GetImPtr(im);
@@ -145,7 +145,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
       }
       lbl++;
     }
-  }	   
+  }
 
   //u32_dumpxyz(imlbl, 0, 0, 0, 20 , 20);
 
@@ -189,7 +189,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
 	  }
 	}
       }
-      
+
       if (flag==1){ /* reset visited prio-CC to inactive */
 	plbl[refofs]^=PIXCC_LTSB;
         fifo4_add(q, (long int)refofs);
@@ -232,7 +232,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
   }
 #ifdef OPENMP
 #pragma omp parallel for
-#endif 
+#endif
   for (i=0; i<npix; i++)
     plbl[i]&=PIXCC_LBLB;
   free_pq(pq);
@@ -244,7 +244,7 @@ IMAGE *uc_labelccattr(IMAGE *im, int graph, int rg, int rl)
 #undef t_CC_LBL_TYPE
 #undef PIXCC_MSB
 #undef INACTIVE_BIT
-#undef PIXCC_LTSB 
+#undef PIXCC_LTSB
 #undef PIXCC_LBLB
 #include "uc_undef.h"
 
@@ -255,7 +255,7 @@ IMAGE *labelccattr(IMAGE *im, int graph, int rg, int rl)
   case t_UCHAR:
     return(uc_labelccattr(im,graph,rg,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccattr(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

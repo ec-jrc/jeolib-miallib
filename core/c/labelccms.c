@@ -21,8 +21,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * @file   labelccms.c
  * @author Pierre Soille
- * @date   
- * 
+ * @date
+ *
  * @details see also \cite soille2008pami
  */
 
@@ -63,11 +63,11 @@ IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
   int rk, rcrt=0, rlcrt, rtmp, prio, mincc[NCMAX], maxcc[NCMAX];
   long int  k, *shft;
   int c, flag_reset;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
@@ -88,7 +88,7 @@ IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
     free_image(imlbl);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_pq(pq);
@@ -114,7 +114,7 @@ IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -165,11 +165,11 @@ IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 
 	pqminremove(pq, apqd);
@@ -284,10 +284,10 @@ IMAGE *uc_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE
 #undef BORDER_VAL
-#undef FIRST_LBL         
-#undef LBL_BIT           
-#undef BORDER_OR_LBL_BIT 
-#undef R_BIT             
+#undef FIRST_LBL
+#undef LBL_BIT
+#undef BORDER_OR_LBL_BIT
+#undef R_BIT
 #undef NCMAX
 #include "uc_undef.h"
 
@@ -314,11 +314,11 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
   int rk, rcrt=0, rlcrt, rtmp, prio, mincc[NCMAX], maxcc[NCMAX];
   long int  k, *shft;
   int c, flag_reset;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
@@ -339,7 +339,7 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
     free_image(imlbl);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_pq(pq);
@@ -365,7 +365,7 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -416,11 +416,11 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 
 	pqminremove(pq, apqd);
@@ -539,13 +539,13 @@ IMAGE *us_labelccms(IMAGE **imap, int nc, IMAGE *imse, int ox, int oy, int oz, i
 #undef LAST_NLBL
 #undef LBL_BIT
 #undef BORDER_OR_LBL_BIT
-#undef R_BIT  
+#undef R_BIT
 #undef NCMAX
 #include "us_undef.h"
 
 
 
-/** 
+/**
  * @synopsis computes the alpha-omega connected components of a multiband image
  *
  * @param ima: a array of images of the same type and size
@@ -564,11 +564,11 @@ IMAGE *labelccms(IMAGE **ima, int nc, IMAGE *imse, int ox, int oy, int oz, int r
   case t_UCHAR:
     return(uc_labelccms(ima,nc,imse,ox,oy,oz,r1,r2));
     break;
-    
+
   case t_USHORT:
     return(us_labelccms(ima,nc,imse,ox,oy,oz,r1,r2));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccms(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

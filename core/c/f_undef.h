@@ -19,11 +19,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
 
 /* macro definitions for float data types */
-#undef FLOATING 
-#undef SIGNED 
+#undef FLOATING
+#undef SIGNED
 #undef t_PIX_TYPE
-#undef OVFL_TEST 
-#undef PIX_TYPE 
-#undef PIX_MIN  
-#undef PIX_MAX  
+#undef OVFL_TEST
+#undef PIX_TYPE
+#undef PIX_MIN
+#undef PIX_MAX
 

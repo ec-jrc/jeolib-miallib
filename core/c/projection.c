@@ -48,7 +48,7 @@ projXY proj(projXY idata, char *parms[], int n, int flag)
   ** n: number of parameters
   ** flag: 1 for forward projection, backward otherwise
 
-  ** comment: wrapper for calling proj4 projection routines 
+  ** comment: wrapper for calling proj4 projection routines
   */
 
   projPJ *ref;
@@ -56,7 +56,7 @@ projXY proj(projXY idata, char *parms[], int n, int flag)
 
   odata.u=HUGE_VAL;
   odata.v=HUGE_VAL;
-  
+
   if( ! (ref=pj_init(n, parms)) ){
     return odata;
   }
@@ -90,7 +90,7 @@ IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parm
   ** imy: image to store y-coordinates of target image
   ** res: resolution of target image
 
-  ** comment: wrapper for calling proj4 projection routines 
+  ** comment: wrapper for calling proj4 projection routines
   */
 
   projPJ *fromProj, *toProj;
@@ -166,7 +166,7 @@ IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parm
 
   pj_free((void *) fromProj);
   pj_free((void *) toProj);
-  
+
   return imap;
 }
 #endif

@@ -29,10 +29,10 @@ double *solve(double *a_data, double *b_data, int size)
   double *out;
   gsl_matrix_view m
     = gsl_matrix_view_array (a_data, size, size);
-     
+
   gsl_vector_view b
     = gsl_vector_view_array (b_data, size);
-     
+
   gsl_vector *x = gsl_vector_alloc (size);
   int i, s;
 
@@ -43,7 +43,7 @@ double *solve(double *a_data, double *b_data, int size)
   gsl_permutation_free (p);
 
   for(i=0;i<size;i++)
-    out[i]=gsl_vector_get (x, i);  
+    out[i]=gsl_vector_get (x, i);
   gsl_vector_free (x);
   return out;
 }
@@ -68,7 +68,7 @@ IMAGE *coor_extrema_paraboloid(IMAGE *b)
       return coordinates and intensity of extremum
   **/
   IMAGE *imout;
-  double *out, *p_imout, *p_b; 
+  double *out, *p_imout, *p_b;
   double p_a[] = { 0.0, 1.0,  0.0, -1.0, 1.0, \
                    1.0, 0.0, -1.0,  0.0, 1.0, \
                    0.0, 0.0,  0.0,  0.0, 1.0, \
@@ -86,7 +86,7 @@ IMAGE *coor_extrema_paraboloid(IMAGE *b)
   imout=create_image(t_DOUBLE, 3, 1, 1);
   p_imout=(double *)GetImPtr(imout);
   p_b=(double *)GetImPtr(b);
-  
+
   out=solve(p_a, p_b, size);
 
   x=-out[2]/(2*out[0]);
@@ -107,7 +107,7 @@ IMAGE *coor_extrema_paraboloid(IMAGE *b)
 
 IMAGE *fitlinear(IMAGE *xarray, IMAGE  *yarray)
 {
-  /* Interface to GNU GSL 
+  /* Interface to GNU GSL
     https://www.gnu.org/software/gsl/manual/html_node/Linear-regression.html :
 
    gsl_fit_linear (const double * x, const size_t xstride, const double * y, const size_t ystride, size_t n, double * c0, double * c1, double * cov00, double * cov01, double * cov11, double * sumsq)
@@ -115,12 +115,12 @@ IMAGE *fitlinear(IMAGE *xarray, IMAGE  *yarray)
   IMAGE *out;
   double *px, *py, *pout;
   double c0, c1, cov00, cov01, cov11, sumsq=0.0;
-  
+
   if ( (szcompat(xarray,yarray) != NO_ERROR) && (GetImDataType(xarray) != t_DOUBLE)){
     (void)sprintf(buf,"fit_linear(IMAGE *xarray, IMAGE *yarray): images must be t_DOUBLE and with the same size\n"); errputstr(buf);
     return NULL;
   }
-      
+
   out=create_image(t_DOUBLE, 6, 1, 1);
   pout=(double *)GetImPtr(out);
   px=(double *)GetImPtr(xarray);

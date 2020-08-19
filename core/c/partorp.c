@@ -39,8 +39,8 @@ ERROR_TYPE uc_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
   PIX_TYPE *p1, *p2, maxi;
   G_TYPE *pg;
   int *lut;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   npix = GetImNPix(im1);
 
@@ -66,7 +66,7 @@ ERROR_TYPE uc_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
     if(lut[*p1]<0)
       lut[*p1]=*p2;
 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   for(i=0;i<npix;i++,p1++,p2++){
     if (*p2!=lut[*p1]){
@@ -87,8 +87,8 @@ ERROR_TYPE us_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
   PIX_TYPE *p1, *p2, maxi;
   G_TYPE *pg;
   int *lut;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   npix = GetImNPix(im1);
 
@@ -114,7 +114,7 @@ ERROR_TYPE us_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
     if(lut[*p1]<0)
       lut[*p1]=*p2;
 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   for(i=0;i<npix;i++,p1++,p2++){
     if (*p2!=lut[*p1]){
@@ -136,8 +136,8 @@ ERROR_TYPE u32_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
   PIX_TYPE *p1, *p2, maxi;
   G_TYPE *pg;
   int *lut;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   npix = GetImNPix(im1);
 
@@ -163,7 +163,7 @@ ERROR_TYPE u32_IsPartitionEqual(IMAGE *im1, IMAGE *im2, int *result)
     if(lut[*p1]<0)
       lut[*p1]=*p2;
 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   for(i=0;i<npix;i++,p1++,p2++){
     if (*p2!=lut[*p1]){
@@ -239,14 +239,14 @@ ERROR_TYPE u32_IsPartitionFiner(IMAGE *im1, IMAGE *im2, int graph, unsigned long
     return ERROR;
   }
   uc_framebox(i0, box, 1);
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(i0);
     return ERROR;
   }
   if (set_seq_shift(nx, ny, nz, graph, shft) == ERROR){
     free_image(i0);
-    free_fifo4(q);  
+    free_fifo4(q);
     return ERROR;
   }
 
@@ -266,7 +266,7 @@ ERROR_TYPE u32_IsPartitionFiner(IMAGE *im1, IMAGE *im2, int graph, unsigned long
 	  p0[ofsk]=1;
 	  fifo4_add(q,ofsk);
 	}
-      }     
+      }
       while ( (ofs=fifo4_remove(q)) != 0){
 	if(p2[ofs]!=lbl2){
 	  printf("ofs=%d\n", (int)ofs);
@@ -316,7 +316,7 @@ ERROR_TYPE IsPartitionFiner(IMAGE *im1, IMAGE *im2, int graph, unsigned long int
   case t_UINT32:
     return(u32_IsPartitionFiner(im1, im2, graph, res));
     break;
-    
+
   default:
     (void)sprintf(buf,"ispartitionfiner(): invalid pixel type\n"); errputstr(buf);
     return(ERROR);

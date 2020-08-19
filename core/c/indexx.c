@@ -70,7 +70,7 @@ void f_indexx(int n, float arrin[], int indx[])
   int l,j,ir,indxt,i;
   float q;
 
-  for (j=1;j<=n;j++) indx[j]=j; 
+  for (j=1;j<=n;j++) indx[j]=j;
   if (n == 1) return;
   l=(n >> 1) + 1;
   ir=n;
@@ -123,7 +123,7 @@ IMAGE *sortindex(IMAGE *i0)
     if (flag)
       free_image(itmp);
     return NULL;
-  }   
+  }
 
   f_indexx(GetImNPix(i0), ((MIALFLOAT *)GetImPtr(itmp))-1, ((int *)GetImPtr(imidx))-1);
   if (flag)

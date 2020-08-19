@@ -33,7 +33,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 
-/* 
+/*
    One has to be careful with data type conversions where the values
    are not just cast but also rescaled.  Check consistency!
    Think about sign when going from signed to unsigned.
@@ -57,7 +57,7 @@ IMAGE *to_tiff1bitpp(IMAGE *im)
     (void)sprintf(buf,"IMAGE *to_tiff1bitpp(im): not t_UCHAR image!\n"); errputstr(buf); errputstr(buf);
     return(NULL);
   }
-    
+
   /* create output image */
   imout = create_image(t_TIFFONEBITPERPIXEL, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
@@ -100,7 +100,7 @@ IMAGE *to_tiff4bitpp(IMAGE *im)
     (void)sprintf(buf,"IMAGE *to_tiff4bitpp(im): not t_UCHAR image!\n"); errputstr(buf);
     return(NULL);
   }
-    
+
   /* create output image */
   imout = create_image(t_FOURBITPERPIXEL, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
@@ -137,7 +137,7 @@ ERROR_TYPE b_to_uchar(IMAGE *im, IMAGE *imout)
   int k, j;
   UCHAR *p2;
   PIX_TYPE *p1;
-  
+
   p1   = (PIX_TYPE *)GetImPtr(im);
   p2   = (UCHAR *)GetImPtr(imout);
   nx   = GetImNx(im);
@@ -151,12 +151,12 @@ ERROR_TYPE b_to_uchar(IMAGE *im, IMAGE *imout)
   for (k=0; k < npix; k+=nx){
     for (i=0; i<der; i++, p1++){
       for (j=0; j < BITPERWORD; j++){
-	p2[BITPERWORD*i+j+k] = *p1 & (W_MSB>>j);          
+	p2[BITPERWORD*i+j+k] = *p1 & (W_MSB>>j);
       }
     }
     if (reste){
       for (j=0; j < reste; j++){
-	p2[BITPERWORD*i+j+k] = *p1 & (W_MSB>>j);          
+	p2[BITPERWORD*i+j+k] = *p1 & (W_MSB>>j);
       }
       p1++;
     }
@@ -210,7 +210,7 @@ ERROR_TYPE us_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -257,7 +257,7 @@ ERROR_TYPE s_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -304,7 +304,7 @@ ERROR_TYPE i32_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -351,7 +351,7 @@ ERROR_TYPE u32_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -398,7 +398,7 @@ ERROR_TYPE i64_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -445,7 +445,7 @@ ERROR_TYPE f_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -493,7 +493,7 @@ ERROR_TYPE d_to_uchar(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_UCHAR);
   SetImPtr(im, p1);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return(NO_ERROR);
 }
@@ -549,7 +549,7 @@ ERROR_TYPE uc_to_ushort(IMAGE *im, IMAGE *imout)
   mia_size_t i, npix;
   USHORT *p2;
   PIX_TYPE *p1;
-  
+
   p1    = (PIX_TYPE *)GetImPtr(im);
   p2    = (USHORT *)GetImPtr(imout);
   npix  = GetImNPix(im);
@@ -568,7 +568,7 @@ ERROR_TYPE i32_to_ushort(IMAGE *im, IMAGE *imout)
   PIX_TYPE *p1, mini, maxi;
   double range;
   G_TYPE *pg;
-  
+
   p1    = (PIX_TYPE *)GetImPtr(im);
   p2    = (USHORT *)GetImPtr(imout);
   npix  = GetImNPix(im);
@@ -578,7 +578,7 @@ ERROR_TYPE i32_to_ushort(IMAGE *im, IMAGE *imout)
   mini  = pg[0].i32_val;
   maxi  = pg[1].i32_val;
   range = (double)maxi - mini;
-  
+
   if ( (maxi <= USHORT_MAX) && (mini >= USHORT_MIN) )
     for (i=0; i<npix; i++, p1++, p2++)
       *p2 = (USHORT)(*p1);
@@ -603,7 +603,7 @@ ERROR_TYPE f_to_ushort(IMAGE *im, IMAGE *imout)
   PIX_TYPE *p1, mini, maxi;
   double range;
   G_TYPE *pg;
-  
+
   p1    = (PIX_TYPE *)GetImPtr(im);
   p2    = (USHORT *)GetImPtr(imout);
   npix  = GetImNPix(im);
@@ -613,7 +613,7 @@ ERROR_TYPE f_to_ushort(IMAGE *im, IMAGE *imout)
   mini  = pg[0].f_val;
   maxi  = pg[1].f_val;
   range = (double)maxi - mini;
-  
+
   if (((double)maxi-mini) < (double)USHORT_MAX + 1){
     if (maxi <= USHORT_MAX)
       for (i=0; i<npix; i++, p1++, p2++)
@@ -639,7 +639,7 @@ ERROR_TYPE d_to_ushort(IMAGE *im, IMAGE *imout)
   PIX_TYPE *p1, mini, maxi;
   double range;
   G_TYPE *pg;
-  
+
   p1    = (PIX_TYPE *)GetImPtr(im);
   p2    = (USHORT *)GetImPtr(imout);
   npix  = GetImNPix(im);
@@ -649,7 +649,7 @@ ERROR_TYPE d_to_ushort(IMAGE *im, IMAGE *imout)
   mini  = pg[0].f_val;
   maxi  = pg[1].f_val;
   range = (double)maxi - mini;
-  
+
   if (((double)maxi-mini) < (double)USHORT_MAX + 1){
     if (maxi <= USHORT_MAX)
       for (i=0; i<npix; i++, p1++, p2++)
@@ -864,7 +864,7 @@ IMAGE *to_int32(IMAGE *im)
 #endif
 
 #ifndef NO_i32_IMAGE
-  case t_INT32:  
+  case t_INT32:
     (void)sprintf(buf, "ERROR in to_int32(im): \
                   im is already of type INT32\n"); errputstr(buf);
     return(NULL);
@@ -1077,7 +1077,7 @@ ERROR_TYPE dbltofloat(IMAGE *im)
 
   for (i=0; i<npix; i++, pim++, pout++)
       *pout = (float)(*pim);
-  
+
   nbyte=GetImNPix(im)*sizeof(float);
   if (nbyte%sizeof(long int)) /* pad for word size */
     nbyte+=sizeof(long int);
@@ -1086,7 +1086,7 @@ ERROR_TYPE dbltofloat(IMAGE *im)
     return ERROR;
   SetImDataType(im, t_FLOAT);
   SetImPtr(im, pout);
-  SetImNByte(im, nbyte);  
+  SetImNByte(im, nbyte);
 
   return NO_ERROR;
 }
@@ -1234,7 +1234,7 @@ ERROR_TYPE uint32_to_float(IMAGE *im)
 
   puint32=(UINT32 *)GetImPtr(im);
   pfloat=(float *)GetImPtr(im);
- 
+
 #pragma omp parallel for
   for (i=0; i<npix; i++)
     pfloat[i]=(float)puint32[i];
@@ -1263,16 +1263,16 @@ void swap_long(INT32 *pl)
   } ll;
 
   char ch_tmp;
-  
+
   ll.lo = *pl;
-  
+
   ch_tmp    =  ll.ch.c1;
   ll.ch.c1  =  ll.ch.c4;
   ll.ch.c4  =   ch_tmp;
   ch_tmp    =   ll.ch.c2;
   ll.ch.c2  =   ll.ch.c3;
   ll.ch.c3  =   ch_tmp;
-  
+
   *pl = ll.lo;
 }
 
@@ -1291,13 +1291,13 @@ void swap_short(SHORT *pl)
   } ll;
 
   char ch_tmp;
-  
+
   ll.lo = *pl;
-  
+
   ch_tmp    =  ll.ch.c1;
   ll.ch.c1  =  ll.ch.c2;
   ll.ch.c2  =   ch_tmp;
-  
+
   *pl = ll.lo;
 }
 

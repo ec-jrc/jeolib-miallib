@@ -102,7 +102,7 @@ DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
 
 INCLUDE    = -I./ -I/usr/include/python${PYVER}/ -I/usr/include/gdal/
 
-# TODO: add -lcsa -lnn 
+# TODO: add -lcsa -lnn
 
 LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
 INTERFACE  = imem.i
@@ -111,7 +111,7 @@ SWIG       = swig
 RUNTIMEDIR = $(exec_prefix)/lib
 
 LIBM       = -lieee -lm
-LIBC       = 
+LIBC       =
 LIBCRYPT   = -lcrypt
 SYSLIBS    = $(LIBM) $(LIBC) $(LIBCRYPT)
 
@@ -195,10 +195,10 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 
 # Make sure these locate your Python installation
 PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python${PYVER}
-PYTHON_LIB    = 
+PYTHON_LIB    =
 
 # Extra Python specific dynamic linking options
-PYTHON_DLNK   = 
+PYTHON_DLNK   =
 
 
 # ----------------------------------------------------------------

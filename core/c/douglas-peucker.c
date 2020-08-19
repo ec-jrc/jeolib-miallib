@@ -22,7 +22,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
                           simplifyLine.c  -  description
                              -------------------
     Implementation of the douglas peucker line simplifiaction algorithm
-    
+
     begin                : Wed Jun 16 2004
  ***************************************************************************/
 
@@ -30,7 +30,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
- 
+
 struct STACK_RECORD {
     int nAnchorIndex, nFloaterIndex;
     struct STACK_RECORD *precPrev;
@@ -169,5 +169,5 @@ void ReducePoints( double *pPointsX, double *pPointsY, int nPointsCount, int *pn
             StackPush( nAnchorIndex, nVertexIndexMaxDistance );
             StackPush( nVertexIndexMaxDistance, nFloaterIndex );
         } //else
-    } 
+    }
 }

@@ -23,7 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
                              -------------------
   Vectorize multispectral high resolution satellite images.
   Output file formats are Scalabale Vector Graphics (SVG) and/or ESRI Shapefiles
-                             
+
     begin                : Fri May 14 2004
 ***************************************************************************/
 
@@ -167,7 +167,7 @@ ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, doub
         freeRegion(regions[r]);
         free(regions[r]);
       }
-      return ERROR;  
+      return ERROR;
     }
   }
   if(format==2 || format==3){
@@ -178,7 +178,7 @@ ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, doub
       }
       return ERROR;
     }
-  } 
+  }
   for(r=0; r<regionNumber+1; r++){
     free(regions[r]);
   }

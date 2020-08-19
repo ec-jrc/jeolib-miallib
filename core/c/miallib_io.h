@@ -27,7 +27,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 /* imio_gdal.c */
-extern int GDAL2MIALDataType(int aGDALDataType); 
+extern int GDAL2MIALDataType(int aGDALDataType);
 extern IMAGE *GDALInfoJIP(char *imfn);
 extern IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize);
 

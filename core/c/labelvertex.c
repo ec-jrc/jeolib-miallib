@@ -61,7 +61,7 @@ IMAGE *uc_labelvertex(IMAGE *im, int alpha, int graph)
     return NULL;
   }
   pout=(UCHAR *)GetImPtr(imout);
-  
+
   if (set_seq_shift(nx, ny, nz, graph, shft) == ERROR){
     free_image(imout);
     return NULL;
@@ -125,7 +125,7 @@ IMAGE *uc_labelvertexconnectedness(IMAGE *im, int alpha, int graph, int deg)
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
-    
+
   imdeg=labelvertex(im, alpha, graph);
   if (imdeg==NULL){
     (void)sprintf(buf,"uc_labelvertexconnectedness(): not enough memory!\n"); errputstr(buf);
@@ -152,8 +152,8 @@ IMAGE *uc_labelvertexconnectedness(IMAGE *im, int alpha, int graph, int deg)
     free_fifo4(q);
     return NULL;
   }
-    
-  
+
+
   p=   (PIX_TYPE *)GetImPtr(im);
   pdeg=(UCHAR *)GetImPtr(imdeg);
   pout=(PIX_TYPE_OUT *)GetImPtr(imout);
@@ -235,7 +235,7 @@ IMAGE *uc_vertexseparation(IMAGE *im, int graph, int type)
     return NULL;
   }
   pout=(PIX_TYPE *)GetImPtr(imout);
-  
+
   if (set_seq_shift(nx, ny, nz, graph, shft) == ERROR){
     free_image(imout);
     return NULL;

@@ -22,9 +22,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  * @file   edgeweight.c
  * @author Pierre SOILLE
  * @date   Mon Oct 18 14:00:02 2010
- * 
+ *
  * @details See also \cite soille2011ismm
- * 
+ *
  */
 
 
@@ -81,7 +81,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case RANGE:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=abs(pin[y*nx+x]-pin[y*nx+x+shft]);
@@ -91,7 +91,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case MAXVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MAX(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -101,7 +101,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case MINVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MIN(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -160,7 +160,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case RANGE:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=abs(pin[y*nx+x]-pin[y*nx+x+shft]);
@@ -170,7 +170,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case MAXVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MAX(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -180,7 +180,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case MINVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MIN(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -207,11 +207,11 @@ IMAGE *edgeweight(IMAGE *im, int dir, int type)
   case t_UCHAR:
     return(uc_edgeweight(im, dir, type));
     break;
-    
+
   case t_USHORT:
     return(us_edgeweight(im, dir, type));
     break;
-    
+
   default:
     (void)sprintf(buf,"edgeweight(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

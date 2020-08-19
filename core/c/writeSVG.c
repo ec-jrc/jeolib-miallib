@@ -24,7 +24,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
  Vectorizes the boundary lines from the region. The output file format is SVG.
  The geoinformations will be considered for the output (if available)
-                             
+
     begin                : Fri May 14 2004
 ***************************************************************************/
 
@@ -84,7 +84,7 @@ ERROR_TYPE writeSVG(struct REGION ** regions, int regionNumber, char * fileName,
     }
   if( i <= 0 ) strcat( outputFName, ".svgz" );
   printf("write SVG file: %s", outputFName);
-  
+
   //open geotiff => use for vectorization geo information
   tif=XTIFFOpen(fileName,"r");
   gtif = GTIFNew(tif);
@@ -98,17 +98,17 @@ ERROR_TYPE writeSVG(struct REGION ** regions, int regionNumber, char * fileName,
   gzputs(gzFhd, buffer);
   sprintf(buffer, "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.0//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg.dtd\">\n");
   gzputs(gzFhd, buffer);
-  
+
   if(gtif!=NULL){
     widthPCSZero = 0;
     heightPCSZero = 0;
-    
+
     GTIFImageToPCS(gtif, & widthPCSZero, & heightPCSZero);
     sprintf(buffer, "<svg viewBox=\"%11.3f %11.3f ", widthPCSZero, -heightPCSZero);
     gzputs(gzFhd, buffer);
     widthPCS = (double) width;
     heightPCS = (double) height;
-    
+
     GTIFImageToPCS(gtif, & widthPCS, & heightPCS);
     sprintf(buffer, "%11.3f %11.3f\">\n", fabs(widthPCS-widthPCSZero), fabs(heightPCS-heightPCSZero));
     gzputs(gzFhd, buffer);
@@ -119,8 +119,8 @@ ERROR_TYPE writeSVG(struct REGION ** regions, int regionNumber, char * fileName,
     gzputs(gzFhd, buffer);
     sprintf(buffer, "<g shape-rendering=\"optimizeSpeed\">\n");
     gzputs(gzFhd, buffer);
-  } 
-  
+  }
+
   //write projection information if available
   GDALAllRegister();
   hDataset = GDALOpen( fileName, GA_ReadOnly );
@@ -137,7 +137,7 @@ ERROR_TYPE writeSVG(struct REGION ** regions, int regionNumber, char * fileName,
     }
     GDALClose( hDataset );
   }
-  
+
   for(; crtPos<regionNumber+1; crtPos++){
     if(crtPos==423){
       printf("wait\n");
@@ -148,15 +148,15 @@ ERROR_TYPE writeSVG(struct REGION ** regions, int regionNumber, char * fileName,
       gzclose(gzFhd);
       return ERROR;
     }
-   
+
   }
   sprintf(buffer, "</g>\n</svg>\n");
   gzputs(gzFhd, buffer);
   gzclose(gzFhd);
   if(gtif) GTIFFree(gtif);
   if(tif) XTIFFClose(tif);
-    
-  return NO_ERROR; 
+
+  return NO_ERROR;
 }
 
 /*
@@ -219,7 +219,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
       }
       gzputs(gzFhd, buffer);
     }
-  }        
+  }
   crtPoint=line->points[line->crtPos-1];
   while(bool){
     newPoint=getNextPoint(region, crtPoint, trace);
@@ -283,7 +283,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
       }
       crtPoint=newPoint;
     }
-    //sprintf(buffer, "%i,%i ", (crtPoint->x)-1 ,(crtPoint->y)-1);    
+    //sprintf(buffer, "%i,%i ", (crtPoint->x)-1 ,(crtPoint->y)-1);
   }
   sprintf(buffer, "\">\n");
   gzputs(gzFhd, buffer);
@@ -299,7 +299,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
   }
   sprintf(buffer,"</polygon>\n");
   gzputs(gzFhd, buffer);
-  
+
   free(trace);
   return NO_ERROR;
 }

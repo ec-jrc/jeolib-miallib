@@ -44,7 +44,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   /* graph: connectivity */
 
   long int nx, ny, nz, shft[27];
-  
+
   PIX_TYPE *pm, dcrt;
   UCHAR *pr;
   long int i, k;
@@ -64,7 +64,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
- 
+
   q = create_fifo4(nx+ny+nz);
   if (q == NULL)
     return ERROR;
@@ -96,7 +96,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   dcrt = 0;
   while (fifo4_empty(q) == 0){
-    fifo4_add(q, 1L);	
+    fifo4_add(q, 1L);
     dcrt++;
     while ((pm = (PIX_TYPE *)fifo4_remove(q)) != (PIX_TYPE *)1L){
       *pm = dcrt;
@@ -123,7 +123,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   /* graph: connectivity */
 
   long int nx, ny, nz, shft[27];
-  
+
   PIX_TYPE *pm, dcrt;
   UCHAR *pr;
   long int i, k;
@@ -142,7 +142,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
- 
+
   q = create_fifo4(nx+ny+nz);
   if (q == NULL)
     return ERROR;
@@ -174,7 +174,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   dcrt = 0;
   while (fifo4_empty(q) == 0){
-    fifo4_add(q, 1L);	
+    fifo4_add(q, 1L);
     dcrt++;
     while ((pm = (PIX_TYPE *)fifo4_remove(q)) != (PIX_TYPE *)1L){
       *pm = dcrt;
@@ -199,7 +199,7 @@ ERROR_TYPE geodist(IMAGE *im_m, IMAGE *im_r, int graph)
     (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_r (im_r MUST be UCHAR)\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(im_m)){
 #ifndef NO_generic_IMAGE
   case t_GENERIC:

@@ -53,7 +53,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
     int nsi; /* Bool. variable ind. whether a pixel is non-strictly ind. (1) or not (0) of all its simple ngb */
     int cfg; /* Bool. variable ind. whether there is a common foreground neighbour */
     int nsn=0; /* Bool. variable ind. whether there exists a pixel is non-simple ngb */
-    int code, codengb; 
+    int code, codengb;
     int nx=GetImNx(im);
     long int npix=GetImNPix(im);
     int box[6];
@@ -73,14 +73,14 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 		      8, 2, 1, 4,\
 		      2, 8, 4, 1,\
 		      2, 4, 8, 1};
-		      
+
     int code4[16]= { 4, 4, 8, 8, 4, 4, 8, 8,\
 		     1, 1, 2, 2, 1, 1, 2, 2};
     int codei[8] = {1, 2, 4, 8, 16, 32, 64, 128};
     int shft[9], shftcode[129];
-		     
+
     int *ccode8, *ccode4;
-		   
+
     IMAGE *imflag; /* image of flags */
     UCHAR *pflag, *pcflag, *puc, *prmin, *pcrmin;
     PIX_TYPE *pim, *pcim, h, level=PIX_MIN, maxmin;
@@ -90,7 +90,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
     struct pqueue *heap, *heapbis, *heaptmp;
     PQDATUM apqd[1];
     struct node *pqd;
- 
+
     int count=0;
 
 /*     char fname[11]; */
@@ -114,7 +114,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 
     /* avoid border effects by setting border pixels to PIX_MAX */
     BOX2_2D; /* width of 2 pixels */
-    generic_framebox(im, box, PIX_MAX); 
+    generic_framebox(im, box, PIX_MAX);
 
     /* compute minima of input image */
     imrmin = (IMAGE *)minima(im, 4); /* is of UCHAR type */
@@ -122,10 +122,10 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 	return(ERROR);
     /* write_tiff(imrmin, "/tmp/imrmin0.tif"); */
     BOX_2D; /* width of 1 pixels */
-    generic_framebox(im, box, PIX_MIN); 
+    generic_framebox(im, box, PIX_MIN);
     BOX2_2D; /* width of 2 pixels */
-    generic_framebox(imrmin, box, 2); 
-    
+    generic_framebox(imrmin, box, 2);
+
     /* create flag image */
     imflag = (IMAGE *)create_image(t_UCHAR,GetImNx(im), GetImNy(im), GetImNz(im));
     if (imflag==NULL)
@@ -162,7 +162,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
     shft[0]=-1;         shft[1]=1;          shft[2]=-nx;       shft[3]=nx;
     shft[4]=-nx-1;      shft[5]=nx-1;       shft[6]=-nx+1;     shft[7]=nx+1;
     shft[8]=0;
-    
+
     shftcode[1]=-1;     shftcode[2]=1;      shftcode[4]=-nx;   shftcode[8]=nx;
     shftcode[16]=-nx-1; shftcode[32]=nx-1; shftcode[64]=-nx+1; shftcode[128]=nx+1;
 
@@ -179,7 +179,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 		if (*(pcrmin+shft[j])==0){
 		    *(pcrmin+shft[j])=2; /* flag as scanned */
         	    fifo4_add(qrmin, pcim+shft[j]-pim); /* for reset later on */
-		    code = 0;	
+		    code = 0;
 		    h=*(pcim+shft[j]);
 		    if (*(pcim+shft[j]-1)>=h)
 			code=1;
@@ -213,7 +213,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
        write_tiff(imflag, "/tmp/imflag"); */
     printf("count (number of simple border pixels at init)=%d\n", count);
     count=0;
-    
+
     if ( pqpeek(heap, apqd) != NULL){
 	level = (*apqd)->prio;
     }
@@ -254,7 +254,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 				break;
 			    }
 			}
-			ccode8++;		    
+			ccode8++;
 		    }
 		    if (del==1){ /* check whether P has a 4^0 neighbour connected to a 4^0 neighbour of Q */
 			del=0;
@@ -313,7 +313,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 	    }
 	    /* line reached -> P is independent of ALL its simple neighbours */
 	    /* in addition, if nsi==0, P is strictly independent of its simple neighbours */
-	
+
 	    if (nsi==1){ /* check whether P has a non-simple FG neighbour */
 		nsn=0;
 		for (i=0; i<8; i++){
@@ -406,7 +406,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
 
     /* sprintf(fname, "im-%03d.tif", level);
        write_ColorMap_tiff(im, fname); */
-	
+
     if (pqpeek(heap, apqd)!=NULL){
 	level = (*apqd)->prio;
 	goto next;
@@ -430,7 +430,7 @@ ERROR_TYPE generic_oiws(IMAGE *im)
     free_pq(heapbis);
 
     return NO_ERROR;
-}    
+}
 #include "g_undef.h"
 
 

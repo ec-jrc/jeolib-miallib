@@ -58,14 +58,14 @@ IMAGE *uc_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
   int n=4, nx=GetImNx(im), ny, nz;
   int doffset[4]={-nx,-1,0,0};
   PIX_TYPE *pdir[4];
-  
+
   FIFO4 *q;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   ny = GetImNy(im);
   nz = GetImNz(im);
   npix=GetImNPix(im);
@@ -97,7 +97,7 @@ IMAGE *uc_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -126,7 +126,7 @@ IMAGE *uc_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
 
   /*  Take SE  into account  */
   BOX_2D;
-   
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -174,11 +174,11 @@ IMAGE *uc_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -315,14 +315,14 @@ IMAGE *us_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
   int n=4, nx=GetImNx(im), ny, nz;
   int doffset[4]={-nx,-1,0,0};
   PIX_TYPE *pdir[4];
-  
+
   FIFO4 *q;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   ny = GetImNy(im);
   nz = GetImNz(im);
   npix=GetImNPix(im);
@@ -354,7 +354,7 @@ IMAGE *us_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -383,7 +383,7 @@ IMAGE *us_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
 
   /*  Take SE  into account  */
   BOX_2D;
-   
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -431,11 +431,11 @@ IMAGE *us_labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -559,11 +559,11 @@ IMAGE *labelccdissim(IMAGE *im, IMAGE *imh, IMAGE *imv, int rg, int rl)
   case t_UCHAR:
     return(uc_labelccdissim(im,imh,imv,rg,rl));
     break;
-    
+
   case t_USHORT:
     return(us_labelccdissim(im,imh,imv,rg,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccdissim(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

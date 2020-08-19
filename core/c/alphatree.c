@@ -24,7 +24,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 /* by Pierre Soille@ec.europa.eu
-   first: 20120219  
+   first: 20120219
    second: 20120220
 */
 
@@ -51,7 +51,7 @@ extern IMAGE *alphacc(IMAGE *dissx, IMAGE *dissy, int alpha);
 extern IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int rule);
 
 
-// first 20120219 
+// first 20120219
 
 // create hstlevel array with #level = dissim_max (assuming integer dissim values).
 
@@ -130,7 +130,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx=GetImNx(dissy);
 
   shft[0]=-1;
@@ -142,7 +142,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   shftdissp[1]=0;
   shftdissp[2]=-nx;
   shftdissp[3]=0;
-  
+
   shftdissq[0]=0;
   shftdissq[1]=1;
   shftdissq[2]=0;
@@ -157,7 +157,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
      after dissx and dissy will be freed */
 
   printf("0-CC detection\n");
-  
+
   ilbl=alphacc(dissx, dissy, 0);
   if (ilbl == NULL){
     (void)sprintf(buf,"alphatree(): not enough memory for 0-CCs!\n"); errputstr(buf);
@@ -184,7 +184,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     free_image(ilbl);
     return NULL;
   }
-  
+
   iblbl=create_image(t_UINT32, nmax, 1, 1);
   if (iblbl == NULL){
     (void)sprintf(buf,"alphatree(): not enough memory for base label array!\n"); errputstr(buf);
@@ -192,7 +192,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     free_image(iprtlbl);
     return NULL;
   }
-  
+
   ipcprtlbl=create_image(t_UINT32, n+1, 1, 1);
   if (ipcprtlbl == NULL){
     (void)sprintf(buf,"alphatree(): not enough memory for path compressed parent array!\n"); errputstr(buf);
@@ -201,7 +201,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     free_image(iblbl);
     return NULL;
   }
-  
+
   ialphalbl=create_image(t_PIX_TYPE, nmax, 1, 1);
   if (ialphalbl == NULL){
     (void)sprintf(buf,"alphatree(): not enough memory for alpha lbl array!\n"); errputstr(buf);
@@ -211,7 +211,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     free_image(ipcprtlbl);
     return NULL;
   }
-  
+
   imhst=create_image(t_UINT32, alphamax, 1, 1);
   if (imhst == NULL){
     (void)sprintf(buf,"alphatree(): not enough memory for cumulative histogram array!\n"); errputstr(buf);
@@ -222,7 +222,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     free_image(ialphalbl);
     return NULL;
   }
-  
+
   pq = pqinit(NULL, GetImNPix(ilbl)/100L+1024);  /* priority queue */
   if (pq == NULL){
     free_image(ilbl);
@@ -233,7 +233,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     return NULL;
   }
 
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(ilbl);
     free_image(iprtlbl);
@@ -244,7 +244,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     return NULL;
   }
 
-  qs = create_fifo4(65536); 
+  qs = create_fifo4(65536);
   if (qs == NULL){
     free_image(ilbl);
     free_image(iprtlbl);
@@ -273,7 +273,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
 
   /* scan 0-CCs while initialising prtlbl array for base level (from 1 to n) and the pqueue with
    only one link between each pair of neighbouring 0-CCs */
-  
+
   /* WARNING: in this initial version, we assume that the dissimilarity between ngb 0-CCs is equal */
   for(i=0;i<npix;i++){
     if( plbl[i] && (prtlbl[plbl[i]&LABEL_BITS]==0) ){
@@ -338,14 +338,14 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
       /* reset prtlbl on stack */
       while ((ofs = fifo4_remove(qs))){
 	prtlbl[plbl[ofs]]=0;
-      }      
+      }
     }
   }
 
   printf("size of queue q after initialization=%ld\n", q->qplast-q->qp);
   printf("size of queue qs after initialization=%ld\n", qs->qplast-qs->qp);
   printf("size of priority queue pq after initialization=%u\n", pq->size);
- 
+
   free_image(ilbl);
 
   /* copy level 0 of prtlbl in pcprtlbl */
@@ -369,7 +369,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   lbl=n;
 
   printf("starting retrieving from priority queue\n");
-  
+
   pqpeek(pq, apqd);
   priocrt=apqd[0]->prio;
   ncrt=0;
@@ -383,14 +383,14 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     blblq=apqd[0]->val;
     free((void*) *apqd);
 
-    if (prio!=priocrt){ 
+    if (prio!=priocrt){
       phst[priocrt]=ncrt;
       priocrt=prio;
       if (ncrt!=0){
 	nbelow+=ncrt;
-	
+
 	printf("starting with alpha level=%d, number of nodes below=%u at previous level=%u\n", prio, nbelow, ncrt);
-	
+
 	if(nbelow>=nmax){
 	  printf("The numbers of nodes below exceeds the maximum allowed number of nodes (%ld)!!!\n", nmax);
 	  free_image(ilbl);
@@ -421,13 +421,13 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
 	    blbl[albl]=blbl[lblp];
 	  }
 	}
-      
+
 	/* make sure parents at previous level point directly to the root of the compressed paths */
 	while((albl = fifo4_remove(q))){ /* set all nodes of previous level to path compressed parents */
 	  prtlbl[albl]=prtlbl[prtlbl[albl]]; /* before rm redun just this withour corr */
 	}
 	ncrt=0;
-      
+
 	printf("number of redundant nodes (1st estimation) =%d\n", nrm);
 	nrm=0;
 
@@ -448,7 +448,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     }
 
     //printf("find root of p\n");
-      
+
     lblp=pcprtlbl[blblp];
     fifo4_add(qs,blblp);
     while(prtlbl[lblp]!=lblp){ /* find root */
@@ -458,7 +458,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
     }
 
     //printf("find root of q\n");
-      
+
     lblq=pcprtlbl[blblq];
     fifo4_add(qs,blblq);
     while(prtlbl[lblq]!=lblq){ /* find root */
@@ -476,7 +476,7 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
       alphalbl[lbl]=priocrt;
       lblr=lbl;
     } /* tried else with MIN but does not work: must always link to the newest */
-    
+
     if((lblp<=nbelow) && (lblp!=lblq))
       fifo4_add(q,lblp); /* finally inserted only once (20120321) */
     if((lblq<=nbelow) && (lblp!=lblq))
@@ -513,18 +513,18 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
 	blbl[albl]=blbl[lblp];
       }
     }
-      
+
     /* make sure parents at previous level point directly to the root of the compressed paths */
     while((albl = fifo4_remove(q))){ /* set all nodes of previous level to path compressed parents */
       prtlbl[albl]=prtlbl[prtlbl[albl]]; /* before rm redun just this withour corr */
     }
-      
+
     printf("number of redundant nodes (1st estimation)=%d\n", nrm);
 
     printf("end of dealing with previous level\n\n");
-    
+
   }
-    
+
   printf("size of priority queue after retrieving from pq=%u\n", pq->size);
   printf("available size of priority queue after retrieving from pq=%u\n", pq->avail);
   printf("size of storage queue before freeing it=%ld\n", qs->qplast-qs->qp);
@@ -540,15 +540,15 @@ IMAGE **uc_alphatree(IMAGE *dissx, IMAGE *dissy, int alphamax)
   nbelow+=ncrt; /* total number of nodes */
 
   printf("total number of nodes in tree=%u \n", nbelow);
-      
+
   prtlbl=(CC_LBL_TYPE *)realloc((void *)prtlbl, sizeof(CC_LBL_TYPE)*(nbelow+1));
   blbl=(CC_LBL_TYPE *)realloc((void *)blbl, sizeof(CC_LBL_TYPE)*(nbelow+1));
   alphalbl=(PIX_TYPE *)realloc((void *)alphalbl, sizeof(PIX_TYPE)*(nbelow+1));
-  
+
   SetImNx(iprtlbl, nbelow+1);
   SetImNx(iblbl, nbelow+1);
   SetImNx(ialphalbl, nbelow+1);
-  
+
   printf("setting image array pointers\n");
   imap=(IMAGE **)calloc(sizeof(IMAGE *), 5);
   imap[0]=iprtlbl;
@@ -711,8 +711,8 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
   int box[6];
   long int shft[27];
   FIFO4 *q;
-  
-  
+
+
   imout=create_image(t_CC_LBL_TYPE, GetImNx(imblbl), GetImNy(imblbl), GetImNz(imblbl));
   if (imout == NULL){
     (void)sprintf(buf,"alphatreetoCCs(): not enough memory for output image!\n"); errputstr(buf);
@@ -738,7 +738,7 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
     return NULL;
   pofs=(UINT32 *)GetImPtr(iofs);
 
-  
+
   prtlbl=(CC_LBL_TYPE* )GetImPtr(atree[0]);
   pblbl=(CC_LBL_TYPE* )GetImPtr(atree[1]);
   palphalbl=(PIX_TYPE* )GetImPtr(atree[3]);
@@ -757,7 +757,7 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
 
   /* first collect first point of each CC in an array
      for subsequent parallel processing */
-  
+
   printf("starting to search for 1st pix of each CC npix=%lu\n",npix);
 
   pofs[0]=1;
@@ -784,14 +784,14 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
 	pflut[i]=i;  //(here version with base label of this node) pblbl[i]; /* check ! */
       else /* redundant node */
 	pflut[i]=0;
-	
+
     }
   }
 
   printf("starting parallel processing but load unbalanced!!!  see prefix-ompbug for solving this issue\n");
 
   // dumpxyz(flaglut,0,0,0,20,20);
-  
+
   /* parallel restitution of the target CCs */
 #ifdef OPENMPX  // parallelization should occur alpha level by alpha level starting from top
 #pragma omp parallel for private(lbl,blbl,ofs,alphacrt,k,ofsk,lblofsk,q)
@@ -847,7 +847,7 @@ IMAGE *uc_alphatreetoCCs_NO_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut)
 #ifndef OPENMPX
   free_fifo4(q);
 #endif
-  return imout;  
+  return imout;
 }
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE
@@ -919,7 +919,7 @@ IMAGE *uc_alphatreenextlevel(IMAGE **atree, IMAGE *crtprtlbl, int alpha)
 /*       if(pcrtprtlbl[i]==prtlbl[pcrtprtlbl[i]]) /\* root reached *\/ */
 /* 	break; */
 /*     } */
-    
+
     if(palphalbl[pcrtprtlbl[i]]==alpha){
       //plut[i]=pblbl[pcrtprtlbl[i]]; // keep base label
       plut[i]=pcrtprtlbl[i]; /* set to node label */
@@ -927,7 +927,7 @@ IMAGE *uc_alphatreenextlevel(IMAGE **atree, IMAGE *crtprtlbl, int alpha)
     }
   }
 
-  return lut;  
+  return lut;
 }
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE
@@ -985,7 +985,7 @@ IMAGE *uc_alphatreepersistencelut(IMAGE **atree)
   for(i=1;i<n;i++)
     plut[i]=palphalbl[prtlbl[i]]-palphalbl[i];
 
-  return lut;  
+  return lut;
 }
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE

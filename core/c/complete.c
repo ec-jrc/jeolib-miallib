@@ -30,7 +30,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "fifo.h"
 #include "miallib.h"
 
-#include "pqueue.h"	
+#include "pqueue.h"
 
 
 /** \addtogroup group_dem
@@ -106,7 +106,7 @@ ERROR_TYPE us_complete(IMAGE *im_i, IMAGE *im_rmin, int graph)
         pnb[hcrt] = 0;
         for (i = 0; i < count; i++){
           p = (PIX_TYPE *)fifo4_remove(pf);
-          *p |= h; 
+          *p |= h;
           for (k = 0; k < graph; ++k){
             pk = p + shft[k];
             if ((*pk & PIX_MSB) == PIX_MSB)
@@ -196,7 +196,7 @@ ERROR_TYPE u32_complete(IMAGE *im_i, IMAGE *im_rmin, int graph)
         pnb[hcrt] = 0;
         for (i = 0; i < count; i++){
           p = (PIX_TYPE *)fifo4_remove(pf);
-          *p |= h; 
+          *p |= h;
           for (k = 0; k < graph; ++k){
             pk = p + shft[k];
             if ((*pk & PIX_MSB) == PIX_MSB)

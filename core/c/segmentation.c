@@ -21,8 +21,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * @file  segmentation.c
  * @author Dominik Brunner and Pierre Soille
- * @date   
- * 
+ * @date
+ *
  * @details see also \cite brunner-soille2007
  */
 
@@ -231,7 +231,7 @@ USHORT getBestContrast(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int vari
  *    version       version of mcisrg algorithm. Versions are
  *                  0  (compare to whole region)
  *                  1  (compare to original seeds)
- *                  2  (compare to pixel neighbours)  
+ *                  2  (compare to pixel neighbours)
  *
  *    fndat         filename to store data files.  Authorised values are
  *                  NULL (do not store)
@@ -242,14 +242,14 @@ USHORT getBestContrast(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int vari
  *   region number  if everything is ok
  *
  *   ERROR          if there was an error
- *                  
+ *
  */
 IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat)
 {
   long int i, regionNumber=0, oldRegionNumber=0;
   IMAGE *labelIm=NULL;
   char fname[256];
-  
+
   for (i = 1; i < nc; i++){
     if ( (GetImNx(imap[0]) != GetImNx(imap[i])) || \
 	 (GetImNy(imap[0]) != GetImNy(imap[i])) || \
@@ -306,7 +306,7 @@ IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regio
   }
   sprintf(fname,"/tmp/mcisrgINIT2.tif");
   /* write_tiff(imap[0], fname); */
-  
+
   if(contrast>0){ /* then make merge of regions with similar contrast value */
     if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
       free_image(labelIm);

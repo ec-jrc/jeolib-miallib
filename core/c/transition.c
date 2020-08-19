@@ -58,7 +58,7 @@ IMAGE *uc_transgradfirst(IMAGE *im1, int graph)
   shft[5]= nx-1;  shft[6]=nx;  shft[7]=nx+1;
 
   if (GetImNy(im1) == 1)
-    {BOX_1D;} 
+    {BOX_1D;}
   else if (GetImNz(im1) == 1)
     {BOX_2D;}
   else
@@ -137,7 +137,7 @@ IMAGE *uc_transgrad(IMAGE *im1, int graph)
   shft[5]= nx-1;  shft[6]=nx;  shft[7]=nx+1;
 
   if (GetImNy(im1) == 1)
-    {BOX_1D;} 
+    {BOX_1D;}
   else if (GetImNz(im1) == 1)
     {BOX_2D;}
   else

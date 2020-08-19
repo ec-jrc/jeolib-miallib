@@ -68,10 +68,10 @@ ERROR_TYPE set_shift(long int nx, long int ny, long int nz, long int graph, long
     shift[3] = 1;
   }
   else if (graph == 8){ /* && nz == 1: suppressed on 2004-11-18 (side effects?) */
-    shift[4] = -nx-1;		shift[0] = -nx;  shift[5] = -nx + 1; 
+    shift[4] = -nx-1;		shift[0] = -nx;  shift[5] = -nx + 1;
     shift[1] = -1;                               shift[3] = 1;	  /* swapped 3 and 2 on 2007-9-19 */
     shift[6] = nx-1;		shift[2] = nx;   shift[7] = nx + 1;
-    
+
   }
   else if (graph == 6 && nz > 1){
     shift[0] = -nx;  shift[1] = -1;
@@ -130,8 +130,8 @@ ERROR_TYPE set_seq_shift(long int nx, long int ny, long int nz, long int graph, 
     shift[4] = -(nx * ny);
     shift[5] = shift[4] + shift[0];  shift[6] = shift[4] - 1;
     shift[7] = shift[4] + 1;        shift[8] = shift[4] - shift[0];
-    shift[9] = shift[5] - 1;        shift[10] = shift[5] + 1; 
-    shift[11] = shift[8] - 1;       shift[12] = shift[8] + 1; 
+    shift[9] = shift[5] - 1;        shift[10] = shift[5] + 1;
+    shift[11] = shift[8] - 1;       shift[12] = shift[8] + 1;
     shift[13] = -shift[0];          shift[14] = -shift[1];
     shift[15] = -shift[2];          shift[16] = -shift[3];
     shift[17] = -shift[4];          shift[18] = -shift[5];
@@ -184,8 +184,8 @@ ERROR_TYPE setinvseqshift(long int nx, long int ny, long int nz, long int graph,
     shft[17] = -(nx * ny);
     shft[18] = shft[17] + shft[13];  shft[19] = shft[17] - 1;
     shft[20] = shft[17] + 1;        shft[21] = shft[17] - shft[13];
-    shft[22] = shft[18] - 1;        shft[23] = shft[18] + 1; 
-    shft[24] = shft[21] - 1;       shft[25] = shft[21] + 1; 
+    shft[22] = shft[18] - 1;        shft[23] = shft[18] + 1;
+    shft[24] = shft[21] - 1;       shft[25] = shft[21] + 1;
     shft[0]  = -shft[13];          shft[1] = -shft[14];
     shft[2]  = -shft[15];          shft[3] = -shft[16];
     shft[4]  = -shft[17];          shft[5] = -shft[18];
@@ -196,7 +196,7 @@ ERROR_TYPE setinvseqshift(long int nx, long int ny, long int nz, long int graph,
   }
   else
     return ERROR;
-  
+
   return NO_ERROR;
 }
 
@@ -205,7 +205,7 @@ void set_shift_and_box(unsigned char *im1, int *box, long int x, long int y, lon
   long int i, j, k;
   long int cnt = 0;
   long int nx, ny, nz, ox, oy, oz;
-  
+
   nx = box[0];
   ny = box[1];
   nz = box[2];
@@ -247,7 +247,7 @@ void set_shift_and_box_and_weight(unsigned char *im1, MIALFLOAT *im2, int *box, 
   long int i, j, k;
   long int cnt = 0;
   long int nx, ny, nz, ox, oy, oz;
- 
+
   nx = box[0];
   ny = box[1];
   nz = box[2];
@@ -290,7 +290,7 @@ void uc_set_shift_and_box_and_weight(unsigned char *im1, UCHAR *im2, int *box, l
   long int i, j, k;
   long int cnt = 0;
   long int nx, ny, nz, ox, oy, oz;
- 
+
   nx = box[0];
   ny = box[1];
   nz = box[2];

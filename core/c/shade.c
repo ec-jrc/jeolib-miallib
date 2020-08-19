@@ -94,8 +94,8 @@ IMAGE *generic_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -109,7 +109,7 @@ IMAGE *generic_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -176,8 +176,8 @@ IMAGE *us_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -191,7 +191,7 @@ IMAGE *us_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -257,8 +257,8 @@ IMAGE *i32_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -272,7 +272,7 @@ IMAGE *i32_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -346,12 +346,12 @@ IMAGE *us_LineDilate3D(IMAGE *im, float dh)
      First working: 20141203
 
      TODO: adapt processing along arbitrary line segments to avoid
-     rotation.     
+     rotation.
   */
   PIX_TYPE *pi, *picrt, a;
   IMAGE *imout;
   MIALFLOAT *po, *pocrt, b;
-  
+
   int i, j, nx, ny;
 
   nx=GetImNx(im);

@@ -81,7 +81,7 @@ void fifo_add(FIFO *q, long int val)
     if (q->qpr == q->qp)
       fifo_increase(q);
     else
-      q->qps = q->qp;   /*  Loop back  */ 
+      q->qps = q->qp;   /*  Loop back  */
   }
 }
 
@@ -98,7 +98,7 @@ long int fifo_remove(FIFO *q)
 
   if (q->qpr == q->qplast)  q->qpr = q->qp; /*  Loop back    */
   if (q->qpr == q->qps)  return 0;       /*  FIFO is empty  */
-  
+
   /* Return first element */
   return *(q->qpr++);
 }
@@ -111,7 +111,7 @@ long int fifo_look(FIFO *q)
 {
   if (q->qpl == q->qplast)  q->qpl = q->qp;  /*  Loop back    */
   if (q->qpl == q->qps)    return 0;  /*  End of look   */
-  
+
   /*  Return first element  */
   return *(q->qpl++);
 }
@@ -125,7 +125,7 @@ long int fifo_empty(FIFO *q)
   if (q->qpr == q->qplast)  q->qpr = q->qp; /* Loop back      */
   if (q->qpr == q->qps)  return TRUE;       /* FIFO is empty    */
   else  return FALSE;                       /* FIFO is not empty  */
-  
+
 }
 
 
@@ -141,11 +141,11 @@ void fifo_increase(FIFO *q)
 
   long int qoffset_s, qoffset_r, qoffset_l, qlength, *qptr1, *qptr2;
   register long int i;
-  
+
   qoffset_s = (long int)(q->qps - q->qp);
   qoffset_r = (long int)(q->qpr - q->qp);
   qoffset_l = (long int)(q->qplast - q->qp);
-  qlength   = (long int)(q->qplast - q->qp + 1 + (q->qplast - q->qp + 1) / q->qcount);  
+  qlength   = (long int)(q->qplast - q->qp + 1 + (q->qplast - q->qp + 1) / q->qcount);
   if ((q->qp = (long int *)realloc(q->qp, qlength * sizeof(long int))) == NULL){
     (void) sprintf(buf,"fifo_increase(): NOT ENOUGH MEMORY !!!\n"); errputstr(buf);
     exit(0);

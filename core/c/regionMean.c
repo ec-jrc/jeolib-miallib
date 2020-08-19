@@ -42,7 +42,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *		rm		Pointer to a regionMean
  *
  *		nc		Number of channels of the image to which the means shall be stored.
- *		
+ *
  *
  *	Return values:
  *
@@ -90,7 +90,7 @@ struct regionMean *rmInit(struct regionMean *rm, int nc){
  *		imap		Array of IMAGE
  *
  *		offset		offset to values in IMAGE which shall be added.
- *		
+ *
  *
  *	Return values:
  *
@@ -167,7 +167,7 @@ int rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
 
 /*
  *	rmGetDistanceToRM: calculates the distance between two pixels.
- *	The distance is the square root of the sum of (x2-x1)(x2-x1) 
+ *	The distance is the square root of the sum of (x2-x1)(x2-x1)
  *	for each channel. For the calculation, all pixels in the mean
  * are considered.
  *
@@ -178,7 +178,7 @@ int rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
  *		imap		Array of IMAGE
  *
  *		offset		offset to a pixel in IMAGE.
- *		
+ *
  *
  *	Return values:
  *
@@ -408,7 +408,7 @@ double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imap, long in
  *		>0			Pixel is brighter than region
  *
  *   =0      Pixel is equal to region
- *           
+ *
  *		<0      Pixel is darker
  */
 #include "uc_def.h"

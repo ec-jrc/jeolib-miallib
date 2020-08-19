@@ -27,7 +27,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef init_douglas_peucker
 
 #define init_douglas_peucker
- 
+
 void ReducePoints( double *pPointsX, double *pPointsY, int nPointsCount, int *pnUseFlag, double dTolerance );
 
 #endif

@@ -28,7 +28,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
   First working:  20121106
   (needed to install version 1.9.2 to solve a bug for reading tiled images ...)
 
-  20160217: computation of min/max now only with -DDEBUG 
+  20160217: computation of min/max now only with -DDEBUG
 */
 
 #include <stdio.h>
@@ -48,11 +48,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-/** 
+/**
  * @synopsis Data type conversion from gdal to mial
- * 
+ *
  * @param aGDALDataType integer for gdal data type
- * 
+ *
  * @return integer with mial data type matching the input gdal data type
  *
  * @creationdate 20130911
@@ -84,12 +84,12 @@ int GDAL2MIALDataType(int aGDALDataType)
 }
 
 
-/** 
+/**
  * @synopsis read a single band of a raster image using drivers installed in gdal library
  *
  * @param fn a string for the name of an image file (possibly including its path)
  * @param band an integer for the band number, 0 for first band
- * @param nXOff:  The pixel offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the left side (default value).  
+ * @param nXOff:  The pixel offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the left side (default value).
  * @param nYOff: The line offset to the top left corner of the region of the band to be accessed.  This would be zero to start from the top (default value).
  * @param nXSize: The width of the region of the band to be accessed in pixels.
  * @param nYSize: The height of the region of the band to be accessed in lines.
@@ -103,17 +103,17 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   ** Input Parameters:
   **   char *imfn: file name possibly including path
   **   int band: index of band to read (0 for first band).
-  **   int nXOff:  The pixel offset to the top left corner of the region of the band to be accessed. 
+  **   int nXOff:  The pixel offset to the top left corner of the region of the band to be accessed.
   **               This would be zero to start from the left side.
   **   int nYOff: The line offset to the top left corner of the region of the band to be accessed.
   **                This would be zero to start from the top.
   **   int nXSize: The width of the region of the band to be accessed in pixels.
   **   int nYSize: The height of the region of the band to be accessed in lines.
-  **   int nBufXSize: the width of the buffer image into which the desired region is to be read, 
+  **   int nBufXSize: the width of the buffer image into which the desired region is to be read,
                       or from which it is to be written.
-  **   int nBufYSize: the height of the buffer image into which the desired region is to be read, 
+  **   int nBufYSize: the height of the buffer image into which the desired region is to be read,
                       or from which it is to be written.
-  **   
+  **
   **
   ** Return: an image on success, NULL otherwise
   **
@@ -136,7 +136,7 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   IMAGE *im;
 
   GDALAllRegister();
-    
+
   /* opening the image file */
   // hDataset = GDALOpen( imfn, GA_ReadOnly );
   // GDALOpenEx introduced in 2.0
@@ -158,10 +158,10 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
 	  GDALGetDriverLongName( hDriver ) );
 
   printf( "Size is %dx%dx%d\n",
-	  GDALGetRasterXSize( hDataset ), 
+	  GDALGetRasterXSize( hDataset ),
 	  GDALGetRasterYSize( hDataset ),
 	  GDALGetRasterCount( hDataset ) );
-  
+
   if( GDALGetProjectionRef( hDataset ) != NULL )
     printf( "Projection is `%s'\n", GDALGetProjectionRef( hDataset ) );
 
@@ -178,12 +178,12 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   if ((band <1) || (band > GDALGetRasterCount( hDataset ))){
     printf("GDALRead(): invalid band number\n");
     GDALClose(hDataset);
-    return NULL;    
+    return NULL;
   }
 
   printf("nXOff=%d nYOff=%d nXSize=%d nYSize=%d\n", nXOff, nYOff, nXSize, nYSize);
-  
-  /* if no patch, == should be replaced by < */  
+
+  /* if no patch, == should be replaced by < */
   if ( (nXOff<0) || (nYOff<0) || (nXSize==0) || (nYSize==0) ){
      nXOff=nYOff=0;
      nXSize= GDALGetRasterXSize( hDataset );
@@ -204,7 +204,7 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
 
   /* Fetching a Raster Band */
   hBand = GDALGetRasterBand( hDataset, band );
-  
+
   switch(GDAL2MIALDataType(GDALGetRasterDataType(hBand))){
   case t_UCHAR:
     // bpp=1;
@@ -261,7 +261,7 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
     printf( "Band has %d overviews.\n", GDALGetOverviewCount(hBand));
 
   if( GDALGetRasterColorTable( hBand ) != NULL )
-    printf( "Band has a color table with %d entries.\n", 
+    printf( "Band has a color table with %d entries.\n",
 	    GDALGetColorEntryCount( GDALGetRasterColorTable( hBand ) ) );
 
   /* Reading Raster Data */
@@ -274,16 +274,16 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
     free_image(im);
     return NULL;
   }
-    
+
   GDALClose(hDataset);
   return im;
 }
 
-/** 
+/**
  * The values are in the following order: x-coordinate of upper left corner of upper left pixel, W-E pixel resolution, rotation (0 if image is north up), x-coordinate of upper left corner of upper left pixel, rotation (0 if image is north up), N-S pixel resolution, number of rows of raster, number of columns of raster, number of bands of raster, and EPSG code of projection (-1 if it could not be retrieved).  The function also prints in stdout the type of driver used for reading fn and the name of the projection.
- * 
+ *
  * @param imfn string for image file name
- * 
+ *
  * @return an image of type t_DOUBLE holding 10 values regarding the geolocation and size of the image, NIL otherwise
  */
 IMAGE *GDALInfoJIP(char *imfn)
@@ -303,7 +303,7 @@ IMAGE *GDALInfoJIP(char *imfn)
   hDataset = GDALOpen( imfn, GA_ReadOnly );
   if( hDataset == NULL )
     return NULL;
-  
+
   printf("after GDALOpen\n");
 
 
@@ -313,7 +313,7 @@ IMAGE *GDALInfoJIP(char *imfn)
 	  GDALGetDriverLongName( hDriver ) );
 
   printf( "Size is %dx%dx%d\n",
-	  GDALGetRasterXSize( hDataset ), 
+	  GDALGetRasterXSize( hDataset ),
 	  GDALGetRasterYSize( hDataset ),
 	  GDALGetRasterCount( hDataset ) );
 
@@ -357,9 +357,9 @@ IMAGE *GDALInfoJIP(char *imfn)
   }
   else
       printf("*gdalinfo() warning: getting GEOGCS EPSG code failed\n");
-  
+
   GDALClose(hDataset);
-  
+
   return im;
 }
 

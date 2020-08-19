@@ -48,7 +48,7 @@ ERROR_TYPE uc_skeleton(IMAGE *im)
   shft[0]= -nx-1; shft[1]=shft[0]+1; shft[2]=shft[1]+1;
   shft[3]= -1;    shft[4] = 0;       shft[5]=1;
   shft[6]= nx-1;  shft[7]=shft[6]+1; shft[8]=shft[7]+1;
-  
+
   /* here we go */
   do{
     idpt = TRUE;
@@ -68,7 +68,7 @@ ERROR_TYPE uc_skeleton(IMAGE *im)
           shft_0[2] = shft[8];
           shft_1[0] = shft[0]; shft_1[1] = shft[3];
           shft_1[2] = shft[4]; shft_1[3] = shft[6];
-	  break;  
+	  break;
         case 2 :
           na1 = 4; na0 = 3;
           shft_0[0] = shft[6]; shft_0[1] = shft[7];
@@ -137,7 +137,7 @@ ERROR_TYPE uc_skeleton(IMAGE *im)
     }
   } while (idpt == FALSE);
   free_image(i0);
-  return(NO_ERROR);  
+  return(NO_ERROR);
 }
 #include "uc_undef.h"
 
@@ -182,7 +182,7 @@ ERROR_TYPE us_skeleton(IMAGE *im)
           shft_0[2] = shft[8];
           shft_1[0] = shft[0]; shft_1[1] = shft[3];
           shft_1[2] = shft[4]; shft_1[3] = shft[6];
-	  break;  
+	  break;
         case 2 :
           na1 = 4; na0 = 3;
           shft_0[0] = shft[6]; shft_0[1] = shft[7];
@@ -251,14 +251,14 @@ ERROR_TYPE us_skeleton(IMAGE *im)
     }
   } while (idpt == FALSE);
   free_image(i0);
-  return(NO_ERROR);  
+  return(NO_ERROR);
 }
 #include "us_undef.h"
 
 
 ERROR_TYPE skeleton(IMAGE *im)
 {
-  
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:
@@ -294,7 +294,7 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
   **  graph  :  4 ==> 4-connected graph.
   **            8 ==> 8-connected graph.
   */
-    
+
   PIX_TYPE  *pim   = (PIX_TYPE *)GetImPtr(im);
   PIX_TYPE  *plast = pim+GetImNPix(im)-GetImNx(im)-1;
   PIX_TYPE *ptr, *p;
@@ -302,10 +302,10 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
   int nx    = GetImNx(im);
   int nxm1  = nx - 1;
   int nxp1  = nx + 1;
-    
+
   /*  Set borders to 0  */
   /* cadre(buf_n, 0L); */
-  
+
   /*  Here we go!  */
   switch (graph)
   {
@@ -317,31 +317,31 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
           p = ptr;
           for (count=0; count<occa; count++)  /*  Clip occa times */
           {
-            if (*(p - 1) || *(p - nx) || *(p + 1));  
+            if (*(p - 1) || *(p - nx) || *(p + 1));
             else                        /*  .  0  .  */
             {                          /*  0  1  0  */
               *p = 0;                      /*  .  .  .  */
               p += nx;
               continue;
             }
-    
-            if (*(p - nx) || *(p + 1) || *(p + nx));  
+
+            if (*(p - nx) || *(p + 1) || *(p + nx));
             else                        /*  .  0  .  */
             {                          /*  .  1  0  */
               *p = 0;                      /*  .  0  .  */
               --p;
               continue;
             }
-    
-            if (*(p - 1) || *(p + 1) || *(p + nx));  
+
+            if (*(p - 1) || *(p + 1) || *(p + nx));
             else                        /*  .  .  .  */
             {                          /*  0  1  0  */
               *p = 0;                      /*  .  0  .  */
               p -= nx;
               continue;
             }
-    
-            if (*(p - 1) || *(p - nx) || *(p + nx));  
+
+            if (*(p - 1) || *(p - nx) || *(p + nx));
             else                        /*  .  0  .  */
             {                          /*  0  1  .  */
               *p = 0;                      /*  .  0  .  */
@@ -362,7 +362,7 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
           p = ptr;
           for (count=0; count<occa; count++)  /*  Clip occa times */
           {
-            if (*(p + nxm1) || *(p - 1) || *(p - nxp1) || *(p - nx) || *(p - nxm1));  
+            if (*(p + nxm1) || *(p - 1) || *(p - nxp1) || *(p - nx) || *(p - nxm1));
             else                        /*  0  0  0  */
             {                          /*  0  1  .  */
               *p = 0;                      /*  0  .  .  */
@@ -382,8 +382,8 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
                 continue;
               }
             }
-    
-            if (*(p - nxp1) || *(p - nx) || *(p - nxm1) || *(p + 1) || *(p + nxp1));  
+
+            if (*(p - nxp1) || *(p - nx) || *(p - nxm1) || *(p + 1) || *(p + nxp1));
             else                        /*  0  0  0  */
             {                          /*  .  1  0  */
               *p = 0;                      /*  .  .  0  */
@@ -403,8 +403,8 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
                 continue;
               }
             }
-    
-            if (*(p - nxm1) || *(p + 1) || *(p + nxp1) || *(p + nx) || *(p + nxm1));  
+
+            if (*(p - nxm1) || *(p + 1) || *(p + nxp1) || *(p + nx) || *(p + nxm1));
             else                        /*  .  .  0  */
             {                          /*  .  1  0  */
               *p = 0;                      /*  0  0  0  */
@@ -424,8 +424,8 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
                 continue;
               }
             }
-    
-            if (*(p + nxp1) || *(p + nx) || *(p + nxm1) || *(p - 1) || *(p - nxp1));  
+
+            if (*(p + nxp1) || *(p + nx) || *(p + nxm1) || *(p - 1) || *(p - nxp1));
             else                       /*  0  .  .  */
             {                          /*  0  1  .  */
               *p = 0;                  /*  0  0  0  */
@@ -451,7 +451,7 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
         }
       }
       break;
-    default: 
+    default:
       (void)sprintf(buf,"uc_bprune(): invalid graph type (must be 4 or 8)"); errputstr(buf);
       return(ERROR);
   }
@@ -461,7 +461,7 @@ int uc_bprune(IMAGE *im, int occa, int graph) /* quick and dirty from grilisp */
 
 ERROR_TYPE bprune(IMAGE *im, int occa, int graph)
 {
-  
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:

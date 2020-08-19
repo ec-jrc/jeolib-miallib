@@ -41,7 +41,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "us_def.h"
 IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
-{ 
+{
   /*
     This function was created following a discussion with Sergio Rosim
     and Joao Oliveira from INPE (visit to JRC on 14--15/11/2013.
@@ -76,9 +76,9 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
 
-  shft[5]=shft5; shft[3]=shft3; shft[7]=shft7; 
-  shft[1]=shft1; shft[0]= 0;    shft[2]=shft2; 
-  shft[6]=shft6; shft[4]=shft4; shft[8]=shft8; 
+  shft[5]=shft5; shft[3]=shft3; shft[7]=shft7;
+  shft[1]=shft1; shft[0]= 0;    shft[2]=shft2;
+  shft[6]=shft6; shft[4]=shft4; shft[8]=shft8;
 
   pdir=(UCHAR *)GetImPtr(imdir);
   pdem=(PIX_TYPE *)GetImPtr(dem);
@@ -92,7 +92,7 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
   phtop=(PIX_TYPE *)GetImPtr(imhtop);
 
   /* create priority queue */
-  pq = pqinit(NULL, 10000); 
+  pq = pqinit(NULL, 10000);
   if (pq == NULL){
     free_image(imhtop);
     return NULL;
@@ -143,7 +143,7 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
     pqminremove(pq, apqd);
     ofs=apqd[0]->offset;
     free((char*) *apqd);
-    
+
     if( (pdir[ofs]) !=0){
       ofscrt=ofs+shft[pdir[ofs]];
       phtop[ofscrt]=MAX(phtop[ofs],phtop[ofscrt]);
@@ -168,7 +168,7 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
 #pragma omp parallel for
   for (i=0; i<npix; i++)
     pdir[i]&=127;
-  
+
   free_pq(pq);
   return(imhtop);
 }
@@ -176,7 +176,7 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
 
 
 
-/** 
+/**
  * @synopsis upstream maximum height
  *
  * @param i0: an image

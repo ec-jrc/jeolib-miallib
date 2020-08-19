@@ -29,14 +29,14 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "miallib.h"
 
-struct regionMean 
+struct regionMean
 {
 	float * meanValueOriginal;
 	float * meanValue;
 
 	int nc; //number of channels
 	long int count; //number values stored in meanValues
-	long int countOriginal; // numbers of values stored in meanValueOriginal	
+	long int countOriginal; // numbers of values stored in meanValueOriginal
 };
 
 
@@ -60,5 +60,5 @@ double uc_rmGetContrastCoefficient(struct regionMean * rm, IMAGE **imap, long in
 void clearRegionMean(struct regionMean * rm);
 
 void freeRegionMean(struct regionMean * rm);
-	
+
 #endif

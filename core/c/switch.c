@@ -84,15 +84,15 @@ void uc_switchop(PIX_TYPE *im1, PIX_TYPE *im2, long int nx, long int ny, long in
 
 
 
-/** 
+/**
  * Switch operator \cite soille2005ivc
- * 
+ *
  * @param im : input image
  * @param imse : image coding structuring element
  * @param ox : integer for x-coordinate origin of composite structuring element
  * @param oy : integer for x-coordinate origin of composite structuring element
  * @param oz : integer for x-coordinate origin of composite structuring element
- * 
+ *
  * @return new image holding the switch transformed input image using the specified composite structuring element
  */
 IMAGE *switchop(IMAGE *im, IMAGE *imse, int ox, int oy, int oz)

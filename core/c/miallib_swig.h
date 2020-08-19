@@ -112,13 +112,13 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #endif
 #ifndef UINT64_MAX
 #define UINT64_MAX   0xFFFFFFFFFFFFFFFF
-#endif  
+#endif
 #define MIALFLOAT_MAX    ((float)3.40282346638528860e+38)
 #define MIALFLOAT_MIN    ((float)1.40129846432481707e-45)
-#ifndef DOUBLE_MAX    
+#ifndef DOUBLE_MAX
 #define DOUBLE_MAX   1.797693134862315708e+308
 #endif
-#ifndef DOUBLE_MIN  
+#ifndef DOUBLE_MIN
 #define DOUBLE_MIN   4.94065645841246544e-324
 #endif
 
@@ -318,7 +318,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
-/* 
+/*
   external function declarations
 */
 

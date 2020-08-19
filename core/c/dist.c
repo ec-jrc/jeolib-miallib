@@ -43,13 +43,13 @@ ERROR_TYPE generic_dst2d4(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend, tmp;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (generic_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -57,7 +57,7 @@ ERROR_TYPE generic_dst2d4(IMAGE *im)
     if (*p)
       *p = (*(p-1)+1)<(*(p-nx)+1) ? *(p-1)+1 : *(p-nx)+1;
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -81,13 +81,13 @@ ERROR_TYPE us_dst2d4(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend, tmp;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (us_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -95,7 +95,7 @@ ERROR_TYPE us_dst2d4(IMAGE *im)
     if (*p)
       *p = (*(p-1)+1)<(*(p-nx)+1) ? *(p-1)+1 : *(p-nx)+1;
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -147,13 +147,13 @@ ERROR_TYPE generic_dst2dchamfer(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (generic_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -168,7 +168,7 @@ ERROR_TYPE generic_dst2dchamfer(IMAGE *im)
 	*p = *(p - 1) + 5;
     }
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -196,13 +196,13 @@ ERROR_TYPE us_dst2dchamfer(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (us_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -217,7 +217,7 @@ ERROR_TYPE us_dst2dchamfer(IMAGE *im)
 	*p = *(p - 1) + 5;
     }
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -312,9 +312,9 @@ ERROR_TYPE setdxdy(int *dx, int *dy, int graph)
 ERROR_TYPE cqentercontour(IMAGE *im, int obj, int bgd, int graph, int inqueue, FIFO4 *q)
 {
   long int k, shift, shft[27];
-  
+
   if (set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft) != NO_ERROR)
-    return ERROR;  
+    return ERROR;
 
   switch (GetImDataType(im)){
     case t_UCHAR:
@@ -371,9 +371,9 @@ IMAGE *edistfifo2d(IMAGE *im, int graph)
   IMAGE *imn, *imw;
   long int shft[27];
   int box[6];
-  
+
   if (set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft) != NO_ERROR)
-    return NULL;  
+    return NULL;
 
   if (setdxdy(dx, dy, graph) != NO_ERROR)
     return NULL;
@@ -388,7 +388,7 @@ IMAGE *edistfifo2d(IMAGE *im, int graph)
   imw=copy_image(imn);
   if (imn==NULL){
     (void) sprintf(buf, "eudistance(): not enough memory"); errputstr(buf);
-    free_image(imn); 
+    free_image(imn);
     return NULL;
   }
 
@@ -467,7 +467,7 @@ ERROR_TYPE generic_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */
@@ -578,7 +578,7 @@ ERROR_TYPE us_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */
@@ -689,7 +689,7 @@ ERROR_TYPE i32_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */

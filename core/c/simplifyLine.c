@@ -125,9 +125,9 @@ void simplifyLine(struct LINEPOOL * linepool, double tolerance, int width, int h
     if(isLineSegmentClosed(line)){
       line->points[j]->useFlag=1;
     }
-    
+
     free(pointsX);
     free(pointsY);
-    free(useFlags);   
+    free(useFlags);
   }
 }

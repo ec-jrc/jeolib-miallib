@@ -111,14 +111,14 @@ ERROR_TYPE read_image_data(FILE *fp, IMAGE *im, int pc)
   p    = (UCHAR *)GetImPtr(im);
   nx   = GetImNx(im);
   npix = GetImNPix(im);
-  
+
   switch(GetImDataType(im)){
   case t_TIFFONEBITPERPIXEL: /* assumes 1 x-y plane */
     /* padding for 8 bits as in TIFF files                  */
     /* t_TIFFONEBITPERPIXEL just for I/O                    */
     /* the image is read into a t_UCHAR image               */
     /* note: image_create() takes this feature into account */
-    
+
     SetImDataType(im,t_UCHAR); /* force to t_UCHAR */
 
     nbpl = nx/BITPERCHAR; /* nbr of bytes per line      */
@@ -230,7 +230,7 @@ ERROR_TYPE read_image_data(FILE *fp, IMAGE *im, int pc)
         }
       }
     }
-  } 
+  }
   else{ /* assume sequential x-y plane storage (BSQ) */p = (UCHAR *)GetImPtr(im);
     p = (UCHAR *)GetImPtr(im);
     nx=GetImNx(im);
@@ -256,12 +256,12 @@ ERROR_TYPE read_image_data(FILE *fp, IMAGE *im, int pc)
 IMAGE *read_all(char *fn, int nx, int ny, int nz, int data_type, int header_size, int pc)
 {
   /*
-  ** authors: 
-  ** char *fn: 
+  ** authors:
+  ** char *fn:
   ** int nx:
   ** int ny:
   ** int nz:
-  ** int data_type: 
+  ** int data_type:
   ** int header_size:
   ** int pc: planar configuration (1 for bip, 2 for bsq, 3 for bil)
   ** comment:
@@ -275,7 +275,7 @@ IMAGE *read_all(char *fn, int nx, int ny, int nz, int data_type, int header_size
     (void)sprintf(buf,"ERROR in read_all(): unable to open file %s", fn); errputstr(buf);
     return(NULL);
   }
-  
+
   /* create output image */
   im = create_image(data_type, nx, ny, nz);
   if (im == NULL){
@@ -333,7 +333,7 @@ IMAGE *read_image(char *fn)
     TIFFGetField(tiffp, TIFFTAG_IMAGELENGTH, &ny);
     TIFFGetField(tiffp, TIFFTAG_BITSPERSAMPLE, &bitpp);
     TIFFGetField(tiffp, TIFFTAG_SAMPLESPERPIXEL, &spp);
-    if ( TIFFGetField(tiffp, TIFFTAG_SAMPLEFORMAT, &sf) != 1) 
+    if ( TIFFGetField(tiffp, TIFFTAG_SAMPLEFORMAT, &sf) != 1)
       sf=1; /* 1 unsigned (default value in TIFF 6.0 specifications)
 	       2 signed, 3 float, 4 undefined */
     if (sf>3) {
@@ -363,8 +363,8 @@ IMAGE *read_image(char *fn)
       TIFFGetField(tiffp, TIFFTAG_COMPRESSION, &ctype);
       nstrip = TIFFNumberOfStrips(tiffp);
       // printf("data_type=%d nstrip=%d\n", data_type, nstrip);
-      TIFFGetField(tiffp, TIFFTAG_ROWSPERSTRIP, &rps);	
-    
+      TIFFGetField(tiffp, TIFFTAG_ROWSPERSTRIP, &rps);
+
       /*     if ((nstrip != 1 && ctype==1) || ctype==5){*/
       if (nstrip != 1 || ctype != 1){
 #ifdef XLDEBUG
@@ -415,7 +415,7 @@ IMAGE *read_image(char *fn)
 	return im;
       }
     }
-    
+
     TIFFGetField(tiffp, TIFFTAG_STRIPOFFSETS, &s_o_t);
     fsot = (long)*s_o_t;
     TIFFGetField(tiffp, TIFFTAG_BITSPERSAMPLE, &bitpp);
@@ -432,7 +432,7 @@ IMAGE *read_image(char *fn)
 	blue[i]=tblue[i];
       }
     }
-          
+
     TIFFClose(tiffp);
 
     if (bitpp == 1)
@@ -454,12 +454,12 @@ IMAGE *read_image(char *fn)
       /* data_type = t_RGB; t_RGB not used anymore for input */
       nz = spp;
     }
-  
+
     if ((fp = fopen(fn, "rb")) == NULL){
       free(red); free(green); free(blue);
       return(NULL);
     }
-   
+
     (void)fseek(fp, fsot, 0);  /*  position file pointer to pixel map  */
 
     /* create output image */
@@ -495,20 +495,20 @@ IMAGE *read_image(char *fn)
     free(red); free(green); free(blue);
     return(im);
   }
-  
+
   /*  alternatively, open first file  */
   if ((fp = fopen(fn, "rb")) == NULL){
     (void)sprintf(buf,"ERROR in read_image(\"%s\"): \
                    unable to read open file\n", fn); errputstr(buf);
     return(NULL);
   }
-  
+
   /*  Check whether it is a VISILOG file  */
   if (fread((char *)visi, 76, 1, fp) != 1){
     (void) fclose(fp);
     return(NULL);
   }
-  if (visi[0] == 0x6931)  
+  if (visi[0] == 0x6931)
     visilog = TRUE;
   else if (visi[0] == 0x31690000){
     /*  Swap header  */
@@ -518,7 +518,7 @@ IMAGE *read_image(char *fn)
     visilog = TRUE;
   }
 
-  /*  Else, check whether it is a TIFF or KIFF file  */  
+  /*  Else, check whether it is a TIFF or KIFF file  */
   if (!visilog){  /* try a KIFF file */
     (void)fseek(fp, 0L, 0);
     if (fread((char *)&kiff_head[0], sizeof(kiff_head), 1, fp) != 1){
@@ -535,7 +535,7 @@ IMAGE *read_image(char *fn)
       (void)sprintf(buf,"read_file(): unable to read %s on disk\n", fn); errputstr(buf);
       im = NULL;
     }
-  }    
+  }
   else{ /* it is a VISILOG file */
     nx    = visi[1];
     ny    = visi[2];
@@ -563,7 +563,7 @@ ERROR_TYPE write_image_data(FILE *fp, IMAGE *im, int pc)
   unsigned long int nelem, i, y, z;
   UCHAR *p, *plast;
   long int bpp, nx, ny, nz = GetImNz(im);
- 
+
   switch (GetImDataType(im)){
   case t_TIFFONEBITPERPIXEL:
   case t_ONEBITPERPIXEL:
@@ -577,7 +577,7 @@ ERROR_TYPE write_image_data(FILE *fp, IMAGE *im, int pc)
   case t_DOUBLE:
     if (GetImNz(im)>1){
       if (pc==PLANARCONFIG_CONTIG){ /* bip model (band interleaved by pixel) TIFF default */
-	/* interleave x-y planes by pixel (bip) */  
+	/* interleave x-y planes by pixel (bip) */
 	bpp=GetImBitPerPixel(im)/8;
 	nelem=GetImNPixPerPlane(im);
 	p=(UCHAR *)GetImPtr(im);
@@ -665,13 +665,13 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
     (void)sprintf(buf,"write_ColorMap_tiff(): data type must be t_UCHAR, nz must be equal to 1, and ColorMap must exist\n"); errputstr(buf);
     return(ERROR);
   }
-   
+
   /* take minimum and maximum image values into account */
   pg = min_max(im);
   if (GetImDataType(im)==t_UCHAR && pg != NULL){
     uc_maxi = pg[1].uc_val;
     free(pg);
-    /******************************* if (uc_maxi < 2){           
+    /******************************* if (uc_maxi < 2){
       imtmp = to_tiff1bitpp(im);    !!! COMMENTED OUT SINCE TIFF DOES NOT COPE !!!
       if (imtmp == NULL){           !!! WITH BINARY PALETTE COLOUR IMAGES      !!!
         free((char *)tag_info);
@@ -690,15 +690,15 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
       }
       im = imtmp;
       swapflag = 1;
-    } 
+    }
   }
 
-  /*  Allocate memory for header  */  
+  /*  Allocate memory for header  */
   if ((tag_info = (struct tag *)calloc((size_t)nbr_tags, sizeof(struct tag))) == NULL){
     (void)sprintf(buf,"write_tiff_file(): not enough memory\n"); errputstr(buf);
     return(ERROR);
   }
-    
+
   /*  Header initialisation  */
 #if BYTE_ORDER==BIG_ENDIAN
   tiff_head.byte_order  = 0x4d4d; /* big-endian byte ordering    */
@@ -707,7 +707,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 #endif
   tiff_head.version     = 42;     /*  TIFF version               */
   tiff_head.ptr_dir1    = 8;      /*  Pointer to first directory */
-  
+
   /*  Tag type initialisation */
   tag_info[WIDTH].type  = 256;  /*  ImageWidth tag or number of columns */
   tag_info[LENGTH].type = 257;  /*  ImageLength tag or number of lines  */
@@ -721,46 +721,46 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   tag_info[XR].type     = 282;  /*  XResolution  tag                    */
   tag_info[YR].type     = 283;  /*  YResolution  tag                    */
   tag_info[ColorMap].type = 320;/* ColorMap tag                         */
-  
+
   /*  Data Type initialisation */
   tag_info[WIDTH].data_type  = 4;  /* 4  ==> INT32                */
-  tag_info[LENGTH].data_type = 4;  
-  tag_info[BPS].data_type    = 3;    
-  tag_info[PMI].data_type    = 3;  
-  tag_info[NAME].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */  
-  tag_info[DESC].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */  
-  tag_info[SOT].data_type    = 4; 
-  tag_info[SPP].data_type    = 3;  
+  tag_info[LENGTH].data_type = 4;
+  tag_info[BPS].data_type    = 3;
+  tag_info[PMI].data_type    = 3;
+  tag_info[NAME].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */
+  tag_info[DESC].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */
+  tag_info[SOT].data_type    = 4;
+  tag_info[SPP].data_type    = 3;
   tag_info[SBC].data_type    = 4;  /* 4  ==> INT32             */
   tag_info[XR].data_type     = 5;  /* 5  ==>  RATIONAL        */
   tag_info[YR].data_type     = 5;  /* 5  ==>  RATIONAL        */
-  tag_info[ColorMap].data_type = 3;  
-  
+  tag_info[ColorMap].data_type = 3;
+
   /*  Length initialisation  */
-  tag_info[WIDTH].length  = 1;    
-  tag_info[LENGTH].length = 1;    
-  tag_info[BPS].length    = 1;    
+  tag_info[WIDTH].length  = 1;
+  tag_info[LENGTH].length = 1;
+  tag_info[BPS].length    = 1;
   tag_info[PMI].length    = 1;     /* 3 for Palette Color    */
-  tag_info[NAME].length   = 32;    /*  Document name         */  
+  tag_info[NAME].length   = 32;    /*  Document name         */
   tag_info[DESC].length   = 256;   /*  Document information  */
   tag_info[SOT].length    = 1;
-  tag_info[SPP].length    = 1;    
+  tag_info[SPP].length    = 1;
   tag_info[SBC].length    = 1;
-  tag_info[XR].length     = 1;    
-  tag_info[YR].length     = 1;   
+  tag_info[XR].length     = 1;
+  tag_info[YR].length     = 1;
   tag_info[ColorMap].length = 3*(1 << GetImBitPerPixel(im));
-  
+
   /*  Values fitting in tag initialisation  */
 #if BYTE_ORDER==LITTLE_ENDIAN
-  tag_info[WIDTH].ValOrPoint  = GetImNx(im);    
+  tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = (short)GetImBitPerPixel(im);
   tag_info[PMI].ValOrPoint    = (short)pmi;
   tag_info[SOT].ValOrPoint    = 10+nbr_tags*12+4+32+256+16+tag_info[ColorMap].length*2;
   tag_info[SPP].ValOrPoint    = (short)spp;
   tag_info[SBC].ValOrPoint    = GetImNByte(im);
-  
-  /*  Offset of values not fitting in tag initialisation  */  
+
+  /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint      = 10+nbr_tags*12+4;
   tag_info[DESC].ValOrPoint      = 10+nbr_tags*12+4+32;
   tag_info[XR].ValOrPoint        = 10+nbr_tags*12+4+32+256;
@@ -768,7 +768,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   tag_info[ColorMap].ValOrPoint  = 10+nbr_tags*12+4+32+256+8+8;
 
 #else /* big-endian */
-  tag_info[WIDTH].ValOrPoint  = GetImNx(im);    
+  tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = GetImBitPerPixel(im)<<16;
   tag_info[PMI].ValOrPoint    = pmi<<16;
@@ -778,7 +778,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB)
     tag_info[N_PLANE].ValOrPoint = GetImNz(im)<<16;
 
-  /*  Offset of values not fitting in tag initialisation  */  
+  /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint = 10+nbr_tags*12+4;
   tag_info[DESC].ValOrPoint = 10+nbr_tags*12+4+32;
   tag_info[XR].ValOrPoint   = 10+nbr_tags*12+4+32+256;
@@ -788,7 +788,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 #endif /* big-endian */
 
   /*  Offset to next directory (if any) initialisation  */
-  ptr_dir2 = 0;  
+  ptr_dir2 = 0;
 
   /*  Open output file  */
   if ((fp = fopen(fn, "wb")) == NULL){
@@ -797,7 +797,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
       free_image(im);
     return(ERROR);
   }
-  
+
   /*  Write header  */
   (void) fwrite((char *)&tiff_head, sizeof(tiff_head), 1, fp);
   (void) fwrite((char *)&nbr_tags, 2, 1, fp);
@@ -813,7 +813,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   (void) fwrite((void *)GetImLut(im), 2, (1<<GetImBitPerPixel(im)), fp);
   (void) fwrite((void *)(GetImLut(im)+256), 2, (1<<GetImBitPerPixel(im)), fp);
   (void) fwrite((void *)(GetImLut(im)+512), 2, (1<<GetImBitPerPixel(im)), fp);
-  
+
   /*  Write image data  */
   if (write_image_data(fp, im, PLANARCONFIG_CONTIG) != NO_ERROR){
     (void)sprintf(buf, "write_tiff(): unable to write \"%s\" on disk\n", fn); errputstr(buf);
@@ -858,13 +858,13 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 
   /*   if (GetImNz(im)==1 || GetImDataType(im)==t_RGB) */
     nbr_tags -=1;
-  
-  /*  Allocate memory for header  */  
+
+  /*  Allocate memory for header  */
   if ((tag_info = (struct tag *)calloc((size_t)nbr_tags, sizeof(struct tag))) == NULL){
     (void)sprintf(buf,"write_tiff_file(): not enough memory\n"); errputstr(buf);
     return(ERROR);
   }
-    
+
   /*  Header initialisation  */
 #if BYTE_ORDER==BIG_ENDIAN
   tiff_head.byte_order  = 0x4d4d; /* big-endian byte ordering */
@@ -873,7 +873,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 #endif
   tiff_head.version     = 42;     /*  TIFF version  0x2a            */
   tiff_head.ptr_dir1    = 8;      /*  Pointer to first directory    */
-  
+
   /*  Tag type initialisation */
   tag_info[WIDTH].type  = 256;  /*  ImageWidth tag or number of columns  */
   tag_info[LENGTH].type = 257;  /*  ImageLength tag or number of lines */
@@ -891,35 +891,35 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 /*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
 /*     tag_info[N_PLANE].type = 32768;  /\*  ZResolution  tag  (for 3D images) *\/ */
 /*                                      /\*  NON-STANDART  TAG  !!!!           *\/ */
-  
+
   /*  Data Type initialisation */
   tag_info[WIDTH].data_type  = 4;  /* 4  ==>  INT32            */
-  tag_info[LENGTH].data_type = 4;  
-  tag_info[BPS].data_type    = 3;  /* 3  ==>  SHORT           */    
-  tag_info[PMI].data_type    = 3;  
-  tag_info[NAME].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */  
-  tag_info[DESC].data_type   = 2; 
+  tag_info[LENGTH].data_type = 4;
+  tag_info[BPS].data_type    = 3;  /* 3  ==>  SHORT           */
+  tag_info[PMI].data_type    = 3;
+  tag_info[NAME].data_type   = 2;  /* 2  ==>  8-bits ASCII codes */
+  tag_info[DESC].data_type   = 2;
   tag_info[SOT].data_type    = 4;
-  tag_info[SPP].data_type    = 3;  
+  tag_info[SPP].data_type    = 3;
   tag_info[SBC].data_type    = 4;
   tag_info[XR].data_type     = 5;  /* 5  ==>  RATIONAL           */
   tag_info[YR].data_type     = 5;
   tag_info[SF].data_type     = 3;
 /*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
 /*     tag_info[N_PLANE].data_type  = 3;   */
-  
+
   /*  Length initialisation  */
-  tag_info[WIDTH].length  = 1;    
-  tag_info[LENGTH].length = 1;    
-  tag_info[BPS].length    = 1;    
-  tag_info[PMI].length    = 1;  
-  tag_info[NAME].length   = 32;    /*  Document name      */  
+  tag_info[WIDTH].length  = 1;
+  tag_info[LENGTH].length = 1;
+  tag_info[BPS].length    = 1;
+  tag_info[PMI].length    = 1;
+  tag_info[NAME].length   = 32;    /*  Document name      */
   tag_info[DESC].length   = 256;   /*  Document information  */
   tag_info[SOT].length    = 1;
-  tag_info[SPP].length    = 1;    
+  tag_info[SPP].length    = 1;
   tag_info[SBC].length    = 1;
-  tag_info[XR].length     = 1;    
-  tag_info[YR].length     = 1;   
+  tag_info[XR].length     = 1;
+  tag_info[YR].length     = 1;
 /*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
 /*     tag_info[N_PLANE].length  = 1;     */
 
@@ -956,19 +956,19 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
       }
     }
   }
- 
+
 /*   if (GetImDataType(im)==t_RGB){ /\* full color image *\/    */
 /*     tag_info[BPS].length  = GetImNz(im); */
 /*     pmi=2; */
 /*     spp=GetImNz(im); /\* may be more for multispectral images *\/ */
 /*   } */
-    
-  if (GetImNz(im)>1){ /* multichannel or 3-D image */   
+
+  if (GetImNz(im)>1){ /* multichannel or 3-D image */
     tag_info[BPS].length  = GetImNz(im);
     pmi=2;
     spp=GetImNz(im);
   }
-     
+
   tag_info[SF].length     = spp;
 
   switch (GetImDataType(im)){ /* set SampleFormat field value */
@@ -992,7 +992,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 
   /*  Values fitting in tag initialisation  */
 #if BYTE_ORDER==BIG_ENDIAN
-  tag_info[WIDTH].ValOrPoint  = GetImNx(im);    
+  tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = GetImBitPerPixel(im)<<16;
   tag_info[PMI].ValOrPoint    = pmi<<16;
@@ -1003,7 +1003,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 /*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
 /*     tag_info[N_PLANE].ValOrPoint = GetImNz(im)<<16; */
 
-  /*  Offset of values not fitting in tag initialisation  */  
+  /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint = 10+nbr_tags*12+4;
   tag_info[DESC].ValOrPoint = 10+nbr_tags*12+4+32;
   tag_info[XR].ValOrPoint   = 10+nbr_tags*12+4+32+256;
@@ -1012,12 +1012,12 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
    tag_info[BPS].ValOrPoint = 10+nbr_tags*12+4+32+256+8+8;
    tag_info[SOT].ValOrPoint = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
   }
-  if (spp>1){ 
+  if (spp>1){
    tag_info[SF].ValOrPoint  = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
    tag_info[SOT].ValOrPoint += GetImNz(im)*2;
   }
 #elif BYTE_ORDER==LITTLE_ENDIAN
-  tag_info[WIDTH].ValOrPoint  = GetImNx(im);    
+  tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = (short)GetImBitPerPixel(im);
   tag_info[PMI].ValOrPoint    = (short)pmi;
@@ -1027,8 +1027,8 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[SBC].ValOrPoint    = nbyte; //GetImNByte(im); //GetImBitPerPixel(im)/8 * GetImNPix(im);
 /*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
 /*     tag_info[N_PLANE].ValOrPoint = (short)GetImNz(im); */
-  
-  /*  Offset of values not fitting in tag initialisation  */  
+
+  /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint = 10+nbr_tags*12+4;
   tag_info[DESC].ValOrPoint = 10+nbr_tags*12+4+32;
   tag_info[XR].ValOrPoint   = 10+nbr_tags*12+4+32+256;
@@ -1037,7 +1037,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
    tag_info[BPS].ValOrPoint = 10+nbr_tags*12+4+32+256+8+8; /* reset */
    tag_info[SOT].ValOrPoint = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
   }
-  if (spp>1){ 
+  if (spp>1){
    tag_info[SF].ValOrPoint  = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
    tag_info[SOT].ValOrPoint += GetImNz(im)*2;
   }
@@ -1046,7 +1046,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
  #error BYTE_ORDER must be either BIG_ENDIAN or LITTLE_ENDIAN
 #endif
   /*  Offset to next directory (if any) initialisation  */
-  ptr_dir2 = 0;  
+  ptr_dir2 = 0;
 
   /*  Open output file  */
   if ((fp = fopen(fn, "wb")) == NULL){
@@ -1055,7 +1055,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
       free_image(im);
     return(ERROR);
   }
-  
+
   /*  Write header  */
   (void) fwrite((char *)&tiff_head, sizeof(tiff_head), 1, fp);
   (void) fwrite((char *)&nbr_tags, 2, 1, fp);
@@ -1144,7 +1144,7 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_SEPARATE);
     else
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-      
+
     TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);
     TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW);
     if ( GetImBitPerPixel(im) <= 16 )
@@ -1152,9 +1152,9 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
 
     if ( (GetImLut(im)!=NULL) && (GetImDataType(im)==t_UCHAR)){
       lut=(USHORT *)GetImLut(im);
-      TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, 3); 
+      TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, 3);
       if ( TIFFSetField(tif, TIFFTAG_COLORMAP, lut, lut+256, lut+512) != 1 )
-	(void)sprintf(buf,"writetiffospl(%s): error while setting colour map\n", fn);	
+	(void)sprintf(buf,"writetiffospl(%s): error while setting colour map\n", fn);
     }
     else
       TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
@@ -1244,7 +1244,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
     TIFFGetField(tiffp, TIFFTAG_IMAGELENGTH, &ny);
     TIFFGetField(tiffp, TIFFTAG_BITSPERSAMPLE, &bitpp);
     TIFFGetField(tiffp, TIFFTAG_SAMPLESPERPIXEL, &spp);
-    if ( TIFFGetField(tiffp, TIFFTAG_SAMPLEFORMAT, &sf) != 1) 
+    if ( TIFFGetField(tiffp, TIFFTAG_SAMPLEFORMAT, &sf) != 1)
       sf=1; /* 1 unsigned (default value in TIFF 6.0 specifications)
 	       2 signed, 3 float, 4 undefined */
     if (spp>1)
@@ -1279,7 +1279,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
 	  TIFFClose(tiffp);
 	  return(NULL);
 	}
-	for (strip = 0; strip < nstrip-1; strip++){ 
+	for (strip = 0; strip < nstrip-1; strip++){
 	  nbyte=TIFFReadEncodedStrip(tiffp, strip, GetImPtr(lim), (tsize_t) -1);
 	  bread+=nbyte;
 	  if (nbyte==-1){

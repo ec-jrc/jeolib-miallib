@@ -26,7 +26,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /*
  *  Priority queue structure
  */
-struct pqueue 
+struct pqueue
 {
   unsigned int size, avail, step;
   PQDATUM *d;

@@ -22,10 +22,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * @file  mslabel.c
  * @author Dominik Brunner and Pierre Soille
- * @date   
- * 
+ * @date
+ *
  * @details see also \cite brunner-soille2005 \cite brunner-soille2007
- * 
+ *
  */
 
 
@@ -140,7 +140,7 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
   if (set_seq_shift(GetImNx(labelIm), GetImNy(labelIm), GetImNz(labelIm), graph, shft) == ERROR){
     return NULL;
   }
-    
+
   nx = GetImNx(labelIm);
   ny = GetImNy(labelIm);
   hq = create_fifo4(nx * ny / 100L);
@@ -272,7 +272,7 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
   if (set_seq_shift(GetImNx(labelIm), GetImNy(labelIm), GetImNz(labelIm), graph, shft) == ERROR){
     return NULL;
   }
-    
+
   nx = GetImNx(labelIm);
   ny = GetImNy(labelIm);
   hq = create_fifo4(nx * ny / 100L);

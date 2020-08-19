@@ -63,7 +63,7 @@ extern int gethostname(char *name, size_t len);  /* fix to prevent warning, incl
 /*                                                                      */
 /*      Install tags specially known to GDAL.                           */
 /************************************************************************/
-static int GdalTiffTags_flag=0; 
+static int GdalTiffTags_flag=0;
 
 static TIFFExtendProc _ParentExtender = NULL;
 static void GTiffTagExtender(TIFF *tif){
@@ -76,14 +76,14 @@ static void GTiffTagExtender(TIFF *tif){
           TRUE,	TRUE,	(char*) "RPCCoefficient" }
     };
 
-    if (_ParentExtender) 
+    if (_ParentExtender)
         (*_ParentExtender)(tif);
 
     TIFFMergeFieldInfo( tif, xtiffFieldInfo,
 		        sizeof(xtiffFieldInfo) / sizeof(xtiffFieldInfo[0]) );
 }
 
-/* call it only once in the lifetime of the program before opening/creating a 
+/* call it only once in the lifetime of the program before opening/creating a
 TIFF */
 void InstallGDALTiffTags()
 {
@@ -101,7 +101,7 @@ void print_mia_banner()
 }
 
 
-/** 
+/**
  * @synopsis tiffinfo fn field val
  *
  * @param fn a string for the name of a TIFF file (possibly including its path)
@@ -151,7 +151,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"ERROR in tiffinfo(): no \"%s\" \n", field); errputstr(buf);
       return ERROR;
-    }     
+    }
   }
   else if (strcmp(field,"TIFFTAG_SAMPLESPERPIXEL")==0){
      if (TIFFGetField(tiffp, TIFFTAG_SAMPLESPERPIXEL, &a_uint16) == 1)
@@ -159,7 +159,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"ERROR in tiffinfo(): no \"%s\" \n", field); errputstr(buf);
       return ERROR;
-    }     
+    }
   }
   else if (strcmp(field,"GeographicTypeGeoKey")==0){
     if (GTIFKeyGet(gtif, GeographicTypeGeoKey, &gkey_val, 0, 1) == 1)
@@ -167,7 +167,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"ERROR in tiffinfo(): no \"%s\" \n", field); errputstr(buf);
       return ERROR;
-    }     
+    }
   }
   else if (strcmp(field,"ProjectedCSTypeGeoKey")==0){
     if (GTIFKeyGet(gtif, ProjectedCSTypeGeoKey, &gkey_val, 0, 1) == 1)
@@ -175,7 +175,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"ERROR in tiffinfo(): no \"%s\" \n", field); errputstr(buf);
       return ERROR;
-    }     
+    }
   }
   else if (strcmp(field,"GTRasterTypeGeoKey")==0){
     if (GTIFKeyGet(gtif, GTRasterTypeGeoKey, &gkey_val, 0, 1) == 1)
@@ -183,7 +183,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"WARNING in tiffinfo(): no \"%s\", assuming default is RasterPixelIsArea (1)\n", field); errputstr(buf);
       *val=1;
-    }     
+    }
   }
   else if (strcmp(field,"GTModelTypeGeoKey")==0){
     if (GTIFKeyGet(gtif, GTModelTypeGeoKey, &gkey_val, 0, 1) == 1)
@@ -191,7 +191,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
     else{
       (void)sprintf(buf,"ERROR in tiffinfo(): no \"%s\" \n", field); errputstr(buf);
       return ERROR;
-    }     
+    }
   }
   else{
     (void)sprintf(buf,"ERROR in tiffinfo(): invalid TIFF TAG NAME \"%s\" \n", field); errputstr(buf);
@@ -204,7 +204,7 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
   return NO_ERROR;
 }
 
-/** 
+/**
  * @synopsis tiffinfoJIP fn field val
  *
  * @param fn a string for the name of a TIFF file (possibly including its path)
@@ -222,7 +222,7 @@ IMAGE *tiffinfoJIP(char *fn)
   uint32 a_uint32;
   uint16  a_uint16;
   geocode_t gkey_val;
-  
+
   /* Open TIFF descriptor to read GeoTIFF tags */
   tiffp=XTIFFOpen(fn,"r");
   if (!tiffp){
@@ -253,28 +253,28 @@ IMAGE *tiffinfoJIP(char *fn)
   else{
     (void)sprintf(buf,"warning in tiffinfoJIP(): no \"TIFFTAG_SAMPLEFORMAT\" \n" ); errputstr(buf);
     pim[3]=(UINT32)UINT32_MAX;
-  }    
+  }
 
   if (TIFFGetField(tiffp, TIFFTAG_SAMPLESPERPIXEL, &a_uint16) == 1)
     pim[4]=(UINT32)a_uint16;
   else{
     (void)sprintf(buf,"warning in tiffinfoJIP(): no \"TIFFTAG_SAMPLESPERPIXEL\" (assuming 1)\n"); errputstr(buf);
     pim[4]=(UINT32)1;
-  }  
-   
+  }
+
   if (GTIFKeyGet(gtif, GeographicTypeGeoKey, &gkey_val, 0, 1) == 1)
     pim[5]=(UINT32)gkey_val;
   else{
     (void)sprintf(buf,"warning in tiffinfoJIP(): no \"GeographicTypeGeoKey\" \n"); errputstr(buf);
     pim[5]=(UINT32)UINT32_MAX;
-  }  
+  }
 
   if (GTIFKeyGet(gtif, ProjectedCSTypeGeoKey, &gkey_val, 0, 1) == 1)
     pim[6]=(UINT32)gkey_val;
   else{
     (void)sprintf(buf,"warning in tiffinfoJIP(): no \"ProjectedCSTypeGeoKey\" \n"); errputstr(buf);
     pim[6]=(UINT32)UINT32_MAX;
-  }    
+  }
 
   if (GTIFKeyGet(gtif, GTRasterTypeGeoKey, &gkey_val, 0, 1) == 1)
     pim[7]=(UINT32)gkey_val;
@@ -288,7 +288,7 @@ IMAGE *tiffinfoJIP(char *fn)
   else{
     (void)sprintf(buf,"warning in tiffinfoJIP(): no \"GTModelTypeGeoKey\" \n"); errputstr(buf);
     pim[8]=(UINT32)UINT32_MAX;
-  } 
+  }
 
   if (gtif!=NULL)
     GTIFFree(gtif);
@@ -322,13 +322,13 @@ IMAGE *GetGeoKey(char *fname, char *keyname)
     printf("GeoKey '%s' not handled\n", keyname);
     return NULL;
   }
-  
+
  /* get rid of the key parser */
  GTIFFree(gtif);
 
  /* close the TIFF file descriptor */
  TIFFClose(tif);
- 
+
  im=create_image(t_INT32, count, 1, 1);
  ptr=(INT32 *)GetImPtr(im);
  *ptr=(INT32)modelTypeCode;
@@ -419,7 +419,7 @@ IMAGE *GetTIFFTagGeo(char *fn, char *tagname)
   ptr=(double *)GetImPtr(im);
   for (i=0; i<count; i++)
     ptr[i]=data[i];
-  
+
   if (gtif!=NULL)
     GTIFFree(gtif);
   TIFFClose(tiffp);
@@ -478,7 +478,7 @@ ERROR_TYPE read_image_data2(FILE *fp, IMAGE *im, int x, int y, int inx, int scal
 	fseek(fp,-bpp*(nx*scale),SEEK_CUR);
 	fseek(fp,bpp*(scale*inx),SEEK_CUR);
       }
-    }  
+    }
     break;
   default:
     (void)sprintf(buf,"ERROR in read_image_data2(): \
@@ -516,24 +516,24 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
   for (i = 0; i < nbr_tags; i++){
     switch (tag_info[i].type){
       case 256:      /*  ImageWidth tag    */
-        nx = tag_info[i].ValOrPoint;	   
-        test++;  			   
-        break;    			   
+        nx = tag_info[i].ValOrPoint;
+        test++;
+        break;
       case 257:      /*  ImageLength tag   */
-        ny = tag_info[i].ValOrPoint;	   
-        test++;				   
-        break;    			   
+        ny = tag_info[i].ValOrPoint;
+        test++;
+        break;
       case 258:      /*  BitPerSample tag  */
-        bitpp = tag_info[i].ValOrPoint;	   
-        test++;				   
-        break;    			   
+        bitpp = tag_info[i].ValOrPoint;
+        test++;
+        break;
       case 273:      /*  StripOffset tag   */
         s_o_t = tag_info[i].ValOrPoint;
         test++;
-        break;    
+        break;
     }
   }
- 
+
   /*  Reading facultatif tags  */
   nz = 1;    /*  2D image by default  */
   for (i = 0; i < nbr_tags; i++){
@@ -555,24 +555,24 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
   for (i = 0; i < nbr_tags; i++){
     switch (tag_info[i].type){
       case 256:      /*  ImageWidth tag     */
-        nx = tag_info[i].ValOrPoint>>16;    
-        test++;  			    
-        break;    			    
+        nx = tag_info[i].ValOrPoint>>16;
+        test++;
+        break;
       case 257:      /*  ImageLength tag    */
-        ny = tag_info[i].ValOrPoint>>16;    
-        test++;				    
-        break;    			    
+        ny = tag_info[i].ValOrPoint>>16;
+        test++;
+        break;
       case 258:      /*  BitPerSample tag   */
-        bitpp = tag_info[i].ValOrPoint>>16; 
-        test++;				    
-        break;    			    
+        bitpp = tag_info[i].ValOrPoint>>16;
+        test++;
+        break;
       case 273:      /*  StripOffset tag    */
         s_o_t = tag_info[i].ValOrPoint;
         test++;
-        break;    
+        break;
     }
   }
- 
+
   /*  Reading facultatif tags  */
   nz = 1;    /*  2D image by default  */
   for (i = 0; i < nbr_tags; i++){
@@ -608,7 +608,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
     data_type = t_INT32;
   else if (bitpp == BITPERDOUBLE)
     data_type = t_DOUBLE;
-  
+
   /* Allow for color images  */
   if (pmi == 2)
     data_type = t_RGB;
@@ -627,7 +627,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
     inx=nx;
     nx=szx; ny=szy;
   }
-    
+
   /* create output image */
   im = create_image(data_type, nx, ny, nz);
   if (im == NULL){
@@ -668,18 +668,18 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
 {
   FILE *fp;
   IMAGE *im=NULL;
-  
+
   struct mytiff tiff_head;
- 
+
   /* Open file and try */
   if ((fp = fopen(fn, "rb")) == NULL){
     (void)sprintf(buf,"ERROR in read_image(): \
                    unable to read open file\n"); errputstr(buf);
     return(NULL);
   }
-  
-  
-  /*  Check whether it is a TIFF file  */ 
+
+
+  /*  Check whether it is a TIFF file  */
   (void)fseek(fp, 0L, 0);
   if (fread((char *)&tiff_head, sizeof(tiff_head), 1, fp) != 1){
     (void) fclose(fp);
@@ -700,7 +700,7 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
     (void)sprintf(buf,"read_file(): cannot read little-endian TIFF files on big-endian machines\n"); errputstr(buf);
     im = NULL;
 #endif
-  }      
+  }
   else{
     (void)sprintf(buf,"read_file(): unable to read %s on disk\n", fn); errputstr(buf);
   }
@@ -726,7 +726,7 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
       errputstr(buf);
       return NULL;
     }
-    
+
     TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &spp);
     if (spp!=1){
       TIFFClose(tif);
@@ -734,7 +734,7 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
       errputstr(buf);
       return NULL;
     }
-    
+
     TIFFGetField(tif, TIFFTAG_ROWSPERSTRIP, &rps);
     if (rps!=1){
       TIFFClose(tif);
@@ -742,7 +742,7 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
       errputstr(buf);
       return NULL;
     }
-    
+
     TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bps);
     if (bps<8){
       TIFFClose(tif);
@@ -754,7 +754,7 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
     TIFFGetField(tif, TIFFTAG_COMPRESSION, &comp);
     TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &nx);
     TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &ny);
-    
+
     if ( (szx>nx) || (szy>ny) ){
       TIFFClose(tif);
       (void)sprintf(buf,"readTiffSubset(%s,...): subset not included in input image\n", fn);
@@ -794,7 +794,7 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
     }
     bpp=GetImBitPerPixel(im)/8; /* byte(s) per pixel */
     pim=(UCHAR *)GetImPtr(im);
-    
+
     ptmp=(UCHAR *)malloc(nx*bpp);
     if (ptmp == NULL){
       TIFFClose(tif);
@@ -828,7 +828,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     char imdesc[512] = MYBANNER;
     char mode[10];
     char *mp=mode;
-    
+
     char *user_str=getenv("USER");
     char *localhost_str;
     char nodata_str[11]; /* maximum size is number of digits of 2^32 */
@@ -856,11 +856,11 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     tiepoint[3] = xoff;
     tiepoint[4] = yoff;
     tiepoint[5] = 0.0;
-    
+
     int nx  = GetImNx(im);
     int ny  = GetImNy(im);
     int nz  = GetImNz(im);
-    char *p = (char *)GetImPtr(im); 
+    char *p = (char *)GetImPtr(im);
     int bpp = GetImBitPerPixel(im)/8;
     int stripCount, sf;
     char timeString[20];
@@ -870,8 +870,8 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     if ( ((long int) nx * (long int) ny * (long int) nz * bpp) > UINT32_MAX ){
       (void)printf("writetiffospl() message: output file %s will be a bigtiff file\n", fn);
       *mp++ = '8'; *mp = '\0';
-    }    
-    
+    }
+
     tif = XTIFFOpen(fn, mode); /* X necessary for geotags */
     if (tif==NULL){
       (void)sprintf(buf,"writetiffospl(): unable to write %s on disk\n", fn);
@@ -937,7 +937,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);
       GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257222101);
       GTIFKeySet(gtif, GeogPrimeMeridianLongGeoKey, TYPE_DOUBLE, 1, 0.0);
-      
+
       // GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
 
       // GTIFKeySet(gtif, PCSCitationGeoKey, TYPE_ASCII, 1, "ETRS-LAEA");
@@ -957,7 +957,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
 
     GTIFWriteKeys(gtif);
     GTIFFree(gtif);
-    
+
     TIFFSetField(tif, TIFFTAG_GEOPIXELSCALE, 3, pixsize);
     TIFFSetField(tif, TIFFTAG_GEOTIEPOINTS, 6, tiepoint);
 
@@ -969,7 +969,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_SEPARATE);
     else
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-      
+
     TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);
     TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW);
     if ( GetImBitPerPixel(im) <= 16 )
@@ -1032,7 +1032,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     if (metadata_flag==1){
 	TIFFSetField(tif, TIFFTAG_GDAL_METADATA, metadata_str);
     }
- 
+
     lbuf=(void *)malloc(nx*bpp);
     if (lbuf==NULL){
       TIFFClose(tif);
@@ -1065,7 +1065,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     char imdesc[512] = MYBANNER;
     char mode[10];
     char *mp=mode;
-    
+
     IMAGE *im;
 
     char *user_str=getenv("USER");
@@ -1097,11 +1097,11 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     tiepoint[3] = xoff;
     tiepoint[4] = yoff;
     tiepoint[5] = 0.0;
-    
+
     int nx  = GetImNx(im);
     int ny  = GetImNy(im);
     int z, nz  = nc;
-    char *p = (char *)GetImPtr(im); 
+    char *p = (char *)GetImPtr(im);
     int bpp = GetImBitPerPixel(im)/8;
     int stripCount, sf;
     char timeString[20];
@@ -1111,8 +1111,8 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     if ( ((long int) nx * (long int) ny * (long int) nz * bpp) > UINT32_MAX ){
       (void)printf("writetiffospl() message: output file %s will be a bigtiff file\n", fn);
       *mp++ = '8'; *mp = '\0';
-    }    
-    
+    }
+
     tif = XTIFFOpen(fn, mode); /* X necessary for geotags */
     if (tif==NULL){
       (void)sprintf(buf,"writetiffospl(): unable to write %s on disk\n", fn);
@@ -1178,7 +1178,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
       GTIFKeySet(gtif, GeogSemiMajorAxisGeoKey, TYPE_DOUBLE, 1, 6378137.0);
       GTIFKeySet(gtif, GeogInvFlatteningGeoKey, TYPE_DOUBLE, 1, 298.257222101);
       GTIFKeySet(gtif, GeogPrimeMeridianLongGeoKey, TYPE_DOUBLE, 1, 0.0);
-      
+
       // GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
 
       // GTIFKeySet(gtif, PCSCitationGeoKey, TYPE_ASCII, 1, "ETRS-LAEA");
@@ -1197,7 +1197,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     }
     GTIFWriteKeys(gtif);
     GTIFFree(gtif);
-    
+
     TIFFSetField(tif, TIFFTAG_GEOPIXELSCALE, 3, pixsize);
     TIFFSetField(tif, TIFFTAG_GEOTIEPOINTS, 6, tiepoint);
 
@@ -1209,7 +1209,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_SEPARATE);
     else
       TIFFSetField(tif, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
-      
+
     TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, 1);
     TIFFSetField(tif, TIFFTAG_COMPRESSION, COMPRESSION_LZW);
     if ( GetImBitPerPixel(im) <= 16 )
@@ -1282,7 +1282,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     }
     stripCount=0;
     for (z=0; z<nc; z++){
-      p=(char *)GetImPtr(imap[z]); 
+      p=(char *)GetImPtr(imap[z]);
       for(; stripCount<ny*(z+1); stripCount++){
 	memcpy(lbuf, p, nx*bpp); /* because TIFFWriteEncodedStrip actually modifies the data ! */
 	if (TIFFWriteEncodedStrip(tif, stripCount, lbuf, nx*bpp) == -1){

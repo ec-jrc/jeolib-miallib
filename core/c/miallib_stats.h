@@ -67,7 +67,7 @@ extern ERROR_TYPE clmindist(IMAGE *immos, IMAGE *imin, int bklabel, int mode, do
 extern ERROR_TYPE clparpip(IMAGE *immos, IMAGE *imin, int bklabel, int mode, double mult);
 extern ERROR_TYPE clmaha(IMAGE *immos, IMAGE *imin, int bklabel, int mode, double thr);
 extern ERROR_TYPE clmaxlike(IMAGE *immos, IMAGE *imin, int bklabel, int type, double thr);
-#endif 
+#endif
 
 
 /* registration.c */

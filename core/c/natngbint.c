@@ -37,7 +37,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
   latter code relies itself on efficient triangle.c from Jonathan
   Richard Shewchuk, Berkeley California.  Downloaded from googlecode
   on 20140226
-  
+
   adaptation by Pierre Soille from:
   nnpi_interpolate_points(int nin, point pin[], double wmin, int nout, point pout[]);
 
@@ -74,7 +74,7 @@ IMAGE *uc_nni(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
   IMAGE *imout;
   PIX_TYPE *pim, *pimout;
   double *px, *py;
- 
+
   point *pin=NULL;
   point pout;
 
@@ -89,7 +89,7 @@ IMAGE *uc_nni(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
     printf("nni(): not enough memory for input point array\n");
     return NULL;
   }
-  
+
   imout=(IMAGE *)create_image(t_PIX_TYPE, nx, ny, 1);
   if(imout==NULL){
     free(pin);
@@ -99,18 +99,18 @@ IMAGE *uc_nni(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
   px=(double *)GetImPtr(imx);
   py=(double *)GetImPtr(imy);
   pim=(PIX_TYPE *)GetImPtr(im);
-	
+
 #pragma omp parallel for private(i)
   for (i=0; i<nin; ++i){
     pin[i].x=px[i];
     pin[i].y=py[i];
     pin[i].z=(double)pim[i];
     // printf("pin[%d].z=%d\n", i, (int)pin[i].z);
-  }	      
+  }
 
   delaunay* d = delaunay_build(nin, pin, 0, NULL, 0, NULL);
   nnpi* nn = nnpi_create(d);
-  
+
   nnpi_setwmin(nn, wmin);
 
   for(y=0; y<ny; y++){
@@ -183,7 +183,7 @@ IMAGE *uc_csi(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
   IMAGE *imout;
   PIX_TYPE *pim, *pimout;
   double *px, *py;
- 
+
   point* pin = NULL;
   point* pout = NULL;
   point *p=NULL;
@@ -202,7 +202,7 @@ IMAGE *uc_csi(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
     printf("csi(): not enough memory for input point array\n");
     return NULL;
   }
-  
+
   imout=(IMAGE *)create_image(t_PIX_TYPE, nx, ny, 1);
   if(imout==NULL){
     free(pin);

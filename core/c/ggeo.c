@@ -21,10 +21,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * @file   skel.c
  * @author Pierre Soille
- * @date   
- * 
+ * @date
+ *
  * @details see also \cite soille94
- * 
+ *
  */
 
 
@@ -46,7 +46,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #if (defined(XLISP))
 extern void gc();
 #endif
-	
+
 extern void emergencyfree_pq(struct pqueue *);
 
 
@@ -96,7 +96,7 @@ ERROR_TYPE uc_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
   else
     {BOX_3D;}
 
-  pr_max = PR_MAX; 
+  pr_max = PR_MAX;
 
   if (GetImDataType(im_m) != t_UCHAR){
     (void) sprintf(buf, "sqtgg(): input images must be of type CHAR\n"); errputstr(buf);
@@ -106,16 +106,16 @@ ERROR_TYPE uc_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     (void) sprintf(buf, "sqtgg(): input images must be of same geometry\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   /* Create an array of FIFO	*/
   if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
    (void) printf("sqtgg(): not enough memory for the FAH\n");
    return ERROR;
   }
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR)
     return ERROR;
@@ -124,7 +124,7 @@ ERROR_TYPE uc_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     return(ERROR);
   if (generic_framebox(im_m, box, PIX_MSB) == ERROR)
     return(ERROR);
-  
+
   /* Initialize the FAH */
   LOOPDN(i, GetImNPix(im_m)){
     if (*pr == 1){
@@ -148,7 +148,7 @@ ERROR_TYPE uc_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
       *pm = PIX_MSB;
     pr++; pm++;
   }
-  
+
   /* Ordered propagation of geodesic time function */
   for (t = 0; t <= pr_max; t++){
     pf = fifo[t];
@@ -175,7 +175,7 @@ ERROR_TYPE uc_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
 
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   LOOPDN(i, GetImNPix(im_m)){
     if ( ((*pm & PIX_MSB) == 0) || (*pr==MSK) )
       *pm=UNREACHEDVAL;
@@ -225,7 +225,7 @@ ERROR_TYPE us_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
   else
     {BOX_3D;}
 
-  pr_max = PR_MAX; 
+  pr_max = PR_MAX;
 
   if (GetImDataType(im_m) != t_USHORT){
     (void) sprintf(buf, "sqtgg(): input images must be of type CHAR\n"); errputstr(buf);
@@ -235,16 +235,16 @@ ERROR_TYPE us_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     (void) sprintf(buf, "sqtgg(): input images must be of same geometry\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   /* Create an array of FIFO	*/
   if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
    (void) printf("sqtgg(): not enough memory for the FAH\n");
    return ERROR;
   }
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR)
     return ERROR;
@@ -253,7 +253,7 @@ ERROR_TYPE us_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     return(ERROR);
   if (us_framebox(im_m, box, PIX_MSB) == ERROR)
     return(ERROR);
-  
+
   /* Initialize the FAH */
   LOOPDN(i, GetImNPix(im_m)){
     if (*pr == 1){
@@ -277,7 +277,7 @@ ERROR_TYPE us_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
       *pm = PIX_MSB;
     pr++; pm++;
   }
-  
+
   /* Ordered propagation of geodesic time function */
   for (t = 0; t <= pr_max; t++){
     pf = fifo[t];
@@ -304,7 +304,7 @@ ERROR_TYPE us_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
 
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   LOOPDN(i, GetImNPix(im_m)){
     if ( ((*pm & PIX_MSB) == 0) || (*pr==MSK) )
       *pm=UNREACHEDVAL;
@@ -353,7 +353,7 @@ ERROR_TYPE u32_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
   else
     {BOX_3D;}
 
-  pr_max = PR_MAX; 
+  pr_max = PR_MAX;
 
   if (GetImDataType(im_m) != t_INT32){
     (void) sprintf(buf, "sqtgg(): input images must be of type CHAR\n"); errputstr(buf);
@@ -363,16 +363,16 @@ ERROR_TYPE u32_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     (void) sprintf(buf, "sqtgg(): input images must be of same geometry\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   /* Create an array of FIFO	*/
   if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
    (void) printf("sqtgg(): not enough memory for the FAH\n");
    return ERROR;
   }
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR)
     return ERROR;
@@ -381,7 +381,7 @@ ERROR_TYPE u32_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     return(ERROR);
   if (u32_framebox(im_m, box, PIX_MSB) == ERROR)
     return(ERROR);
-  
+
   /* Initialize the FAH */
   LOOPDN(i, GetImNPix(im_m)){
     if (*pr == 1){
@@ -405,7 +405,7 @@ ERROR_TYPE u32_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
       *pm = PIX_MSB;
     pr++; pm++;
   }
-  
+
   /* Ordered propagation of geodesic time function */
   for (t = 0; t <= pr_max; t++){
     pf = fifo[t];
@@ -432,7 +432,7 @@ ERROR_TYPE u32_sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
 
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   LOOPDN(i, GetImNPix(im_m)){
     if ( ((*pm & PIX_MSB) == 0) || (*pr==MSK) )
       *pm=UNREACHEDVAL;
@@ -508,7 +508,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
   else
     {BOX_3D;}
 
-  pr_max = PR_MAX; 
+  pr_max = PR_MAX;
 
   if (GetImDataType(im_m) != t_INT32){
     (void) sprintf(buf, "sqtggpla(): input images must be of type CHAR\n"); errputstr(buf);
@@ -522,16 +522,16 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
     (void) sprintf(buf, "sqtggpla(): input images must be of same type\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   pm = (PIX_TYPE *)GetImPtr(im_m);  /* mask   */
   pr = (REF_TYPE *)GetImPtr(im_r);  /* marker */
-  
+
   /* Create an array of FIFO	*/
   if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
    (void) printf("sqtgg(): not enough memory for the FAH\n");
    return ERROR;
   }
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR)
     return ERROR;
@@ -540,7 +540,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
     return(ERROR);
   if (i32_framebox(im_m, box, REF_PIX_MSB) == ERROR)
     return(ERROR);
-  
+
   /* Initialize the FAH */
   LOOPDN(i, GetImNPix(im_m)){
     if (*pr & REF_PIX_MSB){
@@ -549,7 +549,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
 	for (k = 0; k < graph; ++k){
 	  if (*(pr + shift[k]) == valpla){
 	    p_k = pm + shift[k];
-          
+
 	    if (*p_k > pr_max){
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
 		(void) printf("sqtgg(): not enough memory for the FAH\n");
@@ -566,7 +566,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
 	    else if (fifo[*p_k] == NULL){
 	      fifo[*p_k] = alloc_fifo(GetImNx(im_m));
 	    }
-          
+
 	    fifo_add(fifo[*p_k], (long int)p_k);
 	    *(pr + shift[k]) = MSK;
 	    *p_k |= REF_PIX_MSB;
@@ -580,7 +580,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
       *pm = REF_PIX_MSB;
     pr++; pm++;
   }
-  
+
   /* Ordered propagation of geodesic time function */
   for (t = 0; t <= pr_max; t++){
     pf = fifo[t];
@@ -609,7 +609,7 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
           else if (fifo[*p_k] == NULL){
             fifo[*p_k] = alloc_fifo(GetImNx(im_m));
           }
-        
+
           fifo_add(fifo[*p_k], (long int)p_k);
           *p_k |= REF_PIX_MSB;
         }
@@ -620,12 +620,12 @@ ERROR_TYPE i32_sqtgpla(IMAGE *im_m, IMAGE *im_r,  int graph)
   free((char *)fifo);
 
   pm = (PIX_TYPE *)GetImPtr(im_m);
-  
+
   LOOPDN(i, GetImNPix(im_m)){
     *pm ^= REF_PIX_MSB;
     pm++;
   }
-           
+
   return NO_ERROR;
 }
 #include "i32_undef.h"
@@ -695,10 +695,10 @@ ERROR_TYPE u32_sqtg_new(IMAGE *im_m, IMAGE *im_r, int graph)
   if (pq == NULL){
     return ERROR;
   }
-  
+
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-    
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR)
     return ERROR;
@@ -723,7 +723,7 @@ ERROR_TYPE u32_sqtg_new(IMAGE *im_m, IMAGE *im_r, int graph)
 	  pqd = (PQDATUM )malloc(sizeof(struct node));
 	  pqd->prio = weight;
 	  pqd->offset= (long int)i+shift[k];
-	  pqmininsert(pq, pqd);	
+	  pqmininsert(pq, pqd);
           *pm_k |= PIX_MSB;
 	}
       }
@@ -733,13 +733,13 @@ ERROR_TYPE u32_sqtg_new(IMAGE *im_m, IMAGE *im_r, int graph)
       *pm=PIX_MSB;
     pr++; pm++;
   }
-  
+
   dumpxyz(im_m, 0, 47, 0, 10, 10);
 
   /* Ordered propagation of geodesic time function */
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
-  
+
   while (pqminremove(pq, apqd) != NULL){
     ofs=apqd[0]->offset;
     prio=apqd[0]->prio;
@@ -761,7 +761,7 @@ ERROR_TYPE u32_sqtg_new(IMAGE *im_m, IMAGE *im_r, int graph)
   }
 
   free_pq(pq);
-  
+
   LOOPDN(i, GetImNPix(im_m)){
     if ( ((*pm & PIX_MSB) == 0) || (*pr==MSK) )
       *pm=UNREACHEDVAL;
@@ -796,7 +796,7 @@ ERROR_TYPE sqtg(IMAGE *im_m, IMAGE *im_r, int graph)
     return ERROR;
   }
 
-  
+
   switch (GetImDataType(im_m)){
   case t_INT32: /* but call unsigned long int */
     u32_sqtg_new(im_m, im_r, graph);
@@ -864,7 +864,7 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
     free_image(imout);
     return NULL;
   }
-      
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im_m), GetImNy(im_m), GetImNz(im_m), graph, shift) == ERROR){
     free_image(imout);
@@ -924,7 +924,7 @@ IMAGE *uc_sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
   pm = (PIX_TYPE *)GetImPtr(im_m);
   pr = (UCHAR *)GetImPtr(im_r);
   po = (PIX_TYPE_OUT *)GetImPtr(imout);
-  
+
   while (pqminremove(pq, apqd) != NULL){
     ofs=apqd[0]->offset;
     prio=apqd[0]->prio;
@@ -973,9 +973,9 @@ IMAGE *sqtgsym(IMAGE *im_m, IMAGE *im_r, int graph)
     (void) sprintf(buf, "sqtgsym(): input images must be of same geometry and type\n"); errputstr(buf);
     return NULL;
   }
-  
+
   switch (GetImDataType(im_m)){
-  case t_UCHAR: 
+  case t_UCHAR:
     return(uc_sqtgsym(im_m, im_r, graph));
     break;
   default:

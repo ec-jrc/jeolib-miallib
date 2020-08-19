@@ -51,7 +51,7 @@ IMAGE *uc_deinterleave(IMAGE *im)
   IMAGE *imout;
   PIX_TYPE *pin, *pout;
   unsigned long int nelem, x, j, nz=GetImNz(im);
-  
+
   imout = create_image(GetImDataType(im), GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
     (void)sprintf(buf,"deinterleave(im): not enough memory!\n"); errputstr(buf);
@@ -77,7 +77,7 @@ IMAGE *us_deinterleave(IMAGE *im)
   IMAGE *imout;
   PIX_TYPE *pin, *pout;
   unsigned long int nelem, x, j, nz=GetImNz(im);
-  
+
   imout = create_image(GetImDataType(im), GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
     (void)sprintf(buf,"deinterleave(im): not enough memory!\n"); errputstr(buf);
@@ -103,7 +103,7 @@ IMAGE *u32_deinterleave(IMAGE *im)
   IMAGE *imout;
   PIX_TYPE *pin, *pout;
   unsigned long int nelem, x, j, nz=GetImNz(im);
-  
+
   imout = create_image(GetImDataType(im), GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
     (void)sprintf(buf,"deinterleave(im): not enough memory!\n"); errputstr(buf);
@@ -127,11 +127,11 @@ IMAGE *u32_deinterleave(IMAGE *im)
 /* deinterleave (bip2bsq): useful when reading TIFF image with chunky format */
 
 
-/** 
+/**
  * @synopsis  converts a multiband image, represented as a 3D image, from band interleaved format to band sequential format
- * 
- * @param an image with band interleaved representation 
- * 
+ *
+ * @param an image with band interleaved representation
+ *
  * @return an image with band sequential representation
  *
  */

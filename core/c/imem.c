@@ -19,12 +19,12 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
 
 /**
-    
+
     imem.c
     Purpose: IMAGE memory management functions
 
-    @author Pierre Soille 
-    @version latest 
+    @author Pierre Soille
+    @version latest
 */
 
 
@@ -72,11 +72,11 @@ void errputstr(char *buf)
   printf("%s", buf);
 }
 // see https://docs.python.org/2/c-api/memory.html
-// void* PyMem_Malloc(size_t n) 
+// void* PyMem_Malloc(size_t n)
 // void PyMem_Free(void *p)
 // TYPE* PyMem_New(TYPE, size_t n)
 #define my_malloc(x) PyMem_Malloc(x)
-#define my_free_malloc(x) PyMem_Free(x)  
+#define my_free_malloc(x) PyMem_Free(x)
 #define my_calloc(x,y) PyMem_New(x,y)   /* x for TYPE and y for number of elements */
 #define my_free_calloc(x) PyMem_Del(x)
 #elif !defined(XLISP)
@@ -88,10 +88,10 @@ void errputstr(char *buf)
 {
   fprintf(stderr,"%s\n", buf);
 }
-#define my_malloc(x) malloc(x) 
-#define my_free_malloc(x) free(x)  
-#define my_calloc(x,y) (x *)calloc(y,sizeof(x)) 
-#define my_free_calloc(x) free(x) 
+#define my_malloc(x) malloc(x)
+#define my_free_malloc(x) free(x)
+#define my_calloc(x,y) (x *)calloc(y,sizeof(x))
+#define my_free_calloc(x) free(x)
 #endif
 
 
@@ -105,7 +105,7 @@ int fprintfgenericnum(G_TYPE gval, int type)
     (void)sprintf(buf,"%d\n", (int)gval.uc_val); stdputstr(buf);
   }
   else if  (type == t_USHORT){
-    (void)sprintf(buf,"%d\n", (int)gval.us_val); stdputstr(buf); 
+    (void)sprintf(buf,"%d\n", (int)gval.us_val); stdputstr(buf);
   }
   else if (type == t_SHORT){
     (void)sprintf(buf,"%d\n", (int)gval.s_val); stdputstr(buf);
@@ -126,7 +126,7 @@ int fprintfgenericnum(G_TYPE gval, int type)
     (void)sprintf(buf,"%f\n", gval.f_val); stdputstr(buf);
   }
   else if (type == t_DOUBLE){
-    (void)sprintf(buf,"%lf\n", (float)gval.d_val); stdputstr(buf); 
+    (void)sprintf(buf,"%lf\n", (float)gval.d_val); stdputstr(buf);
   }
   else
     return(ERROR);
@@ -177,7 +177,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
     getrlimit(RLIMIT_MEMLOCK, rlim);
     fprintf(stderr, "RLIMIT_MEMLOCK cur=%d\n", rlim->rlim_cur);
     fprintf(stderr, "RLIMIT_MEMLOCK max=%d\n", rlim->rlim_max);
-    getrlimit(RLIMIT_AS, rlim);   
+    getrlimit(RLIMIT_AS, rlim);
     fprintf(stderr, "RLIMIT_AS cur=%d\n", rlim->rlim_cur);
     fprintf(stderr, "RLIMIT_AS max=%d\n", rlim->rlim_max);
 #endif
@@ -212,7 +212,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
     /* `bug': we do not handle this type, except for I/O */
     /* nbyte = ny*(nx/2+(nx%2))*sizeof(UCHAR); */
     /* -> dummy type */
-  case t_TIFFONEBITPERPIXEL:   
+  case t_TIFFONEBITPERPIXEL:
     /* `bug': we do not handle this type, except for I/O */
     /* -> dummy type */
   case t_UCHAR:
@@ -257,7 +257,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
 
 #if (defined(XLISP)) /* always call xlisp garbage collector (2004-12-6) */
     gc();
-#endif 
+#endif
     p = (char *)calloc(nbyte, sizeof(char));
 
   if (p == NULL){
@@ -276,7 +276,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
       return(NULL);
     }
     memset((void *) p, 0, nbyte * sizeof(char));
-#else 
+#else
     (void)sprintf(buf,"ERROR in create_image(data_type=%d, nx=%ld, ny=%d, nz=%d) \
                        not enough memory\n", data_type, nx, ny, nz); errputstr(buf);
     free((char *)im);
@@ -424,7 +424,7 @@ ERROR_TYPE iminfo(IMAGE *im)
   }
   (void)sprintf(buf,"Image size in x\t\t=\t%ld\n",GetImNx(im)); stdputstr(buf);
   (void)sprintf(buf,"Image size in y\t\t=\t%ld\n",GetImNy(im)); stdputstr(buf);
-  (void)sprintf(buf,"Image size in z\t\t=\t%ld\n",GetImNz(im)); stdputstr(buf); 
+  (void)sprintf(buf,"Image size in z\t\t=\t%ld\n",GetImNz(im)); stdputstr(buf);
   (void)sprintf(buf,"Number of bytes\t\t=\t%ld\n",GetImNByte(im)); stdputstr(buf);
   plut = (unsigned short int *)GetImLut(im);
   if (plut != NULL){
@@ -485,13 +485,13 @@ IMAGE *copy_image(IMAGE *im)
       }
     }
   }
-    
+
 #ifdef DMALLOC
   (void)sprintf(buf,"malloc_debug returns %d in copy_image\n",malloc_debug()); errputstr(buf);
 #endif
   return(imout);
 }
-    
+
 
 /*************************************************************************/
 
@@ -533,16 +533,16 @@ ERROR_TYPE create_lut(IMAGE *im)
     (void)sprintf(buf,"WARNING in create_lut: image has already a LUT\n"); errputstr(buf);
     return(NO_ERROR);
   }
-  
+
   if(out_lut == NULL){
     (void)sprintf(buf,"ERROR in create_lut not enough memory to create new lut\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   SetImLut(im, out_lut);
   for (i=0; i<768; i++)
     out_lut[i]=(i%256)<<8;
-  
+
   return(NO_ERROR);
 }
 
@@ -572,16 +572,16 @@ ERROR_TYPE copy_lut(IMAGE *im1, IMAGE *im2)
     free(out_lut);
     out_lut = (unsigned short int *)malloc(n*sizeof(short));
   }
-  
+
   if(out_lut == NULL){
     (void)sprintf(buf,"ERROR in copy_lut not enough memory to create new lut\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   SetImLut(im1, out_lut);
   for (i=0; i<n; i++)
     out_lut[i]=im2->lut[i];
-  
+
   return(NO_ERROR);
 }
 
@@ -623,7 +623,7 @@ ERROR_TYPE setpixval(IMAGE *im, unsigned long offset, G_TYPE g)
     *((DOUBLE *) GetImPtr(im) + offset) = g.d_val;
     return NO_ERROR;
   default:
-    (void)sprintf(buf,"setpixval(): invalid pixel type=%d\n", GetImDataType(im)); errputstr(buf);    
+    (void)sprintf(buf,"setpixval(): invalid pixel type=%d\n", GetImDataType(im)); errputstr(buf);
   }
   return ERROR;
 }
@@ -668,7 +668,7 @@ G_TYPE getpixval(IMAGE *im, unsigned long offset)
     g.d_val= *((DOUBLE *) GetImPtr(im)  + offset);
     break;
   default:
-    (void)sprintf(buf,"getpixval(): invalid pixel type=%d\n", GetImDataType(im)); errputstr(buf);    
+    (void)sprintf(buf,"getpixval(): invalid pixel type=%d\n", GetImDataType(im)); errputstr(buf);
   }
   return g;
 }
@@ -691,7 +691,7 @@ ERROR_TYPE uc_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
   *ofs=p-(PIX_TYPE *)GetImPtr(im);
 
   return NO_ERROR;
-  
+
 }
 #include "uc_undef.h"
 
@@ -713,7 +713,7 @@ ERROR_TYPE us_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
   *ofs=p-(PIX_TYPE *)GetImPtr(im);
 
   return NO_ERROR;
-  
+
 }
 #include "us_undef.h"
 
@@ -734,7 +734,7 @@ ERROR_TYPE i32_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
   *ofs=p-(PIX_TYPE *)GetImPtr(im);
 
   return NO_ERROR;
-  
+
 }
 #include "i32_undef.h"
 
@@ -756,7 +756,7 @@ ERROR_TYPE f_FindPixWithVal(IMAGE *im, PIX_TYPE val, unsigned long int *ofs)
   *ofs=p-(PIX_TYPE *)GetImPtr(im);
 
   return NO_ERROR;
-  
+
 }
 #include "f_undef.h"
 
@@ -812,9 +812,9 @@ IMAGE *uc_imtoarray(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, n=0, npix=GetImNPix(im);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   for(i=0; i<npix; i++)
     if(proi[i])
       n++;
@@ -827,7 +827,7 @@ IMAGE *uc_imtoarray(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[o++]=pim[i];
@@ -845,9 +845,9 @@ IMAGE *us_imtoarray(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, n=0, npix=GetImNPix(im);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   for(i=0; i<npix; i++)
     if(proi[i])
       n++;
@@ -860,7 +860,7 @@ IMAGE *us_imtoarray(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[o++]=pim[i];
@@ -876,9 +876,9 @@ IMAGE *g32_imtoarray(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, n=0, npix=GetImNPix(im);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   for(i=0; i<npix; i++)
     if(proi[i])
       n++;
@@ -891,7 +891,7 @@ IMAGE *g32_imtoarray(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[o++]=pim[i];
@@ -908,7 +908,7 @@ IMAGE *imtoarray(IMAGE *im, IMAGE *imroi)
     (void)sprintf(buf,"imtoarray(IMAGE *im, IMAGE *imroi): images must be the same size and imroi of type UCHAR\n"); errputstr(buf);
     return NULL;
   }
-  
+
   switch(GetImDataType(im)){
   case t_UCHAR:
     return(uc_imtoarray(im, imroi));
@@ -938,9 +938,9 @@ IMAGE *uc_arraytoim(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, npix=GetImNPix(imroi);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   imout=create_image(t_PIX_TYPE, GetImNx(imroi), GetImNy(imroi), GetImNz(imroi));
   if (imout==NULL){
     (void)sprintf(buf,"uc_arraytoim(IMAGE *im, IMAGE *imroi): not enough memory\n"); errputstr(buf);
@@ -949,7 +949,7 @@ IMAGE *uc_arraytoim(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[i]=pim[o++];
@@ -967,9 +967,9 @@ IMAGE *us_arraytoim(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, npix=GetImNPix(imroi);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   imout=create_image(t_PIX_TYPE, GetImNx(imroi), GetImNy(imroi), GetImNz(imroi));
   if (imout==NULL){
     (void)sprintf(buf,"uc_arraytoim(IMAGE *im, IMAGE *imroi): not enough memory\n"); errputstr(buf);
@@ -978,7 +978,7 @@ IMAGE *us_arraytoim(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[i]=pim[o++];
@@ -995,9 +995,9 @@ IMAGE *g32_arraytoim(IMAGE *im, IMAGE *imroi)
   PIX_TYPE *pim;
   UCHAR *proi;
   mia_size_t i, o=0, npix=GetImNPix(imroi);
-  
+
   proi=(UCHAR *)GetImPtr(imroi);
-  
+
   imout=create_image(GetImDataType(im), GetImNx(imroi), GetImNy(imroi), GetImNz(imroi));
   if (imout==NULL){
     (void)sprintf(buf,"uc_arraytoim(IMAGE *im, IMAGE *imroi): not enough memory\n"); errputstr(buf);
@@ -1006,7 +1006,7 @@ IMAGE *g32_arraytoim(IMAGE *im, IMAGE *imroi)
 
   pim=(PIX_TYPE *)GetImPtr(im);
   pout=(PIX_TYPE *)GetImPtr(imout);
- 
+
   for(i=0; i<npix; i++)
     if (proi[i])
       pout[i]=pim[o++];
@@ -1023,7 +1023,7 @@ IMAGE *arraytoim(IMAGE *im, IMAGE *imroi)
     (void)sprintf(buf,"arraytoim(IMAGE *im, IMAGE *imroi): im must not have more pixels than imroi and imroi must be of type UCHAR\n"); errputstr(buf);
     return NULL;
   }
-  
+
   switch(GetImDataType(im)){
   case t_UCHAR:
     return(uc_arraytoim(im, imroi));
@@ -1055,7 +1055,7 @@ ERROR_TYPE generic_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1080,17 +1080,17 @@ ERROR_TYPE generic_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1112,7 +1112,7 @@ ERROR_TYPE s_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1137,17 +1137,17 @@ ERROR_TYPE s_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1169,7 +1169,7 @@ ERROR_TYPE us_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1194,17 +1194,17 @@ ERROR_TYPE us_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1227,7 +1227,7 @@ ERROR_TYPE i32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1252,17 +1252,17 @@ ERROR_TYPE i32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1283,7 +1283,7 @@ ERROR_TYPE u32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1308,17 +1308,17 @@ ERROR_TYPE u32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6u",p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1339,7 +1339,7 @@ ERROR_TYPE i64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1364,17 +1364,17 @@ ERROR_TYPE i64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6ld",(long int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1394,7 +1394,7 @@ ERROR_TYPE u64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1419,17 +1419,17 @@ ERROR_TYPE u64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6lu",(long unsigned int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1449,7 +1449,7 @@ ERROR_TYPE f_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1474,17 +1474,17 @@ ERROR_TYPE f_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf,"%9d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif
@@ -1505,7 +1505,7 @@ ERROR_TYPE d_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   PIX_TYPE *p;
 
   p=(PIX_TYPE *)GetImPtr(im);
- 
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -1529,17 +1529,17 @@ ERROR_TYPE d_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
   y2 = y+dy/2;
   if (y2>=ny)
     y2=ny-1;
-  
-  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf); 
+
+  (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
     (void)sprintf(buf," %9d|",i); stdputstr(buf);
   }
-  (void)sprintf(buf,"\n"); stdputstr(buf); 
+  (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
     (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
-      (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf); 
+      (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #else
       (void)sprintf(buf,"%6d",(int)p[z*nx*ny+i*nx+j]); stdputstr(buf);
 #endif

@@ -197,7 +197,7 @@ ERROR_TYPE s_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].s_val = mini;
   pg[1].s_val = maxi;
 
@@ -222,7 +222,7 @@ ERROR_TYPE u32_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].u32_val = mini;
   pg[1].u32_val = maxi;
 
@@ -247,7 +247,7 @@ ERROR_TYPE i64_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].i64_val = mini;
   pg[1].i64_val = maxi;
 
@@ -272,7 +272,7 @@ ERROR_TYPE u64_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].u64_val = mini;
   pg[1].u64_val = maxi;
 
@@ -297,7 +297,7 @@ ERROR_TYPE f_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].f_val = mini;
   pg[1].f_val = maxi;
 
@@ -322,7 +322,7 @@ ERROR_TYPE d_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].d_val = mini;
   pg[1].d_val = maxi;
 
@@ -348,7 +348,7 @@ ERROR_TYPE us_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].us_val = mini;
   pg[1].us_val = maxi;
 
@@ -373,7 +373,7 @@ ERROR_TYPE i32_min_max(IMAGE *im, G_TYPE *pg)
     else if (*p1 > maxi)
       maxi = *p1;
   }
-  
+
   pg[0].i32_val = mini;
   pg[1].i32_val = maxi;
 
@@ -391,7 +391,7 @@ G_TYPE *min_max(IMAGE *im)
   if (pg == NULL){
     (void)sprintf(buf,"min_max(im): not enough memory\n"); errputstr(buf);
     return(pg);
-  }     
+  }
 
   switch (GetImDataType(im)){
 
@@ -453,7 +453,7 @@ IMAGE *generic_histo1d(IMAGE *im)
   PIX_TYPE *pcrt, *pend, maxi;
   HST1D_TYPE *phst;
   G_TYPE *pg;
-  long int npix; 
+  long int npix;
 
 #if SIGNED
   (void)sprintf(buf,"generic_histo1d(): signed data type not handled\n"); errputstr(buf);
@@ -498,7 +498,7 @@ IMAGE *u32_histo1d(IMAGE *im)
   PIX_TYPE *pcrt, *pend, maxi;
   HST1D_TYPE *phst;
   G_TYPE *pg;
-  long int npix; 
+  long int npix;
 
 #if SIGNED
   (void)sprintf(buf,"ul_histo1d(): signed data type not handled\n"); errputstr(buf);
@@ -543,7 +543,7 @@ IMAGE *us_histo1d(IMAGE *im)
   PIX_TYPE *pcrt, *pend, maxi;
   HST1D_TYPE *phst;
   G_TYPE *pg;
-  long int npix; 
+  long int npix;
 
 #if SIGNED
   (void)sprintf(buf,"us_histo1d(): signed data type not handled\n"); errputstr(buf);
@@ -586,7 +586,7 @@ IMAGE *i32_histo1d(IMAGE *im)
   PIX_TYPE *pcrt, *pend, maxi, mini;
   HST1D_TYPE *phst;
   G_TYPE *pg;
-  long int npix; 
+  long int npix;
 
 #if FLOATING
   (void)sprintf(buf,"l_histo1d(): float data type not handled\n"); errputstr(buf);
@@ -624,7 +624,7 @@ IMAGE *i32_histo1d(IMAGE *im)
 #include "i32_undef.h"
 
 IMAGE *histo1d(IMAGE *im)
-{ 
+{
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE
@@ -1004,7 +1004,7 @@ IMAGE *u32_rsum(IMAGE *im)
   IMAGE *imout;
   PIX_TYPE *pim;
   HST1D_TYPE *phst;
-  long int npix, i; 
+  long int npix, i;
 
   npix = GetImNPix(im);
 
@@ -1036,7 +1036,7 @@ IMAGE *i32_rsum(IMAGE *im)
   IMAGE *imout;
   PIX_TYPE *pim;
   HST1D_TYPE *phst;
-  long int npix, i; 
+  long int npix, i;
 
   npix = GetImNPix(im);
 
@@ -1112,7 +1112,7 @@ ERROR_TYPE generic_histcompress(IMAGE *im)
   HST1D_TYPE *phst;
   PIX_TYPE *pim, val=0;
   unsigned long i, nval, npix;
-  
+
   imhst = histo1d(im);
   if (imhst==NULL)
     return(ERROR);
@@ -1127,7 +1127,7 @@ ERROR_TYPE generic_histcompress(IMAGE *im)
 
   for(i=0;i<npix;i++,pim++)
     *pim=phst[*pim];
-  
+
   free_image(imhst);
   return(NO_ERROR);
 }
@@ -1142,7 +1142,7 @@ ERROR_TYPE us_histcompress(IMAGE *im)
   HST1D_TYPE *phst;
   PIX_TYPE *pim, val=0;
   unsigned long i, nval, npix;
-  
+
   imhst = histo1d(im);
   if (imhst==NULL)
     return(ERROR);
@@ -1157,7 +1157,7 @@ ERROR_TYPE us_histcompress(IMAGE *im)
 
   for(i=0;i<npix;i++,pim++)
     *pim=phst[*pim];
-  
+
   free_image(imhst);
   return(NO_ERROR);
 }
@@ -1170,7 +1170,7 @@ ERROR_TYPE u32_histcompress(IMAGE *im)
   HST1D_TYPE *phst;
   PIX_TYPE *pim, val=0;
   unsigned long i, nval, npix;
-  
+
   imhst = histo1d(im);
   if (imhst==NULL)
     return(ERROR);
@@ -1185,7 +1185,7 @@ ERROR_TYPE u32_histcompress(IMAGE *im)
 
   for(i=0;i<npix;i++,pim++)
     *pim=phst[*pim];
-  
+
   free_image(imhst);
   return(NO_ERROR);
 }
@@ -1193,7 +1193,7 @@ ERROR_TYPE u32_histcompress(IMAGE *im)
 
 
 ERROR_TYPE histcompress(IMAGE *im)
-{ 
+{
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE
@@ -1230,7 +1230,7 @@ ERROR_TYPE uc_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
 
- #pragma omp parallel for 
+ #pragma omp parallel for
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1262,8 +1262,8 @@ ERROR_TYPE us_lookup(IMAGE *im, IMAGE *imlut)
   int maxlutidx=GetImNPix(imlut)-1;
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
-  
-#pragma omp parallel for 
+
+#pragma omp parallel for
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1295,7 +1295,7 @@ ERROR_TYPE u32_lookup(IMAGE *im, IMAGE *imlut)
   int maxlutidx=GetImNPix(imlut)-1;
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
-  
+
 #pragma omp parallel for
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
@@ -1329,7 +1329,7 @@ ERROR_TYPE f_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut), val;
 
-#pragma omp parallel for   
+#pragma omp parallel for
   for(i=0;i<npix;i++){
     if((INT32)p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1389,7 +1389,7 @@ ERROR_TYPE uc_lookuptypematch(IMAGE *im, IMAGE *imlut)
   int maxlutidx=GetImNPix(imlut)-1;
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   PIX_TYPE *lut=(PIX_TYPE *)GetImPtr(imlut);
-  
+
 #pragma omp parallel for
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
@@ -1411,7 +1411,7 @@ ERROR_TYPE u32_lookuptypematch(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   PIX_TYPE *lut=(PIX_TYPE *)GetImPtr(imlut);
 
-#pragma omp parallel for  
+#pragma omp parallel for
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1431,7 +1431,7 @@ ERROR_TYPE lookuptypematch(IMAGE *im, IMAGE *imlut)
     errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(uc_lookuptypematch(im, imlut));
@@ -1456,7 +1456,7 @@ IMAGE *uc_lookuprgb(IMAGE *imr, IMAGE *img, IMAGE *imb, IMAGE *imlut)
 
     First 20130430
   */
-  
+
   /* generic code for unsigned integer types only */
   IMAGE *imout;
   long int i,idx;
@@ -1541,11 +1541,11 @@ ERROR_TYPE generic_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "g_undef.h"
@@ -1561,11 +1561,11 @@ ERROR_TYPE us_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "us_undef.h"
@@ -1580,11 +1580,11 @@ ERROR_TYPE s_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "s_undef.h"
@@ -1599,11 +1599,11 @@ ERROR_TYPE i32_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "i32_undef.h"
@@ -1618,11 +1618,11 @@ ERROR_TYPE u32_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "u32_undef.h"
@@ -1637,11 +1637,11 @@ ERROR_TYPE u64_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "u64_undef.h"
@@ -1656,11 +1656,11 @@ ERROR_TYPE i64_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "i64_undef.h"
@@ -1675,11 +1675,11 @@ ERROR_TYPE f_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "f_undef.h"
@@ -1695,11 +1695,11 @@ ERROR_TYPE d_volume(IMAGE *im)
   p1   = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
 
-  for (i=0; i<npix; i++, p1++) 
+  for (i=0; i<npix; i++, p1++)
     sum += *p1;
-  
+
   SetImVol(im,sum);
- 
+
   return(NO_ERROR);
 }
 #include "d_undef.h"
@@ -1769,7 +1769,7 @@ IMAGE *generic_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   ** buf_2:  buffer number of second image component  I(CHAR)
   ** buf_3:  buffer number of labelled histogram    I(CHAR | SHORT)
   */
-  
+
   IMAGE *imout;
   PIX_TYPE *p1, *p2, *p_end;
   HST2D_TYPE *plut, *pout;
@@ -1788,7 +1788,7 @@ IMAGE *generic_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   plut  =(HST2D_TYPE *)GetImPtr(imlut);
   pout  =(HST2D_TYPE *)GetImPtr(imout);
 
-  
+
   p_end = p1 + GetImNPix(im1);
   for (; p1 < p_end; p1++, p2++, pout++)
     *pout = plut[*p2 * nxlut + *p1];
@@ -1807,7 +1807,7 @@ IMAGE *us_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   ** buf_2:  buffer number of second image component  I(CHAR)
   ** buf_3:  buffer number of labelled histogram    I(CHAR | SHORT)
   */
-  
+
   IMAGE *imout;
   PIX_TYPE *p1, *p2, *p_end;
   HST2D_TYPE *plut, *pout;
@@ -1826,7 +1826,7 @@ IMAGE *us_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   plut  =(HST2D_TYPE *)GetImPtr(imlut);
   pout  =(HST2D_TYPE *)GetImPtr(imout);
 
-  
+
   p_end = p1 + GetImNPix(im1);
   for (; p1 < p_end; p1++, p2++, pout++)
     *pout = plut[*p2 * nxlut + *p1];
@@ -1846,7 +1846,7 @@ IMAGE *usus_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   ** buf_2:  buffer number of second image component  I(CHAR)
   ** buf_3:  buffer number of labelled histogram    I(CHAR | SHORT)
   */
-  
+
   IMAGE *imout;
   PIX_TYPE *p1, *p2, *p_end;
   HST2D_TYPE_LOCAL *plut, *pout;
@@ -1865,7 +1865,7 @@ IMAGE *usus_class2d(IMAGE *im1, IMAGE *im2, IMAGE *imlut)
   plut  =(HST2D_TYPE_LOCAL *)GetImPtr(imlut);
   pout  =(HST2D_TYPE_LOCAL *)GetImPtr(imout);
 
-  
+
   p_end = p1 + GetImNPix(im1);
   for (; p1 < p_end; p1++, p2++, pout++)
     *pout = plut[*p2 * nxlut + *p1];
@@ -1942,7 +1942,7 @@ IMAGE *us_area(IMAGE *im, int r, int type)
   pin =(PIX_TYPE *)GetImPtr(im);
   pout=(OUT_TYPE *)GetImPtr(imout);
   twor2 = 2*r2;
-  
+
   switch(type){
   case 0: /* 45 degrees triangulation */
     for (y=1; y<ny; y++){
@@ -1952,10 +1952,10 @@ IMAGE *us_area(IMAGE *im, int r, int type)
 	c=sqrt(SQ(fabs((double) *(pin+1) - *(pin+nx))) + twor2);
 	s = (a+b+c)/2.0;
 	aire=sqrt( s*(s-a)*(s-b)*(s-c) );
-	
+
 	a=sqrt(SQ(fabs((double) *(pin+1)  - *(pin+nx+1)))  + r2);
 	b=sqrt(SQ(fabs((double) *(pin+nx) - *(pin+nx+1)))  + r2);
-	s = (a+b+c)/2.0;	
+	s = (a+b+c)/2.0;
 	aire+=sqrt( s*(s-a)*(s-b)*(s-c) );
 	*pout++ =aire;
 	pin++;
@@ -1971,10 +1971,10 @@ IMAGE *us_area(IMAGE *im, int r, int type)
 	c=sqrt(SQ( (double) *pin      - *(pin+nx+1)) + twor2);
 	s = (a+b+c)/2.0;
 	aire=sqrt( s*(s-a)*(s-b)*(s-c) );
-	
+
 	a=sqrt(SQ( (double) *pin     - *(pin+1))    + r2);
 	b=sqrt(SQ( (double) *(pin+1) - *(pin+nx+1)) + r2);
-	s = (a+b+c)/2.0;	
+	s = (a+b+c)/2.0;
 	aire+=sqrt( s*(s-a)*(s-b)*(s-c) );
 	*pout++ =aire;
 	pin++;
@@ -2035,7 +2035,7 @@ IMAGE *area(IMAGE *im, int r, int type)
   case t_USHORT:
     return(us_area(im, r, type));
     break;
-    
+
   default:
     (void)sprintf(buf,"area(IMAGE *im, int r, int type): invalid pixel type for im\n"); errputstr(buf);
     return(NULL);
@@ -2061,9 +2061,9 @@ ERROR_TYPE uc_dirmax(IMAGE *im, int dir)
   pim = (PIX_TYPE *)GetImPtr(im);
   nx  = GetImNx(im);
   ny  = GetImNy(im);
-  
+
   switch(dir){
-    
+
   case 0:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2077,7 +2077,7 @@ ERROR_TYPE uc_dirmax(IMAGE *im, int dir)
 	  *aux_im--=*aux_max_a++;
     free((char*)max_a);
     break;
-    
+
   case 1:
     aux_im=pim;
     for(j=0;j<ny;j++)
@@ -2087,7 +2087,7 @@ ERROR_TYPE uc_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im++=max;
     break;
-    
+
   case 2:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2101,7 +2101,7 @@ ERROR_TYPE uc_dirmax(IMAGE *im, int dir)
 	  *aux_im++=*aux_max_a++;
     free((char*)max_a);
     break;
-    
+
   case 3:
     aux_im=pim+nx*ny-1;
     for(j=0;j<ny;j++)
@@ -2111,7 +2111,7 @@ ERROR_TYPE uc_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im--=max;
     break;
-    
+
   default:
     return(ERROR);
   }
@@ -2137,9 +2137,9 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
   pim = (PIX_TYPE *)GetImPtr(im);
   nx  = GetImNx(im);
   ny  = GetImNy(im);
-  
+
   switch(dir){
-    
+
   case 0:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2153,7 +2153,7 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
 	  *aux_im--=*aux_max_a++;
     free((char*)max_a);
     break;
-       
+
   case 1:
     aux_im=pim;
     for(j=0;j<ny;j++)
@@ -2163,7 +2163,7 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im++=max;
     break;
-    
+
   case 2:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2177,7 +2177,7 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
 	  *aux_im++=*aux_max_a++;
     free((char*)max_a);
     break;
-       
+
   case 3:
     aux_im=pim+nx*ny-1;
     for(j=0;j<ny;j++)
@@ -2187,7 +2187,7 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im--=max;
     break;
-    
+
   case 31:
     for(j=0;j<ny;j++){
       aux_im=pim+(j*nx);
@@ -2213,7 +2213,7 @@ ERROR_TYPE us_dirmax(IMAGE *im, int dir)
 	  *aux_im=0;
     }
   break;
-   
+
   default:
     return(ERROR);
   }
@@ -2241,9 +2241,9 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
   pim = (PIX_TYPE *)GetImPtr(im);
   nx  = GetImNx(im);
   ny  = GetImNy(im);
-  
+
   switch(dir){
-    
+
   case 0:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2257,7 +2257,7 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
 	  *aux_im--=*aux_max_a++;
     free((char*)max_a);
     break;
-    
+
   case 1:
     aux_im=pim;
     for(j=0;j<ny;j++)
@@ -2267,7 +2267,7 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im++=max;
     break;
-    
+
   case 2:
     if((max_a=(PIX_TYPE *)malloc(nx*sizeof(PIX_TYPE)))==(PIX_TYPE *)NULL)
       return(ERROR);
@@ -2281,7 +2281,7 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
 	  *aux_im++=*aux_max_a++;
     free((char*)max_a);
     break;
-    
+
   case 3:
     aux_im=pim+nx*ny-1;
     for(j=0;j<ny;j++)
@@ -2291,7 +2291,7 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
 	else
 	  *aux_im--=max;
     break;
-    
+
   default:
     return(ERROR);
   }
@@ -2302,7 +2302,7 @@ ERROR_TYPE f_dirmax(IMAGE *im, int dir)
 
 ERROR_TYPE dirmax(IMAGE *im, int dir)
 {
-  
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:
@@ -2334,7 +2334,7 @@ IMAGE *f_dirsum(IMAGE *im, int dir)
   /*
   ** im: an image
   ** dir: direction 0=vertical, 1=horizontal
-  **                
+  **
   */
 
   int		i,j,nx,ny;
@@ -2345,37 +2345,37 @@ IMAGE *f_dirsum(IMAGE *im, int dir)
   pim = (PIX_TYPE *)GetImPtr(im);
   nx  = GetImNx(im);
   ny  = GetImNy(im);
-  
+
   switch(dir){
-    
+
   case 0:
     imout=create_image(t_FLOAT, nx, 1, 1);
     pout=(PIX_TYPE_OUT *)GetImPtr(imout);
-    
+
     for(j=0;j<ny;j++){
       for(i=0; i<nx;i++)
 	*pout++ +=*pim++;
       pout-=nx;
     }
     break;
-    
+
   case 1:
     imout=create_image(t_FLOAT, 1, ny, 1);
     pout=(PIX_TYPE_OUT *)GetImPtr(imout);
-    
+
     for(j=0;j<ny;j++){
       for(i=0; i<nx;i++)
 	*pout +=*pim++;
       pout++;
     }
     break;
-    
+
   default:
     return(NULL);
   }
   return(imout);
 }
-#undef PIX_TYPE_OUT 
+#undef PIX_TYPE_OUT
 #include "f_undef.h"
 
 
@@ -2402,13 +2402,13 @@ IMAGE *dirsum(IMAGE *im, int dir)
 /*                 predicate for identity test between 2 images          */
 
 
-/** 
+/**
  * @synopsis Image equality predicate
- * 
+ *
  * @param im1 : a pointer to an IMAGE
- 
+
  * @param im2 : a pointer to an IMAGE
- * 
+ *
  * @return 0 if the two input images have identical pixel values (and data type), 1 otherwise
  *
  * @creationdate

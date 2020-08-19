@@ -203,7 +203,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
 /*!
  * Give an input binary image, returns those foreground pixels that
  * are further away than a distance threshold (size in pixel units)
- * from the boundary of the foreground pixels. 
+ * from the boundary of the foreground pixels.
  */
 IMAGE *getcore(IMAGE *im, float size, float edu)
 {
@@ -473,13 +473,13 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
 
   // get all holes
   if (internal==1){
-    i0=fm_preproc(im, 1, edu); 
+    i0=fm_preproc(im, 1, edu);
     allHoles=uc_fillhole(i0, graphbg);
     arith(allHoles, i0, SUB_op);
     //writeTiffOneStripPerLine(allHoles, "allHoles.tif", NULL);
     //free_image(allHoles);
   }
-    
+
   // (setq i0 (*fm_preproc im size))
   i0=fm_preproc(im, size, edu);
   free_image(im);

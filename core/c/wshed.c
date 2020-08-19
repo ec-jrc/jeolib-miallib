@@ -45,11 +45,11 @@ IMAGE *uc_pixsort(IMAGE *im, IMAGE *imrsum)
   PIX_TYPE *pim, **psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_PTR, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (PIX_TYPE **)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -73,11 +73,11 @@ IMAGE *u32_pixsort(IMAGE *im, IMAGE *imrsum)
   PIX_TYPE *pim, **psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_PTR, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (PIX_TYPE **)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -101,11 +101,11 @@ IMAGE *us_pixsort(IMAGE *im, IMAGE *imrsum)
   PIX_TYPE *pim, **psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_PTR, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (PIX_TYPE **)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -130,11 +130,11 @@ IMAGE *i32_pixsort(IMAGE *im, IMAGE *imrsum)
   PIX_TYPE *pim, **psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_PTR, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (PIX_TYPE **)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -158,7 +158,7 @@ IMAGE *i32_pixsort(IMAGE *im, IMAGE *imrsum)
  Sort the image pixels in increasing order of their pixel value and output an array of pointers to the sorted pixel values.
  */
 IMAGE *pixsort(IMAGE *im, IMAGE *imrsum)
-{ 
+{
   switch (GetImDataType(im)){
 
   case t_UCHAR:
@@ -192,11 +192,11 @@ IMAGE *generic_sort_offset(IMAGE *im, IMAGE *imrsum)
   UINT32 *psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_UINT32, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (UINT32 *)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -222,11 +222,11 @@ IMAGE *us_sort_offset(IMAGE *im, IMAGE *imrsum)
   UINT32 *psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_UINT32, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (UINT32 *)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -251,11 +251,11 @@ IMAGE *i32_sort_offset(IMAGE *im, IMAGE *imrsum)
   UINT32 *psort;
   HST1D_TYPE *prsum;
   unsigned i, npix = GetImNPix(im);
- 
+
   imsort = create_image(t_UINT32, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imsort==NULL)
     return(NULL);
-  
+
   psort = (UINT32 *)GetImPtr(imsort);
   prsum = (HST1D_TYPE *)GetImPtr(imrsum);
   pim   = (PIX_TYPE *)GetImPtr(im);
@@ -319,7 +319,7 @@ ERROR_TYPE us_flood1(IMAGE *im, IMAGE *hst, IMAGE *srtim, int graph)
 
   pim  = (PIX_TYPE *)GetImPtr(im);
   npix = GetImNPix(im);
-  
+
   /* set to WINIT input image */
   pend = pim + npix;
   for (pcrt = pim; pcrt < pend;)
@@ -331,7 +331,7 @@ ERROR_TYPE us_flood1(IMAGE *im, IMAGE *hst, IMAGE *srtim, int graph)
     (void) sprintf(buf, "us_flood1(): not enough memory"); errputstr(buf);
     return ERROR;
   }
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shift) == ERROR)
     return ERROR;
@@ -372,7 +372,7 @@ ERROR_TYPE us_flood1(IMAGE *im, IMAGE *hst, IMAGE *srtim, int graph)
 	else if (*p == MASK){
 	  *p = INQUEUE;
 	  fifo4_add(q, (long int)p);
-	}  
+	}
       }
       ptr = (PIX_TYPE *)fifo4_remove(q);
     }
@@ -400,7 +400,7 @@ ERROR_TYPE us_flood1(IMAGE *im, IMAGE *hst, IMAGE *srtim, int graph)
     }
   }
   free_fifo4(q);
-  
+
   for (i=0; i<npix; i++){
     if (pim[i]==WSHED)
       pim[i] = 1;
@@ -508,7 +508,7 @@ IMAGE *ws(IMAGE *im, int graph)
     /* imout = to_uchar(imtmp); */
     /* free_image(imtmp); */
     to_uchar(imtmp);
-    return(imtmp);    
+    return(imtmp);
     break;
   default:
     (void)sprintf(buf,"ws(): invalid pixel type\n"); errputstr(buf);

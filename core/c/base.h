@@ -28,7 +28,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define init_base
 #include "miallib.h"
 
-#define SEED		0x04  
+#define SEED		0x04
 #define NOSEED		0x00
 #define BORDER		0x01
 #define IN_NHQ		0x02

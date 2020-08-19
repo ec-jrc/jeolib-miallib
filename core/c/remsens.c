@@ -22,13 +22,13 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 
 
-/* 
+/*
       From http://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/doxygen/loon/html/novas_8c.html#a4004871
       Accessed on 2005-08-09
       This function will compute the Julian date for a given calendar
       date (year, month, day, hour).
 
-   REFERENCES: 
+   REFERENCES:
       Fliegel & Van Flandern, Comm. of the ACM, Vol. 11, No. 10, October
       1968, p. 657.
 

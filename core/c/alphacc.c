@@ -89,7 +89,7 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
 	  plbl[x+(y+1)*nx]=lbl;
 	  fifo4_add(q,x+(y+1)*nx);
 	}
-	
+
 	/* here we go */
         while ((ofs = fifo4_remove(q))){
 
@@ -97,7 +97,7 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
 	    plbl[ofs-1]=lbl;
 	    fifo4_add(q,ofs-1);
 	  }
-	
+
 	  if( (plbl[ofs+1]==0) && (pdx[ofs]<=alpha) ){
 	    plbl[ofs+1]=lbl;
 	    fifo4_add(q,ofs+1);
@@ -107,7 +107,7 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
 	    plbl[ofs-nx]=lbl;
 	    fifo4_add(q,ofs-nx);
 	  }
-	  
+
 	  if( (plbl[ofs+nx]==0) && (pdy[ofs]<=alpha) ){
 	    plbl[ofs+nx]=lbl;
 	    fifo4_add(q,ofs+nx);

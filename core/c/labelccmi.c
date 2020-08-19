@@ -21,8 +21,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 /**
  * @file   labelccmi.c
  * @author Pierre Soille
- * @date   
- * 
+ * @date
+ *
  * @details see also \cite soille2008pami
  */
 
@@ -65,15 +65,15 @@ IMAGE *uc_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
   int rk, rcrt=0, rlcrt, prio, mincc, maxcc, reset=0;
   long int  k, *shft;
   int nxmi=GetImNx(immi);
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -107,7 +107,7 @@ IMAGE *uc_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -139,7 +139,7 @@ IMAGE *uc_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -180,11 +180,11 @@ IMAGE *uc_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -330,15 +330,15 @@ IMAGE *us_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
   int rk, rcrt=0, rlcrt, prio, mincc, maxcc, reset=0;
   long int  k, *shft;
   int nxmi=GetImNx(immi);
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -372,7 +372,7 @@ IMAGE *us_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -404,7 +404,7 @@ IMAGE *us_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -445,11 +445,11 @@ IMAGE *us_labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz,
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -578,7 +578,7 @@ IMAGE *labelccmi(IMAGE *im, IMAGE *immi, IMAGE *imse, int ox, int oy, int oz, in
   case t_UCHAR:
     return(uc_labelccmi(im,immi, imse,ox,oy,oz,rg,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccmi(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

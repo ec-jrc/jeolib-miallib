@@ -24,12 +24,12 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
    We compute the distance function on the foreground pixels, i.e.,
    those different from 0.
 
-   first: 2003-11-25 
+   first: 2003-11-25
    2nd last:  2003-11-28 (with influence zones)
    last: 2013 added omp speed-up
 
    20131001: changed INT32 to USHORT for the images imx and imy
-   
+
  */
 
 /** @file
@@ -84,11 +84,11 @@ IMAGE *uc_sqedt(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-  
+
   /* ursprunglich!!! bigval=m+n and mit fixed Type UINT32; geaendert am 20131002 for USHORT */
 
   bigval=BIGVAL;
-  
+
   /* create temporary and output images */
   img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
@@ -101,13 +101,13 @@ IMAGE *uc_sqedt(IMAGE *im)
     free_image(img);
     return(NULL);
   }
-  
+
   /* create t and s arrays */
 #ifndef OPENMP
   t = (long int *)calloc(sizeof(long int), m);
   s = (long int *)calloc(sizeof(long int), m);
 #endif
-  
+
   b=(PIX_TYPE *)GetImPtr(im);
   g=(GTYPE *)GetImPtr(img);
   dt=(DTYPE *)GetImPtr(imdt);
@@ -239,7 +239,7 @@ IMAGE *uc_iz(IMAGE *im)
       (void)sprintf(buf,"IMAGE *uc_iz(IMAGE *im): the image values must be <=127 (2^7 - 1)!\n"); errputstr(buf);
       return(NULL);
     }
-  
+
   /* create temporary and output images */
   img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
@@ -252,13 +252,13 @@ IMAGE *uc_iz(IMAGE *im)
     free_image(img);
     return(NULL);
   }
-  
+
 #ifndef OPENMP
   /* create t and s arrays */
   t = (long int *)calloc(sizeof(long int), m);
   s = (long int *)calloc(sizeof(long int), m);
 #endif
- 
+
   b=(PIX_TYPE *)GetImPtr(im);
   g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);
@@ -330,7 +330,7 @@ IMAGE *uc_iz(IMAGE *im)
   free(s); free(t);
 #endif
   }
-  
+
   /* reset input image */
   for(i=m*n; i>0; i--)
     *b++ &= ~PIX_MSB;
@@ -374,7 +374,7 @@ IMAGE *us_iz(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-  bigval=BIGVAL;  
+  bigval=BIGVAL;
 
   /* make sure the MSB of the input image is always equal to zero (this bit is used for the internal computations) */
   b=(PIX_TYPE *)GetImPtr(im);
@@ -383,7 +383,7 @@ IMAGE *us_iz(IMAGE *im)
       (void)sprintf(buf,"IMAGE *us_iz(IMAGE *im): the image values must be <= 32767 (2^15 - 1) !\n"); errputstr(buf);
       return(NULL);
     }
-  
+
   /* create temporary and output images */
   img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
@@ -396,13 +396,13 @@ IMAGE *us_iz(IMAGE *im)
     free_image(img);
     return(NULL);
   }
-  
+
 #ifndef OPENMP
   /* create t and s arrays */
   t = (long int *)calloc(sizeof(long int), m);
   s = (long int *)calloc(sizeof(long int), m);
 #endif
- 
+
   b=(PIX_TYPE *)GetImPtr(im);
   g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);
@@ -527,8 +527,8 @@ IMAGE *u32_iz(IMAGE *im)
       (void)sprintf(buf,"IMAGE *us_iz(IMAGE *im): the image values must be <= 2147483647 (2^31 - 1) !\n"); errputstr(buf);
       return(NULL);
     }
-  
-  
+
+
   /* create temporary and output images */
   img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
   if (img == NULL){
@@ -541,13 +541,13 @@ IMAGE *u32_iz(IMAGE *im)
     free_image(img);
     return(NULL);
   }
-  
+
 #ifndef OPENMP
   /* create t and s arrays */
   t = (long int *)calloc(sizeof(long int), m);
   s = (long int *)calloc(sizeof(long int), m);
 #endif
- 
+
   b=(PIX_TYPE *)GetImPtr(im);
   g=(GTYPE *)GetImPtr(img);
   iz=(PIX_TYPE *)GetImPtr(imiz);

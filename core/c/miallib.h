@@ -101,13 +101,13 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #endif
 #ifndef UINT64_MAX
 #define UINT64_MAX   0xFFFFFFFFFFFFFFFF
-#endif  
+#endif
 #define MIALFLOAT_MAX    ((float)3.40282346638528860e+38)
 #define MIALFLOAT_MIN    ((float)1.40129846432481707e-45)
-#ifndef DOUBLE_MAX    
+#ifndef DOUBLE_MAX
 #define DOUBLE_MAX   1.797693134862315708e+308
 #endif
-#ifndef DOUBLE_MIN  
+#ifndef DOUBLE_MIN
 #define DOUBLE_MIN   4.94065645841246544e-324
 #endif
 
@@ -362,7 +362,7 @@ extern void errputstr(); /* print a message to the standard error  */
 #define NO_d_IMAGE
 
 
-/* 
+/*
   external function declarations
 */
 
@@ -380,7 +380,7 @@ extern ERROR_TYPE dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy);
 
 
 /* imio_gdal.c */
-extern int GDAL2MIALDataType(int aGDALDataType); 
+extern int GDAL2MIALDataType(int aGDALDataType);
 extern IMAGE *GDALInfoJIP(char *imfn);
 extern IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSize, int nBufXSize, int nBufYSize);
 

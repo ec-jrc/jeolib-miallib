@@ -80,8 +80,8 @@ struct pqueue *pqExactInit(struct pqueue *q, int n)
  *    1           The item has been inserted.
  *
  *    0           The item could not be appended. Either the queue i
- *                pointer provided was NULL, or the function was unable 
- *                to allocate the amount of memory needed for 
+ *                pointer provided was NULL, or the function was unable
+ *                to allocate the amount of memory needed for
  *                the new item.
  */
 int pqExactInsert(struct pqueue *q, PQDATUM d)
@@ -208,8 +208,8 @@ int pqExactMinInsert(struct pqueue *q, PQDATUM d)
  *
  *    p           Pointer to a priority queue.
  *
- *    d           Pointer to the PQDATUM variable that will hold the 
- *                datum corresponding to the queue item removed.               
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the queue item removed.
  *
  *  Return values:
  *
@@ -343,7 +343,7 @@ PQDATUM *pqExactMinRemove(struct pqueue *q, PQDATUM *d)
  *
  *    d           Pointer to the PQDATUM variable that will hold the
  *                datum corresponding to the highest-ranking item.
- *                
+ *
  *  Return values:
  *
  *    non-NULL   Success. The variable that d points to now contains

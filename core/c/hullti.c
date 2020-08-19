@@ -128,12 +128,12 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   rlc = (int*)calloc(sizeof(int),(unsigned)nx);
   bresenham(pxf,pyf,pxf+dx,pyf+dy,p,offset2,rlc,ncol);  /* draw elementary pattern only of Bresenham line */
 
-  /* 
+  /*
   ** Get array of order of each pixel along the calculated line
   */
   adx=abs(dx);
   ady=abs(dy);
-  
+
   /* sort offsets in increasing order (first will be processed first etc.) */
   indexx(t,offset2-1,indxori-1);
   free(offset2);
@@ -294,7 +294,7 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   /*
   ** close with 2nd half-plane and output the
   ** point-wise maximum between both closings */
-  ptmp = p; 
+  ptmp = p;
   inc = incx + ncol*incy;
   fi -= inc; fo -= inc;
   j = 0; la = (l2-l1) >= 0 ? l1:l2;

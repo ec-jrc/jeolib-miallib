@@ -39,7 +39,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "miallib.h"
 
 
-/** \addtogroup group_stat 
+/** \addtogroup group_stat
  *  @{
  */
 
@@ -75,7 +75,7 @@ int match2d(long int cf, IMAGE *cdf_2d, int x, int y, int dir)
     printf("x=%d y=%d dir=%d before cf =%ld  p2d=%ud\n p2dmax=%d", x, y, dir, cf, p2d[x+(y+1)*n-1], p2d[GetImNx(cdf_2d)*GetImNy(cdf_2d)-1]);
     flag=1;
   }
-  
+
   if (dir==0){
     cf=(p2d[x+y*n-1]*cf)/p2d[GetImNx(cdf_2d)*GetImNy(cdf_2d)-1];
     inc=1;
@@ -86,9 +86,9 @@ int match2d(long int cf, IMAGE *cdf_2d, int x, int y, int dir)
     inc=GetImNx(cdf_2d);
   }
 
-  
+
   //printf("\t after cf =%ld\n", cf);
-  
+
   for(i=1;i<n;i++){
     if (p2d[ofs+(i-1)*inc]<cf){
       if ( (p2d[ofs+i*inc]-cf) < (cf-p2d[ofs+(i-1)*inc]) )
@@ -105,13 +105,13 @@ int match2d(long int cf, IMAGE *cdf_2d, int x, int y, int dir)
       return out;
     }
   }
-  
+
   if (flag)
     printf("after:cf=%ld out=%d, inc=%d\n", cf, out, inc);
-  
+
   if (cf==50802)
     printf("after:cf=%ld out=%d, inc=%d\n", cf, out, inc);
-  
+
   //printf("cf=%ld\n", cf);
   return out;
 }
@@ -134,7 +134,7 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
     First: 20130430
 
     To do: implement for openmp (ofs needs to be instantiated in the innermost loop)
-           control the types of cdf etc. (and use #define)          
+           control the types of cdf etc. (and use #define)
 
   */
 
@@ -148,7 +148,7 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
   int ofs=0;
   int x,y,z;
   int r_tgt, g_tgt, b_tgt;
-  // int cdf; 
+  // int cdf;
 
   r_lut=create_image(t_UCHAR, nx, ny, nz);
   g_lut=create_image(t_UCHAR, nx, ny, nz);
@@ -174,7 +174,7 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
   imap[0]=r_lut;
   imap[1]=g_lut;
   imap[2]=b_lut;
-  
+
   prgb=(HST3D_TYPE *)GetImPtr(cdf_rgb_src);
   pr_lut=(UCHAR *)GetImPtr(r_lut);
   pg_lut=(UCHAR *)GetImPtr(g_lut);
@@ -203,12 +203,12 @@ IMAGE **histrgbmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt, I
 	  if (ofs==4723824){ /* pixel at (14,1) coordinates has values (112,92,72)*/
 	    printf("rout=%d gout=%d bout=%d\n\n", r_tgt, g_tgt, b_tgt);
 	  }
-	  
+
 	  pr_lut[ofs]=r_tgt;
 	  pg_lut[ofs]=g_tgt;
 	  pb_lut[ofs]=b_tgt;
 
-	}	
+	}
       }
     }
   }
@@ -260,7 +260,7 @@ int match3d(int cf, IMAGE *cdf_2d, int x, int y, int dir)
   p2d=(int *)GetImPtr(cdf_2d);
 
 
-  
+
   if (dir==0){
     n=GetImNx(cdf_2d);
     cf=(p2d[x+y*n-1]*cf)/p2d[GetImNx(cdf_2d)*GetImNy(cdf_2d)-1];
@@ -272,7 +272,7 @@ int match3d(int cf, IMAGE *cdf_2d, int x, int y, int dir)
     inc=GetImNx(cdf_2d);
   }
 
-  
+
   for(i=1;i<n;i++){
     if (p2d[ofs+(i-1)*inc]<cf){
       if ( (p2d[ofs+i*inc]-cf) < (cf-p2d[ofs+(i-1)*inc]) )
@@ -306,7 +306,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
     First: 20130430
 
     To do: implement for openmp (ofs needs to be instantiated in the innermost loop)
-           control the types of cdf etc. (and use #define)          
+           control the types of cdf etc. (and use #define)
 
   */
 
@@ -321,7 +321,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
   int x,y,z;
   int r_tgt, g_tgt, b_tgt;
   long int cf;
-  // int cdf; 
+  // int cdf;
 
   r_lut=create_image(t_UCHAR, nx, ny, nz);
   g_lut=create_image(t_UCHAR, nx, ny, nz);
@@ -347,7 +347,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
   imap[0]=r_lut;
   imap[1]=g_lut;
   imap[2]=b_lut;
-  
+
   prgb=(HST3D_TYPE *)GetImPtr(cdf_rgb_src);
   pr_lut=(UCHAR *)GetImPtr(r_lut);
   pg_lut=(UCHAR *)GetImPtr(g_lut);
@@ -372,7 +372,7 @@ IMAGE **histrgb3dmatch(IMAGE *cdf_rgb_src, IMAGE *cdf_rg_tgt, IMAGE *cdf_rb_tgt,
 	  pg_lut[ofs]=g_tgt;
 	  pb_lut[ofs]=b_tgt;
 
-	}	
+	}
       }
     }
   }

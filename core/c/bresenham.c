@@ -72,7 +72,7 @@ void bresenham(int x1, int y1, int x2, int y2, long int pb[], double delta[], in
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -125,7 +125,7 @@ void tracelinecorrect(int x1, int y1, int x2, int y2, long int pb[], int rlc[], 
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -192,7 +192,7 @@ ERROR_TYPE uc_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* Move along the 'long' axis */
       /*OLD x = (int)(a*y+b+0.5*sx); */
@@ -245,7 +245,7 @@ ERROR_TYPE us_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     for (i=0; i<ady; i++){
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -297,7 +297,7 @@ ERROR_TYPE i32_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     for (i=0; i<ady; i++){
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);

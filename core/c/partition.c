@@ -63,13 +63,13 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   int nx, ny, nz, nmax;
 
   PIX_TYPE *pp1, *pp2, lbl1_crt, lbl2_crt;
- 
+
   IMAGE *lut_s12, *lut_s21; /* holds similarities 1->2 and 2->1*/
   float *ps12, scrt, s;
-  
+
   IMAGE *lut_c12, *lut_c21; /* holds correspondences 1->2 and 2->1*/
   PIX_TYPE *pc12;
-  
+
   IMAGE *lut_area1, *lut_area2; /* holds areas of each segment */
   HST1D_TYPE *pla1, *pla2, a1, a2ia1;
 
@@ -78,7 +78,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 
   long int shft[27];
   int n, k, box[6];
-  
+
   IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
@@ -183,7 +183,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     (void) sprintf(buf, "(): not enough memory"); errputstr(buf);
     return NULL;
   }
-  
+
   pq = (struct pqueue *)pqinit(NULL, 100);  /* priority queue */
   if (pq == NULL){
     free_image(lut_area1);
@@ -226,7 +226,7 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 	pflag[i]=1;
 	lbl1_crt=pp1[i];
 
-	fifo4_add(q,(long int)i); 
+	fifo4_add(q,(long int)i);
 
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = pp2[i];
@@ -275,13 +275,13 @@ IMAGE **uc_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
       }
     }
   }
-  
-  free_image(lut_area1); 
-  free_image(lut_area2); 
-  free_image(im_flag); 
+
+  free_image(lut_area1);
+  free_image(lut_area2);
+  free_image(im_flag);
   free_fifo4(q);
   free_pq(pq);
-  
+
   return(imap);
 }
 #undef PIX_FLAG_TYPE
@@ -305,13 +305,13 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   int nx, ny, nz, nmax;
 
   PIX_TYPE *pp1, *pp2, lbl1_crt, lbl2_crt;
- 
+
   IMAGE *lut_s12, *lut_s21; /* holds similarities 1->2 and 2->1*/
   float *ps12, scrt, s;
-  
+
   IMAGE *lut_c12, *lut_c21; /* holds correspondences 1->2 and 2->1*/
   PIX_TYPE *pc12;
-  
+
   IMAGE *lut_area1, *lut_area2; /* holds areas of each segment */
   HST1D_TYPE *pla1, *pla2, a1, a2ia1;
 
@@ -320,7 +320,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 
   long int shft[27];
   int n, k, box[6];
-  
+
   IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
@@ -425,7 +425,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     (void) sprintf(buf, "(): not enough memory"); errputstr(buf);
     return NULL;
   }
-  
+
   pq = (struct pqueue *)pqinit(NULL, 100);  /* priority queue */
   if (pq == NULL){
     free_image(lut_area1);
@@ -468,7 +468,7 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 	pflag[i]=1;
 	lbl1_crt=pp1[i];
 
-	fifo4_add(q,(long int)i); 
+	fifo4_add(q,(long int)i);
 
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = pp2[i];
@@ -517,13 +517,13 @@ IMAGE **us_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
       }
     }
   }
-  
-  free_image(lut_area1); 
-  free_image(lut_area2); 
-  free_image(im_flag); 
+
+  free_image(lut_area1);
+  free_image(lut_area2);
+  free_image(im_flag);
   free_fifo4(q);
   free_pq(pq);
-  
+
   return(imap);
 }
 #undef PIX_FLAG_TYPE
@@ -547,13 +547,13 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
   int nx, ny, nz, nmax;
 
   PIX_TYPE *pp1, *pp2, lbl1_crt, lbl2_crt;
- 
+
   IMAGE *lut_s12, *lut_s21; /* holds similarities 1->2 and 2->1*/
   float *ps12, scrt, s;
-  
+
   IMAGE *lut_c12, *lut_c21; /* holds correspondences 1->2 and 2->1*/
   PIX_TYPE *pc12;
-  
+
   IMAGE *lut_area1, *lut_area2; /* holds areas of each segment */
   HST1D_TYPE *pla1, *pla2, a1, a2ia1;
 
@@ -562,7 +562,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 
   long int shft[27];
   int n, k, box[6];
-  
+
   IMAGE **imap; /* holds all output arrays: correspondences and similarities */
 
   FIFO4 *q; /* to find out current segment */
@@ -667,7 +667,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
     (void) sprintf(buf, "(): not enough memory"); errputstr(buf);
     return NULL;
   }
-  
+
   pq = (struct pqueue *)pqinit(NULL, 100);  /* priority queue */
   if (pq == NULL){
     free_image(lut_area1);
@@ -710,7 +710,7 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 	pflag[i]=1;
 	lbl1_crt=pp1[i];
 
-	fifo4_add(q,(long int)i); 
+	fifo4_add(q,(long int)i);
 
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = pp2[i];
@@ -759,13 +759,13 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
       }
     }
   }
-  
-  free_image(lut_area1); 
-  free_image(lut_area2); 
-  free_image(im_flag); 
+
+  free_image(lut_area1);
+  free_image(lut_area2);
+  free_image(im_flag);
   free_fifo4(q);
   free_pq(pq);
-  
+
   return(imap);
 }
 #undef PIX_FLAG_TYPE
@@ -773,13 +773,13 @@ IMAGE **u32_PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)
 #include "u32_undef.h"
 
 
-/** 
- * 
- * 
+/**
+ *
+ *
  * @param part1 an image holding a labelled partition
  * @param part2 another image holding a labelled partition (same size as part1)
  * @param graph integer for graph connectivity used for creating the partitions
- * 
+ *
  * @return an image array holding similarity measures
  */
 IMAGE **PartitionSimilarity(IMAGE *part1, IMAGE *part2, int graph)

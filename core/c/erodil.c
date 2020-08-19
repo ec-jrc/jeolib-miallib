@@ -53,7 +53,7 @@ IMAGE *uc_erode2(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
   long int k, x, y, z;
   long int lstx, lsty, lstz;
   int nx,ny,nz;
-  
+
   /* create shift array */
   n = objectpix(imse);
   if (n==0) /* no point in SE */
@@ -71,7 +71,7 @@ IMAGE *uc_erode2(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
   nx=GetImNx(imse);
   ny=GetImNy(imse);
   nz=GetImNz(imse);
-  
+
   if (trflag){
     ox=nx-ox-1;
     oy=ny-oy-1;
@@ -95,7 +95,7 @@ IMAGE *uc_erode2(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
   else box[5] = nz - 1 - oz;
 
   generic_addframebox(im, box, PIX_MAX);
-  
+
   nx=GetImNx(im);
   ny=GetImNy(im);
   nz=GetImNz(im);
@@ -126,7 +126,7 @@ IMAGE *uc_erode2(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int trflag)
 	for (k = 1; k < n; k++){
 	  if (*p2 > *(p1 + shft[k]))
 	    *p2 = *(p1 + shft[k]);
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -150,7 +150,7 @@ void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
@@ -171,7 +171,7 @@ void uc_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 	for (k = 1; k < n; k++){
 	  if (*p2 > *(p1 + shft[k]))
 	    *p2 = *(p1 + shft[k]);
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -195,7 +195,7 @@ void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
@@ -216,7 +216,7 @@ void us_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long in
 	for (k = 1; k < n; k++){
 	  if (*p2 > *(p1 + shft[k]))
 	    *p2 = *(p1 + shft[k]);
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -239,7 +239,7 @@ void i32_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
@@ -260,7 +260,7 @@ void i32_erode(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 	for (k = 1; k < n; k++){
 	  if (*p2 > *(p1 + shft[k]))
 	    *p2 = *(p1 + shft[k]);
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -357,7 +357,7 @@ void uc_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
@@ -409,11 +409,11 @@ void us_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long i
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
-  
+
   im_frame = getframebox(im, box);
   us_framebox(im, box, PIX_MIN);
 
@@ -455,7 +455,7 @@ void i32_dilate(IMAGE *im, IMAGE *imout, int nx, int ny, int nz, int *box, long 
 
   im1 = (PIX_TYPE *)GetImPtr(im);
   im2 = (PIX_TYPE *)GetImPtr(imout);
-  
+
   lstx = nx - box[1];
   lsty = ny - box[3];
   lstz = nz - box[5];
@@ -588,7 +588,7 @@ void uc_volerode(im1, im2, nx, ny, nz, box, shft, weight, n)
 	for (k = 1; k < n; k++){
 	  if (*p2 > *(p1 + shft[k]) + weight[k])
 	    *p2 = *(p1 + shft[k]) + weight[k];
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -695,7 +695,7 @@ void i32_voldilate(im1, im2, nx, ny, nz, box, shft, weight, n)
 	for (k = 1; k < n; k++){
 	  if (*p2 < *(p1 + shft[k]) + weight[k])
 	    *p2 = *(p1 + shft[k]) + weight[k];
-	}    
+	}
 	p1++;
 	p2++;
       }
@@ -1356,7 +1356,7 @@ ERROR_TYPE dilate4(IMAGE *im, int ox, int oy)
     (void)sprintf(buf,"dilate4(im): ox and oy must be <= 2\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(uc_dilate4(im, ox, oy));

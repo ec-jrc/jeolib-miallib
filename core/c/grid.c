@@ -114,7 +114,7 @@ IMAGE *uc_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -292,7 +292,7 @@ IMAGE *us_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -469,7 +469,7 @@ IMAGE *s_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -572,16 +572,16 @@ IMAGE *s_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 #include "s_undef.h"
 
 
-/** 
- * 
- * 
- * @param im 
- * @param roi 
- * @param imx 
- * @param imy 
- * @param alpha 
- * 
- * @return 
+/**
+ *
+ *
+ * @param im
+ * @param roi
+ * @param imx
+ * @param imy
+ * @param alpha
+ *
+ * @return
  */
 IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 {

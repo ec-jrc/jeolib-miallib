@@ -25,19 +25,19 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  * @file   uswilk.c
  *
  * @author (c) Michael Wilkinson, Arnold Meijster, and Jos Roerdink 18-09-2000
- * @date  
- * 
+ * @date
+ *
  * @details Based on max-tree algorithm described in \cite wilkinson-roerdink2000 see also \cite meijster-wilkinson2002.  Adapted by Pierre Soille on 20/21-09-2000 to fit miallib (see macro functions AddToNeighbour() and Link()).
  *
- * 
+ *
  */
 
 /* This program computes the grey scale attribute opening.
- * The input is a grey scale image (im), and its output is 
+ * The input is a grey scale image (im), and its output is
  * a grey-scale image, which is stored in an array (parent),
  * which is also used to store the trees needed for Tarjan's
  * algorithm.
- * The time complexity of this algorithm is linear in the 
+ * The time complexity of this algorithm is linear in the
  * number of pixels.
  *
  * (c) Michael Wilkinson, Arnold Meijster,and Jos Roerdink 18-09-2000
@@ -76,16 +76,16 @@ typedef unsigned char bool;
 typedef int greyval;   /* used for index to sorted image */
 typedef unsigned short byte;
 
-typedef void ***AuxDataType;              /* 2D array of void pointers 
+typedef void ***AuxDataType;              /* 2D array of void pointers
                                              for auxiliary data        */
 typedef greyval **Image;                  /* Guess */
 typedef byte **ByteImage;                 /* Guess again */
 
 
 int *SortPixelsext;              /* array storing the sorted pixels */
-			
+
 Image imext;                     /* input image */
-Image parentext;                 /* output image doubling as storage 
+Image parentext;                 /* output image doubling as storage
                                     for Tarjan's trees               */
 AuxDataType auxdataext;          /* Auxiliary data for attributes    */
 
@@ -102,13 +102,13 @@ AuxDataType auxdataext;          /* Auxiliary data for attributes    */
 typedef struct { long number[3][3],         /* number of neighbours  */
 		      offsets[3][3][8];     /* offsets to neighbours */
                } Neighbours2D;
-              
+
 
 
 
 void Init_4_Neighbours2D ( Neighbours2D *neighbours, int  width)
 /* initializes Neighbour2D type for four connectedness */
-{ 
+{
   neighbours->number[0][0] = 4;
   neighbours->offsets[0][0][0] = -1;
   neighbours->offsets[0][0][1] = +1;
@@ -155,7 +155,7 @@ void Init_4_Neighbours2D ( Neighbours2D *neighbours, int  width)
 
 void Init_8_Neighbours2D ( Neighbours2D *neighbours, int  width)
 /* initializes Neighbour2D type for eight connectedness */
-{ 
+{
   neighbours->number[0][0] = 8;
   neighbours->offsets[0][0][0] = -1;
   neighbours->offsets[0][0][1] = +1;
@@ -222,7 +222,7 @@ void Init_8_Neighbours2D ( Neighbours2D *neighbours, int  width)
    struct type. A must be the current coordinate, B the corresponding
    array dimension.
 */
- 
+
 /********************* IMAGE I/O ********************************** */
 
 AuxDataType CreateAuxData ( int width, int height )
@@ -236,7 +236,7 @@ AuxDataType CreateAuxData ( int width, int height )
   auxdata = (AuxDataType)malloc (height*sizeof(void **));
   buf = (void **)calloc (width*height, sizeof(void *));
   if ((auxdata == NULL) || (buf == NULL))
-    { 
+    {
       fprintf (stderr, "fatal error: Malloc failed in  CreateAuxData (height=%d, width=%d)\n", height, width);
       exit (-1);
     }
@@ -257,7 +257,7 @@ Image CreateImage (int width, int height)
   im = (Image)malloc (height*sizeof(greyval *));
   buf = (greyval *)malloc (width*height*sizeof(greyval));
   if ((im == NULL) || (buf == NULL))
-    { 
+    {
       fprintf (stderr, "fatal error: Malloc failed in CreateImage (height=%d, width=%d)\n", height, width);
       exit (-1);
     }
@@ -278,7 +278,7 @@ ByteImage CreateByteImage (int width, int height)
   im = (ByteImage)malloc (height*sizeof(byte *));
   buf = (byte *)malloc (width*height*sizeof(byte));
   if ((im == NULL) || (buf == NULL))
-    { 
+    {
       fprintf (stderr, "fatal error: Malloc failed in CreateByteImage (height=%d, width=%d)\n", height, width);
       exit (-1);
     }
@@ -343,9 +343,9 @@ void WriteMialibIm(Image im, IMAGE *im_miallibout, int width, int height)
 void PixelSortforClosing (int size, greyval *im, int *SortPixels, int **idx)
 /* Radix-sorts pixels in array im, and stores the results
    SortPixels. The index array idx is returned containing pointers
-   idx[gv] to the ENDS of the sections containing pixels with grey 
+   idx[gv] to the ENDS of the sections containing pixels with grey
    level gv in array SortPixels.
-*/      
+*/
 {
   int i, s, *hist= malloc(MAXGREYVAL * sizeof(int));
   greyval *tmp;
@@ -357,8 +357,8 @@ void PixelSortforClosing (int size, greyval *im, int *SortPixels, int **idx)
   /* Now we compute offsets for the sorted array */
   s=0;
   for (i=0;i<MAXGREYVAL; i++)
-    { 
-       idx[i] = SortPixels+s; 
+    {
+       idx[i] = SortPixels+s;
        s+=hist[i];
     }
   /* Now we do the actual sorting */
@@ -372,9 +372,9 @@ void PixelSortforClosing (int size, greyval *im, int *SortPixels, int **idx)
 void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
 /* Radix-sorts pixels in array im, and stores the results
    SortPixels. The index array idx is returned containing pointers
-   idx[gv] to the ENDS of the sections containing pixels with grey 
+   idx[gv] to the ENDS of the sections containing pixels with grey
    level gv in array SortPixels.
-*/      
+*/
 {
   int i, s, *hist= malloc(MAXGREYVAL * sizeof(int));
   greyval *tmp;
@@ -386,8 +386,8 @@ void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
   /* Now we compute offsets for the sorted array */
   s=0;
   for (i=MAXGREYVAL-1;i>=0; i--)
-    { 
-       idx[i] = SortPixels+s; 
+    {
+       idx[i] = SortPixels+s;
        s+=hist[i];
     }
   /* Now we do the actual sorting */
@@ -399,10 +399,10 @@ void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
 
 /* Macro AddToNeighbour is a variant of the "Link" macro below
    AddToNeighbour is used for the FIRST link. This is necessary
-   to prevent us having to allocate auxiliary data which are 
+   to prevent us having to allocate auxiliary data which are
    immediately discarded in the first link. Only if no linking
    takes place is a new set of auxiliary data made.
-*/    
+*/
 
 /*
              auxdata[pixel]=NewAuxData(x,y);\
@@ -484,7 +484,7 @@ void PixelSortforOpening (int size, greyval *im, int *SortPixels, int **idx)
 
 
 
-void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, greyval *parent, void **auxdata,  void *(*NewAuxData)(int, int), void (*DisposeAuxData)(void *), void (*AddToAuxData)(void *,int, int), void *(*MergeAuxData)(void *, void*), double (*Attribute)(void *), int graph)      
+void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, greyval *parent, void **auxdata,  void *(*NewAuxData)(int, int), void (*DisposeAuxData)(void *), void (*AddToAuxData)(void *,int, int), void *(*MergeAuxData)(void *, void*), double (*Attribute)(void *), int graph)
 {
 
 
@@ -511,14 +511,14 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
 
   int pixel,               /* pixel coordinate in form  width*y+x */
       imsize=width*height,    /* image size */
-      linkmade,               /* keeps track of whether current pixel has 
+      linkmade,               /* keeps track of whether current pixel has
                                  been linked to any neighbour
 			      */
-      **idx=malloc(MAXGREYVAL * sizeof(int *)), 
+      **idx=malloc(MAXGREYVAL * sizeof(int *)),
                               /* list of pointers to sections of the SORTED
-                                 pixels containing pixels of the same 
-                                 greylevel */  
-      *start, *finish,        /* start and finnish of current section */ 
+                                 pixels containing pixels of the same
+                                 greylevel */
+      *start, *finish,        /* start and finnish of current section */
       curneigh, numneighs,    /* current neighbour and number of neighbours */
       NID_X, NID_Y;           /* neighbour list indexes for x and y */
   long *neigh_offsets;        /* list of offsets to neighbours */
@@ -542,8 +542,8 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
   /* Forall pixels in increasing grey value and scan line order do Tarjan */
   for (gval=0;gval<MAXGREYVAL;gval ++)
     { /* process one grey level at a time */
-      start=finish;          /* start is the previous finnish */ 
-      finish=idx[gval];      /* look up finnish of current 
+      start=finish;          /* start is the previous finnish */
+      finish=idx[gval];      /* look up finnish of current
                                 greylevel section */
       for (current=start; current<finish; current++)
 	{ /* build Tarjan trees for current grey level */
@@ -556,9 +556,9 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
           neigh_offsets = neighbours.offsets[NID_X][NID_Y];
           parent[pixel] = ACTIVE_ROOT;
           linkmade = 0;
-          curneigh=0; 
-          do { neigh= pixel + (*neigh_offsets);         
-               if ( (gval > im[neigh]) || 
+          curneigh=0;
+          do { neigh= pixel + (*neigh_offsets);
+               if ( (gval > im[neigh]) ||
                     (( neigh<pixel) && (gval == im[neigh]))
                   )
                  { AddToNeighbour(neigh);
@@ -571,7 +571,7 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
           while ( curneigh < numneighs )
 	    { neigh= pixel + (*neigh_offsets);
 	    /* printf("curneighb=%d\n", curneigh); */
-              if ( (gval > im[neigh]) || 
+              if ( (gval > im[neigh]) ||
                    (( neigh<pixel) && (gval == im[neigh]))
 		   )
 		Link (neigh);
@@ -582,30 +582,30 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
             auxdata[pixel]=NewAuxData(x,y);
         }
       /* finnished building trees */
-    
+
       for (current=start; current<finish; current++)
         { pixel = *current;
-          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
+          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */
                &&
                ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
                                                       data */
-            }     
+            }
 	}
       /* Finnished one grey level */
     }
   /* done building trees */
 
- 
-  pixel = *(finish-1);                   
+
+  pixel = *(finish-1);
   if (parent[pixel] == ACTIVE_ROOT )       /* remove any remaining */
     { parent[pixel] = DONE_ROOT;         /* ACTIVE roots         */
         (*DisposeAuxData)( auxdata[pixel] );
-    }     
-  
-  /* Forall pixels in reverse processing order do Resolve */ 
+    }
+
+  /* Forall pixels in reverse processing order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     parent[*current] = (parent[*current] < 0 ?
 			 im[*current] : parent[parent[*current]]);
@@ -614,36 +614,36 @@ void GreyAttributeClosing(double lambdaVal, int width, int height, greyval *im, 
 }
 
 
-void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */    
-                            int width,        /* image width  */ 
+void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */
+                            int width,        /* image width  */
                             int height,       /* image height */
 		            greyval *im,      /* input image  */
-                            greyval *parent, /* output image (also stores 
+                            greyval *parent, /* output image (also stores
                                                  Tarjan trees)            */
-                            void **auxdata,   /* auxilliary data for 
+                            void **auxdata,   /* auxilliary data for
                                                  attributes          */
 			    /* last parameters are function pointers for
-                               creating, disposing, adding to, and merging 
+                               creating, disposing, adding to, and merging
                                auxilliary data, and computation of attribute
 			    */
-                            void *(*NewAuxData)(int, int), 
+                            void *(*NewAuxData)(int, int),
                             void (*DisposeAuxData)(void *),
                             void (*AddToAuxData)(void *,int, int),
                             void *(*MergeAuxData)(void *, void*),
                             double (*Attribute)(void *),
 			    int graph
-                          )       
+                          )
 {
   int pixel,               /* pixel coordinate in form  width*y+x */
       imsize=width*height,    /* image size */
-      linkmade,               /* keeps track of whether current pixel has 
+      linkmade,               /* keeps track of whether current pixel has
                                  been linked to any neighbour
 			      */
-      **idx=malloc(MAXGREYVAL * sizeof(int *)), 
+      **idx=malloc(MAXGREYVAL * sizeof(int *)),
                               /* list of pointers to sections of the SORTED
-                                 pixels containing pixels of the same 
-                                 greylevel */  
-      *start, *finish,        /* start and finnish of current section */ 
+                                 pixels containing pixels of the same
+                                 greylevel */
+      *start, *finish,        /* start and finnish of current section */
       curneigh, numneighs,    /* current neighbour and number of neighbours */
       NID_X, NID_Y;           /* neighbour list indexes for x and y */
   long *neigh_offsets;        /* list of offsets to neighbours */
@@ -667,8 +667,8 @@ void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */
   /* Forall pixels in increasing grey value and scan line order do Tarjan */
   for (gval=MAXGREYVAL-1; gval>=0; gval-- )
     { /* process one grey level at a time */
-      start=finish;          /* start is the previous finnish */ 
-      finish=idx[gval];      /* look up finnish of current 
+      start=finish;          /* start is the previous finnish */
+      finish=idx[gval];      /* look up finnish of current
                                 greylevel section */
       for (current=start; current<finish; current++)
 	{ /* build Tarjan trees for current grey level */
@@ -681,9 +681,9 @@ void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */
           neigh_offsets = neighbours.offsets[NID_X][NID_Y];
           parent[pixel] = ACTIVE_ROOT;
           linkmade = 0;
-          curneigh=0; 
-          do { neigh= pixel + (*neigh_offsets);         
-               if ( (gval < im[neigh]) || 
+          curneigh=0;
+          do { neigh= pixel + (*neigh_offsets);
+               if ( (gval < im[neigh]) ||
                     (( neigh<pixel) && (gval == im[neigh]))
                   )
                  { AddToNeighbour(neigh);
@@ -695,7 +695,7 @@ void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */
           while ( (curneigh < numneighs) && !linkmade );
           while ( curneigh < numneighs )
 	    { neigh= pixel + (*neigh_offsets);
-              if ( (gval < im[neigh]) || 
+              if ( (gval < im[neigh]) ||
                    (( neigh<pixel) && (gval == im[neigh]))
 		   )
                 Link (neigh);
@@ -709,27 +709,27 @@ void GreyAttributeOpening( double lambdaVal,    /* threshold on attribute */
 
       for (current=start; current<finish; current++)
         { pixel = *current;
-          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
+          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */
                &&
                ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
                                                       data */
-            }     
+            }
 	}
       /* Finnished one grey level */
     }
   /* done building trees */
 
- 
-  pixel = *(finish-1);                   
+
+  pixel = *(finish-1);
   if (parent[pixel] == ACTIVE_ROOT )       /* remove any remaining */
     { parent[pixel] = DONE_ROOT;         /* ACTIVE roots         */
         (*DisposeAuxData)( auxdata[pixel] );
-    }     
-  
-  /* Forall pixels in reverse processing order do Resolve */ 
+    }
+
+  /* Forall pixels in reverse processing order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     parent[*current] = (parent[*current] < 0 ?
 			 im[*current] : parent[parent[*current]]);
@@ -747,11 +747,11 @@ typedef struct { int area;
                } SurfaceData;
 
 void *NewSurfaceData( int x, int y )
-{ 
+{
   SurfaceData *surfacedata = (SurfaceData *) malloc(sizeof(SurfaceData));
   surfacedata->area=1;
   /* fprintf(stderr, "surfacedata in alloc=%d\n", (int) surfacedata); */
-  return ((void *) surfacedata);    
+  return ((void *) surfacedata);
 }
 
 void DisposeSurfaceData( void *surfacedata )
@@ -763,7 +763,7 @@ void DisposeSurfaceData( void *surfacedata )
   }
   /* else
      fprintf(stderr, "NULL surfacedata in free=%d\n", (int) surfacedata); */
-    
+
 }
 
 void AddToSurfaceData( void *surfacedata, int x, int y )
@@ -793,10 +793,10 @@ double SurfaceAttribute ( void *pixeldata )
 /*  Typedefs and functions for Minimum Enclosed Rectangle attributes  */
 /**********************************************************************/
 
-typedef struct { int x_min,        
-                     x_max, 
-                     y_min, 
-                     y_max; 
+typedef struct { int x_min,
+                     x_max,
+                     y_min,
+                     y_max;
                } EnclRectData;
 
 void *NewEnclRectData( int x, int y )
@@ -805,11 +805,11 @@ void *NewEnclRectData( int x, int y )
   rectdata->x_max=x;
   rectdata->y_min=y;
   rectdata->y_max=y;
-  return ((void *) rectdata);    
+  return ((void *) rectdata);
 }
 
 void DisposeEnclRectData( void *rectdata )
-{   
+{
   if (rectdata!=NULL){
     free(rectdata);
     rectdata=NULL;
@@ -822,7 +822,7 @@ void AddToEnclRectData( void *rectdata, int x, int y )
   rootdata->x_max = (rootdata->x_max < x ) ? x : rootdata->x_max;
   rootdata->y_min = (rootdata->y_min > y ) ? y : rootdata->y_min;
   rootdata->y_max = (rootdata->y_max < y ) ? y : rootdata->y_max;
-  return; 
+  return;
 }
 
 void *MergeEnclRectData( void *rootdata, void *pixeldata )
@@ -835,7 +835,7 @@ void *MergeEnclRectData( void *rootdata, void *pixeldata )
   pixelrect->y_min = (pixelrect->y_min > rootrect->y_min) ?
                           rootrect->y_min : pixelrect->y_min;
   pixelrect->y_max = (pixelrect->y_max < rootrect->y_max) ?
-                          rootrect->y_max : pixelrect->y_max;  
+                          rootrect->y_max : pixelrect->y_max;
   DisposeEnclRectData(rootdata);
   /* free(rootdata); */
   return pixeldata;
@@ -843,7 +843,7 @@ void *MergeEnclRectData( void *rootdata, void *pixeldata )
 
 double EnclRectAreaAttribute( void *pixeldata )
 { EnclRectData *rectdata = pixeldata;
-  
+
   return (double) ((rectdata->x_max - rectdata->x_min + 1)
                    *(rectdata->y_max - rectdata->y_min + 1)
                 );
@@ -851,7 +851,7 @@ double EnclRectAreaAttribute( void *pixeldata )
 
 double EnclRectDiagAttribute( void *pixeldata )
 { EnclRectData *rectdata = pixeldata;
-  
+
   return (double) ( (rectdata->x_max - rectdata->x_min + 1)*
                     (rectdata->x_max - rectdata->x_min + 1) +
 
@@ -865,19 +865,19 @@ double EnclRectDiagAttribute( void *pixeldata )
 /**********************************************************************/
 
 typedef struct { int area;
-                 double sum_x, sum_y, 
-		        sum_x2, sum_y2;    
+                 double sum_x, sum_y,
+		        sum_x2, sum_y2;
                } InertiaData;
 
 void *NewInertiaData( int x, int y )
-{ 
+{
   InertiaData *inertdata = (InertiaData *) malloc(sizeof(InertiaData));
   inertdata->area=1;
   inertdata->sum_x=x;
   inertdata->sum_y=y;
   inertdata->sum_x2=x*x;
   inertdata->sum_y2=y*y;
-  return ((void *) inertdata);    
+  return ((void *) inertdata);
 }
 
 void DisposeInertiaData( void *inertdata )
@@ -902,15 +902,15 @@ void *MergeInertiaData( void *rootdata, void *pixeldata )
   pixelinert->sum_x += rootinert->sum_x;
   pixelinert->sum_y += rootinert->sum_y;
   pixelinert->sum_x2 += rootinert->sum_x2;
-  pixelinert->sum_y2 += rootinert->sum_y2; 
+  pixelinert->sum_y2 += rootinert->sum_y2;
   free(rootdata);
   return pixeldata;
 }
 
 double InertiaAttribute ( void *pixeldata )
 { InertiaData *inert = pixeldata;
-  return  inert->sum_x2 + inert->sum_y2 - 
-          (inert->sum_x * inert->sum_x + 
+  return  inert->sum_x2 + inert->sum_y2 -
+          (inert->sum_x * inert->sum_x +
            inert->sum_y * inert->sum_y) /(double)(inert->area)
           + (double)inert->area / 6.0;
 }
@@ -940,64 +940,64 @@ IMAGE *attribute(IMAGE *im_miallib, int type, int oporclo, double lambdaVal, int
   switch (type){
   case 0:  /* surface area */
       if (oporclo==0){
-         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewSurfaceData, DisposeSurfaceData, 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewSurfaceData, DisposeSurfaceData,
                         AddToSurfaceData, MergeSurfaceData,
                         SurfaceAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewSurfaceData, DisposeSurfaceData, 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewSurfaceData, DisposeSurfaceData,
                         AddToSurfaceData, MergeSurfaceData,
                         SurfaceAttribute, graph);
       }
       break;
   case 1: /* Inertia */
       if (oporclo==0){
-         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewInertiaData, DisposeInertiaData, 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewInertiaData, DisposeInertiaData,
                         AddToInertiaData, MergeInertiaData,
                         InertiaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewInertiaData, DisposeInertiaData, 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewInertiaData, DisposeInertiaData,
                         AddToInertiaData, MergeInertiaData,
                         InertiaAttribute, graph);
       }
       break;
   case 2: /* Area of Enclose Rectangle */
       if (oporclo==0){
-         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewEnclRectData, DisposeEnclRectData, 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewEnclRectData, DisposeEnclRectData,
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectAreaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewEnclRectData, DisposeEnclRectData, 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewEnclRectData, DisposeEnclRectData,
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectAreaAttribute, graph);
       }
       break;
   case 3: /* Length of diagonal of Enclose Rectangle */
       if (oporclo==0){
-         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewEnclRectData, DisposeEnclRectData, 
+         GreyAttributeOpening (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewEnclRectData, DisposeEnclRectData,
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectAreaAttribute, graph);
       }
       else{
-         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0], 
-                        auxdataext[0], 
-                        NewEnclRectData, DisposeEnclRectData, 
+         GreyAttributeClosing (lambdaVal, width, height, imext[0], parentext[0],
+                        auxdataext[0],
+                        NewEnclRectData, DisposeEnclRectData,
                         AddToEnclRectData, MergeEnclRectData,
                         EnclRectDiagAttribute, graph);
       }
@@ -1022,9 +1022,9 @@ IMAGE *attribute(IMAGE *im_miallib, int type, int oporclo, double lambdaVal, int
 
 
 /* This program computes the grey scale area opening.
- * The input is a grey scale image (im), and its output is 
+ * The input is a grey scale image (im), and its output is
  * a grey-scale image (opening).
- * The time complexity of this algorithm is linear in the 
+ * The time complexity of this algorithm is linear in the
  * number of pixels.
  *
  * (c) Arnold Meijster, Michael Wilkinson
@@ -1072,8 +1072,8 @@ void PixelUpSort(int size, byte *im, int *SortPixels)
   /* Now we compute offsets for the sorted array */
   s=0;
   for (i=0;i<MAXGREYVAL; i++)
-    { 
-       idx[i] = SortPixels+s; 
+    {
+       idx[i] = SortPixels+s;
        s+=hist[i];
     }
   /* Now we do the actual sorting */
@@ -1094,8 +1094,8 @@ void PixelDownSort(int size, byte *im, int *SortPixels)
   /* Now we compute offsets for the sorted array */
   s=0;
   for (i=MAXGREYVAL-1;i>=0; i--)
-    { 
-       idx[i] = SortPixels+s; 
+    {
+       idx[i] = SortPixels+s;
        s+=hist[i];
     }
   /* Now we do the actual sorting */
@@ -1162,7 +1162,7 @@ IMAGE *GreyAreaOpening4(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height, uplimit=(height-1)*width-1;
   greyval gval;
   int x, h, r, root,newroot,neigh;
@@ -1171,7 +1171,7 @@ IMAGE *GreyAreaOpening4(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
   if (im_miallibout==NULL){
@@ -1202,13 +1202,13 @@ IMAGE *GreyAreaOpening4(IMAGE *im_miallib, int lambdaVal)
       if ((pixel <= uplimit) && (gval < im[neigh=(pixel+width)]))
         Link1(neigh);
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1227,7 +1227,7 @@ IMAGE *GreyAreaOpening8(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height, uplimit=(height-1)*width-1;
   greyval gval;
   int x, h, r, root,newroot,neigh;
@@ -1243,7 +1243,7 @@ IMAGE *GreyAreaOpening8(IMAGE *im_miallib, int lambdaVal)
   // printf("coucou2 in GreyAreaOpening8\n");
   opening=openingext[0];
   im=imextarea[0];
-  
+
   // printf("coucou3 in GreyAreaOpening8\n");
   im_miallibout=(IMAGE *)create_image(5, width, height, 1);
 
@@ -1291,16 +1291,16 @@ IMAGE *GreyAreaOpening8(IMAGE *im_miallib, int lambdaVal)
         Link2(neigh);
       if ((pixel <= uplimit) && (gval < im[neigh=(pixel+width)]))
         Link1(neigh);
-	
-	
+
+
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1322,7 +1322,7 @@ IMAGE *GreyAreaOpening(IMAGE *im_miallib, int lambdaVal, int graph)
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
 }
-    
+
 
 
 
@@ -1334,7 +1334,7 @@ IMAGE *GreyAreaClosing4(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height, uplimit=(height-1)*width-1;
   greyval gval;
   int x, h, r, root,newroot,neigh;
@@ -1344,7 +1344,7 @@ IMAGE *GreyAreaClosing4(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
 
@@ -1378,13 +1378,13 @@ IMAGE *GreyAreaClosing4(IMAGE *im_miallib, int lambdaVal)
         Link1(neigh);
 
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1401,7 +1401,7 @@ IMAGE *GreyAreaClosing8(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height, uplimit=(height-1)*width-1;
   greyval gval;
   int x, h, r, root,newroot,neigh;
@@ -1415,7 +1415,7 @@ IMAGE *GreyAreaClosing8(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
   if (im_miallibout==NULL){
@@ -1460,16 +1460,16 @@ IMAGE *GreyAreaClosing8(IMAGE *im_miallib, int lambdaVal)
         Link2(neigh);
       if ((pixel <= uplimit) && (gval > im[neigh=(pixel+width)]))
         Link1(neigh);
-	
+
 
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1490,7 +1490,7 @@ IMAGE *GreyAreaClosing(IMAGE *im_miallib, int lambdaVal, int graph)
     fprintf (stderr, "GreyAreaClosing: graph must be either 4 or 8\n");
   return NULL;
 }
-    
+
 
 
 
@@ -1508,36 +1508,36 @@ int OUTROI     = 65535;
 
 extern ERROR_TYPE set_seq_shift();
 
-void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */    
-                            int width,        /* image width  */ 
+void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
+                            int width,        /* image width  */
                             int height,       /* image height */
 		            greyval *im,      /* input image  */
-                            greyval *parent, /* output image (also stores 
+                            greyval *parent, /* output image (also stores
                                                  Tarjan trees)            */
-                            void **auxdata,   /* auxilliary data for 
+                            void **auxdata,   /* auxilliary data for
                                                  attributes          */
 			    /* last parameters are function pointers for
-                               creating, disposing, adding to, and merging 
+                               creating, disposing, adding to, and merging
                                auxilliary data, and computation of attribute
 			    */
-                            void *(*NewAuxData)(int, int), 
+                            void *(*NewAuxData)(int, int),
                             void (*DisposeAuxData)(void *),
                             void (*AddToAuxData)(void *,int, int),
                             void *(*MergeAuxData)(void *, void*),
                             double (*Attribute)(void *),
 			    int graph
-                          )       
+                          )
 {
   int pixel,               /* pixel coordinate in form  width*y+x */
       imsize=width*height,    /* image size */
-      linkmade,               /* keeps track of whether current pixel has 
+      linkmade,               /* keeps track of whether current pixel has
                                  been linked to any neighbour
 			      */
-      **idx=malloc(MAXGREYVAL * sizeof(int *)), 
+      **idx=malloc(MAXGREYVAL * sizeof(int *)),
                               /* list of pointers to sections of the SORTED
-                                 pixels containing pixels of the same 
-                                 greylevel */  
-      *start, *finish;        /* start and finnish of current section */ 
+                                 pixels containing pixels of the same
+                                 greylevel */
+      *start, *finish;        /* start and finnish of current section */
   greyval gval;               /* current grey level */
   int x, y,                   /* current pixel x and y */
       h, r, root,newroot,     /* auxilliary variables for root finding */
@@ -1553,7 +1553,7 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
   if (set_seq_shift(width, height, 1, graph, shift) == ERROR)
     return ;
 
-  
+
 
   /* Sort pixels first */
   PixelSortforClosing (imsize, im, SortPixelsext, idx);
@@ -1561,8 +1561,8 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
   /* Forall pixels in increasing grey value and scan line order do Tarjan */
   for (gval=0;gval<OUTROI;gval ++)
     { /* process one grey level at a time */
-      start=finish;          /* start is the previous finnish */ 
-      finish=idx[gval];      /* look up finnish of current 
+      start=finish;          /* start is the previous finnish */
+      finish=idx[gval];      /* look up finnish of current
                                 greylevel section */
       for (current=start; current<finish; current++)
 	{ /* build Tarjan trees for current grey level */
@@ -1574,8 +1574,8 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
 	  for(k=0; k<graph; k++){
 	    neigh= pixel + shift[k];
 	    if (im[neigh]==OUTROI)
-	      continue;        
-	    if ( (gval > im[neigh]) || 
+	      continue;
+	    if ( (gval > im[neigh]) ||
 		 (( neigh<pixel) && (gval == im[neigh]))
 		 )
 	      { AddToNeighbour(neigh);
@@ -1584,16 +1584,16 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
 	      break;  /* cf. was a while for Michael */
 	      }
 	  }
-	  
-          
+
+
           while ( k < graph )
 	    {
 	      neigh= pixel + shift[k];
 	      if (im[neigh]==OUTROI)
-	        continue;        
-	    
+	        continue;
+
              /* printf("curneighb=%d\n", curneigh); */
-              if ( (gval > im[neigh]) || 
+              if ( (gval > im[neigh]) ||
                    (( neigh<pixel) && (gval == im[neigh]))
 		   )
 		Link (neigh);
@@ -1603,30 +1603,30 @@ void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
             auxdata[pixel]=NewAuxData(x,y);
         }
       /* finnished building trees */
-    
+
       for (current=start; current<finish; current++)
         { pixel = *current;
-          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */ 
+          if ( (parent[pixel] == ACTIVE_ROOT )    /* if not DONE_ROOT */
                &&
                ( (*Attribute)(auxdata[pixel]) >= lambdaVal) )
                                         	   /* and criterion met */
             { parent[pixel] = DONE_ROOT;          /* root is DONE_ROOT */
               (*DisposeAuxData)( auxdata[pixel] ); /* get rid of auxilliary
                                                       data */
-            }     
+            }
 	}
       /* Finnished one grey level */
     }
   /* done building trees */
 
- 
-  pixel = *(finish-1);                   
+
+  pixel = *(finish-1);
   if (parent[pixel] == ACTIVE_ROOT )       /* remove any remaining */
     { parent[pixel] = DONE_ROOT;         /* ACTIVE roots         */
         (*DisposeAuxData)( auxdata[pixel] );
-    }     
-  
-  /* Forall pixels in reverse processing order do Resolve */ 
+    }
+
+  /* Forall pixels in reverse processing order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     parent[*current] = (parent[*current] < 0 ?
 			 im[*current] : parent[parent[*current]]);
@@ -1645,7 +1645,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height;
   greyval gval, val;
   int h, r, root,newroot,neigh;
@@ -1659,7 +1659,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
 
@@ -1670,7 +1670,7 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_miallib, int lambdaVal)
     {
 
       pixel = *current;
-      
+
       opening[pixel] = -1;
 
       gval = im[pixel];
@@ -1695,15 +1695,15 @@ IMAGE *GreyAreaOpening4ROI(IMAGE *im_miallib, int lambdaVal)
 
 
 
-	
+
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1725,7 +1725,7 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height;
   greyval gval, val;
   int h, r, root,newroot,neigh;
@@ -1739,7 +1739,7 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=(IMAGE *)create_image(5, width, height, 1);
 
 
@@ -1750,7 +1750,7 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_miallib, int lambdaVal)
     {
 
       pixel = *current;
-      
+
       opening[pixel] = -1;
 
       gval = im[pixel];
@@ -1790,15 +1790,15 @@ IMAGE *GreyAreaOpening8ROI(IMAGE *im_miallib, int lambdaVal)
 	 Link1 (neigh);
 
 
-	
+
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1820,7 +1820,7 @@ IMAGE *GreyAreaOpeningROI(IMAGE *im_miallib, int lambdaVal, int graph)
     fprintf (stderr, "GreyAreaOpening: graph must be either 4 or 8\n");
   return NULL;
 }
-    
+
 
 
 IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
@@ -1831,7 +1831,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height;
   greyval gval, val;
   int h, r, root,newroot,neigh;
@@ -1845,7 +1845,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
 
@@ -1856,7 +1856,7 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
     {
 
       pixel = *current;
-      
+
       opening[pixel] = -1;
 
       gval = im[pixel];
@@ -1879,16 +1879,16 @@ IMAGE *GreyAreaClosing4ROI(IMAGE *im_miallib, int lambdaVal)
       if ((val != OUTROI) && (gval > val))
 	 Link1 (neigh);
 
-   
-	
+
+
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -1907,7 +1907,7 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_miallib, int lambdaVal)
   int height=GetImNy(im_miallib);
   greyval *opening;
   byte *im;
-  
+
   int i, pixel,imsize=width*height;
   greyval gval, val;
   int h, r, root,newroot,neigh;
@@ -1921,7 +1921,7 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_miallib, int lambdaVal)
   CreateImagesArea(im_miallib, &width, &height);
   opening=openingext[0];
   im=imextarea[0];
-  
+
   im_miallibout=create_image(5, width, height, 1);
 
 
@@ -1932,7 +1932,7 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_miallib, int lambdaVal)
     {
 
       pixel = *current;
-      
+
       opening[pixel] = -1;
 
       gval = im[pixel];
@@ -1972,15 +1972,15 @@ IMAGE *GreyAreaClosing8ROI(IMAGE *im_miallib, int lambdaVal)
 	 Link1 (neigh);
 
 
-	
+
     }
-  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */ 
+  /* Forall pixels in (increasing greyscale,scan line) order do Resolve */
   for (current=&SortPixelsext[imsize-1]; current>=SortPixelsext; current--)
     opening[*current] = (opening[*current] < 0 ?
                          im[*current] : opening[opening[*current]]);
 
   WriteMialibIm(openingext, im_miallibout, width, height);
-  
+
   free(openingext[0]);
   free(openingext);
   free(imextarea[0]);
@@ -2003,6 +2003,6 @@ IMAGE *GreyAreaClosingROI(IMAGE *im_miallib, int lambdaVal, int graph)
     fprintf (stderr, "GreyAreaClosingROI: graph must be either 4 or 8\n");
   return NULL;
 }
-    
+
 
 /*@}*/

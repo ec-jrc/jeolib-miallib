@@ -64,7 +64,7 @@ void freeLinePool(struct LINEPOOL * linepool)
  *
  *    linepool      pointer to linepool
  *
- *    line          pointer to line which shall be added to linepool 
+ *    line          pointer to line which shall be added to linepool
  *
  *  Return values:
  *
@@ -168,7 +168,7 @@ struct LINE *getLine(struct LINEPOOL * linepool, int startX, int startY, int mid
           }
         }
       }
-    }    
+    }
   }
   return NULL;
 }
@@ -213,5 +213,5 @@ struct LINE *getLineWith2Points(struct LINEPOOL * linepool, int startX, int star
     }
   }
   return NULL;
-} 
+}
 

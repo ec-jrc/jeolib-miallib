@@ -49,7 +49,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
     int nsi; /* Bool. variable ind. whether a pixel is non-strictly ind. (1) or not (0) of all its simple ngb */
     int cfg; /* Bool. variable ind. whether there is a common foreground neighbour */
     int nsn; /* Bool. variable ind. whether there exists a pixel is non-simple ngb */
-    int code; 
+    int code;
     int nx=GetImNx(im);
     long int npix=GetImNPix(im);
     int box[6];
@@ -69,17 +69,17 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 		      8, 2, 1, 4,\
 		      2, 8, 4, 1,\
 		      2, 4, 8, 1};
-		      
+
     int code4[16]= { 4, 4, 8, 8, 4, 4, 8, 8,\
 		     1, 1, 2, 2, 1, 1, 2, 2};
     int codei[8] = {1, 2, 4, 8, 16, 32, 64, 128};
     int shft[8], shftcode[129];
     int dep4, dep8, cn;
-		     
+
     int *ccode8, *ccode4;
 
     int count=0;
-		   
+
     IMAGE *imflag; /* image of flags */
     UCHAR *pflag, *pcflag, *puc;
     PIX_TYPE *pim, *pcim, *pcim2, h, val;
@@ -123,7 +123,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
     pcflag =pflag;
     for (i=0; i<npix; i++, pcim++, pcflag++){
 	if (*pcim!=PIX_MIN){ /* check if pim is simple */
-	    code = 0;	
+	    code = 0;
 	    h=*pcim;
 	    if (*(pcim-1)>=h)
 		code=1;
@@ -158,7 +158,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
     count=0;
     shft[0]=-1;         shft[1]=1;          shft[2]=-nx;       shft[3]=nx;
     shft[4]=-nx-1;      shft[5]=nx-1;       shft[6]=-nx+1;     shft[7]=nx+1;
-    
+
     shftcode[1]=-1;     shftcode[2]=1;      shftcode[4]=-nx;   shftcode[8]=nx;
     shftcode[16]=-nx-1; shftcode[32]=nx-1; shftcode[64]=-nx+1; shftcode[128]=nx+1;
 
@@ -190,7 +190,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 			    break;
 			}
 		    }
-		    ccode8++;		    
+		    ccode8++;
 		}
 		if (del==1){ /* check whether P has a 4^0 neighbour connected to a 4^0 neighbour of Q */
 		    del=0;
@@ -242,10 +242,10 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 		if (si==0)
 		    nsi=1;
 	    }
-	}	
+	}
 	/* line reached -> P is independent of ALL its simple neighbours */
 	/* in addition, if nsi==0, P is strictly independent of its simple neighbours */
-	
+
 	nsn=0;
 	if (nsi==1){ /* check whether P has a non-simple FG neighbour */
 	    for (i=0; i<8; i++){
@@ -262,7 +262,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 		printf("Already deleted\n");
 		goto next;
 	    }
-		
+
 	    printf("check whether P belongs to a simply CC of simple pixels, ofs=%ld\n", ofs);
 	    fifo4_add(q3, pcim-pim);
 	    fifo4_add(q4, pcim-pim);
@@ -317,7 +317,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 
     while ((ofs = fifo4_remove(q))) /* reset codes */
 	*(pflag+ofs)=0;
-    
+
     printf("count (number of independent simple pixels)=%d\n", count);
     /* return(1); */
 
@@ -361,7 +361,7 @@ ERROR_TYPE generic_oiiz(IMAGE *im)
 
     if (fifo4_empty(q)==0)
 	goto next;
-    
+
     free_fifo4(q);
     free_fifo4(q2);
     free_fifo4(q3);

@@ -72,7 +72,7 @@ ERROR_TYPE f_mblincomb(IMAGE **imap, int nc, IMAGE *matrix)
       imptr[i][k]=(PIX_TYPE)pocrt[i];
   }
 
-  return NO_ERROR;  
+  return NO_ERROR;
 }
 #undef NCMAX
 #include "f_undef.h"
@@ -118,7 +118,7 @@ ERROR_TYPE uc_condmean(IMAGE **imap, int nc)
     sprintf(buf, "condmean() error: number of images in imap must be equal to 6\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   for(k=0;k<nc;k++){
     if (GetImDataType(imap[k]) != t_PIX_TYPE){
       sprintf(buf, "condmean() error: all images in imap must be of the same type\n"); errputstr(buf);

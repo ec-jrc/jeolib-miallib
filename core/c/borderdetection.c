@@ -23,7 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
                              -------------------
 
  border detection algorithm for detecting the exact boundary lines of the region
- 
+
     begin                : Thu May 13 2004
  ***************************************************************************/
 
@@ -41,14 +41,14 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *
  *    line          pointer to line
  *
- *    n             initial size of points the line can store. 
+ *    n             initial size of points the line can store.
  *
  *  Return values:
  *
  *   NULL          if line parameter was NULL, or if points could not be allocated
  *
  *   line          same pointer as input line; if everything is ok
- *                
+ *
  */
 struct LINE *initLine(struct LINE *line, int n)
 {
@@ -115,7 +115,7 @@ int isLineSegmentClosed(struct LINE * line)
     return 1;
   }else{
     return 0;
-  }      
+  }
 }
 
 /*
@@ -255,7 +255,7 @@ int isRegionClosed(struct REGION *region)
   free(trace);
   return 0;
 }
-  
+
 /*
  *  freeLine:       frees the memory allocated for the line
  *
@@ -358,7 +358,7 @@ struct REGION *addLineToRegion(struct REGION * region, struct LINE * line)
  *
  *    NO_ERROR         if last line was replaced
  *
- *    ERROR            if error occured           
+ *    ERROR            if error occured
  */
 ERROR_TYPE replaceLastLineOfRegion(struct REGION * region, struct LINE * newLine)
 {
@@ -393,7 +393,7 @@ struct LINE *addPointToLine(struct LINE * line, struct POINT * point)
 {
   int newSize, crtPos;
   struct POINT ** tmpPoints, ** newPoints;
-  
+
   if(!line || !point){
     return NULL;
   }
@@ -663,7 +663,7 @@ long int getNextOffset(IMAGE * im, int oldDir, int newDir, struct POINT * point)
       }
       return nx-1;
     }else{
-      if(point !=NULL){    
+      if(point !=NULL){
         point->x=0;
         point->y=0;
       }
@@ -873,7 +873,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
   if (u32_addframebox(inputIm, box, BORDER) == ERROR){
     return ERROR;
   }
-    
+
   nx = GetImNx(inputIm);
   ny = GetImNy(inputIm);
   pIm = (LBL_TYPE *) GetImPtr(inputIm);
@@ -883,7 +883,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
   if (set_seq_shift(GetImNx(inputIm), GetImNy(inputIm), GetImNz(inputIm), 4, shft) == ERROR){
     return ERROR;
   }
-  
+
   write_tiff(inputIm, "label_borderdetection.tif");
   for(y=0; y<ny; y++){
     for(x=0; x<nx; x++){
@@ -893,7 +893,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
       crtY=y;
       if(pIm[crtOffset]!=BORDER){
         crtLabel = pIm[crtOffset];
-          
+
         //check wheather pixel is border pixel (and has a neighbour region in the north) and crtPixel
         //is not labeled yet
         if((pIm[crtOffset-nx]!=crtLabel) && (pStatusIm[crtOffset]==NOTLABELED) && !isRegionClosed(regions[crtLabel])){
@@ -912,7 +912,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
             return ERROR;
           }
           initLine(crtLine, 100);
-          
+
           point->x=x;
           point->y=y;
           if(addPointToLine(crtLine, point)==NULL){
