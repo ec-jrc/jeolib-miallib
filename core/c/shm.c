@@ -1,11 +1,31 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2013-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /**
  * @file   shm.c
  * @author Pierre SOILLE
  * @date   Wed Sep 25 14:30:49 2013
- * 
- * @brief  
- * 
- * 
+ *
+ * @details
+ *
+ *
  */
 
 #define _GNU_SOURCE
@@ -35,7 +55,7 @@
 **
 ** first: 20130925
 **
-** by Pierre.Soille@jrc.ec.europa.eu
+** by Pierre Soille
 */
 
 
@@ -101,7 +121,7 @@ IMAGE *shmatimage(key_t shmkey, size_t nx, size_t ny, size_t nz, size_t nbyte, i
   SetImPtr(im, (char *)shm_address+nbyte-nx*ny*nz*bpp);
   SetImNx(im,nx);
   SetImNy(im,ny);
-  SetImNz(im,nz);   
+  SetImNz(im,nz);
 
   return im;
 }
@@ -218,7 +238,7 @@ IMAGE *shmatimage_named_semaphores(key_t semkey, key_t shmkey, size_t nx, size_t
     SetImPtr(im,shm_address);
     SetImNx(im,nx);
     SetImNy(im,ny);
-    SetImNz(im,nz);   
+    SetImNz(im,nz);
 
     return im;
 }
@@ -253,7 +273,7 @@ ERROR_TYPE shmdtimage_named_semaphores(key_t semkey, void *shm_address)
     printf("shmdtimage: semget() failed\n");
     return -1;
   }
- 
+
   rc = semop( semid, operations, 2 );
 
   if (rc == -1)      {

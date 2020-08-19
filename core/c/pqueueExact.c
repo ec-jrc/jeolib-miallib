@@ -1,17 +1,28 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           pqueueExact.c  -  description
 
-          Adapted from http://www.purists.org/georg/pqueue:
-          << Binary Heap Priority Queue >>
-          As of last Update May 07, 2004
-
                              -------------------
     begin                : Thu Apr 22 2004
-    authors              : by Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
-
-    
  ***************************************************************************/
 
 #include <stdlib.h>
@@ -69,8 +80,8 @@ struct pqueue *pqExactInit(struct pqueue *q, int n)
  *    1           The item has been inserted.
  *
  *    0           The item could not be appended. Either the queue i
- *                pointer provided was NULL, or the function was unable 
- *                to allocate the amount of memory needed for 
+ *                pointer provided was NULL, or the function was unable
+ *                to allocate the amount of memory needed for
  *                the new item.
  */
 int pqExactInsert(struct pqueue *q, PQDATUM d)
@@ -197,8 +208,8 @@ int pqExactMinInsert(struct pqueue *q, PQDATUM d)
  *
  *    p           Pointer to a priority queue.
  *
- *    d           Pointer to the PQDATUM variable that will hold the 
- *                datum corresponding to the queue item removed.               
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the queue item removed.
  *
  *  Return values:
  *
@@ -332,7 +343,7 @@ PQDATUM *pqExactMinRemove(struct pqueue *q, PQDATUM *d)
  *
  *    d           Pointer to the PQDATUM variable that will hold the
  *                datum corresponding to the highest-ranking item.
- *                
+ *
  *  Return values:
  *
  *    non-NULL   Success. The variable that d points to now contains

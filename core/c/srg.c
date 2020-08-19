@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2002-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "miallib.h"
@@ -67,7 +87,7 @@ ERROR_TYPE generic_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int 
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
@@ -88,7 +108,7 @@ ERROR_TYPE generic_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int 
   pq = (struct pqueue *)pqinit(NULL, nx+ny);  /* priority queue */
   if (pq == NULL)
     return ERROR;
-  
+
   /* initialise the neighbouring queue NHQ (with their offset to origin) */
   if (uc_framebox(im2,box,BORDER)==ERROR){
     free((char*)shft);
@@ -156,7 +176,7 @@ ERROR_TYPE generic_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int 
 	  fifo4_add(hq, apqd[0]->offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -167,7 +187,7 @@ ERROR_TYPE generic_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int 
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -176,15 +196,15 @@ ERROR_TYPE generic_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int 
   free_fifo4(hq);
 
   free_pq(pq);
-  
+
   return NO_ERROR;
 }
 #include "g_undef.h"
-#undef SEED  
-#undef NOSEED 
-#undef BORDER 
-#undef IN_NHQ 
-#undef IN_PQ  
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
+#undef IN_PQ
 #endif /* #ifndef NO_generic_IMAGE */
 
 
@@ -236,7 +256,7 @@ ERROR_TYPE us_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
@@ -257,7 +277,7 @@ ERROR_TYPE us_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
   pq = (struct pqueue *)pqinit(NULL, nx+ny);  /* priority queue */
   if (pq == NULL)
     return ERROR;
-  
+
   /* initialise the neighbouring queue NHQ (with their offset to origin) */
   if (uc_framebox(im2,box,BORDER)==ERROR){
     free((char*)shft);
@@ -325,7 +345,7 @@ ERROR_TYPE us_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 	  fifo4_add(hq, apqd[0]->offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -336,7 +356,7 @@ ERROR_TYPE us_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -345,14 +365,14 @@ ERROR_TYPE us_srg(IMAGE *im1, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
   free_fifo4(hq);
 
   free_pq(pq);
-  
+
   return NO_ERROR;
 }
 #include "us_undef.h"
-#undef SEED  
-#undef NOSEED 
-#undef BORDER 
-#undef IN_NHQ 
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
 #undef IN_PQ
 
 
@@ -381,7 +401,7 @@ ERROR_TYPE srg(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
     return(uc_srg(im1,im2,im3,ox,oy,oz));
     break;
 #endif
-    
+
   case t_USHORT:
     return(us_srg(im1,im2,im3,ox,oy,oz));
     break;
@@ -408,7 +428,7 @@ ERROR_TYPE srg(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int oz)
 ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
-  ** authors: 
+  ** authors:
   ** IMAGE *imap: array of grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
@@ -454,7 +474,7 @@ ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, 
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im2), GetImNy(im2), shft);
-  
+
   nx = GetImNx(im2);
   ny = GetImNy(im2);
   nz = GetImNz(im2);
@@ -586,7 +606,7 @@ ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, 
 	  fifo4_add(hq, apqd[0]->offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -597,7 +617,7 @@ ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, 
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -607,15 +627,15 @@ ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, 
   free_fifo4(hq);
 
   free_pq(pq);
-  
+
   return NO_ERROR;
 }
 #include "g_undef.h"
-#undef SEED       
-#undef NOSEED    
-#undef BORDER    
-#undef IN_NHQ    
-#undef IN_PQ    
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
+#undef IN_PQ
 #undef DELTA_MAX
 #undef SEEDS_TYPE
 #undef SEEDS_TYPE_MIN
@@ -636,7 +656,7 @@ ERROR_TYPE generic_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, 
 ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
-  ** authors: 
+  ** authors:
   ** IMAGE *imap: array of grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
@@ -682,7 +702,7 @@ ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int o
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im2), GetImNy(im2), shft);
-  
+
   nx = GetImNx(im2);
   ny = GetImNy(im2);
   nz = GetImNz(im2);
@@ -814,7 +834,7 @@ ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int o
 	  fifo4_add(hq, apqd[0]->offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -825,7 +845,7 @@ ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int o
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -835,15 +855,15 @@ ERROR_TYPE us_mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int o
   free_fifo4(hq);
 
   free_pq(pq);
-  
+
   return NO_ERROR;
 }
 #include "us_undef.h"
-#undef SEED       
-#undef NOSEED    
-#undef BORDER    
-#undef IN_NHQ    
-#undef IN_PQ    
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
+#undef IN_PQ
 #undef DELTA_MAX
 #undef SEEDS_TYPE
 #undef SEEDS_TYPE_MIN
@@ -873,7 +893,7 @@ ERROR_TYPE mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, i
   case t_USHORT:
     return(us_mssrg(imap,nc,im2,im3,ox,oy,oz));
     break;
-    
+
   default:
     (void)sprintf(buf,"mssrg(): invalid pixel type\n"); errputstr(buf);
     return(ERROR);
@@ -895,7 +915,7 @@ ERROR_TYPE mssrg(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int oy, i
 ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
-  ** authors: 
+  ** authors:
   ** IMAGE *imap: array of grey level grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
@@ -1068,7 +1088,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 	for (b=0; b<nc; b++){
 	  *(pim[b]+offset)=*(pim[b]+sof);
 	}
-	
+
 	fifo4_add(hq, offset);
       }
       free((char*) *apqd);
@@ -1092,7 +1112,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 	  fifo4_add(hq, offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -1103,7 +1123,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -1119,11 +1139,11 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
   return NO_ERROR;
 }
 #include "g_undef.h"
-#undef SEED       
-#undef NOSEED    
-#undef BORDER    
-#undef IN_NHQ    
-#undef IN_PQ    
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
+#undef IN_PQ
 #undef DELTA_MAX
 #undef SEEDS_TYPE
 #undef SEEDS_TYPE_MIN
@@ -1144,7 +1164,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, int oy, int oz)
 {
   /*
-  ** authors: 
+  ** authors:
   ** IMAGE *imap: array of grey level grey level images
   ** int nc:         number of channels
   ** IMAGE *im2:     image of seeds with class labels
@@ -1193,7 +1213,7 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im2), GetImNy(im2), shft);
-  
+
   nx = GetImNx(im2);
   ny = GetImNy(im2);
   nz = GetImNz(im2);
@@ -1321,7 +1341,7 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 	for (b=0; b<nc; b++){
 	  *(pim[b]+offset)=*(pim[b]+sof);
 	}
-	
+
 	fifo4_add(hq, offset);
       }
       free((char*) *apqd);
@@ -1345,7 +1365,7 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 	  fifo4_add(hq, offset);
 	}
         free((char*) *apqd);
-      }      
+      }
     }
 
     while ( (offset = (long int)fifo4_remove(hq)) ){
@@ -1356,7 +1376,7 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 	  fifo4_add(nhq, (long int)(p2k-p2) );
 	  *p2k=IN_NHQ;
 	}
-      }    
+      }
     }
   }
 
@@ -1371,11 +1391,11 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 #endif
   return NO_ERROR;
 }
-#undef SEED       
-#undef NOSEED    
-#undef BORDER    
-#undef IN_NHQ    
-#undef IN_PQ    
+#undef SEED
+#undef NOSEED
+#undef BORDER
+#undef IN_NHQ
+#undef IN_PQ
 #undef DELTA_MAX
 #undef SEEDS_TYPE
 #undef SEEDS_TYPE_MIN
@@ -1405,11 +1425,11 @@ ERROR_TYPE mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *im3, int ox, int o
     return(uc_mssrgcore(imap,nc,im2,im3,ox,oy,oz));
     break;
 #endif
-    
+
   case t_USHORT:
     return(us_mssrgcore(imap,nc,im2,im3,ox,oy,oz));
     break;
-    
+
   default:
     (void)sprintf(buf,"mssrg(): invalid pixel type\n"); errputstr(buf);
     return(ERROR);

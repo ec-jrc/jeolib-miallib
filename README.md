@@ -28,6 +28,19 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
 make build
 ```
 
++ By default the build will occur for python3.6.  To specifically build for python2.7, the PYVER and PYVERSHORT environment variables need to be set to 2.7 and resp. 2 beforehand:
+
+```
+PYVER=2.7
+PYVERSHORT=2
+```
+
+The documentation generation for pymia used epydoc for python2.7 and sphinx for 3.6.
+
++ Caveat: for the documentation, if texlive version is >= 2019, doxygen >= 1.8.16 needs to be installed!
+
+
+
 ### Local builds only!!!
 
 Our docker containers use a customized gdal build which links to `libshp`.

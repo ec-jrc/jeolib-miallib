@@ -1,8 +1,26 @@
+/***********************************************************************
+Author(s): Pierre Soille and Peter Vogt
+Copyright (C) 2008-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
  *  Morphological Segmentation of Binary Patterns \cite soille-vogt2009
  *  @author Pierre Soille and Peter Vogt
- *  Copyright (c) 2008-2018 European Union (Joint Research Centre)
- *  License: EUPLv1.2
  */
 
 #include <stdlib.h>
@@ -185,7 +203,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
 /*!
  * Give an input binary image, returns those foreground pixels that
  * are further away than a distance threshold (size in pixel units)
- * from the boundary of the foreground pixels. 
+ * from the boundary of the foreground pixels.
  */
 IMAGE *getcore(IMAGE *im, float size, float edu)
 {
@@ -455,13 +473,13 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
 
   // get all holes
   if (internal==1){
-    i0=fm_preproc(im, 1, edu); 
+    i0=fm_preproc(im, 1, edu);
     allHoles=uc_fillhole(i0, graphbg);
     arith(allHoles, i0, SUB_op);
     //writeTiffOneStripPerLine(allHoles, "allHoles.tif", NULL);
     //free_image(allHoles);
   }
-    
+
   // (setq i0 (*fm_preproc im size))
   i0=fm_preproc(im, size, edu);
   free_image(im);

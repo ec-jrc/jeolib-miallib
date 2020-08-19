@@ -1,11 +1,29 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2005-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#ifdef LIBPROJ4
-#include <lib_proj.h>
-#endif
-#ifdef LIBPROJ
-#include <projects.h>
+#if (defined(LIBPROJ) || defined(LIBPROJ4))
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
+#include <proj_api.h>
 #endif
 #ifdef OPENMP
 #include <omp.h>
@@ -21,7 +39,7 @@
 
 
 #if (defined(LIBPROJ) || defined(LIBPROJ4))
-XY proj(XY idata, char *parms[], int n, int flag)
+projXY proj(projXY idata, char *parms[], int n, int flag)
 {
   /*
   ** Author:  Pierre Soille [EC-Joint Research Centre 2005]
@@ -30,15 +48,15 @@ XY proj(XY idata, char *parms[], int n, int flag)
   ** n: number of parameters
   ** flag: 1 for forward projection, backward otherwise
 
-  ** comment: wrapper for calling proj4 projection routines 
+  ** comment: wrapper for calling proj4 projection routines
   */
 
-  PJ *ref;
-  XY odata;
+  projPJ *ref;
+  projXY odata;
 
   odata.u=HUGE_VAL;
   odata.v=HUGE_VAL;
-  
+
   if( ! (ref=pj_init(n, parms)) ){
     return odata;
   }
@@ -72,10 +90,10 @@ IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parm
   ** imy: image to store y-coordinates of target image
   ** res: resolution of target image
 
-  ** comment: wrapper for calling proj4 projection routines 
+  ** comment: wrapper for calling proj4 projection routines
   */
 
-  PJ *fromProj, *toProj;
+  projPJ *fromProj, *toProj;
   int i,j;
   // int nx,ny;
   double x, y;
@@ -148,7 +166,7 @@ IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parm
 
   pj_free((void *) fromProj);
   pj_free((void *) toProj);
-  
+
   return imap;
 }
 #endif

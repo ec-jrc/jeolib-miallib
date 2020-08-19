@@ -34,7 +34,7 @@ inline INT32 isLeft( intpair_t P0, intpair_t P1, intpair_t P2 )
     return (P1.a - P0.a)*(P2.b - P0.b) - (P2.a - P0.a)*(P1.b - P0.b);
 }
 //===================================================================
- 
+
 
 // chainHull_2D(): Andrew's monotone chain 2D convex hull algorithm
 //     Input:  P[] = an array of 2D points
@@ -137,7 +137,7 @@ double polygonArea(intpair_t *P, int points) {
 
   double  area=0. ;
   int     i, j=1  ;
-  
+
 
   for (i=0, points-=1; i<points; i++, j++) {
     area+= ( P[i].a * P[j].b -  P[j].a * P[i].b);

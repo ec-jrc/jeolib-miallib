@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2013-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +40,7 @@ IMAGE **u32_imgc(IMAGE *imlbl)
   unsigned long nx, ny, maxlbl;
   long int x, y;
   double maxval;
-  
+
   nx=GetImNx(imlbl);
   ny=GetImNy(imlbl);
 
@@ -54,7 +74,7 @@ IMAGE **u32_imgc(IMAGE *imlbl)
   m00=(USHORT *)GetImPtr(im00);
   m10=(PIX_TYPE_M1 *)GetImPtr(im10);
   m01=(PIX_TYPE_M1 *)GetImPtr(im01);
-  
+
   for (y=0; y<ny; y++){
     for (x=0; x<nx; x++){
       m00[*plbl]+=1;
@@ -84,8 +104,8 @@ IMAGE **u32_imgc(IMAGE *imlbl)
 IMAGE **imgc(IMAGE *imlbl)
 {
   switch (GetImDataType(imlbl)){
-    case t_UINT32: 
-    case t_INT32: 
+    case t_UINT32:
+    case t_INT32:
       return u32_imgc(imlbl);
       break;
     default:
@@ -95,13 +115,13 @@ IMAGE **imgc(IMAGE *imlbl)
 }
 
 
-/** 
+/**
  * @synopsis outputs dendrogram of input partition hierarchy in ascii file
- * 
+ *
  * @param imap: array of labelled images (fine to coarse partition hierarchy)
  * @param nc: number of levels of the hierarchy
  * @param fn: string for file name to write dendrogram in ascii format
- * 
+ *
  * @return 1 on failure, 0 otherwise
  *
  * @creationdate 20130911
@@ -124,7 +144,7 @@ ERROR_TYPE dendro(IMAGE **imap, int nc, char *fn)
   unsigned long int npix, maxlbl;
   long int i;
   double maxval;
-  
+
   npix=GetImNPix(imap[0]);
 
   /* initialisation */
@@ -147,7 +167,7 @@ ERROR_TYPE dendro(IMAGE **imap, int nc, char *fn)
     free(flaga);
     return(ERROR);
   }
-  
+
   fprintf(stderr, "nc=%d\n", (int) nc);
   cgnxt=imgc(imap[nc-1]);
 

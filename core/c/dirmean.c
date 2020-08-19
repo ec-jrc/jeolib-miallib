@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -36,7 +56,7 @@ IMAGE *dirmean(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   shft = (long int *)calloc(n, sizeof(long int));
   if (shft == NULL)
     return NULL;
-  
+
 
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
@@ -113,7 +133,7 @@ IMAGE *dirmean(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
 
   free_image(imx);
   free_image(imy);
-  
+
   free((char *) shft);
   return(imout);
 }
@@ -142,7 +162,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   long int k, x, y, z;
   long int lstx, lsty, lstz;
 
-  double theta, mag, den, num; 
+  double theta, mag, den, num;
 
 
   nx = GetImNx(imx);
@@ -156,7 +176,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   shft = (long int *)calloc(n, sizeof(long int));
   if (shft == NULL)
     return NULL;
-  
+
 
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
@@ -178,7 +198,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
     (void)sprintf(buf,"dirmean(): not enough memory!\n"); errputstr(buf);
     return(imori);
   }
-  
+
   /* create output image */
   imout = (IMAGE *)create_image(t_UCHAR, GetImNx(imx), GetImNy(imx), GetImNz(imx));
   if (imout == NULL){
@@ -219,7 +239,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
 	else{
 	  *pori=0.5 * atan(2.0 * num/den);
 	}
-	
+
 	pori++;
 	px++;
 	py++;
@@ -236,7 +256,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   py=(INT32 *)GetImPtr(imy);
   pori=(DOUBLE *)GetImPtr(imori);
   pcoh=(UCHAR *)GetImPtr(imout);
-  
+
   for (z = box[4]; z < lstz; z++){
     px = px + nx * ny * z;
     px += nx * box[2];
@@ -257,7 +277,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
 	for (k = 0; k < n; k++){
 	  dx = *(px+shft[k]);
 	  dy = *(py+shft[k]);
-	  
+
 	  if (dx<0){
 	    theta=PI+atan((double)dy/dx);
 	  }
@@ -302,7 +322,7 @@ IMAGE *coherence(IMAGE *imx, IMAGE *imy, IMAGE *imse, int ox, int oy, int oz)
   free_image(imori);
   free_image(imx);
   free_image(imy);
-  
+
   free((char *) shft);
   return(imout);
 }

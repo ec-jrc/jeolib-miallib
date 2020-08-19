@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -18,7 +38,7 @@ extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
     author = 	 "R.~Gonzalez and R.~Woods",
     title = 	 "Digital image processing",
     publisher = 	 "Addison-Wesley",
-    year = 	 1992, 
+    year = 	 1992,
     address = 	 "Reading, MA",
     edition = 	 "3rd"
   }
@@ -27,7 +47,7 @@ extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
 void hsi2rgb(double *h, double *s, double *i)
 {
   /*
-  ** author: P. Soille 
+  ** author: P. Soille
   ** double *h: hue value in [0,1]
   ** double *s: saturation value in [0,1]
   ** double *i: intensity value in [0,1]
@@ -40,7 +60,7 @@ void hsi2rgb(double *h, double *s, double *i)
   */
 
   double r, g, b, cmax, fac;
- 
+
   if (*h * 360.0 <= 120.0){                          /* RG sector */
     b=(1- *s)/3.0;
     r=(1 + *s * cos(*h * 2*PI) / cos((1.0/6.0 - *h) * 2*PI))/3.0;
@@ -119,7 +139,7 @@ IMAGE *generic_imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 IMAGE *imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 {
   if ( (szcompat(imh,ims) != NO_ERROR) || (szcompat(imh,imi) != NO_ERROR) ){
-    (void)sprintf(buf,"imhsi2rgb(): images of different sizes or type\n"); errputstr(buf);    
+    (void)sprintf(buf,"imhsi2rgb(): images of different sizes or type\n"); errputstr(buf);
   }
 
   switch (GetImDataType(imh)){
@@ -130,7 +150,7 @@ IMAGE *imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
     (void)sprintf(buf,"imhsi2rgb(): invalid pixel type\n"); errputstr(buf);
     return(NULL);
   }
-  
+
 }
 
 
@@ -235,7 +255,7 @@ IMAGE *generic_imhls2rgb(IMAGE *imh, IMAGE *iml, IMAGE *ims)
 IMAGE *imhls2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 {
   if ( (szcompat(imh,ims) != NO_ERROR) || (szcompat(imh,imi) != NO_ERROR) ){
-    (void)sprintf(buf,"imhls2rgb(): images of different sizes or type\n"); errputstr(buf);    
+    (void)sprintf(buf,"imhls2rgb(): images of different sizes or type\n"); errputstr(buf);
   }
 
   switch (GetImDataType(imh)){
@@ -246,7 +266,7 @@ IMAGE *imhls2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
     (void)sprintf(buf,"imhls2rgb(): invalid pixel type\n"); errputstr(buf);
     return(NULL);
   }
-  
+
 }
 
 #include "uc_def.h"
@@ -259,7 +279,7 @@ IMAGE *imhls2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
 {
   /*
-    20140904 by Pierre.Soille@jrc.ec.europa.eu
+    20140904 by Pierre Soille
     superseeds 1999 version in LiSP
 
     following wikipedia auf Deutsch and http://en.wikipedia.org/wiki/HSL_and_HSV
@@ -289,14 +309,14 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
     return(imap);
   }
-			      
+
   ims = (IMAGE *)create_image(t_SATURATION, GetImNx(imr), GetImNy(imr), GetImNz(imr));
   if (ims == NULL){
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
     free_image(imh);
     return(imap);
   }
-			      
+
   imv = (IMAGE *)create_image(t_VALUE, GetImNx(imr), GetImNy(imr), GetImNz(imr));
   if (imv == NULL){
     (void)sprintf(buf,"uc_imrgb2hsx(): not enough memory!\n"); errputstr(buf);
@@ -304,9 +324,9 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
     free_image(ims);
     return(imap);
   }
-			      
+
   imap=(IMAGE **)malloc(3 * sizeof(IMAGE *));
-			      
+
   imap[0]=imh;
   imap[1]=ims;
   imap[2]=imv;
@@ -382,7 +402,7 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
 IMAGE **imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
 {
   if ( (szcompat(imr,img) != NO_ERROR) || (szcompat(img,imb) != NO_ERROR) ){
-    (void)sprintf(buf,"imrgb2hsx(): images of different sizes or type\n"); errputstr(buf);    
+    (void)sprintf(buf,"imrgb2hsx(): images of different sizes or type\n"); errputstr(buf);
   }
 
   switch (GetImDataType(imr)){
@@ -433,7 +453,7 @@ IMAGE *generic_crgb2rgb(IMAGE *imh, IMAGE *iml, IMAGE *ims)
 IMAGE *crgb2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 {
   if ( (szcompat(imh,ims) != NO_ERROR) || (szcompat(imh,imi) != NO_ERROR) ){
-    (void)sprintf(buf,"crgb2rgb(): images of different sizes or type\n"); errputstr(buf);    
+    (void)sprintf(buf,"crgb2rgb(): images of different sizes or type\n"); errputstr(buf);
   }
 
   switch (GetImDataType(imh)){
@@ -444,7 +464,7 @@ IMAGE *crgb2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
     (void)sprintf(buf,"crgb2rgb(): invalid pixel type\n"); errputstr(buf);
     return(NULL);
   }
-  
+
 }
 
 /*@}*/

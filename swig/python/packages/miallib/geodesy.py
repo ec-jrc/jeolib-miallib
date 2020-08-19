@@ -3,12 +3,12 @@
 
 # this makes all geodesy_base functions available within miallib.geodesy
 # but also makes geodesy_base available as a subpackage
-from geodesy_base import *
+from .geodesy_base import *
 
-import imem_base as _imem_base
+from . import imem_base as _imem_base
 
-import geometry as _geometry
-import pointop as _pointop
+from . import geometry as _geometry
+from . import pointop as _pointop
 
 #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 # Geodesic transformations defined in python only

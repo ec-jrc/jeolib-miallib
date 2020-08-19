@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2006-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,7 +38,7 @@
   pages = 	 {179-186},
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 #include "uc_def.h"
@@ -53,11 +73,11 @@ IMAGE *uc_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
   for (v=0;v<nyt;v++)
     for (u=0;u<nxt;u++)
       *shftcrt++=v*nxi+u;
-    
+
   /* create output image */
   imout=create_image(t_FLOAT, w, w, 1);
   po=(float *)GetImPtr(imout);
-    
+
   /* create temporary local image */
   iml=create_image(GetImDataType(imin), GetImNx(imt), GetImNy(imt), 1);
   pl=(PIX_TYPE *)GetImPtr(iml);
@@ -82,7 +102,7 @@ IMAGE *uc_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
       mui=0.0;
       for(;pl<plend;pl++,shftcrt++){
 	*pl=*(pi+*shftcrt);
-	mui+=*pl;		
+	mui+=*pl;
       }
       mui/=n;
       /* compute normalised measure */
@@ -133,11 +153,11 @@ IMAGE *us_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
   for (v=0;v<nyt;v++)
     for (u=0;u<nxt;u++)
       *shftcrt++=v*nxi+u;
-    
+
   /* create output image */
   imout=create_image(t_FLOAT, w, w, 1);
   po=(float *)GetImPtr(imout);
-    
+
   /* create temporary local image */
   iml=create_image(GetImDataType(imin), GetImNx(imt), GetImNy(imt), 1);
   pl=(PIX_TYPE *)GetImPtr(iml);
@@ -162,7 +182,7 @@ IMAGE *us_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
       mui=0.0;
       for(;pl<plend;pl++,shftcrt++){
 	*pl=*(pi+*shftcrt);
-	mui+=*pl;		
+	mui+=*pl;
       }
       mui/=n;
       /* compute normalised measure */
@@ -202,7 +222,7 @@ IMAGE *ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
 /* Normalised cross-correlation with sum tables as proposed by Lewis
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 
@@ -240,24 +260,24 @@ IMAGE *uc_ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, in
     for (v=0;v<nyt;v++)
       for (u=0;u<nxt;u++)
 	*shftcrt++=v*nxi+u;
-    
+
     /* create output image */
     imout=create_image(t_FLOAT, w, w, 1);
     po=(float *)GetImPtr(imout);
-    
+
     /* compute mean of template */
     pt=(PIX_TYPE *)GetImPtr(imt);
     for(i=n;i>0;i--)
 	mut+=*pt++;
     mut/=n;
-    
+
     /* compute variance of template */
     pt=(PIX_TYPE *)GetImPtr(imt);
     for(i=n;i>0;i--){
       diff=*pt++-mut;
       vart+=(diff*diff);
     }
- 
+
     /* create sum tables */
     s=(INT32 *)GetImPtr(sim);
     ssq=(UINT64 *)GetImPtr(ssqim);
@@ -298,7 +318,7 @@ IMAGE *uc_ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, in
 	}
 
 	/* compute normalised measure */
- 	denom=sqrt(vari*vart); 
+ 	denom=sqrt(vari*vart);
 	if(denom!=0)
 	  *(po+u+v*w)= (float)(numer/denom);
 	else
@@ -326,7 +346,7 @@ IMAGE *ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, int y
     (void)sprintf(buf,"*ncclewis(): square sum table must be of type t_UINT64\n"); errputstr(buf);
     return(NULL);
   }
-    
+
   switch (GetImDataType(imin)){
   case t_UCHAR:
     return(uc_ncclewis(imin, imt, sim, ssqim, xi, yi, w));
@@ -343,7 +363,7 @@ IMAGE *ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, int y
 /* Normalised cross-correlation
 
 ** First: 2006-11-25
-** Pierre.Soille@jrc.it
+** Pierre Soille
 */
 
 #include "uc_def.h"
@@ -378,11 +398,11 @@ IMAGE *uc_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     for (v=0;v<nyt;v++)
       for (u=0;u<nxt;u++)
 	*shftcrt++=v*nxi+u;
-    
+
     /* create output image */
     imout=create_image(t_FLOAT, w, w, 1);
     po=(float *)GetImPtr(imout);
-    
+
     /* create temporary local image */
     iml=create_image(GetImDataType(imin), GetImNx(imt), GetImNy(imt), 1);
     pl=(PIX_TYPE *)GetImPtr(iml);
@@ -392,14 +412,14 @@ IMAGE *uc_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     for(i=n;i>0;i--)
 	mut+=*pt++;
     mut/=n;
-    
+
     /* compute variance of template */
     pt=(PIX_TYPE *)GetImPtr(imt);
     for(i=n;i>0;i--){
       diff=*pt++-mut;
       vart+=(diff*diff);
     }
-    
+
     pt=(PIX_TYPE *)GetImPtr(imt);
 
     /* here we go */
@@ -417,7 +437,7 @@ IMAGE *uc_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
 	numer=0.0;
 	for(;pl<plend;pl++,shftcrt++){
 	  *pl=*(pi+*shftcrt);
-	  mui+=*pl;		
+	  mui+=*pl;
 	}
 	mui/=n;
 	/* compute standard deviation of im in template at u,v */
@@ -474,11 +494,11 @@ IMAGE *us_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     for (v=0;v<nyt;v++)
       for (u=0;u<nxt;u++)
 	*shftcrt++=v*nxi+u;
-    
+
     /* create output image */
     imout=create_image(t_FLOAT, w, w, 1);
     po=(float *)GetImPtr(imout);
-    
+
     /* create temporary local image */
     iml=create_image(GetImDataType(imin), GetImNx(imt), GetImNy(imt), 1);
     pl=(PIX_TYPE *)GetImPtr(iml);
@@ -488,14 +508,14 @@ IMAGE *us_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     for(i=n;i>0;i--)
 	mut+=*pt++;
     mut/=n;
-    
+
     /* compute variance of template */
     pt=(PIX_TYPE *)GetImPtr(imt);
     for(i=n;i>0;i--){
       diff=*pt++-mut;
       vart+=(diff*diff);
     }
-    
+
     pt=(PIX_TYPE *)GetImPtr(imt);
 
     /* here we go */
@@ -513,7 +533,7 @@ IMAGE *us_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
 	numer=0.0;
 	for(;pl<plend;pl++,shftcrt++){
 	  *pl=*(pi+*shftcrt);
-	  mui+=*pl;		
+	  mui+=*pl;
 	}
 	mui/=n;
 	/* compute standard deviation of im in template at u,v */
@@ -544,7 +564,7 @@ IMAGE *ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     (void)sprintf(buf,"*ncc(): input image and template must be of same data type\n"); errputstr(buf);
     return(NULL);
   }
-    
+
   switch (GetImDataType(imin)){
   case t_UCHAR:
       return(uc_ncc(imin, imt, xi, yi, w));

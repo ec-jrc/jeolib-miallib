@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -203,7 +223,7 @@ void uc_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIA
 
   lsty = ny - box[3];
   lstz = nz - box[5];
-  
+
   p2=pim2;
   for (z = box[4]; z < lstz; z++){
     p1 = pim1 + nx * ny * z;
@@ -249,7 +269,7 @@ void us_convolvedownsample(IMAGE *im1, IMAGE *im2, int *box, long int *shft, MIA
 
   lsty = ny - box[3];
   lstz = nz - box[5];
-  
+
   p2=pim2;
   for (z = box[4]; z < lstz; z++){
     p1 = pim1 + nx * ny * z;
@@ -353,14 +373,14 @@ ERROR_TYPE i32_azimuth(IMAGE *ix, IMAGE *iy)
 {
   long int i, dx, dy, npix;
   PIX_TYPE *px, *py;
-  
+
   if (szcompat(ix, iy)==ERROR)
     return ERROR;
 
   npix=GetImNx(ix)*GetImNy(iy);
   px=(PIX_TYPE *)GetImPtr(ix);
   py=(PIX_TYPE *)GetImPtr(iy);
-  
+
   for (i=0; i<npix; i++, px++, py++){
     dx=*px;
     dy=*py;
@@ -390,14 +410,14 @@ ERROR_TYPE f_azimuth(IMAGE *ix, IMAGE *iy)
 {
   long int i, dx, dy, npix;
   PIX_TYPE *px, *py;
-  
+
   if (szcompat(ix, iy)==ERROR)
     return ERROR;
 
   npix=GetImNx(ix)*GetImNy(iy);
   px=(PIX_TYPE *)GetImPtr(ix);
   py=(PIX_TYPE *)GetImPtr(iy);
-  
+
   for (i=0; i<npix; i++, px++, py++){
     dx=*px;
     dy=*py;
@@ -421,12 +441,12 @@ ERROR_TYPE f_azimuth(IMAGE *ix, IMAGE *iy)
   return NO_ERROR;
 }
 #include "f_undef.h"
-      
+
 ERROR_TYPE azimuth(IMAGE *ix, IMAGE *iy)
 {
   if (szcompat(ix, iy)==ERROR)
     return ERROR;
-  
+
   switch (GetImDataType(ix)){
   case t_UINT32:
     return(i32_azimuth(ix, iy));
@@ -447,7 +467,7 @@ ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
   PIX_TYPE *pi;
-  
+
   nx=GetImNx(i0);
   ny=GetImNy(i0);
   pi=(PIX_TYPE *)GetImPtr(i0);
@@ -477,14 +497,14 @@ ERROR_TYPE uc_mapori(IMAGE *i0, int ox, int oy)
   return NO_ERROR;
 }
 #include "uc_undef.h"
-      
+
 #include "us_def.h"
 #define rad2degushort(x) ((x)*((double)PIX_MAX/(2*PI))) /* radians to uchar values */
 ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
 {
   long int x, y, nx, ny;
   PIX_TYPE *pi;
-  
+
   nx=GetImNx(i0);
   ny=GetImNy(i0);
   pi=(PIX_TYPE *)GetImPtr(i0);
@@ -514,9 +534,9 @@ ERROR_TYPE us_mapori(IMAGE *i0, int ox, int oy)
   return NO_ERROR;
 }
 #include "us_undef.h"
-      
 
-/** 
+
+/**
  * @synopsis orientation map of a raster with respect to an origin
  *
  * @param i0: an IMAGE
@@ -565,7 +585,7 @@ IMAGE *uc_rsum2d(IMAGE *im)
   *s=*p;
   for(x=1;x<nx;x++)
     s[x]=p[x]+s[x-1];
-   
+
   for (y=1;y<ny;y++){
     ofs=y*nx;
     s[ofs]=p[ofs]+s[ofs-nx];
@@ -602,7 +622,7 @@ IMAGE *u32_rsum2d(IMAGE *im)
   *s=*p;
   for(x=1;x<nx;x++)
     s[x]=p[x]+s[x-1];
-   
+
   for (y=1;y<ny;y++){
     ofs=y*nx;
     s[ofs]=p[ofs]+s[ofs-nx];
@@ -669,7 +689,7 @@ IMAGE *u32_rsum3d(IMAGE *im)
   *s=*p;
   for(x=1;x<nx;x++)
     s[x]=p[x]+s[x-1];
-   
+
   for (y=1;y<ny;y++){
     ofs=y*nx;
     s[ofs]=p[ofs]+s[ofs-nx];
@@ -684,15 +704,15 @@ IMAGE *u32_rsum3d(IMAGE *im)
     ofsblw=(z-1)*nx*ny;
     ofs=z*nx*ny;
     s[ofs]=s[ofsblw]+p[ofs];
-        
+
     for(x=1;x<nx;x++)
       s[ofs+x]=p[ofs+x]+s[ofs+x-1]+s[ofsblw+x]-s[ofsblw+x-1];
-   
+
     for (y=1;y<ny;y++){
       ofsblw=(z-1)*nx*ny+(y*nx);
       ofs=z*nx*ny+(y*nx);
       s[ofs]=p[ofs]+s[ofs-nx]+s[ofsblw]-s[ofsblw-nx];
-      
+
       for(x=1;x<nx;x++){
 	ofs++;
         ofsblw++;
@@ -745,7 +765,7 @@ IMAGE *uc_rsumsq2d(IMAGE *im)
   *s=*p * (UINT64) *p;
   for(x=1;x<nx;x++)
     s[x]=p[x]*p[x]+s[x-1];
-   
+
   for (y=1;y<ny;y++){
     ofs=y*nx;
     s[ofs]=p[ofs]*p[ofs]+s[ofs-nx];
@@ -789,14 +809,14 @@ IMAGE *uc_mean2d(IMAGE *im, int width)
     (void)sprintf(buf,"uc_mean2d(): not enough memory!\n"); errputstr(buf);
     return NULL;
   }
-  
+
   /* create output image */
   imout = (IMAGE *)create_image(t_FLOAT, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
     (void)sprintf(buf,"uc_2d(): not enough memory!\n"); errputstr(buf);
     return(imout);
   }
-  
+
   nx=GetImNx(imrsum);
   ny=GetImNy(imrsum);
   p=(UINT32 *)GetImPtr(imrsum);
@@ -880,7 +900,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   imse_tmp2=copy_image(imse_tmp1);
   // setminus!
   negation(imse);
-  bitwise_op(imse_tmp1, imse, AND_op); 
+  bitwise_op(imse_tmp1, imse, AND_op);
   negation(imse);
 
   /* create shift arrays */
@@ -897,7 +917,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
     free(shft); free(shfti);
     return NULL;
   }
-  
+
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
   box[2] = GetImNz(imse);
@@ -910,7 +930,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   free_image(imse_tmp1);
   imse_tmp1=copy_image(imse);
   negation(imse_tmp2);
-  bitwise_op(imse_tmp1, imse_tmp2, AND_op); 
+  bitwise_op(imse_tmp1, imse_tmp2, AND_op);
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
   box[2] = GetImNz(imse);
@@ -938,7 +958,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   /* create output image */
   imout = (IMAGE *)create_image(t_FLOAT, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
-    free(shft); free(shfti); free(shfto); 
+    free(shft); free(shfti); free(shfto);
     (void)sprintf(buf,"uc_mean2dse(): not enough memory!\n"); errputstr(buf);
     return(imout);
   }
@@ -974,7 +994,7 @@ IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
       *(s+ofs)=sum/n;
     }
   }
-  free(shft); free(shfti); free(shfto); 
+  free(shft); free(shfti); free(shfto);
   return(imout);
 }
 #include "uc_undef.h"
@@ -1039,7 +1059,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   imse_tmp2=copy_image(imse_tmp1);
   // setminus!
   negation(imse);
-  bitwise_op(imse_tmp1, imse, AND_op); 
+  bitwise_op(imse_tmp1, imse, AND_op);
   negation(imse);
 
   /* create shift arrays */
@@ -1056,7 +1076,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
     free(shft); free(shfti);
     return NULL;
   }
-  
+
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
   box[2] = GetImNz(imse);
@@ -1070,7 +1090,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   free_image(imse_tmp1);
   imse_tmp1=copy_image(imse);
   negation(imse_tmp2);
-  bitwise_op(imse_tmp1, imse_tmp2, AND_op); 
+  bitwise_op(imse_tmp1, imse_tmp2, AND_op);
   box[0] = GetImNx(imse);
   box[1] = GetImNy(imse);
   box[2] = GetImNz(imse);
@@ -1084,7 +1104,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
 
   free_image(imse_tmp1);
   free_image(imse_tmp2);
-  
+
   // base se
   boxtmp[0]=1;
   boxtmp[1]=boxtmp[2]=boxtmp[3]=boxtmp[4]=boxtmp[5]=0;
@@ -1102,7 +1122,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   /* create output image */
   imout = (IMAGE *)create_image(t_FLOAT, GetImNx(im), GetImNy(im), GetImNz(im));
   if (imout == NULL){
-    free(shft); free(shfti); free(shfto); 
+    free(shft); free(shfti); free(shfto);
     (void)sprintf(buf,"uc_mean2dse(): not enough memory!\n"); errputstr(buf);
     return(imout);
   }
@@ -1148,7 +1168,7 @@ IMAGE *uc_variance2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
       *(s+ofs)=sumsq/n-(sum/n)*(sum/n);
     }
   }
-  free(shft); free(shfti); free(shfto); 
+  free(shft); free(shfti); free(shfto);
   return(imout);
 }
 #include "uc_undef.h"
@@ -1198,7 +1218,7 @@ IMAGE *uc_squarevol(PIX_TYPE *pi, int ncol, int nlin, int k, int ox, int oy)
   int x, y;
 
   int i;
-  
+
 
   if (ox < 0 || ox > k-1 || oy < 0 || oy > k-1){
     (void)sprintf(buf,"Invalid origin, must be in SE\n"); stdputstr(buf);
@@ -1212,7 +1232,7 @@ IMAGE *uc_squarevol(PIX_TYPE *pi, int ncol, int nlin, int k, int ox, int oy)
     return NULL;
   }
   po = (INT32 *)GetImPtr(imo);
-    
+
 
   /* allocate and initialise shifts arrays */
   nshft=k*k;
@@ -1248,7 +1268,7 @@ IMAGE *uc_squarevol(PIX_TYPE *pi, int ncol, int nlin, int k, int ox, int oy)
     }
 
   }
-  
+
 
   free((void *) shft); free((void *) shfti); free((void *) shfto);
   return imo;
@@ -1264,7 +1284,7 @@ IMAGE *squarevol(IMAGE *im, int k, int ox, int oy)
   case t_UCHAR:
     return(uc_squarevol((UCHAR *)GetImPtr(im), GetImNx(im), GetImNy(im), k, ox, oy));
     break;
-    
+
   default:
     (void)sprintf(buf,"*squarevol(IMAGE *im, int k, int ox, int oy): invalid pixel type\n"); errputstr(buf);
   }

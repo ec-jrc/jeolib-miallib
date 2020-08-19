@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* provides a distinct label to each connected component of a binary image
    it is ASSUMED that the input image has a zero valued frame accordingly to shft
    the first label is 2 */
@@ -19,6 +39,7 @@
 
 /** @defgroup group_label Connected component labelling
  *  Functions labelling image connected components based on pre-defined connectivity relations.
+ *  The labelling of flat zones (labelplat function) is described in \cite soille2004sv
  *  @{
  */
 
@@ -35,7 +56,7 @@ ERROR_TYPE generic_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   ** ox: x coordinate of origin
   ** oy: y coordinate of origin
   ** oz: z coordinate of origin
-  
+
   ** comment:
   */
 
@@ -45,7 +66,7 @@ ERROR_TYPE generic_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   FIFO4 *q;
   long int nx, ny, nz;
   int box[BOXELEM];
-  
+
   n = objectpix(im2);
   if (n==ERROR) /* no point in SE */
     return ERROR;
@@ -69,7 +90,7 @@ ERROR_TYPE generic_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -143,7 +164,7 @@ ERROR_TYPE u32_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -212,7 +233,7 @@ ERROR_TYPE i32_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -273,7 +294,7 @@ ERROR_TYPE us_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (us_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -282,7 +303,7 @@ ERROR_TYPE us_label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -390,7 +411,7 @@ ERROR_TYPE us_labelpixngb(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -460,7 +481,7 @@ ERROR_TYPE i32_labelpixngb(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   nx = GetImNx(im1);
   ny = GetImNy(im1);
   nz = GetImNz(im1);
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -542,7 +563,7 @@ ERROR_TYPE generic_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (generic_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -559,7 +580,7 @@ ERROR_TYPE generic_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
     if (*p)
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -619,7 +640,7 @@ ERROR_TYPE us_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (us_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -636,7 +657,7 @@ ERROR_TYPE us_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
     if (*p)
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -696,7 +717,7 @@ ERROR_TYPE i32_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (i32_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -713,7 +734,7 @@ ERROR_TYPE i32_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
     if (*p)
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -748,6 +769,8 @@ ERROR_TYPE i32_labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
 #include "i32_undef.h"
 
 
+
+/* labelplat function is described in \cite soille2004sv */
 ERROR_TYPE labelplat(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz)
 {
   switch (GetImDataType(im1)){
@@ -810,7 +833,7 @@ ERROR_TYPE generic_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, i
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (generic_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -827,7 +850,7 @@ ERROR_TYPE generic_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, i
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -896,7 +919,7 @@ ERROR_TYPE us_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (us_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -913,7 +936,7 @@ ERROR_TYPE us_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -981,7 +1004,7 @@ ERROR_TYPE u32_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int o
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (u32_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -998,7 +1021,7 @@ ERROR_TYPE u32_seededlabelplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int o
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -1107,7 +1130,7 @@ ERROR_TYPE generic_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (generic_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -1124,7 +1147,7 @@ ERROR_TYPE generic_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -1194,7 +1217,7 @@ ERROR_TYPE us_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (us_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -1211,7 +1234,7 @@ ERROR_TYPE us_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, int
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -1281,7 +1304,7 @@ ERROR_TYPE u32_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, in
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(im2), box, GetImNx(im1), GetImNy(im1), shft);
-  
+
   if (i32_framebox(im1,box,0)==ERROR){
     free((char*)shft);
     return ERROR;
@@ -1298,7 +1321,7 @@ ERROR_TYPE u32_seededplat(IMAGE *im1, IMAGE *im2, IMAGE *im3, int ox, int oy, in
     if (*p) /* shouldn't it be >= ???  for all (see below) */
       *p |= PIX_MSB;
   }
-  
+
   q = create_fifo4((nx*ny*nz)/100L);
   if (q == NULL){
     free((char*)shft);
@@ -1423,7 +1446,7 @@ ERROR_TYPE labelpix(IMAGE *im)
   case t_USHORT:
     return(us_labelpix(im));
     break;
-    
+
   case t_INT32:
   case t_UINT32:
     return(i32_labelpix(im));
@@ -1518,7 +1541,7 @@ ERROR_TYPE uc_resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int gr
     maxfreq=0;
     lblmaj=0;
     for (j=1; j<maxlbl+1; j++){
-      if (ngbval[j]>maxfreq){ 
+      if (ngbval[j]>maxfreq){
 	lblmaj=j;
 	maxfreq=ngbval[j];
       }
@@ -1539,12 +1562,12 @@ ERROR_TYPE uc_resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int gr
     }
     if (lblmaj==0)
        printf("SHOULD NEVER HAPPEN!!!: composite label %d plain label %d\n", crtlbl, (int)lblmaj);
-    
+
     while ((p1 = (PIX_TYPE *)fifo4_remove(qall)))
       *p1=lblmaj;
   }
   uc_framebox(imlbl, box, 0x0);
-  
+
   free((char*)ngbval);
   free_fifo4(q);
   free_fifo4(qall);
@@ -1637,7 +1660,7 @@ ERROR_TYPE us_resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int gr
     maxfreq=0;
     lblmaj=0;
     for (j=1; j<maxlbl+1; j++){
-      if (ngbval[j]>maxfreq){ 
+      if (ngbval[j]>maxfreq){
 	lblmaj=j;
 	maxfreq=ngbval[j];
       }
@@ -1670,7 +1693,7 @@ ERROR_TYPE us_resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int gr
       *p1=lblmaj;
   }
   us_framebox(imlbl, box, 0x0);
-  
+
   free((char*)ngbval);
   free_fifo4(q);
   free_fifo4(qall);
@@ -1695,7 +1718,7 @@ ERROR_TYPE resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int graph
   case t_USHORT:
     return(us_resolveLabels(imlbl, imlut, imlutback, graph));
     break;
-    
+
   default:
     (void)sprintf(buf,"resolveLabels(): invalid pixel type\n"); errputstr(buf);
     return(ERROR);
@@ -1705,7 +1728,7 @@ ERROR_TYPE resolveLabels(IMAGE *imlbl, IMAGE *imlut, IMAGE *imlutback, int graph
 
 
 #include "uc_def.h" /* GLOUP: refers to g image instead of lbl */
-#define LOCAL_LBL_TYPE USHORT 
+#define LOCAL_LBL_TYPE USHORT
 ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
 {
   PIX_TYPE *pgim;
@@ -1743,7 +1766,7 @@ ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
     indx[i]=indx[i]-1; /* numerical recipes indices start with 1 */
   for (i=0;i<maxlbl+1;i++)
     irank[indx[i]]=i;
-  
+
   plbl=(LOCAL_LBL_TYPE *)GetImPtr(imlbl);
   for(i=0;i<npix;i++,plbl++)
     *plbl=irank[*plbl];
@@ -1758,7 +1781,7 @@ ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
 
 
 #include "uc_def.h" /* GLOUP: refers to g image instead of lbl */
-#define LOCAL_LBL_TYPE UINT32  
+#define LOCAL_LBL_TYPE UINT32
 ERROR_TYPE u32_gorder(IMAGE *imlbl, IMAGE *g, int n)
 {
   PIX_TYPE *pgim;
@@ -1796,7 +1819,7 @@ ERROR_TYPE u32_gorder(IMAGE *imlbl, IMAGE *g, int n)
     indx[i]=indx[i]-1; /* numerical recipes indices start with 1 */
   for (i=0;i<maxlbl+1;i++)
     irank[indx[i]]=i;
-  
+
   plbl=(LOCAL_LBL_TYPE *)GetImPtr(imlbl);
   for(i=0;i<npix;i++,plbl++)
     *plbl=irank[*plbl];

@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2012-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "miallib.h"
@@ -46,7 +66,7 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
      First: 20141125
      First running: 20141126
 
-     Author: Pierre.Soille@jrc.ec.europa.eu
+     Author: Pierre Soille
 
   */
   FILE *fp;
@@ -63,15 +83,15 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
 
   n=GetImNx(matrix);
 
-  
-  
+
+
   if ( (GetImNx(maxg_array)!= n) || \
        (GetImDataType(matrix) != GetImDataType(maxg_array)) || \
        (GetImDataType(matrix) != t_UCHAR)){
     sprintf(buf, "error in ovlmatrix(): imcompatible input parameters\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   idx=(unsigned int *)calloc(n, sizeof(unsigned int));
 
   pm=(UCHAR *)GetImPtr(matrix);
@@ -123,13 +143,13 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
 
     flagdep=(UCHAR *)calloc(n, sizeof(UCHAR));
     flagdone=(UCHAR *)calloc(n, sizeof(UCHAR));
-    
+
   /* proceed with g>=2 */
-  // #pragma omp parallel for					
+  // #pragma omp parallel for
   // private(g,cnt_done,ois,i,flagdone,flagdep,ofs,flag,j,fn,fp)
   for (g=2; g<=gmax; g++){
 
-    
+
     cnt_done=0;
     ois=1;
     while (cnt_done<n){
@@ -137,7 +157,7 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
 	if ( (flagdone[idx[i]]==0) && (flagdep[idx[i]]==0)) {
 	  if (pg[idx[i]] >= g){
 	    ofs=idx[i]*n;
-	    
+
 	    /* make sure independence condition is satisfied */
 	    flag=1;
 	    for (j=0; j<n; j++)
@@ -158,7 +178,7 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
 	      flagdone[idx[i]]=1;
 	      cnt_done++;
 
-	      /* create corresponding output list */	      
+	      /* create corresponding output list */
 	      fp=fopen(fn,"wc");
 	      fprintf(fp, "%05d\n", idx[i]);
 	      for (j=0; j<n; j++){
@@ -180,7 +200,7 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
       }
       ois++;
     }
-    
+
     /* reset flagdep and flagdone*/
     for (i=0; i<n; i++){
       flagdep[i]=0;

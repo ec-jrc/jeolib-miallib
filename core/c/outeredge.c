@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* first 20100916 for building height measurement */
 
 #include <stdio.h>
@@ -28,7 +48,7 @@ IMAGE *u32_outeredgelut(IMAGE *ilbl, IMAGE *iedgelbl)
      is connected to internal boundaries coming from holes.
      This function is superseeded by outeredge() using
      Moore's contour tracing algorithm for actual outer edge extraction.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100915 (for building footprint characterisation)
   */
   G_TYPE *pg;
@@ -44,7 +64,7 @@ IMAGE *u32_outeredgelut(IMAGE *ilbl, IMAGE *iedgelbl)
     return(NULL);
   maxlbl = pg[1].u32_val;
   free((char *)pg);
-  
+
 
   lut= (IMAGE *)create_image(t_UINT32, maxlbl+1, 1, 1);
   if (lut==NULL)
@@ -77,7 +97,7 @@ IMAGE *outeredgelut(IMAGE *ilbl, IMAGE *iedgelbl)
 {
   switch (GetImDataType(ilbl)&GetImDataType(iedgelbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_outeredgelut(ilbl, iedgelbl);
     break;
 
@@ -96,7 +116,7 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
 
   /* extract the outer edge from labelled CCs.  Use MSB for flagging.
      assumes border is set to zero to avoid border overflow.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100917 (for building footprint characterisation)
 
      based on Moore's contour tracing algorithm with Jacob's condition, see
@@ -120,25 +140,25 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
   // Defines the neighborhood offset position from current position and the neighborhood
   // position we want to check next if we find a new border at checkLocationNr
   int neighborhood[8][2] = {
-    {-1,7},       // red	   
-    {-1-nx,7},	  // green   
-    {-nx,1},	  // blue	   
-    {-nx+1,1},	  // yellow  
-    {1,3},	  // magenta 
-    {1+nx,3},	  // cyan	   
-    {nx,5},	  // white   
-    {nx-1,5}	  // grey    
+    {-1,7},       // red
+    {-1-nx,7},	  // green
+    {-nx,1},	  // blue
+    {-nx+1,1},	  // yellow
+    {1,3},	  // magenta
+    {1+nx,3},	  // cyan
+    {nx,5},	  // white
+    {nx-1,5}	  // grey
   };
 
   if (graph!=8)
     graph=4;
   if (graph==4){
-    neighborhood[0][0] = -1;  // red   
-    neighborhood[0][1] = 4;   	       
-    neighborhood[1][0] = -nx; // green 
-    neighborhood[1][1] = 1;   	       
-    neighborhood[2][0] = 1;   // blue  
-    neighborhood[2][1] = 2;   	       
+    neighborhood[0][0] = -1;  // red
+    neighborhood[0][1] = 4;
+    neighborhood[1][0] = -nx; // green
+    neighborhood[1][1] = 1;
+    neighborhood[2][0] = 1;   // blue
+    neighborhood[2][1] = 2;
     neighborhood[3][0] = nx;  // yellow
     neighborhood[3][1] = 3;
   }
@@ -146,14 +166,14 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
   imout=(IMAGE *)create_image(t_UCHAR, GetImNx(ilbl), GetImNy(ilbl), 1);
   if (imout==NULL)
     return NULL;
-  
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
     return(NULL);
   maxlbl = pg[1].u32_val;
   free((char *)pg);
-  
+
   lut= (IMAGE *)create_image(t_MY_LUT_TYPE, maxlbl+1, 1, 1);
   if (lut==NULL){
     free_image(imout);
@@ -181,7 +201,7 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
   //shared(maxlbl,pout,plbl,plut,graph,neighborhood) private(i,lbl,pos)
   //{
 #ifdef OPENMP
-#pragma omp parallel for private(lbl, pos) 
+#pragma omp parallel for private(lbl, pos)
 #endif
   //  #pragma omp for nowait
   for (i=1; i<=maxlbl; i++){  // lbl==0 for background or border
@@ -192,20 +212,20 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
                             // check if we find a new border at checkLocationNr
     long int startPos = plut[i]; // Set start position
     int counter = 0;        // Counter is used for the jacobi stop criterion
-    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered 
+    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered
                             // is one single point
-    
+
     if (startPos!=0){
       lbl=plbl[startPos];
       //IFMSB plbl[startPos]|=PIX_MSB;     // mark pixel as border
       pout[startPos]=1;     // mark pixel as border
       pos=startPos;
-  
+
       // Trace around the neighborhood
       while(1){
 	checkPosition = pos + neighborhood[checkLocationNr-1][0];
 	newCheckLocationNr = neighborhood[checkLocationNr-1][1];
- 
+
 	//IFMSB if( (plbl[checkPosition]&~PIX_MSB) == lbl) { // Next border point found
 	if( plbl[checkPosition] == lbl) { // Next border point found
 	  if(checkPosition == startPos){
@@ -236,12 +256,12 @@ IMAGE *u32_outeredge(IMAGE *ilbl, int graph)
 	    counter2 ++;
 	  }
 	}
-      }    
+      }
     }
   }
   // }  /* END of parallel region */
   free_image(lut);
- 
+
   return imout;
 }
 #undef MY_LUT_TYPE
@@ -253,7 +273,7 @@ IMAGE *outeredge(IMAGE *ilbl, int graph)
 {
   switch (GetImDataType(ilbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_outeredge(ilbl, graph);
     break;
 
@@ -274,7 +294,7 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
      only points with change of direction are kept.
      Use MSB for flagging.
      assumes border is set to zero to avoid border overflow.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100930 (for building footprint characterisation)
 
      based on Moore's contour tracing algorithm with Jacob's condition, see
@@ -295,7 +315,7 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
   int nx=GetImNx(ilbl);
   long int i, npix, pos;  // openMP requires signed loop index
   int box[BOXELEM];
-  
+
 
   // Defines the neighborhood offset position from current position and the neighborhood
   // position we want to check next if we find a new border at checkLocationNr
@@ -310,7 +330,7 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
     {1,3},      // magenta
     {1+nx,3},   // cyan
     {nx,5},     // white
-    {nx-1,5}    // grey    
+    {nx-1,5}    // grey
   };
 
   if (graph!=8)
@@ -332,17 +352,17 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
   imout=(IMAGE *)create_image(t_UCHAR, GetImNx(ilbl), GetImNy(ilbl), 1);
   if (imout==NULL)
     return NULL;
-  
+
   BOX_2D;
   u32_framebox(ilbl,box,0);
-  
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
     return(NULL);
   maxlbl = pg[1].u32_val;
   free((char *)pg);
-  
+
   lut= (IMAGE *)create_image(t_MY_LUT_TYPE, maxlbl+1, 1, 1);
   if (lut==NULL){
     free_image(imout);
@@ -363,11 +383,11 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
   }
 
   /* process one cc at a time */
-  //pragma omp parallel default(none)	
+  //pragma omp parallel default(none)
   //shared(maxlbl,pout,plbl,plut,graph,neighborhood) private(i,lbl,pos)
   //{
 #ifdef OPENMP
-#pragma omp parallel for private(lbl, pos) 
+#pragma omp parallel for private(lbl, pos)
 #endif
   //  #pragma omp for nowait
   for (i=1; i<=maxlbl; i++){  // lbl==0 for background or border
@@ -378,7 +398,7 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
                             // check if we find a new border at checkLocationNr
     long int startPos = plut[i]; // Set start position
     int counter = 0;        // Counter is used for the jacobi stop criterion
-    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered 
+    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered
                             // is one single point
     int prevCheckLocationNr = 9; // init with dummy direction
     if (startPos!=0){
@@ -386,26 +406,26 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
       //IFMSB plbl[startPos]|=PIX_MSB;     // mark pixel as border
       pout[startPos]=9;     // mark pixel as border
       pos=startPos;
-  
+
       // Trace around the neighborhood
       while(1){
 	checkPosition = pos + neighborhood[checkLocationNr-1][0];
 	newCheckLocationNr = neighborhood[checkLocationNr-1][1];
- 
+
 	//IFMSB if( (plbl[checkPosition]&~PIX_MSB) == lbl) { // Next border point found
 	if( plbl[checkPosition] == lbl) { // Next border point found
 	  if(checkPosition == startPos){
 
 
 	    pout[pos]=checkLocationNr; // direction of next border point
-	  
+
 	    // set to 9 if point of change of direction
 	    if (checkLocationNr!=prevCheckLocationNr){
 	      pout[pos]=9;
 	      pout[checkPosition]=9;
 	      prevCheckLocationNr=checkLocationNr;
 	    }
-	  
+
 	    counter ++;
 	    // Stopping criterion (jacob)
 	    if(newCheckLocationNr == 1 || counter >= 3) { // Close loop
@@ -421,7 +441,7 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
 	    pout[checkPosition]=9;
 	    prevCheckLocationNr=checkLocationNr;
 	  }
-     
+
 	  checkLocationNr = newCheckLocationNr;// Update which neighborhood position we should check next
 	  pos = checkPosition;
 	  counter2 = 0;    // Reset the counter that keeps track of how many neighbors we have visited
@@ -439,12 +459,12 @@ IMAGE *u32_outercontour(IMAGE *ilbl, int graph)
 	    counter2 ++;
 	  }
 	}
-      }    
+      }
     }
   }
   // }  /* END of parallel region */
   free_image(lut);
- 
+
   return imout;
 }
 #undef MY_LUT_TYPE
@@ -455,7 +475,7 @@ IMAGE *outercontour(IMAGE *ilbl, int graph)
 {
   switch (GetImDataType(ilbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_outercontour(ilbl, graph);
     break;
 

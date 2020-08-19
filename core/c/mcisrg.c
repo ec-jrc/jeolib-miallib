@@ -1,14 +1,45 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/**
+ * @file  mcisrg.c
+ * @author Dominik Brunner and Pierre Soille
+ * @date
+ *
+ * @details see also \cite brunner-soille2007
+ *
+ */
+
+
+
+
+
+
 /***************************************************************************
                             mcisrg.c  -  description
-                            
+
   mcisrg stands for multi channel improved seeded region growing algorithm.
   This is a adapted version for multispectral images of the algorithm
   introduced by Andrew Mehnert and Paul Jackway
                             -------------------
     begin                : Thu Apr 22 2004
-    authors:             : Dominik Brunner and Pierre.Soille@jrc.it
-    copyright            : (C) 2004 
-    email                : Pierre.Soille@jrc.it
 ***************************************************************************/
 
 
@@ -126,7 +157,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   if (u32_addframebox(seedsIm, box, BORDER) == ERROR){
     return ERROR;
   }
-    
+
   pIm = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE *));
 
   nx = GetImNx(seedsIm);
@@ -198,8 +229,8 @@ ERROR_TYPE uc_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   }
 
   sprintf(fname,"/tmp/mcisrgBEFORE.tif");
-  write_tiff(imap[0], fname); 
-       
+  write_tiff(imap[0], fname);
+
   /* here we go */
   while ( (fifo4_empty(nhq)==0) || (pqExactPeek(pq, apqd) != NULL) ){
     //examine the neighbours of pixels in the neighbouring holding queue
@@ -293,8 +324,8 @@ ERROR_TYPE uc_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   }
 
   sprintf(fname,"/tmp/mcisrgAFTER.tif");
-  write_tiff(imap[0], fname); 
-       
+  write_tiff(imap[0], fname);
+
   //admit new color value to each channel in image
   nxny=nx*ny;
   for(offset=0; offset<nxny; offset++){
@@ -322,7 +353,7 @@ ERROR_TYPE uc_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   for(i=0; i<nc; i++)
     subframebox(imap[i], box);
   subframebox(seedsIm, box);
-    
+
   return NO_ERROR;
 }
 #include "uc_undef.h"
@@ -388,7 +419,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   if (u32_addframebox(seedsIm, box, BORDER) == ERROR){
     return ERROR;
   }
-    
+
   pIm = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE *));
 
   nx = GetImNx(seedsIm);
@@ -460,8 +491,8 @@ ERROR_TYPE us_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   }
 
   sprintf(fname,"/tmp/mcisrgBEFORE.tif");
-  write_tiff(imap[0], fname); 
-       
+  write_tiff(imap[0], fname);
+
   /* here we go */
   while ( (fifo4_empty(nhq)==0) || (pqExactPeek(pq, apqd) != NULL) ){
     //examine the neighbours of pixels in the neighbouring holding queue
@@ -555,8 +586,8 @@ ERROR_TYPE us_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   }
 
   sprintf(fname,"/tmp/mcisrgAFTER.tif");
-  write_tiff(imap[0], fname); 
-       
+  write_tiff(imap[0], fname);
+
   //admit new color value to each channel in image
   nxny=nx*ny;
   for(offset=0; offset<nxny; offset++){
@@ -584,7 +615,7 @@ ERROR_TYPE us_mcisrg(IMAGE **imap, int nc, IMAGE *seedsIm, int graph, long int r
   for(i=0; i<nc; i++)
     subframebox(imap[i], box);
   subframebox(seedsIm, box);
-    
+
   return NO_ERROR;
 }
 #include "us_undef.h"

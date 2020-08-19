@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -52,7 +72,7 @@ void bresenham(int x1, int y1, int x2, int y2, long int pb[], double delta[], in
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -105,7 +125,7 @@ void tracelinecorrect(int x1, int y1, int x2, int y2, long int pb[], int rlc[], 
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -172,7 +192,7 @@ ERROR_TYPE uc_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     do{
       y = y + sy;        /* Move along the 'long' axis */
       /*OLD x = (int)(a*y+b+0.5*sx); */
@@ -225,7 +245,7 @@ ERROR_TYPE us_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     for (i=0; i<ady; i++){
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);
@@ -277,7 +297,7 @@ ERROR_TYPE i32_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val)
   }
   else{
     a=(double)dx/dy;   /* slope of line */
-    b=(double)x1-a*y1; /* offset of line at origin */ 
+    b=(double)x1-a*y1; /* offset of line at origin */
     for (i=0; i<ady; i++){
       y = y + sy;        /* ;Move along the 'long' axis */
       x = (long int)(a*y+b+0.5);

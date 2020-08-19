@@ -1,7 +1,7 @@
 
-import miallib as _miallib
+from . import miallib as _miallib
 
-from format_base import *
+from .format_base import *
 
 
 def d_touchar(i0):

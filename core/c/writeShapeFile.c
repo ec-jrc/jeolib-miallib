@@ -1,13 +1,30 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           writeShapeFile.c  -  description
                              -------------------
  Vectorizes the boundary lines from the region. The output file format is ESRI Shapefile.
  The geoinformations will be considered for the output (if available)
-                             
+
     begin                : Mon May 24 2004
-    authors              : Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
 ***************************************************************************/
 
 #include <stdio.h>
@@ -44,7 +61,7 @@ static void WriteTFWFile( GTIF * gtif, const char * tif_filename )
   if (gtif==NULL){
     return;
   }
-    
+
   /*
    * form .tfw filename
    */
@@ -62,7 +79,7 @@ static void WriteTFWFile( GTIF * gtif, const char * tif_filename )
     strcat( tfw_filename, ".tfw" );
 
   printf("write TFW file: %s", tfw_filename);
-  
+
   /*
    * Compute the coefficients.
    */
@@ -137,7 +154,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
   SHPObject * shpObject;
 
   printf("write Shapefiles\n");
-   
+
   shpHdl = SHPCreate(fileName, SHPT_POLYGON);
   dbfHdl = DBFCreate(fileName);
 
@@ -156,7 +173,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
   crtPos=SEED;
   channelSize = regions[crtPos]->channelSize;
   channels = calloc(channelSize, sizeof(int));
-  
+
   for(i=0; i<channelSize; i++){
     sprintf(buffer, "Channel_%i", i);
     if((channels[i]=DBFAddField(dbfHdl, buffer, FTInteger,5,0))==-1){
@@ -165,7 +182,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
       DBFClose(dbfHdl);
     }
   }
-  
+
   for(; crtPos<regionNumber+1; crtPos++){
     if((shpObject=writeSHPPolygon(regions[crtPos],crtPos, gtif))==NULL){
       SHPClose(shpHdl);
@@ -243,7 +260,7 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
     trace[i]=0;
   }
   trace[0]=1;
-  
+
   line = region->lines[0];
   firstPoint=line->points[0];
   for(i=0; i<line->crtPos; i++){
@@ -317,7 +334,7 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
     yVertices[i]=crtPoint->y;
     if(gtif!=NULL){
       GTIFImageToPCS(gtif, & xVertices[i], &yVertices[i]);
-    }      
+    }
   }
 
   shpObject = SHPCreateObject(SHPT_POLYGON, id, 0, NULL,NULL, i, xVertices, yVertices, NULL, NULL);

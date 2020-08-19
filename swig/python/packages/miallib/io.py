@@ -2,7 +2,7 @@
 
 # this makes all io_base functions available within miallib.io. e.g. miallib.io.read_image
 # but also makes io_base available as a subpackage: miallib.io_base.read_image.
-from io_base import *
+from .io_base import *
 
 # this makes imem__base functions available directly in this file, e.g., copy_image()
 # but it also makes all imem_base functions available directly in miallib.imem_base,
@@ -12,7 +12,7 @@ from io_base import *
 
 # this makes imem_base functions available in this file, e.g., imem_base.copy_image()
 # but also as miallib.imem_base in ipython
-import imem_base as _imem_base
+from . import imem_base as _imem_base
 
 def getnx(fn):
     gdi=GDALInfoJIP(fn)

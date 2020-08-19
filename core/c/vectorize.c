@@ -1,13 +1,30 @@
+/***********************************************************************
+Author(s): Dominik Brunner Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           vectorize.c  -  description
                              -------------------
   Vectorize multispectral high resolution satellite images.
   Output file formats are Scalabale Vector Graphics (SVG) and/or ESRI Shapefiles
-                             
+
     begin                : Fri May 14 2004
-    authors              : Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
 ***************************************************************************/
 
 #include <stdio.h>
@@ -152,7 +169,7 @@ ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, doub
         freeRegion(regions[r]);
         free(regions[r]);
       }
-      return ERROR;  
+      return ERROR;
     }
   }
   if(format==2 || format==3){
@@ -163,7 +180,7 @@ ERROR_TYPE vectorizeImage(IMAGE **imap, int nc, char *filename, int format, doub
       }
       return ERROR;
     }
-  } 
+  }
   for(r=0; r<regionNumber+1; r++){
     free(regions[r]);
   }

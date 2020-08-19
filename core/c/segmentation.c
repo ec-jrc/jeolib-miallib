@@ -1,12 +1,41 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/**
+ * @file  segmentation.c
+ * @author Dominik Brunner and Pierre Soille
+ * @date
+ *
+ * @details see also \cite brunner-soille2007
+ */
+
+
+
+
+
 /***************************************************************************
                           segmentation.c  -  description
                              -------------------
  Segmentation algorithm for multispectral high resolution satellite images
 
     begin                : Tue May 11 2004
-    authors              : by Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
 ***************************************************************************/
 
 #include <stdio.h>
@@ -202,7 +231,7 @@ USHORT getBestContrast(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int vari
  *    version       version of mcisrg algorithm. Versions are
  *                  0  (compare to whole region)
  *                  1  (compare to original seeds)
- *                  2  (compare to pixel neighbours)  
+ *                  2  (compare to pixel neighbours)
  *
  *    fndat         filename to store data files.  Authorised values are
  *                  NULL (do not store)
@@ -213,14 +242,14 @@ USHORT getBestContrast(IMAGE **imap, int nc, IMAGE *labelIm, int graph, int vari
  *   region number  if everything is ok
  *
  *   ERROR          if there was an error
- *                  
+ *
  */
 IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regionSize, int contrast, int version, char *fndat)
 {
   long int i, regionNumber=0, oldRegionNumber=0;
   IMAGE *labelIm=NULL;
   char fname[256];
-  
+
   for (i = 1; i < nc; i++){
     if ( (GetImNx(imap[0]) != GetImNx(imap[i])) || \
 	 (GetImNy(imap[0]) != GetImNy(imap[i])) || \
@@ -277,7 +306,7 @@ IMAGE *segmentImage(IMAGE **imap, int nc, int graph, int varianz, long int regio
   }
   sprintf(fname,"/tmp/mcisrgINIT2.tif");
   /* write_tiff(imap[0], fname); */
-  
+
   if(contrast>0){ /* then make merge of regions with similar contrast value */
     if(labelImage(imap, nc, labelIm, graph, varianz)==NULL){
       free_image(labelIm);

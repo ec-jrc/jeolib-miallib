@@ -1,9 +1,32 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/** @file
+ *  Iterative regiona growing \cite brunner-soille2005 \cite brunner-soille2007
+ *  @author Dominik Brunner and Pierre Soille
+ */
+
 /***************************************************************************
                           determineSize.c  -  description
                              -------------------
-    begin                : Tue APR 13 2004  by Dominik Brunner
-    copyright            : (C) 2004 European Commission
-    email                : Pierre.Soille@jrc.ec.europa.eu
+    begin                : Tue APR 13 2004
  ***************************************************************************/
 
 
@@ -74,7 +97,7 @@ long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold)
   if (u32_addframebox(inputIm, box, BORDER) == ERROR){
     return ERROR;
   }
-    
+
   im = (IMAGE *) create_image(t_UCHAR, GetImNx(inputIm), GetImNy(inputIm), 1);
 
   if (uc_framebox(im, box, BORDER) == ERROR){
@@ -174,7 +197,7 @@ long int thresholdRegion_Size(IMAGE *inputIm, unsigned long int threshold)
  *                            Otherwise the region gets an increasing region number if the size is
  *                            bigger then the threshold.
  *
- *  Parameters:      
+ *  Parameters:
  *
  *    imap            image array with the different channels of the image
  *
@@ -242,7 +265,7 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
   if(rmInit(&rm, nc)==NULL){
     return ERROR;
   }
-        
+
   nx= GetImNx(inputIm);
   ny= GetImNy(inputIm);
 
@@ -251,7 +274,7 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
     freeRegionMean(&rm);
     return ERROR;
   }
-    
+
   for(i=0; i<(nx*ny);i++){
     //initialize  values considering a frame outside
     if((i<nx)||(i>=(nx*ny-nx))|| (i%nx == nx-1) || (i%nx == 0)){
@@ -372,7 +395,7 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
     subframebox(imap[i], box);
   }
   subframebox(inputIm, box);
-    
+
   if(threshold >=0){
     return (label-1);
   }

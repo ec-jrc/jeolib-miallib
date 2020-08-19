@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +51,7 @@ void uc_rank(im1, im2, nx, ny, nz, rank, box, shft, n)
   int i, trank;
   int hst[PIX_MAXP1]; /* histogram array */
   int thcrt;
-  
+
   double rindex = (double)rank/(n+1);
 
   lstx = nx - box[1];
@@ -107,7 +127,7 @@ void us_rank(im1, im2, nx, ny, nz, rank, box, shft, n)
   pq = (struct pqueue *)pqinit(NULL, n+1);  /* priority queue */
   /* if (pq == NULL)
      return ERROR; */
-  
+
   pqd = (PQDATUM *)malloc(sizeof(struct node *) * n);
   for (i=0;i<n;i++)
     pqd[i]= (PQDATUM )malloc(sizeof(struct node));
@@ -189,7 +209,7 @@ void i32_rank(im1, im2, nx, ny, nz, rank, box, shft, n)
   pq = (struct pqueue *)pqinit(NULL, n+1);  /* priority queue */
   /* if (pq == NULL)
      return ERROR; */
-  
+
   pqd = (PQDATUM *)malloc(sizeof(struct node *) * n);
   for (i=0;i<n;i++)
     pqd[i]= (PQDATUM )malloc(sizeof(struct node));
@@ -342,7 +362,7 @@ void uc_lrank(PIX_TYPE *pi, int n, int k, int rank, int o)
     *pcrt++=(unsigned short)pi[i];
   for (i=0; i<k-o-1; i++)
     *pcrt++=256;
-  
+
   /* initialize histogram */
   for (i=0; i<257; i++)
     hst[i]=0;
@@ -402,16 +422,16 @@ ERROR_TYPE uc_linerank(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int k, i
    ** dx: offset of SE along x from origin
    ** dy: offset of SE along y from origin
    ** k: extent of SE in pixels
-   ** rank: 
-   ** o: 
+   ** rank:
+   ** o:
    */
-  
+
   PIX_TYPE *pi;
   long int *p, *ptmp;
   int *rlc;
   int inc, incx, incy;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la, m;
-  
+
   /* long int start;
   start = clock(); */
 
@@ -427,11 +447,11 @@ ERROR_TYPE uc_linerank(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int k, i
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -459,10 +479,10 @@ ERROR_TYPE uc_linerank(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int k, i
   p   = (long int*)calloc(sizeof(long int),nx);
   rlc = (int*)calloc(sizeof(int),nx);
   pi  = (PIX_TYPE *)calloc(sizeof(PIX_TYPE),nx);
- 
+
   /* traceline(pxf, pyf, dx, dy, p, pb, rlc, ncol, nx, 1); */
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* process the whole image */
   ptmp = p;
   inc = incx + ncol*incy;
@@ -510,7 +530,7 @@ ERROR_TYPE uc_linerank(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int k, i
       *(f+p[m])=pi[m];
   }
 
-  free(ptmp); free(rlc); free(pi); 
+  free(ptmp); free(rlc); free(pi);
   /* printf("uc_linerank(): %ld msec\n\n", (clock() - start) / 1000); */
   return NO_ERROR;
 }
@@ -543,7 +563,7 @@ IMAGE *uc_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
    ** ncol: number of image columns
    ** nlin: number of image lines
    ** k: width of square SE in pixels
-   ** rank: 
+   ** rank:
    ** ox: origin in x
    ** oy: origin in y
    ** returns: pointer to created image holding the filtered image
@@ -563,7 +583,7 @@ IMAGE *uc_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
   int i, trank;
   int hst[PIX_MAX+1]; /* histogram array */
   int thcrt;
-  
+
   double rindex = (double)rank/(k*k+1);
 
   if (rank < 1 || rank > k*k){
@@ -582,7 +602,7 @@ IMAGE *uc_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
     return NULL;
   }
   po = (PIX_TYPE *)GetImPtr(imo);
-    
+
 
   /* allocate and initialise shifts arrays */
   nshft=k*k;
@@ -663,7 +683,7 @@ IMAGE *us_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
    ** ncol: number of image columns
    ** nlin: number of image lines
    ** k: width of square SE in pixels
-   ** rank: 
+   ** rank:
    ** ox: origin in x
    ** oy: origin in y
    ** returns: pointer to created image holding the filtered image
@@ -682,7 +702,7 @@ IMAGE *us_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
   int i, trank;
   int hst[PIX_MAX+1]; /* histogram array */
   int thcrt;
-  
+
   double rindex = (double)rank/(k*k+1);
 
   if (rank < 1 || rank > k*k){
@@ -701,7 +721,7 @@ IMAGE *us_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
     return NULL;
   }
   po = (PIX_TYPE *)GetImPtr(imo);
-    
+
 
   /* allocate and initialise shifts arrays */
   nshft=k*k;

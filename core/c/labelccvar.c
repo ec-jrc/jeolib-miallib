@@ -1,3 +1,29 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2006-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/** @file labelccvar.c
+ *  Connected component labelling using variance predicate \cite soille2007iciap
+ *  @author Pierre Soille
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -29,11 +55,11 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio, mincc, maxcc, reset=0;
   long int  k, *shft;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
@@ -42,7 +68,7 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
   unsigned int hst[PIX_MAX+1]; /* histogram */
   unsigned int sum, count;
   double mean, var;
-  
+
   for(k=PIX_MAX;k>=0;k--){
     hst[k]=0;
   }
@@ -71,7 +97,7 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -99,7 +125,7 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -147,13 +173,13 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       // DEBUG 2007-01-22 if (lbl==635)
       // DEBUG 2007-01-22 printf("rlcrt=%d\n", (int)rlcrt);
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -182,7 +208,7 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
 	  var=0.0;
 	  for(k=PIX_MAX;k>=0;k--)
 	    var+=(hst[k]*(k-mean)*(k-mean));
-	  var/=count;	    
+	  var/=count;
 	  if (var>varmax){
 	    reset=1;
 	    //GLOUP? rcrt+=1;
@@ -191,13 +217,13 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
 	    //printf("sum %d count %d\n", sum, count);
 	    //printf("variance exceeded %f\n", (float)var);
 	    break; //leave while loop
-	  }   
+	  }
 
 	  /* variance not exceeded */
 	  while ( (ofsq=fifo4_remove(q)) != 0){
 	    plbl[ofsq]=lbl;
 	    //prmax[ofsq]=rcrt; // SPEED-UP
-	  } 
+	  }
 
 	  rcrt=prio;
 	  if (plbl[ofs]&LBL_BIT)
@@ -275,7 +301,7 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
 	}
 	reset=0;
       }  // end reset
-  
+
       /* test whether variance is exceeded */
       fifo4_lookreset(q);
       while ( (ofsq=fifo4_look(q)) != 0){
@@ -294,13 +320,13 @@ IMAGE *uc_labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int
       var=0.0;
       for(k=PIX_MAX;k>=0;k--)
 	var+=(hst[k]*(k-mean)*(k-mean));
-      var/=count;	    
+      var/=count;
       if (var>varmax){
 	reset=1;
 	//GLOUP? rcrt+=1;
 	//printf("sum %d count %d\n", sum, count);
 	//printf("variance exceeded %f\n", (float)var);
-      }   
+      }
 
       while ( (ofsq=fifo4_remove(q)) != 0){
 	if (!reset)
@@ -343,7 +369,7 @@ IMAGE *labelccvar(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
   case t_UCHAR:
     return(uc_labelccvar(im,imse,ox,oy,oz,rg,rl,varmax));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccvar(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

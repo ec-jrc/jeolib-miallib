@@ -1,7 +1,23 @@
-/* Adapted from http://www.purists.org/georg/pqueue:
-   << Binary Heap Priority Queue >>
-   As of last Update July 14, 2001
-*/
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,7 +45,7 @@
  *
  *   NULL         Insufficient memory.
  */
-struct 
+struct
 pqueue *pqinit(struct pqueue *q, int n)
 {
   struct pqueue *tmp = q;
@@ -46,7 +62,7 @@ pqueue *pqinit(struct pqueue *q, int n)
   return q;
 }
 
-/*                  
+/*
  *  pqinsert: insert an item into the queue.
  *
  *  Parameters:
@@ -60,18 +76,18 @@ pqueue *pqinit(struct pqueue *q, int n)
  *    1           The item has been inserted.
  *
  *    0           The item could not be appended. Either the queue i
- *                pointer provided was NULL, or the function was unable 
- *                to allocate the amount of memory needed for 
+ *                pointer provided was NULL, or the function was unable
+ *                to allocate the amount of memory needed for
  *                the new item.
  */
-int 
+int
 pqinsert(struct pqueue *q, PQDATUM d)
 {
   PQDATUM *tmp;
   unsigned int i, newsize;
 
   if (!q) return 0;
-	
+
   /* allocate more memory if necessary */
   if (q->size >= q->avail){
     newsize = q->size + q->step;
@@ -79,7 +95,7 @@ pqinsert(struct pqueue *q, PQDATUM d)
       return 0;
     };
     q->d = tmp;
-    q->avail = newsize;		
+    q->avail = newsize;
   }
 
   /* insert item */
@@ -89,17 +105,17 @@ pqinsert(struct pqueue *q, PQDATUM d)
     i /= 2;
   }
   q->d[i] = d;
-  return 1;	
-} 
+  return 1;
+}
 
-int 
+int
 pqmaxinsert(struct pqueue *q, PQDATUM d)
 {
   PQDATUM *tmp;
   unsigned int i, newsize;
 
   if (!q) return 0;
-	
+
   /* allocate more memory if necessary */
   if (q->size >= q->avail){
     newsize = q->size + q->step;
@@ -107,7 +123,7 @@ pqmaxinsert(struct pqueue *q, PQDATUM d)
       return 0;
     };
     q->d = tmp;
-    q->avail = newsize;		
+    q->avail = newsize;
   }
 
   /* insert item */
@@ -117,17 +133,17 @@ pqmaxinsert(struct pqueue *q, PQDATUM d)
     i /= 2;
   }
   q->d[i] = d;
-  return 1;	
-} 
+  return 1;
+}
 
-int 
+int
 pqmininsert(struct pqueue *q, PQDATUM d)
 {
   PQDATUM *tmp;
   unsigned int i, newsize;
 
   if (!q) return 0;
-	
+
   /* allocate more memory if necessary */
   if (q->size >= q->avail){
     newsize = q->size + q->step;
@@ -135,7 +151,7 @@ pqmininsert(struct pqueue *q, PQDATUM d)
       return 0;
     };
     q->d = tmp;
-    q->avail = newsize;		
+    q->avail = newsize;
   }
 
   /* insert item */
@@ -145,8 +161,8 @@ pqmininsert(struct pqueue *q, PQDATUM d)
     i /= 2;
   }
   q->d[i] = d;
-  return 1;	
-} 
+  return 1;
+}
 
 /*
  *  pqremove: remove the highest-ranking item from the queue.
@@ -155,8 +171,8 @@ pqmininsert(struct pqueue *q, PQDATUM d)
  *
  *    p           Pointer to a priority queue.
  *
- *    d           Pointer to the PQDATUM variable that will hold the 
- *                datum corresponding to the queue item removed.               
+ *    d           Pointer to the PQDATUM variable that will hold the
+ *                datum corresponding to the queue item removed.
  *
  *  Return values:
  *
@@ -170,7 +186,7 @@ pqmininsert(struct pqueue *q, PQDATUM d)
  */
 PQDATUM *
 pqremove(struct pqueue *q, PQDATUM *d)
-{	
+{
   PQDATUM tmp;
   unsigned int i = 1, j;
 
@@ -179,7 +195,7 @@ pqremove(struct pqueue *q, PQDATUM *d)
   tmp = q->d[--q->size];
   while (i <= q->size / 2){
     j = 2 * i;
-    if (j < q->size && 
+    if (j < q->size &&
 	PQPRIO(q->d[j]) < PQPRIO(q->d[j + 1])){
       j++;
     }
@@ -190,11 +206,11 @@ pqremove(struct pqueue *q, PQDATUM *d)
     i = j;
   }
   q->d[i] = tmp;
-  return d;	
-} 
+  return d;
+}
 PQDATUM *
 pqmaxremove(struct pqueue *q, PQDATUM *d)
-{	
+{
   PQDATUM tmp;
   unsigned int i = 1, j;
 
@@ -203,7 +219,7 @@ pqmaxremove(struct pqueue *q, PQDATUM *d)
   tmp = q->d[--q->size];
   while (i <= q->size / 2){
     j = 2 * i;
-    if (j < q->size && 
+    if (j < q->size &&
 	PQPRIO(q->d[j]) < PQPRIO(q->d[j + 1])){
       j++;
     }
@@ -214,11 +230,11 @@ pqmaxremove(struct pqueue *q, PQDATUM *d)
     i = j;
   }
   q->d[i] = tmp;
-  return d;	
-} 
+  return d;
+}
 PQDATUM *
 pqminremove(struct pqueue *q, PQDATUM *d)
-{	
+{
   PQDATUM tmp;
   unsigned int i = 1, j;
 
@@ -227,7 +243,7 @@ pqminremove(struct pqueue *q, PQDATUM *d)
   tmp = q->d[--q->size];
   while (i <= q->size / 2){
     j = 2 * i;
-    if (j < q->size && 
+    if (j < q->size &&
 	PQPRIO(q->d[j]) > PQPRIO(q->d[j + 1])){
       j++;
     }
@@ -238,8 +254,8 @@ pqminremove(struct pqueue *q, PQDATUM *d)
     i = j;
   }
   q->d[i] = tmp;
-  return d;	
-} 
+  return d;
+}
 
 /*
  *  pqpeek: access highest-ranking item without removing it.
@@ -250,7 +266,7 @@ pqminremove(struct pqueue *q, PQDATUM *d)
  *
  *    d           Pointer to the PQDATUM variable that will hold the
  *                datum corresponding to the highest-ranking item.
- *                
+ *
  *  Return values:
  *
  *    non-NULL   Success. The variable that d points to now contains
@@ -301,17 +317,17 @@ void free_pq(struct pqueue *q)
 void emergencyfree_pq(struct pqueue *q)
 {
   unsigned int i, count=0;
-  
+
   printf("q->avail=%d\n", q->avail);
   printf("q->size=%d\n", q->size);
-  
+
   for (i=1; i<q->size; i++){
     if (q->d[i] != NULL){
       count++;
       free((char*) (q->d[i]) );
     }
   }
-  
+
   printf("%d datum were freed in free_pq\n", count);
 
   free((void *)q->d);

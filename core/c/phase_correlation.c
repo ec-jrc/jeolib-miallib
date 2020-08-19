@@ -1,7 +1,27 @@
-/* starting from 
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2012-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/* starting from
    http://www.roboternetz.de/community/threads/57062-2D-Korrelation-Hilfe-bei-der-Implementierung-mit-FFT-%28FFTW-und-OpenCV%29
    and correcting for several bugs related to scan order and wrong output generation
-   Author: Pierre.Soille at jrc.ec.europa.eu
+   Author: Pierre Soille
    First: 20120808
    Last:  20120809
 */
@@ -29,13 +49,13 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
 
      Still need to check: "If either G1 or G2 is 0 a some frequency,
      the corresponding phase factor is ambiguous and is therefore
-     replace by zero" \cite{kuglin-hines75}.  
+     replace by zero" \cite{kuglin-hines75}.
 
      Question: divide by size or sqrt(size) or consider the square of
-     the sum of modules?  
+     the sum of modules?
 
-     Author: Pierre.Soille at jrc.ec.europa.eu
-  
+     Author: Pierre Soille
+
   */
 
   IMAGE *imout;
@@ -85,11 +105,11 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
 
   /* CAUTION (from FFTW documentation):
      The multi-dimensional arrays passed to fftw_plan_dft etcetera
-     are expected to be stored as a single contiguous block in row-major order 
-     (sometimes called ? order). Basically, this means that 
-     as you step through adjacent memory locations, the *first* dimension's index 
+     are expected to be stored as a single contiguous block in row-major order
+     (sometimes called ? order). Basically, this means that
+     as you step through adjacent memory locations, the *first* dimension's index
      varies most *slowly* and the last dimension's index varies most quickly! */
-        
+
   /* load image data to FFTW input */
   for( i = 0, k = 0 ; i < size_w ; i++ ){
     for( j = 0 ; j < size_h ; j++, k++ ){
@@ -108,7 +128,7 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
   fftw_execute(image_plan_forward_2d);
   fftw_execute(templ_plan_forward_2d);
 
-  // komplex konjugiert von a mit b 
+  // komplex konjugiert von a mit b
   // et normalisation par le module du nombre complexe obtenu
   for( i = 0 ; i < size ; i++ ){
     a = templ_fft_result[i][0];
@@ -129,12 +149,12 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
       pout[i+j*size_w] = sqrt(ifft_result[k][0]*ifft_result[k][0]+ifft_result[k][1]*ifft_result[k][1])/size;
     }
   }
-        
+
   /* free memory */
   fftw_destroy_plan( image_plan_forward_2d );
   fftw_destroy_plan( templ_plan_forward_2d );
   fftw_destroy_plan( plan_backward_2d );
-        
+
   fftw_free(image_data);
   fftw_free(image_fft_result);
   fftw_free(templ_data);

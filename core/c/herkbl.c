@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
  *  Translation invariant rank operator along line segments \cite soille-talbot2001
  *  @author Pierre Soille
@@ -34,8 +54,8 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
   ** dx: offset of SE along x from origin
   ** dy: offset of SE along y from origin
   ** k: extent of SE in pixels
-  ** rank: 
-  ** o: origin 
+  ** rank:
+  ** o: origin
   ** t: among all possible SEs along the Bresenham line with slope dy/dx, select the one with index t
   ** transpose: -1 for transposing, 1 for not transposing
   */
@@ -79,7 +99,7 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return NULL;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
@@ -121,7 +141,7 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
   generic_addframebox(im, box, PIX_MAX);  /* 255 for don't care */
   ncol=GetImNx(im);
   f=(PIX_TYPE *)GetImPtr(im)+k+ncol*k; /* original origin in enlarged image */
-  
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
 
   /* allocate and initialise shifts arrays */
@@ -149,7 +169,7 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     return NULL;
   fo=(PIX_TYPE *)GetImPtr(imout)+k+ncol*k;
 
-   
+
 
   /* process the whole image */
   ptmp = p;
@@ -217,7 +237,7 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
     if (j0==1)
       rj=period;
-  
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -326,10 +346,10 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
 	}
 	*pocrt=val;
       }
-    }  
+    }
     if (j0==1)
       rj=period;
-      
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -443,7 +463,7 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
     if (j0==1)
       rj=period;
-       
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -629,8 +649,8 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
   ** dx: offset of SE along x from origin
   ** dy: offset of SE along y from origin
   ** k: extent of SE in pixels
-  ** rank: 
-  ** o: origin 
+  ** rank:
+  ** o: origin
   ** t: among all possible SEs along the Bresenham line with slope dy/dx, select the one with index t
   ** transpose: -1 for transposing, 1 for not transposing
   */
@@ -674,7 +694,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return NULL;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
@@ -716,7 +736,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
   us_addframebox(im, box, PIX_MAX);  /* 255 for don't care */
   ncol=GetImNx(im);
   f=(PIX_TYPE *)GetImPtr(im)+k+ncol*k; /* original origin in enlarged image */
-  
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
 
   /* allocate and initialise shifts arrays */
@@ -744,7 +764,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     return NULL;
   fo=(PIX_TYPE *)GetImPtr(imout)+k+ncol*k;
 
-   
+
 
   /* process the whole image */
   ptmp = p;
@@ -812,7 +832,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
     if (j0==1)
       rj=period;
-  
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -921,10 +941,10 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
 	}
 	*pocrt=val;
       }
-    }  
+    }
     if (j0==1)
       rj=period;
-      
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -1038,7 +1058,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
     if (j0==1)
       rj=period;
-       
+
     for (cycle=rj; cycle<period; cycle++){ /* non full cycles */
       /* initialize histogram at the start of each cycle*/
       picrt=f + *(p+cycle);
@@ -1208,7 +1228,7 @@ IMAGE *us_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
   }
   free((void *) shft); free((void *) shfti); free((void *) shfto);
-  free(ptmp); free(rlc); 
+  free(ptmp); free(rlc);
   subframebox(im, box);
   subframebox(imout, box);
   return imout;

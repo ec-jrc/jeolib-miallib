@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2013-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +28,7 @@
 #endif
 
 /*
-  First: 20131113 by Pierre.Soille@jrc.ec.europa.eu
+  First: 20131113 by Pierre Soille
   for haze removal in L7 based tasselled cap transformation (experimental code, not finalised)
 */
 
@@ -52,7 +72,7 @@ ERROR_TYPE f_mblincomb(IMAGE **imap, int nc, IMAGE *matrix)
       imptr[i][k]=(PIX_TYPE)pocrt[i];
   }
 
-  return NO_ERROR;  
+  return NO_ERROR;
 }
 #undef NCMAX
 #include "f_undef.h"
@@ -98,7 +118,7 @@ ERROR_TYPE uc_condmean(IMAGE **imap, int nc)
     sprintf(buf, "condmean() error: number of images in imap must be equal to 6\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   for(k=0;k<nc;k++){
     if (GetImDataType(imap[k]) != t_PIX_TYPE){
       sprintf(buf, "condmean() error: all images in imap must be of the same type\n"); errputstr(buf);

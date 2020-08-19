@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* first 20101004 for convex hull and enclosing rectangle for building detection */
 
 #include <stdio.h>
@@ -15,7 +35,7 @@ typedef struct {
     INT32 b;
 } intpair_t;
 
-#include "utarray.h"
+#include <utarray.h>
 
 int intsort(const void *a,const void*b) {
     int _a = *(int*)a;
@@ -48,7 +68,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
      only points with change of direction are kept.
      Use MSB for flagging.
      assumes border is set to zero to avoid border overflow.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100930 (for building footprint characterisation)
 
      Use utarray for convex hull computations: beware that it exits in case
@@ -84,7 +104,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
     {1,3},      // magenta
     {1+nx,3},   // cyan
     {nx,5},     // white
-    {nx-1,5}    // grey    
+    {nx-1,5}    // grey
   };
 
   if (graph!=8)
@@ -106,14 +126,14 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
   imout=(IMAGE *)create_image(t_UCHAR, GetImNx(ilbl), GetImNy(ilbl), 1);
   if (imout==NULL)
     return NULL;
-  
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
     return(NULL);
   maxlbl = pg[1].u32_val;
   free((char *)pg);
-  
+
   lut= (IMAGE *)create_image(t_MY_LUT_TYPE, maxlbl+1, 1, 1);
   if (lut==NULL){
     free_image(imout);
@@ -135,7 +155,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
 
   /* process one cc at a time */
 #ifdef OPENMP
-#pragma omp parallel for private(lbl, pos) 
+#pragma omp parallel for private(lbl, pos)
 #endif
   for (i=1; i<=maxlbl; i++){  // lbl==0 for background or border
     int checkLocationNr = 1;// The neighbor number of the location we want to check for a
@@ -145,7 +165,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
                             // check if we find a new border at checkLocationNr
     long int startPos = plut[i]; // Set start position
     int counter = 0;        // Counter is used for the jacobi stop criterion
-    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered 
+    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered
                             // is one single point
     int prevCheckLocationNr = 9; // init with dummy direction
     int n = 0; // number of points with change of direction
@@ -155,7 +175,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
     UT_icd intpair_icd = {sizeof(intpair_t), NULL, NULL, NULL};
     intpair_t ip, *ph, *phori;
     int j;
-    
+
     utarray_new(pairs,&intpair_icd);
 
     if (startPos!=0){
@@ -163,17 +183,17 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
       //IFMSB plbl[startPos]|=PIX_MSB;     // mark pixel as border
       pout[startPos]=9;     // mark pixel as border
       pos=startPos;
-  
+
       // Trace around the neighborhood
       while(1){
 	checkPosition = pos + neighborhood[checkLocationNr-1][0];
 	newCheckLocationNr = neighborhood[checkLocationNr-1][1];
- 
+
 	if( plbl[checkPosition] == lbl) { // Next border point found
 	  if(checkPosition == startPos){
 
 	    pout[pos]=checkLocationNr; // direction of next border point
-	  
+
 	    // set to 9 if point of change of direction
 	    if (checkLocationNr!=prevCheckLocationNr){
 	      pout[pos]=9;
@@ -184,7 +204,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
 	      utarray_push_back(pairs, &ip);
 	      n++;
 	    }
-	  
+
 	    counter ++;
 	    // Stopping criterion (jacob)
 	    if(newCheckLocationNr == 1 || counter >= 1) { // Close loop
@@ -203,7 +223,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
 	      utarray_push_back(pairs, &ip);
 	      n++;
 	  }
-     
+
 	  checkLocationNr = newCheckLocationNr;// Update which neighborhood position we should check next
 	  pos = checkPosition;
 	  counter2 = 0;    // Reset the counter that keeps track of how many neighbors we have visited
@@ -242,9 +262,9 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
 
       for(j=0; j<nh; j++)
 	pout[ph[j].a + ph[j].b * nx]=10;
-     
+
       free(phori);
-      
+
       utarray_free(pairs);
     } // startPos != 0
   } // for each label
@@ -263,7 +283,7 @@ IMAGE *chull(IMAGE *ilbl, int graph)
 {
   switch (GetImDataType(ilbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_chull(ilbl, graph);
     break;
 

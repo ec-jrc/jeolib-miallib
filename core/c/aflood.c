@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
  *  Morphological carving \cite soille-vogt-colombo2003wrr \cite soille2004prl
  *  @author Pierre Soille
@@ -33,7 +53,7 @@
 #define PIX_TYPE unsigned char
 #define LABEL_TYPE unsigned short
 #define LABEL_MAX 0x7FFF /* 16383 */  /* was  0x7FFF */
-#define LABEL_MSB 0x8000 
+#define LABEL_MSB 0x8000
 IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -89,7 +109,7 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
     return(imdir);
   }
   pdir=(UCHAR *)GetImPtr(imdir);
- 
+
 
   /* initialise the queues */
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
@@ -98,7 +118,7 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    pdir[i+shftk]=k;
 	  }
@@ -108,11 +128,11 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -147,7 +167,7 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
 		}
 	      }
 	      free_fifo4(aq);
-	    }	    
+	    }
 	    *(iml+ofsk)=*(iml+ofs);
 	  }
 	  else
@@ -157,7 +177,7 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return imdir;
 }
@@ -170,7 +190,7 @@ IMAGE *uc_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
 #define PIX_TYPE unsigned short
 #define LABEL_TYPE unsigned short
 #define LABEL_MAX 0x7FFF /* 16383 */  /* was  0x7FFF */
-#define LABEL_MSB 0x8000 
+#define LABEL_MSB 0x8000
 IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -257,7 +277,7 @@ IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
     return(imdir);
   }
   pdir=(UCHAR *)GetImPtr(imdir);
- 
+
 
   /* initialize the queues */
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
@@ -266,7 +286,7 @@ IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    pdir[i+shftk]=k;
 	  }
@@ -276,11 +296,11 @@ IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -320,7 +340,7 @@ IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
 	      }
 	      free_fifo4(aq);
 	    }
-	    
+
 	    *(iml+ofsk)=*(iml+ofs);
 	  } /* if (*imr+ofsk) <maxfl) */
 	  else
@@ -347,7 +367,7 @@ IMAGE *us_aflood(LABEL_TYPE *iml, PIX_TYPE *imr, int nx, int ny, int nz, long in
   }
   for (i=0; i<maxfl; i++)
     clear_fifo(fah[i]);
-    
+
   free(fah);
   return imdir;
 }
@@ -411,7 +431,7 @@ ERROR_TYPE uc_l_aflood(unsigned long *iml, unsigned char *imr, int nx, int ny, i
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -420,11 +440,11 @@ ERROR_TYPE uc_l_aflood(unsigned long *iml, unsigned char *imr, int nx, int ny, i
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -444,7 +464,7 @@ ERROR_TYPE uc_l_aflood(unsigned long *iml, unsigned char *imr, int nx, int ny, i
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }

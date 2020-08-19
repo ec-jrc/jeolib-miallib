@@ -1,14 +1,34 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 
 
-/* 
+/*
       From http://www-numi.fnal.gov/offline_software/srt_public_context/WebDocs/doxygen/loon/html/novas_8c.html#a4004871
       Accessed on 2005-08-09
       This function will compute the Julian date for a given calendar
       date (year, month, day, hour).
 
-   REFERENCES: 
+   REFERENCES:
       Fliegel & Van Flandern, Comm. of the ACM, Vol. 11, No. 10, October
       1968, p. 657.
 

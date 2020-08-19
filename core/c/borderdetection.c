@@ -1,12 +1,30 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           borderdetection.c  -  description
                              -------------------
 
  border detection algorithm for detecting the exact boundary lines of the region
- 
-    begin                : Thu May 13 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it Pierre.Soille@jrc.ec.europa.eu
+
+    begin                : Thu May 13 2004
  ***************************************************************************/
 
 #include <stdio.h>
@@ -23,14 +41,14 @@
  *
  *    line          pointer to line
  *
- *    n             initial size of points the line can store. 
+ *    n             initial size of points the line can store.
  *
  *  Return values:
  *
  *   NULL          if line parameter was NULL, or if points could not be allocated
  *
  *   line          same pointer as input line; if everything is ok
- *                
+ *
  */
 struct LINE *initLine(struct LINE *line, int n)
 {
@@ -97,7 +115,7 @@ int isLineSegmentClosed(struct LINE * line)
     return 1;
   }else{
     return 0;
-  }      
+  }
 }
 
 /*
@@ -237,7 +255,7 @@ int isRegionClosed(struct REGION *region)
   free(trace);
   return 0;
 }
-  
+
 /*
  *  freeLine:       frees the memory allocated for the line
  *
@@ -340,7 +358,7 @@ struct REGION *addLineToRegion(struct REGION * region, struct LINE * line)
  *
  *    NO_ERROR         if last line was replaced
  *
- *    ERROR            if error occured           
+ *    ERROR            if error occured
  */
 ERROR_TYPE replaceLastLineOfRegion(struct REGION * region, struct LINE * newLine)
 {
@@ -375,7 +393,7 @@ struct LINE *addPointToLine(struct LINE * line, struct POINT * point)
 {
   int newSize, crtPos;
   struct POINT ** tmpPoints, ** newPoints;
-  
+
   if(!line || !point){
     return NULL;
   }
@@ -645,7 +663,7 @@ long int getNextOffset(IMAGE * im, int oldDir, int newDir, struct POINT * point)
       }
       return nx-1;
     }else{
-      if(point !=NULL){    
+      if(point !=NULL){
         point->x=0;
         point->y=0;
       }
@@ -855,7 +873,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
   if (u32_addframebox(inputIm, box, BORDER) == ERROR){
     return ERROR;
   }
-    
+
   nx = GetImNx(inputIm);
   ny = GetImNy(inputIm);
   pIm = (LBL_TYPE *) GetImPtr(inputIm);
@@ -865,7 +883,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
   if (set_seq_shift(GetImNx(inputIm), GetImNy(inputIm), GetImNz(inputIm), 4, shft) == ERROR){
     return ERROR;
   }
-  
+
   write_tiff(inputIm, "label_borderdetection.tif");
   for(y=0; y<ny; y++){
     for(x=0; x<nx; x++){
@@ -875,7 +893,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
       crtY=y;
       if(pIm[crtOffset]!=BORDER){
         crtLabel = pIm[crtOffset];
-          
+
         //check wheather pixel is border pixel (and has a neighbour region in the north) and crtPixel
         //is not labeled yet
         if((pIm[crtOffset-nx]!=crtLabel) && (pStatusIm[crtOffset]==NOTLABELED) && !isRegionClosed(regions[crtLabel])){
@@ -894,7 +912,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
             return ERROR;
           }
           initLine(crtLine, 100);
-          
+
           point->x=x;
           point->y=y;
           if(addPointToLine(crtLine, point)==NULL){
@@ -1028,9 +1046,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
 /***************************************************************************
                           writeShapeFile.h  -  description
                              -------------------
-    begin                : Thu May 27 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it  Pierre.Soille@jrc.ec.europa.eu
+    begin                : Thu May 27 2004
  ***************************************************************************/
 
 #ifndef init_writeShapeFile
@@ -1046,9 +1062,7 @@ extern SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif);
 /***************************************************************************
                           writeSVG.h  -  description
                              -------------------
-    begin                : Fri May 14 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it Pierre.Soille@jrc.ec.europa.eu
+    begin                : Fri May 14 2004
  ***************************************************************************/
 
 #ifndef init_writeSVG

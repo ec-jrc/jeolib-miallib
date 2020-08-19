@@ -1,12 +1,29 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           regionMean.c  -  description
 
     Region mean stores the mean value for each channel of a region.
                              -------------------
     begin                : Thu Apr 22 2004
-    authors              : by Dominik Brunner and Pierre.Soille@jrc.ec.europa.eu
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it and Pierre.Soille@jrc.ec.europa.eu
 ***************************************************************************/
 
 
@@ -25,7 +42,7 @@
  *		rm		Pointer to a regionMean
  *
  *		nc		Number of channels of the image to which the means shall be stored.
- *		
+ *
  *
  *	Return values:
  *
@@ -73,7 +90,7 @@ struct regionMean *rmInit(struct regionMean *rm, int nc){
  *		imap		Array of IMAGE
  *
  *		offset		offset to values in IMAGE which shall be added.
- *		
+ *
  *
  *	Return values:
  *
@@ -150,7 +167,7 @@ int rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
 
 /*
  *	rmGetDistanceToRM: calculates the distance between two pixels.
- *	The distance is the square root of the sum of (x2-x1)(x2-x1) 
+ *	The distance is the square root of the sum of (x2-x1)(x2-x1)
  *	for each channel. For the calculation, all pixels in the mean
  * are considered.
  *
@@ -161,7 +178,7 @@ int rmAddValue(struct regionMean *rm, IMAGE **imap, long int offset){
  *		imap		Array of IMAGE
  *
  *		offset		offset to a pixel in IMAGE.
- *		
+ *
  *
  *	Return values:
  *
@@ -391,7 +408,7 @@ double us_rmGetDistanceToOriginalRM(struct regionMean *rm, IMAGE **imap, long in
  *		>0			Pixel is brighter than region
  *
  *   =0      Pixel is equal to region
- *           
+ *
  *		<0      Pixel is darker
  */
 #include "uc_def.h"

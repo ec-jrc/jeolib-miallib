@@ -82,8 +82,8 @@ install:
 	-cp -a mialdocxlisp.pdf ${DOCDIR}/pdf/
 
 uninstall:
-	-test -d ${DOCDIR}/html && rm -rf ${DOCDIR}/html
-	-test -d ${DOCDIR}/pdf && rm -rf ${DOCDIR}/pdf
+	-rm -rf ${DOCDIR}/html
+	-rm -rf ${DOCDIR}/pdf
 
 clean:
 	if [ x$(BUILDDOCDIR) != 'x' ] && [ -d $(BUILDDOCDIR) ]; then rm -rf $(BUILDDOCDIR); fi

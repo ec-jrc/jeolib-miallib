@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 				/* fifo data structure */
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +59,7 @@ FIFO4 *create_fifo4(long int mod)
     if ((q->qp = (long int *)calloc(mod+2, sizeof(long int))) != NULL){
       q->qps	= q->qp;
       q->qpr	= q->qp;
-      q->qplast	= q->qp + mod + 1; 
+      q->qplast	= q->qp + mod + 1;
       q->qpl    = q->qp;
       q->mod 	= mod+2;
     }
@@ -62,7 +82,7 @@ void fifo4_add(FIFO4 *q, long int data)
     if (q->qpr == q->qp)
       fifo4_increase(q);
     else
-      q->qps = q->qp; /* Loop back */ 
+      q->qps = q->qp; /* Loop back */
   }
 }
 
@@ -90,7 +110,7 @@ long int fifo4_look(FIFO4 *q)
 {
   if (q->qpl > q->qplast) q->qpl = q->qp; /* Loop back  */
   if (q->qpl == q->qps)  return 0; /* End of look  */
-  
+
   return *(q->qpl++);  /* Return first element */
 }
 
@@ -133,7 +153,7 @@ void fifo4_increase(FIFO4 *q)
   long int qoffset_s, qoffset_r, qoffset_last;  /* , qoffset_l */
   long int nelem, *qptr1, *qptr2;
   long int i;
- 
+
   qoffset_s    = (long int)(q->qps - q->qp);
   qoffset_r    = (long int)(q->qpr - q->qp);
   /* qoffset_l    = (long int)(q->qpl - q->qp); */
@@ -143,7 +163,7 @@ void fifo4_increase(FIFO4 *q)
 
   if ((q->qp = (long int *)realloc(q->qp, nelem*sizeof(long int))) == NULL)
     nrerror("fifo4_increase(): not enough memory");
- 
+
   q->qplast = q->qp + nelem - 1;
   q->qps = q->qp + qoffset_s;
   qptr1  = q->qplast;

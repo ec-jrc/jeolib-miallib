@@ -38,6 +38,9 @@ endif
 
 BINDING = python
 
+PYVER      = 3.5
+PYVERSHORT = 3
+
 #GDAL include ../SWIGmake.base
 WRAPPER = $(TARGET)_wrap.c
 
@@ -59,10 +62,10 @@ exec_prefix= ${prefix}
 # skipped -DNNI
 
 
-SWIGARGS = -Wall -I../include -I../include/$(BINDING) 
+SWIGARGS = -Wall -I../include -I../include/$(BINDING)
 SWIGDEFINES = -DCLASSIF -DODOITHIN -DMCISRG 
 CFLAGS     = -fPIC -DDEBUG -DPYTHON -DOPENMP -DLIIAR -DLIBPROJ -DTESTING -DTEST2 -DEERIE -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas  
-INCLUDE    = -I./  -I$(MIALLIB_ROOT) -I/usr/local/lib/python2.7/dist-packages/numpy/core/include -I/usr/local/lib/python2.7
+INCLUDE    = -I./  -I$(MIALLIB_ROOT) -I/usr/local/lib/python${PYVER}/dist-packages/numpy/core/include -I/usr/local/lib/python${PYVER}
 LIBS       = -lgdal -ltiff -lshp -ldl ../../core/build/lib/lib$(TARGET)_python.so
 LIBDIR	   = ../../core/build/lib/
 INTERFACE  = $(TARGET).i
@@ -103,11 +106,11 @@ CXXSHARED=      gcc -shared
 ##################################################################
 
 # Make sure these locate your Python installation
-PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python2.7
+PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python${PYVER}
 PYTHON_LIB    = 
 
-# PYTHON_PACKAGES_DIR = /home/soillpi/.local/lib/python2.7/site-packages/
-PYTHON_PACKAGES_DIR = /usr/local/lib/python2.7/dist-packages/$(TARGET)/
+# PYTHON_PACKAGES_DIR = /home/soillpi/.local/lib/python${PYVER}/site-packages/
+PYTHON_PACKAGES_DIR = /usr/local/lib/python${PYVER}/dist-packages/$(TARGET)/
 
 # Extra Python specific dynamic linking options
 PYTHON_DLNK   = 
@@ -122,19 +125,20 @@ PYTHON_DLNK   =
 
 
 build: ../include/$(TARGET).i ../include/$(BINDING)/$(TARGET)_$(BINDING).i ./setup.py $(MIALLIB_ROOT)/$(TARGET)_swig.h
+	echo $(PYVERSHORT)
 	cat $(MIALLIB_ROOT)/$(TARGET)_*.h | grep '^extern IMAGE \*[a-zA-Z]' | sed 's/extern IMAGE \*/%newobject /' | sed 's/(.*/\;/' | uniq > ../include/$(BINDING)/$(TARGET)_newobjects.i
-	python setup.py build
-	mv packages/$(TARGET)/$(TARGET).py  build/lib.linux-x86_64-2.7/$(TARGET)/
-	mv packages/$(TARGET)/*_base.py  build/lib.linux-x86_64-2.7/$(TARGET)/
-	python setup.py bdist
+	python${PYVERSHORT} setup.py build
+	mv packages/$(TARGET)/$(TARGET).py  build/lib.linux-x86_64-${PYVER}/$(TARGET)/
+	mv packages/$(TARGET)/*_base.py  build/lib.linux-x86_64-${PYVER}/$(TARGET)/
+	python${PYVERSHORT} setup.py bdist
 
 $(BUILDDIR)/doc/$(TARGET)_docs_html/toc.html:
-	@mkdir -p $(@D)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ &&  epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_html
+	@mkdir -p $(@D) && if [ ${PYVERSHORT} -eq 2 ]; then export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):../../core/build/lib/ &&  epydoc -v --name $(TARGET) --html --graph all $(BUILDDIR)/lib.linux-x86_64-${PYVER}/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_html; fi
+	if [ ${PYVERSHORT} -eq 2 ]; then echo "[Warning:] This makefile can only create the doc for python2.7 using epydoc.  For python3.6, use makefile in doc subfolder (doc will be created using sphinx)."; fi
 
 $(BUILDDIR)/doc/$(TARGET)_docs_tex/api.tex:
-	@mkdir -p $(@D)
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ && epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-2.7/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_tex
+	@mkdir -p $(@D) &&  if [ ${PYVERSHORT} -eq 2 ]; then export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../core/build/lib/ && epydoc -v --name $(TARGET) --pdf  --graph all $(BUILDDIR)/lib.linux-x86_64-${PYVER}/$(TARGET)/ -o $(BUILDDIR)/doc/$(TARGET)_docs_tex; fi
+	if [ ${PYVERSHORT} -eq 2 ]; then echo "[Warning:] This makefile can only create the doc for python2.7 using epydoc.  For python3.6, use makefile in doc subfolder (doc will be created using sphinx)."; fi
 
 
 
@@ -148,13 +152,13 @@ all: build doc
 
 
 install:
-	python setup.py install --record $(BUILDDIR)/installed_files.txt
+	python${PYVERSHORT} setup.py install --record $(BUILDDIR)/installed_files.txt
 	mkdir -p ${INSTALLDOCDIR}/pdf
 	-find ./build/doc/miallib_docs_tex/ -name api.pdf && cp -a ./build/doc/miallib_docs_tex/api.pdf ${INSTALLDOCDIR}/pdf/
 
 uninstall:
 	cat $(BUILDDIR)/installed_files.txt | xargs rm -f
-	-rm -rf /usr/local/lib/python2.7/dist-packages/miallib
+	-rm -rf /usr/local/lib/python${PYVER}/dist-packages/miallib
 	-rm -rf ${INSTALLDOCDIR}/pdf/
 
 clean:

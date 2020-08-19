@@ -5,7 +5,7 @@
 /* type definitions */
 /* consider using or referring to stdint.h in the future*/
 typedef unsigned long int mia_size_t;
-typedef unsigned char      DST_TYPE;  
+typedef unsigned char      DST_TYPE;
 typedef unsigned char      GENERICPIX;
 typedef unsigned char      RGB_TYPE;
 typedef int                HST1D_TYPE;
@@ -54,7 +54,7 @@ typedef struct {
   VOL_TYPE vol;  /* Sum of pixel values (volume) */
   USHORT *lut;   /* Pointer to colour map */
   G_TYPE g;      /* used to store a value matching DataType (see e.g. alphacc.c) */
-} IMAGE; 
+} IMAGE;
 
 typedef struct { /* structure for blob analysis */
   int area;     /* number of pixels */

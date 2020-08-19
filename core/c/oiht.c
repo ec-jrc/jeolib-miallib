@@ -1,11 +1,29 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /**
  * @file   oiht.c
  * @author Pierre SOILLE <soillpi@D01RI1600821>
  * @date   Wed Aug 10 14:03:41 2016
- * 
- * @brief  
- * 
- * 
+ *
+ * @details see also \cite ranwez-soille99 and \cite ranwez-soille2002
  */
 
 #include <stdio.h>
@@ -43,14 +61,14 @@ int ronsetest(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, int* neighb
   int label=0;
   int i,j;
   IMAGE *seed=copy_image(pm1);
-  
+
   PIX_TYPE *ppm1=(PIX_TYPE *)GetImPtr(pm1);
   PIX_TYPE *pseed=(PIX_TYPE *)GetImPtr(seed);
   PIX_TYPE *ppmsimple=(PIX_TYPE *)GetImPtr(pmsimple);
   OIHTLABEL_TYPE *ppmlabel=(OIHTLABEL_TYPE *)GetImPtr(pmlabel);
 
   generic_blank(seed, 0);
-  
+
   for(i=0;i<4;i++)
     if(ppm1[pix1+neighbours[i]] == 0 )
       label = ppmlabel[pix1+neighbours[i]];
@@ -87,7 +105,7 @@ int allsimplenb(IMAGE *pm1, IMAGE *pmsimple, int pix1, int *neighbours, int pixn
   int i,j;
   int current;
   int common;
-  
+
   PIX_TYPE *ppm1=(PIX_TYPE *)GetImPtr(pm1);
   /* PIX_TYPE *ppmsimple=(PIX_TYPE *)GetImPtr(pmsimple); */
 
@@ -129,7 +147,7 @@ int strictindependent(IMAGE *pm1, IMAGE *pmsimple,int pix1,int pixnb,int placenb
 	  return 1;
     }
   }
-  return 0;  
+  return 0;
 }
 #include "uc_undef.h"
 
@@ -149,10 +167,10 @@ int oldindependent(IMAGE *pm1,int pix1,int pixnb,int placenb, int* neighbours,IM
   PIX_TYPE *ppm55=(PIX_TYPE *)GetImPtr(pm55);
   PIX_TYPE *ppmc55;
 
-  
+
   for(i=0;i<24;i++)
     ppm55[i]=0;
-  
+
   /* check whether there is another foreground pixel within
      the intersection of their 8-eighbourhood */
   for( i=0; i<8; i++ ){
@@ -162,7 +180,7 @@ int oldindependent(IMAGE *pm1,int pix1,int pixnb,int placenb, int* neighbours,IM
 	if (ppm1[current] != 0 )
 	  find1=1;
 	else /* prepare for next step */
-	  ppm55[centre55 + neighbours55[i]]=1;	
+	  ppm55[centre55 + neighbours55[i]]=1;
       }
     }
   }
@@ -191,9 +209,9 @@ int oldindependent(IMAGE *pm1,int pix1,int pixnb,int placenb, int* neighbours,IM
   }
   else
     return find1;
-  
+
   return(find2);
-  
+
 }
 #include "uc_undef.h"
 
@@ -203,7 +221,7 @@ int independent(IMAGE *pm1, int pix1, int pixnb, int placenb, int *neighbours, I
   int i,j;
   int current;
   PIX_TYPE *ppm1=(PIX_TYPE *)GetImPtr(pm1);
-  
+
   /* find whether there is another foreground pixel within
      the intersection of their 8-neighbourhood */
   for(i=0; i<8; i++){
@@ -216,9 +234,9 @@ int independent(IMAGE *pm1, int pix1, int pixnb, int placenb, int *neighbours, I
     }
   }
   return 0;
-  
+
   found:
-  
+
   /* when $P$ and $Q$ are 4-connected, find whether there is a $4^0$-path
      between them within the intersection of their 8-neighbourhood. */
   if(placenb < 4){
@@ -242,7 +260,7 @@ int independent(IMAGE *pm1, int pix1, int pixnb, int placenb, int *neighbours, I
     }
     /* we should never reach this comment */
   }
-  
+
   return 1;
 }
 #include "uc_undef.h"
@@ -331,17 +349,17 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   pimse[4]=0;
   pimse[6]=0;
   pimse[8]=0;
-  
-  
+
+
   /* allocate some buffers */
   pm55 =     (IMAGE *)create_image(t_UCHAR, 5, 5, 1);
   pmsimple = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
 
-  /* set shift arrays */   			   
+  /* set shift arrays */
   neighbours[4] = -GetImNx(pm1NG) -1; neighbours[2] = -GetImNx(pm1NG); neighbours[6] = -GetImNx(pm1NG) +1;
   neighbours[0] = -1;                                                  neighbours[1] = +1;
-  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1; 
-  
+  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1;
+
   neighbours55[4] = -6; neighbours55[2] = -5; neighbours55[6] = -4;
   neighbours55[0] = -1;                       neighbours55[1] = +1;
   neighbours55[5] = +4; neighbours55[3] = +5; neighbours55[7] = 6;
@@ -350,12 +368,12 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   tab[0]=NULL; tab[1]=NULL;
   tab[0]= (int*)malloc(GetImNPix(pm1NG)*sizeof(int));
   tab[1]=(int*)malloc(GetImNPix(pm1NG)*sizeof(int));
-  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int)); 
+  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int));
 
   /* les niveaux de gris sont completement indep donc on fait PIX_MAX passages
      long en tps de calcul mais facile a coder a partir de N&B */
 
-  
+
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
   loop=0;
@@ -375,7 +393,7 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       printf("pm1 before initial threshold \n");
       dumpxyz(pm1, 5, 5, 0, 20, 20);
     #endif
-      
+
     for( ng=1;ng<=PIX_MAX;ng++ ){ /* process all levels */
       for( i=0,minNG=PIX_MAX; i<GetImNPix(pm1);i++){
 	if( (ppm1NG[i] < minNG) &&  (ppm1NG[i] >= ng)){
@@ -385,9 +403,9 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
 	}
       }
       ng=minNG;
-      
+
       for( i=0; i<GetImNPix(pm1);i++){
-	if (maxNG>1) /* at this stage, anchor points are used for binary only */ 
+	if (maxNG>1) /* at this stage, anchor points are used for binary only */
 	  panchor[i]=0;
 	if(ppm1NG[i] <ng )
 	  ppm1[i]=0;
@@ -452,7 +470,7 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
-	
+
         pmcrt=copy_image(pm1NG);
         ppmcrt=(PIX_TYPE *)GetImPtr(pmcrt);
         pmlabelcrt=copy_image(pmlabel);
@@ -620,17 +638,17 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   pimse[4]=0;
   pimse[6]=0;
   pimse[8]=0;
-  
-  
+
+
   /* allocate some buffers */
   pm55 =     (IMAGE *)create_image(t_UCHAR, 5, 5, 1);
   pmsimple = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
 
-  /* set shift arrays */   			   
+  /* set shift arrays */
   neighbours[4] = -GetImNx(pm1NG) -1; neighbours[2] = -GetImNx(pm1NG); neighbours[6] = -GetImNx(pm1NG) +1;
   neighbours[0] = -1;                                                  neighbours[1] = +1;
-  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1; 
-  
+  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1;
+
   neighbours55[4] = -6; neighbours55[2] = -5; neighbours55[6] = -4;
   neighbours55[0] = -1;                       neighbours55[1] = +1;
   neighbours55[5] = +4; neighbours55[3] = +5; neighbours55[7] = 6;
@@ -639,12 +657,12 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   tab[0]=NULL; tab[1]=NULL;
   tab[0]= (int*)malloc(GetImNPix(pm1NG)*sizeof(int));
   tab[1]=(int*)malloc(GetImNPix(pm1NG)*sizeof(int));
-  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int)); 
+  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int));
 
   /* les niveaux de gris sont completement indep donc on fait PIX_MAX passages
      long en tps de calcul mais facile a coder a partir de N&B */
 
-  
+
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
   loop=0;
@@ -665,7 +683,7 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       printf("pm1 before initial threshold \n");
       us_dumpxyz(pm1, 5, 5, 0, 20, 20);
     #endif
-      
+
     for( ng=1;ng<=PIX_MAX;ng++ ){ /* process all levels */
       for( i=0,minNG=PIX_MAX; i<GetImNPix(pm1);i++){
 	if( (ppm1NG[i] < minNG) &&  (ppm1NG[i] >= ng)){
@@ -678,7 +696,7 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       #ifdef DEBUB
         printf("ng=%d\n",ng);
       #endif
-      
+
       for( i=0; i<GetImNPix(pm1);i++){
 	panchor[i]=0;
 	if(ppm1NG[i] <ng )
@@ -744,7 +762,7 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
 	nbvirer = 0;
 	for(i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
-	
+
         pmcrt=copy_image(pm1NG);
         ppmcrt=(PIX_TYPE *)GetImPtr(pmcrt);
         pmlabelcrt=copy_image(pmlabel);
@@ -876,7 +894,7 @@ ERROR_TYPE oiskeleton(IMAGE *im, IMAGE *imanchor)
     (void) sprintf(buf, "oiskeleton(IMAGE *im, IMAGE *imanchor): images must be of same type and size and with non-NULL pointer to pixel data\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:
@@ -976,17 +994,17 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   pimse[4]=0;
   pimse[6]=0;
   pimse[8]=0;
-  
+
   /* allocate some buffers */
   pm55        = (IMAGE *)create_image(t_UCHAR, 5, 5, 1);
   pmsimple    = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   imanchorcrt = (IMAGE *)create_image(t_UCHAR,GetImNx(imanchor), GetImNy(imanchor), GetImNz(imanchor));
 
-  /* set shift arrays */   			   
+  /* set shift arrays */
   neighbours[4] = -GetImNx(pm1NG) -1; neighbours[2] = -GetImNx(pm1NG); neighbours[6] = -GetImNx(pm1NG) +1;
   neighbours[0] = -1;                                                  neighbours[1] = +1;
-  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1; 
-  
+  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1;
+
   neighbours55[4] = -6; neighbours55[2] = -5; neighbours55[6] = -4;
   neighbours55[0] = -1;                       neighbours55[1] = +1;
   neighbours55[5] = +4; neighbours55[3] = +5; neighbours55[7] = 6;
@@ -995,11 +1013,11 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   tab[0]=NULL; tab[1]=NULL;
   tab[0]= (int*)malloc(GetImNPix(pm1NG)*sizeof(int));
   tab[1]=(int*)malloc(GetImNPix(pm1NG)*sizeof(int));
-  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int)); 
+  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int));
 
   /* les niveaux de gris sont completement indep donc on fait PIX_MAX passages
      long en tps de calcul mais facile a coder a partir de N&B */
-  
+
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
   loop=0;
@@ -1022,7 +1040,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       printf("pm1 before initial threshold \n");
       dumpxyz(pm1, 5, 5, 0, 20, 20);
     #endif
-      
+
     for( ng=1;ng<=PIX_MAX;ng++ ){ /* process all levels */
       for( i=0,minNG=PIX_MAX; i<GetImNPix(pm1);i++){
 	if( (ppm1NG[i] < minNG) &&  (ppm1NG[i] >= ng)){
@@ -1035,7 +1053,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       #ifdef DEBUB
         printf("ng=%d\n",ng);
       #endif
-      
+
       memcpy((void *)panchorcrt, (void *)panchor, (size_t)GetImNPix(imanchor));
       for( i=0; i<GetImNPix(pm1);i++){
 	if(ppm1NG[i] <ng )
@@ -1101,7 +1119,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
-	
+
         pmcrt=copy_image(pm1NG);
         ppmcrt=(PIX_TYPE *)GetImPtr(pmcrt);
         pmlabelcrt=copy_image(pmlabel);
@@ -1302,17 +1320,17 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   pimse[4]=0;
   pimse[6]=0;
   pimse[8]=0;
-  
+
   /* allocate some buffers */
   pm55        = (IMAGE *)create_image(t_UCHAR, 5, 5, 1);
   pmsimple    = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   imanchorcrt = (IMAGE *)create_image(t_USHORT,GetImNx(imanchor), GetImNy(imanchor), GetImNz(imanchor));
 
-  /* set shift arrays */   			   
+  /* set shift arrays */
   neighbours[4] = -GetImNx(pm1NG) -1; neighbours[2] = -GetImNx(pm1NG); neighbours[6] = -GetImNx(pm1NG) +1;
   neighbours[0] = -1;                                                  neighbours[1] = +1;
-  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1; 
-  
+  neighbours[5] = +GetImNx(pm1NG) -1; neighbours[3] = +GetImNx(pm1NG); neighbours[7] = +GetImNx(pm1NG) +1;
+
   neighbours55[4] = -6; neighbours55[2] = -5; neighbours55[6] = -4;
   neighbours55[0] = -1;                       neighbours55[1] = +1;
   neighbours55[5] = +4; neighbours55[3] = +5; neighbours55[7] = 6;
@@ -1321,12 +1339,12 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   tab[0]=NULL; tab[1]=NULL;
   tab[0]= (int*)malloc(GetImNPix(pm1NG)*sizeof(int));
   tab[1]=(int*)malloc(GetImNPix(pm1NG)*sizeof(int));
-  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int)); 
+  tobetested=(int*)calloc(GetImNPix(pm1NG), sizeof(int));
 
   /* les niveaux de gris sont completement indep donc on fait PIX_MAX passages
      long en tps de calcul mais facile a coder a partir de N&B */
 
-  
+
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
   loop=0;
@@ -1349,7 +1367,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       printf("pm1 before initial threshold \n");
       us_dumpxyz(pm1, 5, 5, 0, 20, 20);
     #endif
-      
+
     for( ng=1;ng<=PIX_MAX;ng++ ){ /* process all levels */
       for( i=0,minNG=PIX_MAX; i<GetImNPix(pm1);i++){
 	if( (ppm1NG[i] < minNG) &&  (ppm1NG[i] >= ng)){
@@ -1362,7 +1380,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       #ifdef DEBUB
         printf("ng=%d\n",ng);
       #endif
-      
+
       memcpy((void *)panchorcrt, (void *)panchor, (size_t)GetImNPix(imanchor)*sizeof(PIX_TYPE));
       for( i=0; i<GetImNPix(pm1);i++){
 	if(ppm1NG[i] <ng )
@@ -1428,7 +1446,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
-	
+
         pmcrt=copy_image(pm1NG);
         ppmcrt=(PIX_TYPE *)GetImPtr(pmcrt);
         pmlabelcrt=copy_image(pmlabel);
@@ -1465,7 +1483,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 		  }
 				/* sinon si ronse test ok a virer=0 */
 		  /*
-		    Not necessary with anchor points 
+		    Not necessary with anchor points
 
 		    else{
                     #ifdef DEBUB
@@ -1561,7 +1579,7 @@ ERROR_TYPE oiask(IMAGE *im, IMAGE *imanchor)
     (void) sprintf(buf,"oiask(IMAGE *im, IMAGE *imanchor): images must be of same type and size and with non-NULL pointer to pixel data\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(generic_oiask(im, imanchor));
@@ -1586,7 +1604,7 @@ int uc_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
   int maxmin =0;
   int i,j;
   IMAGE *seed=copy_image(pm1);
-  
+
   PIX_TYPE *ppm1=(PIX_TYPE *)GetImPtr(pm1);
   PIX_TYPE *ppm1ori=(PIX_TYPE *)GetImPtr(pm1ori);
   PIX_TYPE *pseed=(PIX_TYPE *)GetImPtr(seed);
@@ -1597,7 +1615,7 @@ int uc_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
 
   generic_blank(seed, 0);
 
-  
+
   for(i=0;i<4;i++)
     if(ppm1[pix1+neighbours[i]] == 0 )
       label = ppmlabel[pix1+neighbours[i]];
@@ -1617,7 +1635,7 @@ int uc_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
 	    if (ppmNG[i + neighbours[j]] > maxmin)
 	      maxmin=ppmNG[i + neighbours[j]];
 	    if ( ppmlabel[i + neighbours[j]] != label){
-	      free_image(seed);		
+	      free_image(seed);
 	      return(0);
 	    }
 	  }
@@ -1634,8 +1652,8 @@ int uc_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
       ppm1ori[i]=0;
     }
   }
-  free_image(seed);		
-  
+  free_image(seed);
+
   return(1);
 }
 #include "uc_undef.h"
@@ -1653,7 +1671,7 @@ int us_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
   int maxmin =0;
   int i,j;
   IMAGE *seed=copy_image(pm1);
-  
+
   UCHAR  *ppm1=(UCHAR *)GetImPtr(pm1);
   UCHAR  *ppm1ori=(UCHAR *)GetImPtr(pm1ori);
   UCHAR  *pseed=(UCHAR *)GetImPtr(seed);
@@ -1664,7 +1682,7 @@ int us_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
 
   generic_blank(seed, 0);
 
-  
+
   for(i=0;i<4;i++)
     if(ppm1[pix1+neighbours[i]] == 0 )
       label = ppmlabel[pix1+neighbours[i]];
@@ -1684,7 +1702,7 @@ int us_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
 	    if (ppmNG[i + neighbours[j]] > maxmin)
 	      maxmin=ppmNG[i + neighbours[j]];
 	    if ( ppmlabel[i + neighbours[j]] != label){
-	      free_image(seed);		
+	      free_image(seed);
 	      return(0);
 	    }
 	  }
@@ -1701,8 +1719,8 @@ int us_ronsetest4LPE(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, IMAG
       ppm1ori[i]=0;
     }
   }
-  free_image(seed);		
-  
+  free_image(seed);
+
 
   return(1);
 }

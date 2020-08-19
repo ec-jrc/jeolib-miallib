@@ -1,5 +1,25 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2002-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
- *  Optimal removal of spurious pits in digital elevation models \cite soille2004wrr
+ *  Optimal removal of spurious pits in digital elevation models \cite soille2004wrr and \cite soille2004prl
  *  @author Pierre Soille
  */
 
@@ -84,7 +104,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   heap = (struct pqueue *)pqinit(NULL, 100);  /* heap (priority queue) */
   if (heap == NULL)
     return NULL;
-  
+
 
   npix = (long int)nx*ny*nz;
   maxfl++;
@@ -137,7 +157,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
     return(imdir);
   }
   pdir=(UCHAR *)GetImPtr(imdir);
- 
+
 
   /* initialize the queues */
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
@@ -146,7 +166,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    pdir[i+shftk]=k;
 	  }
@@ -156,7 +176,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
@@ -168,7 +188,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
     while (fifo_empty(pq) == FALSE){
       ofs=fifo_remove(pq);
       if (*(imr+ofs)!=i){
- 	// printf("reinsert in queue: i=%d *(imr+ofs)=%d\n", i, *(imr+ofs)); 
+ 	// printf("reinsert in queue: i=%d *(imr+ofs)=%d\n", i, *(imr+ofs));
         fifo_add(fah[*(imr+ofs)],(long int)ofs);
 	continue;
       }
@@ -179,7 +199,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	    printf("non-positive dynamic, ofsk=%ld!!!\n", ofsk);
 	    dumpxyz(&im[0],ofsk-(int)(ofsk/nx)*nx,(int)(ofsk/nx),0,10,10);
 	    dumpxyz(&im[1],ofsk-(int)(ofsk/nx)*nx,(int)(ofsk/nx),0,10,10);
-	    } 
+	    }
 	  if (*(imr+ofsk)<maxfl){
 	    crtlevel=*(imr+ofsk);
 	    // printf("test whether we go down, i=%ld, crtlevel=%ld\n", i, crtlevel);
@@ -221,7 +241,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	      // printf("irrelevant n=minimum reached\n");
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
-	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%ld, x=%ld, y=%ld, i=%ld, ix=%ld, iy=%ld\n", minval, iori, dyn, crtlevel, ofsk-(long int)(ofsk/nx)*nx, (long int)(ofsk/nx), i, ofs-(long int)(ofs/nx)*nx, (long int)(ofs/nx)); 
+	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%ld, x=%ld, y=%ld, i=%ld, ix=%ld, iy=%ld\n", minval, iori, dyn, crtlevel, ofsk-(long int)(ofsk/nx)*nx, (long int)(ofsk/nx), i, ofs-(long int)(ofs/nx)*nx, (long int)(ofs/nx));
 	      if ( (ofsk==11566)  || (dyn<1) ){
 		printf("non-positive dynamyic, ofsk=%ld!!!\n", ofsk);
 		printf("iori=%d\t minval=%d\n", iori, minval);
@@ -231,13 +251,13 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	      }
 	      pcount+=1;
 
-	      
+
               /* sprintf(fname, "/home/pierre/tmp/rieslbl%03d.tif", pcount);
 	      write_tiff(&im[0], fname);
               sprintf(fname, "/home/pierre/tmp/riesref%03d.tif", pcount);
               write_tiff(&im[1], fname); */
 
-	      
+
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
 		free_pq(heap);
@@ -273,7 +293,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	      while ( pqremove(heap, apqd) != NULL ){	 /* make sure heap is empty */
 		free((char*) *apqd);
 	      }
-	
+
 
 	      aq = create_fifo4(10);
 	      af[0]=1;
@@ -301,7 +321,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		    /* pqd->val   = val; not used */
 		    pqd->offset= (long int)(index+shft[ak]);
 		    pqinsert(heap, pqd);
-		    *apdirk |= REACHED;	    
+		    *apdirk |= REACHED;
 		  }
 		}
 	      }
@@ -315,7 +335,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		bofs-=shft[pdir[bofs]&FLRE];
 	      }
 	      emin=ec[0];
-	      
+
 	      /* look for procedure with lowest energy */
 	      for (h=1,ah=1; h<dyn+1; h++,ah++){  /* (PSHwas dyn+1) modify so as to stop as soon as the energy of the sum increases */
 
@@ -330,7 +350,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		/* check whether total energy increases, and break if so */
 		ef[h]=ef[h-1]+af[h-1]+eeb[h-1];
 
-	
+
 		if (ec[h]+ef[h] > emin){ /* minimum energy reached */
 		  if ( ec[0]==emin )
 		    if (flage == 0)
@@ -347,7 +367,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		  break;
 		}
 		emin=ec[h]+ef[h];
-		
+
 		/* compute energy of fillhole  */
 		if ( pqpeek(heap, apqd) == NULL )
 		  priocrt=h;
@@ -413,7 +433,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 		    casec++; /* plain pit filling */
 	      }
 
-	      
+
 	      ah-=1;  /* optimum level */
 
 	      free(ec); free(af); free(ef); free(eeb);
@@ -481,10 +501,10 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 /* 	      dumpxyz(&im[1],10,0,0,20,20); */
 
 	    } /* if (*(iml+ofsk)==1)irrelevant minima reached */
-	    
+
 	    *(iml+ofsk)=*(iml+ofs);
-	    
-	  } 
+
+	  }
 	  else /* if (*imr+ofsk) <maxfl) */
 	    *(iml+ofsk)=LABEL_MAX;
 	} /* if (*(iml+ofsk) < 2) */
@@ -495,12 +515,12 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 
   for (i=0; i<maxfl; i++)
     clear_fifo(fah[i]);
-    
+
   free(fah);
   free_pq(heap);
 
   printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
-  
+
   us_framebox(&(im[0]),box,0);
   return imdir;
 }
@@ -571,7 +591,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
   heap = (struct pqueue *)pqinit(NULL, 100);  /* heap (priority queue) */
   if (heap == NULL)
     return NULL;
-  
+
 
   npix = (long int)nx*ny*nz;
   maxfl++;
@@ -624,7 +644,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
     return(imdir);
   }
   pdir=(UCHAR *)GetImPtr(imdir);
- 
+
 
   /* initialize the queues */
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
@@ -633,7 +653,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    pdir[i+shftk]=k;
 	  }
@@ -643,11 +663,11 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
 
   /* here we go */
   for (i=0; i<maxfl; i++){  // flood from relevant minima
@@ -656,7 +676,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
     while (fifo_empty(pq) == FALSE){
       ofs=fifo_remove(pq);
       if (*(imr+ofs)!=i){
- 	// printf("reinsert in queue: i=%d *(imr+ofs)=%d\n", i, *(imr+ofs)); 
+ 	// printf("reinsert in queue: i=%d *(imr+ofs)=%d\n", i, *(imr+ofs));
         fifo_add(fah[*(imr+ofs)],(long int)ofs);
 	continue;
       }
@@ -667,7 +687,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	    printf("non-positive dynamic, ofsk=%ld!!!\n", ofsk);
 	    dumpxyz(&im[0],ofsk-(int)(ofsk/nx)*nx,(int)(ofsk/nx),0,10,10);
 	    dumpxyz(&im[1],ofsk-(int)(ofsk/nx)*nx,(int)(ofsk/nx),0,10,10);
-	    } 
+	    }
 	  if (*(imr+ofsk)<maxfl){
 	    crtlevel=*(imr+ofsk);
 	    // printf("test whether we go down, i=%d, crtlevel=%d\n", i, crtlevel);
@@ -709,7 +729,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	      /* printf("irrelevant n=minimum reached\n"); */
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
-	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%d, x=%d, y=%d, i=%d, ix=%d, iy=%d\n", minval, iori, dyn, crtlevel, ofsk-(int)(ofsk/nx)*nx, (int)(ofsk/nx), i, ofs-(int)(ofs/nx)*nx, (int)(ofs/nx)); 
+	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%d, x=%d, y=%d, i=%d, ix=%d, iy=%d\n", minval, iori, dyn, crtlevel, ofsk-(int)(ofsk/nx)*nx, (int)(ofsk/nx), i, ofs-(int)(ofs/nx)*nx, (int)(ofs/nx));
 	      if ( (ofsk==11566)  || (dyn<1) ){
 		printf("non-positive dynamyic, ofsk=%ld!!!\n", ofsk);
 		printf("iori=%d\t minval=%d\n", iori, minval);
@@ -719,13 +739,13 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	      }
 	      pcount+=1;
 
-	      
+
               /* sprintf(fname, "/home/pierre/tmp/rieslbl%03d.tif", pcount);
 	      write_tiff(&im[0], fname);
               sprintf(fname, "/home/pierre/tmp/riesref%03d.tif", pcount);
               write_tiff(&im[1], fname); */
 
-	      
+
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
 		free_pq(heap);
@@ -761,7 +781,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	      while ( pqremove(heap, apqd) != NULL ){	 /* make sure heap is empty */
 		free((char*) *apqd);
 	      }
-	
+
 
 	      aq = create_fifo4(10);
 	      af[0]=1;
@@ -789,7 +809,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 		    /* pqd->val   = val; not used */
 		    pqd->offset= (long int)(index+shft[ak]);
 		    pqinsert(heap, pqd);
-		    *apdirk |= REACHED;	    
+		    *apdirk |= REACHED;
 		  }
 		}
 	      }
@@ -803,7 +823,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 		bofs-=shft[pdir[bofs]&FLRE];
 	      }
 	      emin=ec[0];
-	      
+
 	      /* look for procedure with lowest energy */
 	      for (h=1,ah=1; h<dyn+1; h++,ah++){  /* (PSHwas dyn+1) modify so as to stop as soon as the energy of the sum increases */
 
@@ -818,7 +838,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 		/* check whether total energy increases, and break if so */
 		ef[h]=ef[h-1]+af[h-1]+eeb[h-1];
 
-	
+
 		if (ec[h]+ef[h] > emin){ /* minimum energy reached */
 		  if ( ec[0]==emin )
 		    if (flage == 0)
@@ -835,7 +855,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 		  break;
 		}
 		emin=ec[h]+ef[h];
-		
+
 		/* compute energy of fillhole  */
 		if ( pqpeek(heap, apqd) == NULL )
 		  priocrt=h;
@@ -901,7 +921,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 		    casec++; /* plain pit filling */
 	      }
 
-	      
+
 	      ah-=1;  /* optimum level */
 
 	      free(ec); free(af); free(ef); free(eeb);
@@ -969,10 +989,10 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 /* 	      dumpxyz(&im[1],10,0,0,20,20); */
 
 	    } /* if (*(iml+ofsk)==1)irrelevant minima reached */
-	    
+
 	    *(iml+ofsk)=*(iml+ofs);
-	    
-	  } 
+
+	  }
 	  else /* if (*imr+ofsk) <maxfl) */
 	    *(iml+ofsk)=LABEL_MAX;
 	} /* if (*(iml+ofsk) < 2) */
@@ -983,12 +1003,12 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 
   for (i=0; i<maxfl; i++)
     clear_fifo(fah[i]);
-    
+
   free(fah);
   free_pq(heap);
 
   printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
-  
+
   us_framebox(&(im[0]),box,0);
   return imdir;
 }
@@ -1030,7 +1050,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 
   int casea=0, caseb=0, casec=0, cased=0; /* 2003-11-10 */
 
-  int hmin; 
+  int hmin;
 
   int *ec, *ef, *af, dyn, iori=0;
   int h, priocrt=0, ah, level, emin;
@@ -1111,7 +1131,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
     return(imdir);
   }
   pdir=(UCHAR *)GetImPtr(imdir);
- 
+
 
   /* initialize the queues */
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
@@ -1120,7 +1140,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    pdir[i+shftk]=k;
 	  }
@@ -1130,11 +1150,11 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     /* printf("crt level =%ld\n", i); */
@@ -1204,13 +1224,13 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 	      }
 	      pcount+=1;
 
-	      
+
               /* sprintf(fname, "/home/pierre/tmp/rieslbl%03d.tif", pcount);
 	      write_tiff(&im[0], fname);
               sprintf(fname, "/home/pierre/tmp/riesref%03d.tif", pcount);
               write_tiff(&im[1], fname); */
 
-	      
+
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
 		free_pq(heap);
@@ -1237,7 +1257,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 	      while ( pqremove(heap, apqd) != NULL ){	 /* make sure heap is empty */
 		free((char*) *apqd);
 	      }
-	
+
 
 	      aq = create_fifo4(10);
 	      af[0]=1;
@@ -1265,7 +1285,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 		    /* pqd->val   = val; not used */
 		    pqd->offset= (long int)(index+shft[ak]);
 		    pqinsert(heap, pqd);
-		    *apdirk |= REACHED;	    
+		    *apdirk |= REACHED;
 		  }
 		}
 	      }
@@ -1280,7 +1300,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 	      }
 	      emin=ec[0];
 	      hmin=0;
-	      
+
 	      /* look for procedure with lowest energy */
 	      for (h=1,ah=1; h<dyn+1; h++,ah++){  /* (PSHwas dyn+1) modify so as to stop as soon as the energy of the sum increases */
 
@@ -1298,7 +1318,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 		  emin=ec[h]+ef[h];
 		  hmin=h;
 		}
-		
+
 		/* compute energy of fillhole  */
 		if ( pqpeek(heap, apqd) == NULL )
 		  priocrt=h;
@@ -1418,10 +1438,10 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 /* 	      dumpxyz(&im[1],10,0,0,20,20); */
 
 	    } /* if (*(iml+ofsk)==1)irrelevant minima reached */
-	    
+
 	    *(iml+ofsk)=*(iml+ofs);
-	    
-	  } 
+
+	  }
 	  else /* if (*imr+ofsk) <maxfl) */
 	    *(iml+ofsk)=LABEL_MAX;
 	} /* if (*(iml+ofsk) < 2) */
@@ -1432,12 +1452,12 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 
   for (i=0; i<maxfl; i++)
     clear_fifo(fah[i]);
-    
+
   free(fah);
   free_pq(heap);
 
   printf("casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased);
-  
+
   us_framebox(&(im[0]),box,0);
   return imdir;
 }
@@ -1509,7 +1529,7 @@ IMAGE *fillocarve(IMAGE *iml, IMAGE *imr, int graph, int maxfl, int flag)
     (void)sprintf(buf, "ERROR in fillocarve(): \
                 invalid ImDataType for grey level image\n"); errputstr(buf);
     return(NULL);
-  
+
   }
 }
 

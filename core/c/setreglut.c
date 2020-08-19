@@ -1,5 +1,24 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* started September 2010
-   Pierre Soille @ jcr.ec.europa.eu
 */
 
 #include <stdio.h>
@@ -35,7 +54,7 @@ IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
   int xi, yi, xmin, xmax, ymin, ymax, xw, yw;
   double sx, sy, sx2, sy2;
   int box[6];
-  
+
   nx=GetImNx(ilbl);
   ny=GetImNy(ilbl);
   npix=GetImNPix(ilbl);
@@ -43,7 +62,7 @@ IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
 
   /* we can proceed with queues or without: here version with a queue
      which requires a bit for flagging */
-  
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
@@ -148,7 +167,7 @@ IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
 	  while (fifo4_empty(q) == FALSE){
 	    n++;
 	    ofs=fifo4_remove(q);
-	    
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -239,7 +258,7 @@ IMAGE *u32_region_lut_no_omp(IMAGE *ilbl, int graph, int type)
 //  bug found 20110525: float led to not exact lbl values!
 // Note 20120420: the omp parallelization goes to maxlbl (this is suboptimal
 //                for there may be many unused labels in ilbl
-//                20120423: tried tasks 
+//                20120423: tried tasks
 //                20120424: schedule(dynamic) seems to enable load balancing without the need to 'compress' labels
 #include "u32_def.h"
 #define LUT_TYPE MIALFLOAT
@@ -268,7 +287,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 
   /* we can proceed with queues or without: here version with a queue
      which requires a bit for flagging */
-  
+
   /* get min & max values */
   BOX_2D;
   u32_framebox(ilbl, box, 0);
@@ -294,7 +313,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 /*     free_image(lut); */
 /*     return NULL; */
 /*   } */
-  
+
   plut=   (LUT_TYPE *)GetImPtr(lut);
   //plutlbl=(PIX_TYPE *)GetImPtr(lutlbl);
   plutlbl=(PIX_TYPE *)GetImPtr(lut);
@@ -302,7 +321,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 
   /* first collect first point of each CC in an array
      for subsequent parallel processing */
-  
+
   for (i=0;i<npix;i++){
     if (plutlbl[plbl[i]]==0){
       plutlbl[plbl[i]]=(PIX_TYPE)i;
@@ -431,7 +450,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	  while (fifo4_empty(q) == FALSE){
 	    n++;
 	    ofs=fifo4_remove(q);
-	    
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -591,7 +610,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
     }
     break;
   case 5: /* most frequent adjacent label through edgels !*/
-    {  // 
+    {  //
       int nmax, ncrt;
       PIX_TYPE prio, priocrt=0, lblmax;
 
@@ -601,7 +620,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
       imlutarea=(IMAGE *)u32_region_lut_omp(ilbl, graph, 1, 0, 0);
       plutarea=(LUT_TYPE *)GetImPtr(imlutarea);
 
-      //plutarea[0]=0.0; 
+      //plutarea[0]=0.0;
       dumpxyz(imlutarea, 0, 0, 0, 10, 10);
 
 #ifdef OPENMP
@@ -648,7 +667,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	      pqmininsert(pq,pqd); /* add edge dissim to pqueue */
 	    }
 	  }
-	
+
 	  while (fifo4_empty(q) == FALSE){
 	    ofs=fifo4_remove(q);
 	    for(k=0;k<graph;k++){
@@ -677,7 +696,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	    priocrt=apqd[0]->prio;
 	    lblmax=priocrt;
 	  }
-	  
+
 	  while (pqminremove(pq, apqd) != NULL){
 	    //ofs=apqd[0]->offset;
 	    prio=apqd[0]->prio;
@@ -784,7 +803,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	  sum_x2=(xi*xi);
 	  sum_y2=(yi*yi);
 	  sum_xy=(xi*yi);
-	  
+
 	  for(k=0;k<graph;k++){
 	    if(plbl[ofs+shft[k]]==lbl){
 	      fifo4_add(q,ofs+shft[k]);
@@ -801,7 +820,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	    sum_x2+=(xi*xi);
 	    sum_y2+=(yi*yi);
 	    sum_xy+=(xi*yi);
-	    
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -853,7 +872,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	  sum_x2=(xi*xi);
 	  sum_y2=(yi*yi);
 	  sum_xy=(xi*yi);
-	  
+
 	  for(k=0;k<graph;k++){
 	    if(plbl[ofs+shft[k]]==lbl){
 	      fifo4_add(q,ofs+shft[k]);
@@ -871,7 +890,7 @@ IMAGE *u32_region_lut_omp(IMAGE *ilbl, int graph, int type, int param1, int para
 	    sum_x2+=(xi*xi);
 	    sum_y2+=(yi*yi);
 	    sum_xy+=(xi*yi);
-	    
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -943,7 +962,7 @@ IMAGE *region_lut(IMAGE *ilbl, int graph, int type, int param1, int param2)
 {
   switch (GetImDataType(ilbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_region_lut_omp(ilbl, graph, type, param1, param2);
     break;
 
@@ -1018,7 +1037,7 @@ IMAGE *u32_region_lut_seq_omp(IMAGE *ilbl, int graph, int type)
   for (i=0; i<maxlbl;i++)
     if(plut[i])
       plut[i]=(plut_tmp[i]/plut[i])*100.0+1.0;
-  
+
   free_image(lut_tmp);
   return lut;
 }
@@ -1030,7 +1049,7 @@ IMAGE *region_lut_seq(IMAGE *ilbl, int graph, int type)
 {
   switch (GetImDataType(ilbl)){
 
-  case t_UINT32: 
+  case t_UINT32:
     return u32_region_lut_seq_omp(ilbl, graph, type);
     break;
 
@@ -1101,7 +1120,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
     double sx2, sy2, sx, sy, sxy, sz, sxz, syz;
     double det, a, b, c, d, e, f, A, B, C;
-    
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -1138,7 +1157,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    sz+=pim[ofs];
 	    sxz+=xi*pim[ofs];
 	    syz+=yi*pim[ofs];
-	  
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -1171,7 +1190,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  /* [ -(d*f - e^2),  (b*f - c*e), -(b*e - c*d)] */
 	  /* [  (b*f - c*e), -(a*f - c^2), -(b*c - a*e)] */
 	  /* [ -(b*e - c*d), -(b*c - a*e), -(a*d - b^2)] */
-  
+
 	  a=-(sy2*n-sy*sy);
 	  b=sxy*n-sx*sy;
 	  c=-(sxy*sy-sx*sy2);
@@ -1182,7 +1201,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  A=(a*sxz+b*syz+c*sz)/det;
 	  B=(b*sxz+d*syz+e*sz)/det;
 	  C=(c*sxz+e*syz+f*sz)/det;
-	  
+
 	  // printf("A=%g B=%g C=%g\n", A, B, C);
 	  plut[lbl]=(float)A;
 	  plut[lbl+maxlbl+1]=(float)B;
@@ -1252,7 +1271,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     {
       IMAGE *lut1;
       LUT_TYPE *plut1;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -1263,12 +1282,12 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -1279,12 +1298,12 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
       free_image(lut1);
     }
-    break;    
+    break;
   case 2: /* standard deviation */
     {
       IMAGE *lut1, *lut2;
       LUT_TYPE *plut1, *plut2, diff;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -1302,12 +1321,12 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut2[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -1332,7 +1351,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut1);
       free_image(lut2);
     }
-    break;   
+    break;
   case 3: /* maximum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1342,7 +1361,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (plut[plbl[i]]<pim[i])
 	plut[plbl[i]]=pim[i];
     }
-    break;      
+    break;
   case 4: /* minimum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1356,7 +1375,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     break;
 #if SIGNED==0
   case 5: /* percentile */
-    
+
     /* get min & max values */
     pg = min_max(im);
     if (pg == NULL)
@@ -1384,7 +1403,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut);
       return NULL;
     }
-        
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -1403,7 +1422,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    }
 	  }
 	  while (fifo4_empty(q) == FALSE){
-	    ofs=fifo4_remove(q);	  
+	    ofs=fifo4_remove(q);
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -1439,7 +1458,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     for (i=0; i<npix; i++)
       plbl[i]^=LBL_PIX_MSB;
     break;
-#endif   
+#endif
   case 6: /* sum of values */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1447,7 +1466,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     plut=(LUT_TYPE *)GetImPtr(lut);
     for (i=0; i<npix; i++)
 	plut[plbl[i]]+=pim[i];
-    break;      
+    break;
   case 20: /* range  */
     {
       IMAGE *lut2;
@@ -1457,7 +1476,7 @@ IMAGE *uc_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
       f_blank(lut, MIALFLOAT_MIN);
-    
+
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
 	free_image(lut);
@@ -1553,7 +1572,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
     double sx2, sy2, sx, sy, sxy, sz, sxz, syz;
     double det, a, b, c, d, e, f, A, B, C;
-    
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -1590,7 +1609,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    sz+=pim[ofs];
 	    sxz+=xi*pim[ofs];
 	    syz+=yi*pim[ofs];
-	  
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -1623,7 +1642,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  /* [ -(d*f - e^2),  (b*f - c*e), -(b*e - c*d)] */
 	  /* [  (b*f - c*e), -(a*f - c^2), -(b*c - a*e)] */
 	  /* [ -(b*e - c*d), -(b*c - a*e), -(a*d - b^2)] */
-  
+
 	  a=-(sy2*n-sy*sy);
 	  b=sxy*n-sx*sy;
 	  c=-(sxy*sy-sx*sy2);
@@ -1634,7 +1653,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  A=(a*sxz+b*syz+c*sz)/det;
 	  B=(b*sxz+d*syz+e*sz)/det;
 	  C=(c*sxz+e*syz+f*sz)/det;
-	  
+
 	  // printf("A=%g B=%g C=%g\n", A, B, C);
 	  plut[lbl]=(float)A;
 	  plut[lbl+maxlbl+1]=(float)B;
@@ -1704,7 +1723,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     {
       IMAGE *lut1;
       LUT_TYPE *plut1;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -1715,12 +1734,12 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -1731,12 +1750,12 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
       free_image(lut1);
     }
-    break;    
+    break;
   case 2: /* standard deviation */
     {
       IMAGE *lut1, *lut2;
       LUT_TYPE *plut1, *plut2, diff;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -1754,12 +1773,12 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut2[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -1784,7 +1803,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut1);
       free_image(lut2);
     }
-    break;   
+    break;
   case 3: /* maximum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1794,7 +1813,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (plut[plbl[i]]<pim[i])
 	plut[plbl[i]]=pim[i];
     }
-    break;      
+    break;
   case 4: /* minimum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1808,7 +1827,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     break;
 #if SIGNED==0
   case 5: /* percentile */
-    
+
     /* get min & max values */
     pg = min_max(im);
     if (pg == NULL)
@@ -1836,7 +1855,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut);
       return NULL;
     }
-        
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -1855,7 +1874,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    }
 	  }
 	  while (fifo4_empty(q) == FALSE){
-	    ofs=fifo4_remove(q);	  
+	    ofs=fifo4_remove(q);
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -1891,7 +1910,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     for (i=0; i<npix; i++)
       plbl[i]^=LBL_PIX_MSB;
     break;
-#endif 
+#endif
   case 6: /* sum of values */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -1909,7 +1928,7 @@ IMAGE *us_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
       f_blank(lut, MIALFLOAT_MIN);
-    
+
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
 	free_image(lut);
@@ -2004,7 +2023,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
     double sx2, sy2, sx, sy, sxy, sz, sxz, syz;
     double det, a, b, c, d, e, f, A, B, C;
-    
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -2041,7 +2060,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    sz+=pim[ofs];
 	    sxz+=xi*pim[ofs];
 	    syz+=yi*pim[ofs];
-	  
+
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -2074,7 +2093,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  /* [ -(d*f - e^2),  (b*f - c*e), -(b*e - c*d)] */
 	  /* [  (b*f - c*e), -(a*f - c^2), -(b*c - a*e)] */
 	  /* [ -(b*e - c*d), -(b*c - a*e), -(a*d - b^2)] */
-  
+
 	  a=-(sy2*n-sy*sy);
 	  b=sxy*n-sx*sy;
 	  c=-(sxy*sy-sx*sy2);
@@ -2085,7 +2104,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	  A=(a*sxz+b*syz+c*sz)/det;
 	  B=(b*sxz+d*syz+e*sz)/det;
 	  C=(c*sxz+e*syz+f*sz)/det;
-	  
+
 	  // printf("A=%g B=%g C=%g\n", A, B, C);
 	  plut[lbl]=(float)A;
 	  plut[lbl+maxlbl+1]=(float)B;
@@ -2155,7 +2174,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
     {
       IMAGE *lut1;
       LUT_TYPE *plut1;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -2166,12 +2185,12 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -2182,12 +2201,12 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
       free_image(lut1);
     }
-    break;    
+    break;
   case 2: /* standard deviation */
     {
       IMAGE *lut1, *lut2;
       LUT_TYPE *plut1, *plut2, diff;
-    
+
       lut1= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut1==NULL)
 	return NULL;
@@ -2205,12 +2224,12 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       }
       plut=(LUT_TYPE *)GetImPtr(lut);
-    
+
       for (i=0; i<npix; i++){
 	plut1[plbl[i]]+=1;
 	plut2[plbl[i]]+=pim[i];
       }
-    
+
 #ifdef OPENMP
 #pragma omp parallel for
 #endif
@@ -2235,7 +2254,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut1);
       free_image(lut2);
     }
-    break;   
+    break;
   case 3: /* maximum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -2245,7 +2264,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       if (plut[plbl[i]]<pim[i])
 	plut[plbl[i]]=pim[i];
     }
-    break;      
+    break;
   case 4: /* minimum value */
     lut= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
     if (lut==NULL)
@@ -2286,7 +2305,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
       free_image(lut);
       return NULL;
     }
-        
+
     for (y=1; y<ny-1; y++){
       for (x=1; x<nx-1; x++){
 	ofs=x+y*nx;
@@ -2305,7 +2324,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	    }
 	  }
 	  while (fifo4_empty(q) == FALSE){
-	    ofs=fifo4_remove(q);	  
+	    ofs=fifo4_remove(q);
 	    for(k=0;k<graph;k++){
 	      if(plbl[ofs+shft[k]]==lbl){
 		fifo4_add(q,ofs+shft[k]);
@@ -2351,7 +2370,7 @@ IMAGE *f_region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 	return NULL;
       plut=(LUT_TYPE *)GetImPtr(lut);
       f_blank(lut, MIALFLOAT_MIN);
-    
+
       lut2= (IMAGE *)create_image(t_FLOAT, maxlbl+1, 1, 1);
       if (lut2==NULL){
 	free_image(lut);
@@ -2398,13 +2417,13 @@ IMAGE *region_im_lut(IMAGE *ilbl, IMAGE *im, int graph, int type, float aval)
 
   switch (GetImDataType(im)){
 
-  case t_UCHAR: 
+  case t_UCHAR:
     return uc_region_im_lut(ilbl, im, graph, type, aval);
     break;
-  case t_USHORT: 
+  case t_USHORT:
     return us_region_im_lut(ilbl, im, graph, type, aval);
     break;
-  case t_FLOAT: 
+  case t_FLOAT:
     return f_region_im_lut(ilbl, im, graph, type, aval);
     break;
 
@@ -2441,7 +2460,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
      Code modified from outercontour function:
      only points with change of direction are kept.
      assumes border is set to zero to avoid border overflow.
-     Pierre Soille @ jrc.ec.europa.eu (c)
+     Pierre Soille
      First 20100930 (for building footprint characterisation)
 
      based on Moore's contour tracing algorithm with Jacob's condition, see
@@ -2475,7 +2494,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
     {1,3},      // magenta
     {1+nx,3},   // cyan
     {nx,5},     // white
-    {nx-1,5}    // grey    
+    {nx-1,5}    // grey
   };
   if (graph!=8)
     graph=4;
@@ -2496,21 +2515,21 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
   if (graph!=4){
     (void)sprintf(buf, "ERROR in :contortion_lut() \
                 graph must be equal to 4 at the moment\n"); errputstr(buf);
-    return NULL;   
+    return NULL;
   }
 
-  
+
   imout=(IMAGE *)create_image(t_UCHAR, GetImNx(ilbl), GetImNy(ilbl), 1);
   if (imout==NULL)
     return NULL;
-  
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
     return(NULL);
   maxlbl = pg[1].u32_val;
   free((char *)pg);
-  
+
   lut= (IMAGE *)create_image(t_MY_LUT_TYPE, maxlbl+1, 1, 1);
   if (lut==NULL){
     free_image(imout);
@@ -2531,11 +2550,11 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
   }
 
   /* process one cc at a time */
-  //pragma omp parallel default(none)	
+  //pragma omp parallel default(none)
   //shared(maxlbl,pout,plbl,plut,graph,neighborhood) private(i,lbl,pos)
   //{
 #ifdef OPENMP
-#pragma omp parallel for private(lbl, pos) 
+#pragma omp parallel for private(lbl, pos)
 #endif
   //  #pragma omp for nowait
   for (i=1; i<=maxlbl; i++){  // lbl==0 for background or border
@@ -2546,7 +2565,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
                             // check if we find a new border at checkLocationNr
     long int startPos = plut[i]; // Set start position
     int counter = 0;        // Counter is used for the jacobi stop criterion
-    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered 
+    int counter2 = 0;       // Counter2 is used to determine if the point we have discovered
                             // is one single point
     int prevCheckLocationNr = 9; // init with dummy direction
 
@@ -2558,17 +2577,17 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
 
     vdir=0;
     hdir=-1;
-    
+
     if (startPos!=0){
       lbl=plbl[startPos];
       pout[startPos]=9;     // mark pixel as border
       pos=startPos;
-  
+
       // Trace around the neighborhood
       while(1){
 	checkPosition = pos + neighborhood[checkLocationNr-1][0];
 	newCheckLocationNr = neighborhood[checkLocationNr-1][1];
- 
+
 	if( plbl[checkPosition] == lbl) { // Next border point found
 	  if(checkPosition == startPos){
 
@@ -2577,7 +2596,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
 	      break;
 	    }
 	    pout[pos]=checkLocationNr; // direction of next border point
-	  
+
 	    // set to 9 if point of change of direction
 	    if (checkLocationNr!=prevCheckLocationNr){
 
@@ -2617,7 +2636,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
 	      pout[checkPosition]=9;
 	      prevCheckLocationNr=checkLocationNr;
 	    }
-	  
+
 	    counter ++;
 	    // Stopping criterion (jacob)
 	    if(newCheckLocationNr == 1 || counter >= 3) { // Close loop
@@ -2647,12 +2666,12 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
 		hdir=dircrt;
 	      }
 	    }
-    
+
 	    pout[pos]=9;
 	    pout[checkPosition]=9;
 	    prevCheckLocationNr=checkLocationNr;
 	  }
-     
+
 	  checkLocationNr = newCheckLocationNr;// Update which neighborhood position we should check next
 	  pos = checkPosition;
 	  counter2 = 0;    // Reset the counter that keeps track of how many neighbors we have visited
@@ -2677,7 +2696,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
   }
   // }  /* END of parallel region */
   free_image(imout);
- 
+
   return lut;
 }
 #undef MY_LUT_TYPE
@@ -2688,7 +2707,7 @@ IMAGE *u32_contortion_lut(IMAGE *ilbl, int graph)
 IMAGE *contortion_lut(IMAGE *ilbl, int graph)
 {
   switch (GetImDataType(ilbl)){
-  case t_UINT32: 
+  case t_UINT32:
     return u32_contortion_lut(ilbl, graph);
     break;
 
@@ -2707,7 +2726,7 @@ IMAGE *f_moments_lut_to_ellipse_lut(IMAGE **impq)
   mia_size_t i,n;
   MIALFLOAT *m00, *m10, *m01, *m11, *m20, *m02;
   double mu11, mu20, mu02;
-  double denom, a, b, theta, rad2deg=180.0/PI;; 
+  double denom, a, b, theta, rad2deg=180.0/PI;;
   IMAGE *lut;
   MIALFLOAT *plut;
 
@@ -2725,7 +2744,7 @@ IMAGE *f_moments_lut_to_ellipse_lut(IMAGE **impq)
     return NULL;
   plut=   (LUT_TYPE *)GetImPtr(lut);
 
-  
+
   for(i=1;i<n;i++){
     mu11=m11[i]-(m10[i]*m01[i])/m00[i];
     mu20=m20[i]-(m10[i]*m10[i])/m00[i];
@@ -2761,14 +2780,14 @@ IMAGE *f_moments_lut_to_ellipse_lut(IMAGE **impq)
     plut[(2*n)+i]=(float)theta;
   }
 
-  return(lut);  
+  return(lut);
 }
 #include "f_undef.h"
 
 IMAGE *moments_lut_to_ellipse_lut(IMAGE **impq)
 {
   switch (GetImDataType(impq[0])){
-  case t_FLOAT: 
+  case t_FLOAT:
     return f_moments_lut_to_ellipse_lut(impq);
     break;
 

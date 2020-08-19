@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +78,7 @@ void uc_lherkpldil(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -120,7 +140,7 @@ void us_lherkpldil(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -182,7 +202,7 @@ void i32_lherkpldil(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -244,7 +264,7 @@ void u32_lherkpldil(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -282,7 +302,7 @@ ERROR_TYPE uc_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -301,11 +321,11 @@ ERROR_TYPE uc_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -335,9 +355,9 @@ ERROR_TYPE uc_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -469,7 +489,7 @@ ERROR_TYPE us_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -488,11 +508,11 @@ ERROR_TYPE us_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -522,9 +542,9 @@ ERROR_TYPE us_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -636,7 +656,7 @@ ERROR_TYPE i32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -655,11 +675,11 @@ ERROR_TYPE i32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -689,9 +709,9 @@ ERROR_TYPE i32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -803,7 +823,7 @@ ERROR_TYPE u32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -822,11 +842,11 @@ ERROR_TYPE u32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -856,9 +876,9 @@ ERROR_TYPE u32_herkpldil_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -1029,7 +1049,7 @@ void uc_lherkplero(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -1093,7 +1113,7 @@ void us_lherkplero(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -1157,7 +1177,7 @@ void i32_lherkplero(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -1221,7 +1241,7 @@ void u32_lherkplero(PIX_TYPE *pf, int n, int k, int o, int t)
   ph += (n-1);
   pff=pf;
   pfb=pf+n-1;
-  
+
   /* process each block of t*k pixels */
   for (j=0; j<nb; j++){
     pgmk=pg;    phpk=ph;
@@ -1261,7 +1281,7 @@ ERROR_TYPE uc_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -1280,11 +1300,11 @@ ERROR_TYPE uc_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -1314,9 +1334,9 @@ ERROR_TYPE uc_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -1436,7 +1456,7 @@ ERROR_TYPE us_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -1455,11 +1475,11 @@ ERROR_TYPE us_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -1489,9 +1509,9 @@ ERROR_TYPE us_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, int
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -1611,7 +1631,7 @@ ERROR_TYPE i32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -1630,11 +1650,11 @@ ERROR_TYPE i32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -1664,9 +1684,9 @@ ERROR_TYPE i32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -1786,7 +1806,7 @@ ERROR_TYPE u32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
 
       omp version started 20120427  OK 20120430
    */
-  
+
   PIX_TYPE *ftmp;
   long int *p, *ptmp;
   int *rlc;
@@ -1805,11 +1825,11 @@ ERROR_TYPE u32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
     (void)sprintf(buf,"Unknown slope: dx==dy==0"); stdputstr(buf);
     return ERROR;
   }
-  
+
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     incx = 0; incy = 1;
@@ -1839,9 +1859,9 @@ ERROR_TYPE u32_herkplero_omp(PIX_TYPE *f, int ncol, int nlin, int dx, int dy, in
   rlc = (int*)calloc(nx,sizeof(int));
 
   nxmtk = (nx%(t*k)) == 0 ? nx : nx + t*k-(nx%(t*k));
-   
+
   tracelinecorrect(pxf, pyf, pxf+dx, pyf+dy, p, rlc, ncol, nx);
-  
+
   /* update rlc with running sums for omp version 20120427 */
   for(i=1;i<nx;i++)
     rlc[i]+=rlc[i-1];
@@ -1955,13 +1975,13 @@ ERROR_TYPE herkplero(IMAGE *im, int dx, int dy, int k, int o, int t)
     (void)sprintf(buf,"herkplero(): invalid periodicity value (t=%d) must be larger than 0\n", t); errputstr(buf);
     return(ERROR);
   }
- 
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:
     return(uc_herkplero_omp((UCHAR *)GetImPtr(im), GetImNx(im), GetImNy(im), dx, dy, k, o, t));
     break;
-    
+
   case t_USHORT:
     return(us_herkplero_omp((USHORT *)GetImPtr(im), GetImNx(im), GetImNy(im), dx, dy, k, o, t));
     break;
@@ -1969,11 +1989,11 @@ ERROR_TYPE herkplero(IMAGE *im, int dx, int dy, int k, int o, int t)
   case t_INT32:
     return(i32_herkplero_omp((INT32 *)GetImPtr(im), GetImNx(im), GetImNy(im), dx, dy, k, o, t));
     break;
-    
+
   case t_UINT32:
     return(u32_herkplero_omp((UINT32 *)GetImPtr(im), GetImNx(im), GetImNy(im), dx, dy, k, o, t));
     break;
-    
+
   default:
     (void)sprintf(buf,"herkplero(): invalid pixel type\n"); errputstr(buf);
     return(ERROR);

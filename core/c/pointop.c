@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -102,7 +122,7 @@ ERROR_TYPE negation(IMAGE *im)
     }
   }
     break;
-    
+
   case t_USHORT:{
     USHORT *pim;
     pim = (USHORT *)GetImPtr(im);
@@ -149,8 +169,8 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -190,7 +210,7 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
   case SUB_op:
 #pragma omp parallel for private(test) reduction(+:ovfl)
     for (i=0; i<npix; i++){
-      test = p1[i] - p2[i];  
+      test = p1[i] - p2[i];
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -201,7 +221,7 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
   case SUBSWAP_op:
 #pragma omp parallel for private(test) reduction(+:ovfl)
     for (i=0; i<npix; i++){
-      test = p2[i] - p1[i];  
+      test = p2[i] - p1[i];
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -341,8 +361,8 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -380,7 +400,7 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p1 - *p2;  
+      test = *p1 - *p2;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -390,7 +410,7 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p2 - *p1;  
+      test = *p2 - *p1;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -516,8 +536,8 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -555,7 +575,7 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p1 - *p2;  
+      test = *p1 - *p2;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -565,7 +585,7 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p2 - *p1;  
+      test = *p2 - *p1;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -693,8 +713,8 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -732,7 +752,7 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p1 - *p2;  
+      test = *p1 - *p2;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -742,7 +762,7 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p2 - *p1;  
+      test = *p2 - *p1;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -872,8 +892,8 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -911,7 +931,7 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p1 - *p2;  
+      test = *p1 - *p2;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -921,7 +941,7 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      test = *p2 - *p1;  
+      test = *p2 - *p1;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -1051,8 +1071,8 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1085,12 +1105,12 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 = *p1 - *p2;  
+      *p1 = *p1 - *p2;
     }
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 =  *p2 - *p1; 
+      *p1 =  *p2 - *p1;
     }
     break;
   case SUB_op_ovfl:
@@ -1210,8 +1230,8 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1244,12 +1264,12 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 = *p1 - *p2;  
+      *p1 = *p1 - *p2;
     }
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 =  *p2 - *p1; 
+      *p1 =  *p2 - *p1;
     }
     break;
   case SUB_op_ovfl:
@@ -1369,8 +1389,8 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1525,8 +1545,8 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1684,8 +1704,8 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1718,12 +1738,12 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 = *p1 - *p2;  
+      *p1 = *p1 - *p2;
     }
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 =  *p2 - *p1; 
+      *p1 =  *p2 - *p1;
     }
     break;
   case SUB_op_ovfl:
@@ -1843,8 +1863,8 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -1862,7 +1882,7 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 = *p1 - *p2;  
+      *p1 = *p1 - *p2;
     }
     break;
   case SUBSWAP_op:
@@ -2007,8 +2027,8 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -2026,12 +2046,12 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1-=*p2;  
+      *p1-=*p2;
     }
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1= *p2 - *p1;  
+      *p1= *p2 - *p1;
     }
     break;
   case SUB_op_ovfl:
@@ -2150,8 +2170,8 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -2169,12 +2189,12 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1-=*p2;  
+      *p1-=*p2;
     }
     break;
   case SUBSWAP_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1= *p2 - *p1;  
+      *p1= *p2 - *p1;
     }
     break;
   case SUB_op_ovfl:
@@ -2291,8 +2311,8 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1, *p2;
   double dval;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
 
   npix = GetImNPix(im1);
@@ -2310,7 +2330,7 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      *p1 = *p1 - *p2;  
+      *p1 = *p1 - *p2;
     }
     break;
   case SUBSWAP_op:
@@ -2456,7 +2476,7 @@ ERROR_TYPE arith(IMAGE *im1, IMAGE *im2, int op)
     (void)sprintf(buf,"ERROR in arith(im1, im2, op): \
                 invalid image data type combination\n"); errputstr(buf);
     return(ERROR);
-    
+
     break;
 
   case t_SHORT: /* overflow check is turned off ! */
@@ -2486,7 +2506,7 @@ ERROR_TYPE arith(IMAGE *im1, IMAGE *im2, int op)
     }
     return(i32_arith(im1, im2, op));
     break;
-    
+
   case t_UINT32: /* overflow check is turned off ! */
     if (GetImDataType(im2) == t_UCHAR){
       return(uluc_arith(im1, im2, op));
@@ -2538,8 +2558,8 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -2596,7 +2616,7 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
 #pragma omp parallel for private(test) reduction(+:ovfl)
     for (i=0; i<npix; i++){
 #if OVFL_TEST
-      test = p1[i] - cst;  
+      test = p1[i] - cst;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -2700,7 +2720,7 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++)
       p1[i]=cst-p1[i];
     break;
-#endif 
+#endif
 #if (SIGNED==0)
   case FirstBitOn_op:
 #pragma omp parallel for
@@ -2713,7 +2733,7 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
       }
     }
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in generic_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -2737,8 +2757,8 @@ ERROR_TYPE us_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -2783,7 +2803,7 @@ ERROR_TYPE us_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++){
-      test = *p1 - cst;  
+      test = *p1 - cst;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -2869,7 +2889,7 @@ ERROR_TYPE us_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
 #if (SIGNED==0)
   case FirstBitOn_op:
     for (i=0; i<npix; i++, p1++){
@@ -2881,7 +2901,7 @@ ERROR_TYPE us_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
       }
     }
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in us_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -2905,8 +2925,8 @@ ERROR_TYPE s_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -2943,7 +2963,7 @@ ERROR_TYPE s_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++){
-      test = *p1 - cst;  
+      test = *p1 - cst;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -3029,7 +3049,7 @@ ERROR_TYPE s_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in s_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -3052,8 +3072,8 @@ ERROR_TYPE i32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -3161,7 +3181,7 @@ ERROR_TYPE i32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in i32_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -3184,8 +3204,8 @@ ERROR_TYPE u32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
   //#endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -3230,7 +3250,7 @@ ERROR_TYPE u32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     break;
   case SUB_op:
     for (i=0; i<npix; i++, p1++){
-      test = *p1 - cst;  
+      test = *p1 - cst;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -3316,7 +3336,7 @@ ERROR_TYPE u32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
 #if (SIGNED==0)
   case FirstBitOn_op:
     for (i=0; i<npix; i++, p1++){
@@ -3328,7 +3348,7 @@ ERROR_TYPE u32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
       }
     }
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in generic_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -3350,8 +3370,8 @@ ERROR_TYPE f_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -3448,7 +3468,7 @@ ERROR_TYPE f_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in f_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -3470,8 +3490,8 @@ ERROR_TYPE d_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   long int test;
 #endif
   PIX_TYPE *p1;
- 
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
 
   npix = GetImNPix(im1);
 
@@ -3523,7 +3543,7 @@ ERROR_TYPE d_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   case SUB_op:
     for (i=0; i<npix; i++, p1++){
 #if OVFL_TEST
-      test = *p1 - cst;  
+      test = *p1 - cst;
       if (test < PIX_MIN){
 	ovfl++;
 	test = PIX_MIN;
@@ -3616,7 +3636,7 @@ ERROR_TYPE d_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     for (i=0; i<npix; i++, p1++)
       *p1=cst-*p1;
     break;
-#endif 
+#endif
 #if (SIGNED==0)
   case FirstBitOn_op:
     for (i=0; i<npix; i++, p1++){
@@ -3628,7 +3648,7 @@ ERROR_TYPE d_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
       }
     }
     break;
-#endif 
+#endif
   default:
     (void)sprintf(buf, "ERROR in generic_arithcst(im1, cst, op): \
                 invalid op value\n"); errputstr(buf);
@@ -4502,7 +4522,7 @@ ERROR_TYPE generic_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 #ifdef OPENMP
 #pragma omp parallel for
@@ -4523,7 +4543,7 @@ ERROR_TYPE s_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4545,7 +4565,7 @@ ERROR_TYPE us_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4567,7 +4587,7 @@ ERROR_TYPE i32_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4588,7 +4608,7 @@ ERROR_TYPE u32_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4609,7 +4629,7 @@ ERROR_TYPE f_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4630,7 +4650,7 @@ ERROR_TYPE d_setlevel(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE val)
   PIX_TYPE *p1;
 
   p1  = (PIX_TYPE *)GetImPtr(im);
- 
+
   npix = GetImNPix(im);
 
 #ifdef OPENMP
@@ -4916,8 +4936,8 @@ ERROR_TYPE i32_complement(IMAGE *im)
 
 
 ERROR_TYPE complement(IMAGE *im)
-{ 
-  
+{
+
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE
@@ -4976,7 +4996,7 @@ ERROR_TYPE uc_power2p(IMAGE *im)
     else
       *p=0;
   }
-  return NO_ERROR;  
+  return NO_ERROR;
 }
 #include "uc_undef.h"
 
@@ -4994,7 +5014,7 @@ ERROR_TYPE us_power2p(IMAGE *im)
     else
       *p=0;
   }
-  return NO_ERROR;  
+  return NO_ERROR;
 }
 #include "us_undef.h"
 
@@ -5012,7 +5032,7 @@ ERROR_TYPE u32_power2p(IMAGE *im)
     else
       *p=0;
   }
-  return NO_ERROR;  
+  return NO_ERROR;
 }
 #include "u32_undef.h"
 
@@ -5235,7 +5255,7 @@ ERROR_TYPE generic_shift(IMAGE *im, int val)
     val = abs(val);
     for (i=0; i<npix; i++, p1++)
      *p1 <<=  val;
-  }      
+  }
   return(NO_ERROR);
 }
 #include "g_undef.h"
@@ -5260,7 +5280,7 @@ ERROR_TYPE us_shift(IMAGE *im, int val)
     val = abs(val);
     for (i=0; i<npix; i++, p1++)
      *p1 <<=  val;
-  }      
+  }
   return(NO_ERROR);
 }
 #include "us_undef.h"
@@ -5283,7 +5303,7 @@ ERROR_TYPE i32_shift(IMAGE *im, int val)
     val = abs(val);
     for (i=0; i<npix; i++, p1++)
      *p1 <<=  val;
-  }      
+  }
   return(NO_ERROR);
 }
 #include "i32_undef.h"
@@ -5307,7 +5327,7 @@ ERROR_TYPE u32_shift(IMAGE *im, int val)
     val = abs(val);
     for (i=0; i<npix; i++, p1++)
      *p1 <<=  val;
-  }      
+  }
   return(NO_ERROR);
 }
 #include "u32_undef.h"
@@ -5315,10 +5335,10 @@ ERROR_TYPE u32_shift(IMAGE *im, int val)
 ERROR_TYPE shift(IMAGE *im, int val)
 {
   /*
-  ** author: P. Soille 
-  ** im: 
+  ** author: P. Soille
+  ** im:
   ** val:
-  
+
   ** comment: image must not be float or double
   */
 
@@ -5380,7 +5400,7 @@ ERROR_TYPE generic_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
     (void)sprintf(buf,"setrange(): uval<lval\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   /* get min & max values */
   pg = min_max(im);
   if (pg == NULL)
@@ -5424,7 +5444,7 @@ ERROR_TYPE us_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
     (void)sprintf(buf,"setrange(): uval<lval\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   /* get min & max values */
   pg = min_max(im);
   if (pg == NULL)
@@ -5467,7 +5487,7 @@ ERROR_TYPE i32_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
     (void)sprintf(buf,"setrange(): uval<lval\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   /* get min & max values */
   pg = min_max(im);
   if (pg == NULL)
@@ -5510,7 +5530,7 @@ ERROR_TYPE f_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
     (void)sprintf(buf,"setrange(): uval<lval\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   /* get min & max values */
   pg = min_max(im);
   if (pg == NULL)
@@ -5518,7 +5538,7 @@ ERROR_TYPE f_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
   minii  = pg[0].f_val;
   maxii  = pg[1].f_val;
   free((char *)pg);
-  
+
   p1     = (PIX_TYPE *)GetImPtr(im);
   npix   = GetImNPix(im);
   deltai = maxii - minii;
@@ -5553,7 +5573,7 @@ ERROR_TYPE d_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
     (void)sprintf(buf,"setrange(): uval<lval\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   /* get min & max values */
   pg = min_max(im);
   if (pg == NULL)
@@ -5561,7 +5581,7 @@ ERROR_TYPE d_setrange(IMAGE *im, PIX_TYPE lval, PIX_TYPE uval)
   minii  = pg[0].d_val;
   maxii  = pg[1].d_val;
   free((char *)pg);
-  
+
   p1     = (PIX_TYPE *)GetImPtr(im);
   npix   = GetImNPix(im);
   deltai = maxii - minii;
@@ -5655,14 +5675,14 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
     (void)sprintf(buf,"generic_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
-  
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
-#pragma omp parallel for reduction(+:ovfl) 
+#pragma omp parallel for reduction(+:ovfl)
   for (i=0; i<npix; i++){
     dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
@@ -5700,14 +5720,14 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
     (void)sprintf(buf,"us_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
-  
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
-#pragma omp parallel for reduction(+:ovfl) 
+#pragma omp parallel for reduction(+:ovfl)
   for (i=0; i<npix; i++){
     dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
@@ -5744,14 +5764,14 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
     (void)sprintf(buf,"i32_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
-  
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
-#pragma omp parallel for reduction(+:ovfl) 
+#pragma omp parallel for reduction(+:ovfl)
   for (i=0; i<npix; i++){
     dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
@@ -5788,14 +5808,14 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
     (void)sprintf(buf,"u32_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
-  
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
-#pragma omp parallel for reduction(+:ovfl) 
+#pragma omp parallel for reduction(+:ovfl)
   for (i=0; i<npix; i++){
     dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
@@ -5832,14 +5852,14 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
     (void)sprintf(buf,"f_ndi(im): not enough memory!\n"); errputstr(buf);
     return(NULL);
   }
-  
-  p1 = (PIX_TYPE *)GetImPtr(im1); 
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
 
-#pragma omp parallel for reduction(+:ovfl) 
+#pragma omp parallel for reduction(+:ovfl)
   for (i=0; i<npix; i++){
     dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){

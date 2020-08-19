@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -36,7 +56,7 @@ ERROR_TYPE agglo_cluster(int *x, int *y, int *pn, double maxdst)
   }
 
   pdst=(double *)GetImPtr(imdst);
-  
+
   for (j=0; j<n; j++)
     for (i=(j+1); i<n; i++)
       pdst[i+j*n]=sqrt((double) ((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])));
@@ -59,7 +79,7 @@ ERROR_TYPE agglo_cluster(int *x, int *y, int *pn, double maxdst)
       cnt+=1;
     }
   }
-  
+
   if (cnt!=n || cnt==1){ /* pursue clustering until stability is reached */
     printf("cnt=%i\n", cnt);
     *pn=cnt;
@@ -67,12 +87,12 @@ ERROR_TYPE agglo_cluster(int *x, int *y, int *pn, double maxdst)
   }
 
   free_image(imdst);
-  
+
   return(NO_ERROR);
 }
-	
-    
-      
+
+
+
 
 ERROR_TYPE nearest_cluster(IMAGE *im, int *x, int *y, int *pn, double maxdst)
 {
@@ -94,7 +114,7 @@ ERROR_TYPE nearest_cluster(IMAGE *im, int *x, int *y, int *pn, double maxdst)
   }
 
   pdst=(double *)GetImPtr(imdst);
-  
+
   for (j=0; j<n; j++){/* compute distances */
     for (i=0; i<n; i++){
       if (i==j)
@@ -118,12 +138,12 @@ ERROR_TYPE nearest_cluster(IMAGE *im, int *x, int *y, int *pn, double maxdst)
   }
 
   free_image(imdst);
-  
+
   return(NO_ERROR);
 }
-	
-    
-      
+
+
+
 
 ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double maxdst)
 {
@@ -147,7 +167,7 @@ ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double ma
   }
 
   pdst=(double *)GetImPtr(imdst);
-  
+
   for (j=0; j<n; j++) /* compute distances */
     for (i=0; i<n; i++)
 	pdst[i+j*n]=sqrt((double) ((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])));
@@ -156,7 +176,7 @@ ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double ma
   indx=(int *)calloc(n, sizeof(int));
 
   k=MIN(k,n);
-  
+
   for (i=0; i<n; i++){
     indexx(n, pdst+i*n-1, indx-1);
     for (j=0; j<n; j++)
@@ -172,9 +192,9 @@ ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double ma
 
   free((char *)indx);
   free_image(imdst);
-  
+
   return(NO_ERROR);
 }
-	
-    
-      
+
+
+

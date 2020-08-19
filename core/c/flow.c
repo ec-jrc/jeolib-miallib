@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -25,7 +45,7 @@ IMAGE *generic_d8(IMAGE *im)
 {
   int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
   long int nx, ny;
-  int delta; 
+  int delta;
   double slope, stmp, sqrt2=sqrt(2);
   IMAGE *imdir;
   UCHAR *pdir, *pend, dir;
@@ -37,7 +57,7 @@ IMAGE *generic_d8(IMAGE *im)
   imdir = create_image(t_UCHAR, nx, ny, GetImNz(im));
   if (imdir==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -120,7 +140,7 @@ IMAGE *us_d8(IMAGE *im)
 {
   int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
   long int nx, ny;
-  int delta; 
+  int delta;
   double slope, stmp, sqrt2=sqrt(2);
   IMAGE *imdir;
   UCHAR *pdir, *pend, dir;
@@ -132,7 +152,7 @@ IMAGE *us_d8(IMAGE *im)
   imdir = create_image(t_UCHAR, nx, ny, GetImNz(im));
   if (imdir==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -215,7 +235,7 @@ IMAGE *i32_d8(IMAGE *im)
 {
   int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
   long int nx, ny;
-  int delta; 
+  int delta;
   double slope, stmp, sqrt2=sqrt(2);
   IMAGE *imdir;
   UCHAR *pdir, *pend, dir;
@@ -227,7 +247,7 @@ IMAGE *i32_d8(IMAGE *im)
   imdir = create_image(t_UCHAR, nx, ny, GetImNz(im));
   if (imdir==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -309,7 +329,7 @@ IMAGE *f_d8(IMAGE *im)
 {
   int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
   long int nx, ny;
-  int delta; 
+  int delta;
   double slope, stmp, sqrt2=sqrt(2);
   IMAGE *imdir;
   UCHAR *pdir, *pend, dir;
@@ -321,7 +341,7 @@ IMAGE *f_d8(IMAGE *im)
   imdir = create_image(t_UCHAR, nx, ny, GetImNz(im));
   if (imdir==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -464,7 +484,7 @@ IMAGE *generic_slope8(IMAGE *im)
   imslope = create_image(t_FLOAT, nx, ny, GetImNz(im));
   if (imslope==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -530,8 +550,8 @@ IMAGE *generic_slope8(IMAGE *im)
   }
   return imslope;
 }
-#undef SLOPE_TYPE 
-#undef t_SLOPE_TYPE 
+#undef SLOPE_TYPE
+#undef t_SLOPE_TYPE
 #include "g_undef.h"
 
 #include "us_def.h"
@@ -553,7 +573,7 @@ IMAGE *us_slope8(IMAGE *im)
   imslope = create_image(t_FLOAT, nx, ny, GetImNz(im));
   if (imslope==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -619,8 +639,8 @@ IMAGE *us_slope8(IMAGE *im)
   }
   return imslope;
 }
-#undef SLOPE_TYPE 
-#undef t_SLOPE_TYPE 
+#undef SLOPE_TYPE
+#undef t_SLOPE_TYPE
 #include "us_undef.h"
 
 #include "i32_def.h"
@@ -642,7 +662,7 @@ IMAGE *i32_slope8(IMAGE *im)
   imslope = create_image(t_FLOAT, nx, ny, GetImNz(im));
   if (imslope==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -708,8 +728,8 @@ IMAGE *i32_slope8(IMAGE *im)
   }
   return imslope;
 }
-#undef SLOPE_TYPE 
-#undef t_SLOPE_TYPE 
+#undef SLOPE_TYPE
+#undef t_SLOPE_TYPE
 #include "i32_undef.h"
 
 
@@ -732,7 +752,7 @@ IMAGE *f_slope8(IMAGE *im)
   imslope = create_image(t_FLOAT, nx, ny, GetImNz(im));
   if (imslope==NULL)
     return NULL;
- 
+
   shft5 = -nx-1; shft3 = -nx; shft7 = -nx+1;
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
@@ -798,8 +818,8 @@ IMAGE *f_slope8(IMAGE *im)
   }
   return imslope;
 }
-#undef SLOPE_TYPE 
-#undef t_SLOPE_TYPE 
+#undef SLOPE_TYPE
+#undef t_SLOPE_TYPE
 #include "f_undef.h"
 
 
@@ -902,7 +922,7 @@ ERROR_TYPE generic_dir(IMAGE *im, int graph)
     return ERROR;
   }
 
-    
+
   p_i  = (PIX_TYPE *)GetImPtr(im);
   p_w  = (UCHAR *)GetImPtr(im_w);
   LOOPDN(i, GetImNPix(im_w)){
@@ -919,7 +939,7 @@ ERROR_TYPE generic_dir(IMAGE *im, int graph)
 
   /* set shift array */
   set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft);
- 
+
   /* boucle principale */
   BOX_2D;
   generic_framebox(im, box, PIX_MSB | graph);
@@ -1015,7 +1035,7 @@ ERROR_TYPE i32_dir(IMAGE *im, int graph)
     return ERROR;
   }
 
-    
+
   p_i  = (PIX_TYPE *)GetImPtr(im);
   p_w  = (UCHAR *)GetImPtr(im_w);
   LOOPDN(i, GetImNPix(im_w)){
@@ -1032,7 +1052,7 @@ ERROR_TYPE i32_dir(IMAGE *im, int graph)
 
   /* set shift array */
   set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft);
- 
+
   /* boucle principale */
   BOX_2D;
   i32_framebox(im, box, PIX_MSB | graph);
@@ -1093,8 +1113,8 @@ ERROR_TYPE us_dir(IMAGE *im, int graph)
    (void) printf("dir(): maximum value > PIX_MAX/2\n");
    return ERROR;
   }
-    
-  
+
+
 
   if ((pnb = (int *)calloc(hmax + 1, sizeof(int *))) == NULL){
    (void) printf("dir(): not enough memory for the FAH\n");
@@ -1128,7 +1148,7 @@ ERROR_TYPE us_dir(IMAGE *im, int graph)
     return ERROR;
   }
 
-    
+
   p_i  = (PIX_TYPE *)GetImPtr(im);
   p_w  = (UCHAR *)GetImPtr(im_w);
   LOOPDN(i, GetImNPix(im_w)){
@@ -1145,7 +1165,7 @@ ERROR_TYPE us_dir(IMAGE *im, int graph)
 
   /* set shift array */
   set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft);
- 
+
   /* boucle principale */
   BOX_2D;
   us_framebox(im, box, PIX_MSB | graph);
@@ -1266,7 +1286,7 @@ IMAGE *flow(IMAGE *imin, int graph)
 
   IMAGE *im, *imhst, *imrsum, *imsort, *im_w, *imtmp;
   G_TYPE gval;
- 
+
   im=(IMAGE *)copy_image(imin);
 
   imhst = histo1d(im);
@@ -1281,7 +1301,7 @@ IMAGE *flow(IMAGE *imin, int graph)
   free_image(imrsum);
   if (imsort==NULL)
     return(NULL);
-  
+
   /* original code: flow directions collected during a flooding procedure:
   if (dir(im, graph) != NO_ERROR){
     free_image(imsort);
@@ -1300,19 +1320,19 @@ IMAGE *flow(IMAGE *imin, int graph)
   free_image(im);
 
   im_w = create_image(t_UINT32, GetImNx(imtmp) ,GetImNy(imtmp), GetImNz(imtmp));
- 
+
   gval.u32_val=1;
   blank(im_w, gval);
 
-  
+
   p_srt  = ((UINT32 *)GetImPtr(imsort))+GetImNPix(imsort);
   p_dir  = (UCHAR *)GetImPtr(imtmp);
   p_area = (UINT32 *)GetImPtr(im_w);
-  
+
 
   /* Take graph into account */
   setinvseqshift(GetImNx(imtmp), GetImNy(imtmp), GetImNz(imtmp), graph, shft);
-  
+
   shft[5] = -GetImNx(imtmp)-1; shft[3] = -GetImNx(imtmp); shft[7] = -GetImNx(imtmp)+1;
   shft[1] = -1;    shft[0]= 0;    shft[2] = +1;
   shft[6] = GetImNx(imtmp)-1;  shft[4] = +GetImNx(imtmp); shft[8] = GetImNx(imtmp)+1;
@@ -1349,7 +1369,7 @@ IMAGE *flownew(IMAGE *imin, IMAGE *imdir, int graph)
 
   IMAGE *imhst, *imrsum, *imsort, *im_w;
   G_TYPE gval;
- 
+
 
   imhst = histo1d(imin);
   if (imhst==NULL)
@@ -1363,19 +1383,19 @@ IMAGE *flownew(IMAGE *imin, IMAGE *imdir, int graph)
   free_image(imrsum);
   if (imsort==NULL)
     return(NULL);
-  
+
   im_w = create_image(t_UINT32, GetImNx(imdir) ,GetImNy(imdir), GetImNz(imdir));
- 
+
   gval.u32_val=1;
   blank(im_w, gval);
-  
+
   p_srt  = ((UINT32 *)GetImPtr(imsort))+GetImNPix(imsort);
   p_dir  = (UCHAR *)GetImPtr(imdir);
   p_area = (UINT32 *)GetImPtr(im_w);
 
   /* Take graph into account */
   setinvseqshift(GetImNx(imdir), GetImNy(imdir), GetImNz(imdir), graph, shft);
-  
+
   shft[5] = -GetImNx(imdir)-1; shft[3] = -GetImNx(imdir); shft[7] = -GetImNx(imdir)+1;
   shft[1] = -1;    shft[0]= 0;    shft[2] = +1;
   shft[6] = GetImNx(imdir)-1;  shft[4] = +GetImNx(imdir); shft[8] = GetImNx(imdir)+1;
@@ -1416,7 +1436,7 @@ IMAGE *cda(IMAGE *dir, int graph)
   int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
 
   FIFO4 *q;
-  
+
   G_TYPE *pg;
   int box[6];
 
@@ -1443,9 +1463,9 @@ IMAGE *cda(IMAGE *dir, int graph)
   shft1 = -1;                 shft2 = +1;
   shft6 = nx-1;  shft4 = +nx; shft8 = nx+1;
 
-  shft[5]=shft5; shft[3]=shft3; shft[7]=shft7; 
-  shft[1]=shft1; shft[0]= 0;    shft[2]=shft2; 
-  shft[6]=shft6; shft[4]=shft4; shft[8]=shft8; 
+  shft[5]=shft5; shft[3]=shft3; shft[7]=shft7;
+  shft[1]=shft1; shft[0]= 0;    shft[2]=shft2;
+  shft[6]=shft6; shft[4]=shft4; shft[8]=shft8;
 
   imn = create_image(t_UCHAR, nx, ny, nz);
   if (imn==NULL)
@@ -1500,7 +1520,7 @@ IMAGE *cda(IMAGE *dir, int graph)
   }
 
   /* simulate ordered flow */
-  while (fifo4_empty(q) == 0){ 
+  while (fifo4_empty(q) == 0){
     ofs  = fifo4_remove(q);
     ofss = ofs+shft[*(pdir0+ofs)];
     *(pcda0+ofss) +=  *(pcda0+ofs);
@@ -1508,11 +1528,11 @@ IMAGE *cda(IMAGE *dir, int graph)
     if ((*(pn0+ofss) == 0)  && *(pdir0+ofss) )
       fifo4_add(q, (long int)(ofss));
   }
-  
+
   free_fifo4(q);
   free_image(imn);
 
-  return imcda;  
+  return imcda;
 }
 #undef CDA_TYPE
 
@@ -1543,7 +1563,7 @@ IMAGE *us_stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir)
     (void)sprintf(buf,"stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir): cda, thresh, and dir images must have the same x-y dimensions!\n"); errputstr(buf);
     return NULL;
   }
-  
+
   shft[5]= -nx-1; shft[3] = -nx; shft[7] = -nx+1;
   shft[1]= -1;    shft[0]=0;     shft[2] = +1;
   shft[6]= nx-1;  shft[4] = +nx; shft[8] = nx+1;
@@ -1597,7 +1617,7 @@ IMAGE *i32_stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir)
     (void)sprintf(buf,"stratify(IMAGE *cda, IMAGE *thresh, IMAGE *dir): cda, thresh, and dir images must have the same x-y dimensions!\n"); errputstr(buf);
     return NULL;
   }
-  
+
   shft[5]= -nx-1; shft[3] = -nx; shft[7] = -nx+1;
   shft[1]= -1;    shft[0]=0;     shft[2] = +1;
   shft[6]= nx-1;  shft[4] = +nx; shft[8] = nx+1;
@@ -1667,7 +1687,7 @@ IMAGE *uc_dinf(IMAGE *im)
   if ( generic_addframebox(im, box, PIX_MIN) == ERROR)
     return NULL;
   nx=GetImNx(im);
-  
+
   /* create output image */
   imdir = create_image(t_FLOAT, nx, GetImNy(im), GetImNz(im));
   if (imdir==NULL)
@@ -1676,7 +1696,7 @@ IMAGE *uc_dinf(IMAGE *im)
   /* search the facet with steepest slope */
   shft1[0]=1;  shft1[1]=-nx; shft1[2]=-nx; shft1[3]=-1;
   shft1[4]=-1; shft1[5]=nx;  shft1[6]=nx;  shft1[7]=1;
-  
+
   shft2[0]=-nx+1; shft2[1]=-nx+1;shft2[2]=-nx-1; shft2[3]=-nx-1;
   shft2[4]=nx-1;  shft2[5]=nx-1; shft2[6]=nx+1;  shft2[7]=nx+1;
 
@@ -1692,10 +1712,10 @@ IMAGE *uc_dinf(IMAGE *im)
       for (k=0; k<8; k++){
 	s1=e0-*(pim+shft1[k]);
 	s2=*(pim+shft1[k])- *(pim+shft2[k]);
-	
+
 	if ( (s1<=0 ) && (s2<=0) ) /* no downslope */
 	  continue;
-	  
+
 	if (s1==0)
 	  r=pio2;
 	else if (s2==0)
@@ -1722,7 +1742,7 @@ IMAGE *uc_dinf(IMAGE *im)
 	}
 	else
 	  s=sqrt(s1*s1+s2*s2);
-	
+
 	if (s>smax){
 	  smax=s;
 	  rmax=r;
@@ -1738,10 +1758,10 @@ IMAGE *uc_dinf(IMAGE *im)
       r=-1.0;
     *pdir=r;
   }
-  
+
   subframebox(im, box);
   subframebox(imdir, box);
-  
+
   return imdir;
 }
 #include "uc_undef.h"
@@ -1767,7 +1787,7 @@ IMAGE *us_dinf(IMAGE *im)
   if (us_addframebox(im, box, PIX_MIN) == ERROR)
     return NULL;
   nx=GetImNx(im);
-  
+
   /* create output image */
   imdir = create_image(t_FLOAT, nx, GetImNy(im), GetImNz(im));
   if (imdir==NULL)
@@ -1776,7 +1796,7 @@ IMAGE *us_dinf(IMAGE *im)
   /* search the facet with steepest slope */
   shft1[0]=1;  shft1[1]=-nx; shft1[2]=-nx; shft1[3]=-1;
   shft1[4]=-1; shft1[5]=nx;  shft1[6]=nx;  shft1[7]=1;
-  
+
   shft2[0]=-nx+1; shft2[1]=-nx+1;shft2[2]=-nx-1; shft2[3]=-nx-1;
   shft2[4]=nx-1;  shft2[5]=nx-1; shft2[6]=nx+1;  shft2[7]=nx+1;
 
@@ -1791,10 +1811,10 @@ IMAGE *us_dinf(IMAGE *im)
       for (k=0; k<8; k++){
 	s1=e0-*(pim+shft1[k]);
 	s2=*(pim+shft1[k])- *(pim+shft2[k]);
-	
+
 	if ( (s1<=0 ) && (s2<=0) ) /* no downslope */
 	  continue;
-	  
+
 	if (s1==0)
 	  r=pio2;
 	else if (s2==0)
@@ -1821,7 +1841,7 @@ IMAGE *us_dinf(IMAGE *im)
 	}
 	else
 	  s=sqrt(s1*s1+s2*s2);
-	
+
 	if (s>smax){
 	  smax=s;
 	  rmax=r;
@@ -1837,10 +1857,10 @@ IMAGE *us_dinf(IMAGE *im)
       r=-1.0;
     *pdir=r;
   }
-  
+
   subframebox(im, box);
   subframebox(imdir, box);
-  
+
   return imdir;
 }
 #include "us_undef.h"
@@ -1903,7 +1923,7 @@ IMAGE *cdainf(IMAGE *dir)
     (void)sprintf(buf,"*cdainf(IMAGE *dir): image dir must be of type t_FLOAT\n"); errputstr(buf);
     return NULL;
   }
-  
+
   nx =GetImNx(dir);
   ny =GetImNy(dir);
   nz =GetImNz(dir);
@@ -1950,7 +1970,7 @@ IMAGE *cdainf(IMAGE *dir)
 	*pn+=1;
       if ( (*(pdir+shft4) >  pio4) && (*(pdir+shft4) < pio34))
 	*pn+=1;
-      
+
       /* 8-neighbours */
       if ( (*(pdir+shft5) > pio32))
 	*pn+=1;
@@ -1968,9 +1988,9 @@ IMAGE *cdainf(IMAGE *dir)
 
   /* generic_dumpxyz(imn, 5, 5, 0, 10); */
   write_tiff(imn, "/tmp/imnin.tif");
-  
+
   /* simulate ordered flow */
-  while (fifo4_empty(q) == 0){ 
+  while (fifo4_empty(q) == 0){
     /* generic_dumpxyz(imn, 5, 5, 0, 10);
        f_dumpxyz(imcda, 5, 5, 0, 10);*/
     ofs  = fifo4_remove(q);
@@ -2137,12 +2157,12 @@ IMAGE *cdainf(IMAGE *dir)
     }
     /* printf("dircrt=%f, ofss=%d, *(pn0+ofss)=%d\n", dircrt, ofss, *(pn0+ofss)); */
   }
-  
+
   write_tiff(imn, "/tmp/imnout.tif");
   free_fifo4(q);
   free_image(imn);
 
-  return imcda;  
+  return imcda;
 }
 #undef CDA_TYPE
 
@@ -2167,7 +2187,7 @@ IMAGE *uc_slopeinf(IMAGE *im)
   if ( generic_addframebox(im, box, PIX_MIN) == ERROR)
     return NULL;
   nx=GetImNx(im);
-  
+
   /* create output image */
   imdir = create_image(t_FLOAT, nx, GetImNy(im), GetImNz(im));
   if (imdir==NULL)
@@ -2176,7 +2196,7 @@ IMAGE *uc_slopeinf(IMAGE *im)
   /* search the facet with steepest slope */
   shft1[0]=1;  shft1[1]=-nx; shft1[2]=-nx; shft1[3]=-1;
   shft1[4]=-1; shft1[5]=nx;  shft1[6]=nx;  shft1[7]=1;
-  
+
   shft2[0]=-nx+1; shft2[1]=-nx+1;shft2[2]=-nx-1; shft2[3]=-nx-1;
   shft2[4]=nx-1;  shft2[5]=nx-1; shft2[6]=nx+1;  shft2[7]=nx+1;
 
@@ -2191,10 +2211,10 @@ IMAGE *uc_slopeinf(IMAGE *im)
       for (k=0; k<8; k++){
 	s1=e0-*(pim+shft1[k]);
 	s2=*(pim+shft1[k])- *(pim+shft2[k]);
-	
+
 	if ( (s1<=0 ) && (s2<=0) ) /* no downslope */
 	  continue;
-	  
+
 	if (s1==0)
 	  r=pio2;
 	else if (s2==0)
@@ -2221,7 +2241,7 @@ IMAGE *uc_slopeinf(IMAGE *im)
 	}
 	else
 	  s=sqrt(s1*s1+s2*s2);
-	
+
 	if (s>smax){
 	  smax=s;
 	}
@@ -2229,10 +2249,10 @@ IMAGE *uc_slopeinf(IMAGE *im)
     }
     *pdir=smax;
   }
-  
+
   subframebox(im, box);
   subframebox(imdir, box);
-  
+
   return imdir;
 }
 #include "uc_undef.h"
@@ -2256,7 +2276,7 @@ IMAGE *us_slopeinf(IMAGE *im)
   if ( us_addframebox(im, box, PIX_MIN) == ERROR)
     return NULL;
   nx=GetImNx(im);
-  
+
   /* create output image */
   imdir = create_image(t_FLOAT, nx, GetImNy(im), GetImNz(im));
   if (imdir==NULL)
@@ -2265,7 +2285,7 @@ IMAGE *us_slopeinf(IMAGE *im)
   /* search the facet with steepest slope */
   shft1[0]=1;  shft1[1]=-nx; shft1[2]=-nx; shft1[3]=-1;
   shft1[4]=-1; shft1[5]=nx;  shft1[6]=nx;  shft1[7]=1;
-  
+
   shft2[0]=-nx+1; shft2[1]=-nx+1;shft2[2]=-nx-1; shft2[3]=-nx-1;
   shft2[4]=nx-1;  shft2[5]=nx-1; shft2[6]=nx+1;  shft2[7]=nx+1;
 
@@ -2280,10 +2300,10 @@ IMAGE *us_slopeinf(IMAGE *im)
       for (k=0; k<8; k++){
 	s1=e0-*(pim+shft1[k]);
 	s2=*(pim+shft1[k])- *(pim+shft2[k]);
-	
+
 	if ( (s1<=0 ) && (s2<=0) ) /* no downslope */
 	  continue;
-	  
+
 	if (s1==0)
 	  r=pio2;
 	else if (s2==0)
@@ -2310,7 +2330,7 @@ IMAGE *us_slopeinf(IMAGE *im)
 	}
 	else
 	  s=sqrt(s1*s1+s2*s2);
-	
+
 	if (s>smax){
 	  smax=s;
 	}
@@ -2318,10 +2338,10 @@ IMAGE *us_slopeinf(IMAGE *im)
     }
     *pdir=smax;
   }
-  
+
   subframebox(im, box);
   subframebox(imdir, box);
-  
+
   return imdir;
 }
 #include "us_undef.h"
@@ -2340,7 +2360,7 @@ IMAGE *slopeinf(IMAGE *im)
   case t_UCHAR:
     return uc_slopeinf(im);
     break;
-    
+
   case t_USHORT:
     return us_slopeinf(im);
     break;
@@ -2364,8 +2384,8 @@ ERROR_TYPE us_cboutlet(IMAGE *outlet, IMAGE *d8)
 
   nx=GetImNx(outlet);
   npix=GetImNPix(outlet);
-  
-  q = create_fifo4((long int) (npix/1000+1000) ); 
+
+  q = create_fifo4((long int) (npix/1000+1000) );
   if (q == NULL)
     return ERROR;
 
@@ -2387,7 +2407,7 @@ ERROR_TYPE us_cboutlet(IMAGE *outlet, IMAGE *d8)
 	  if ( (pdir[ofs+shft[k]]==k) && (plbl[ofs+shft[k]]==0) ){ // 2nd condition added on 20100819
 	    pdir[ofs+shft[k]]|=0x80;
 	    plbl[ofs+shft[k]]=plbl[i];
-            fifo4_add(q, (long int)(ofs+shft[k]));	    
+            fifo4_add(q, (long int)(ofs+shft[k]));
 	  }
 	}
       }
@@ -2419,8 +2439,8 @@ ERROR_TYPE i32_cboutlet(IMAGE *outlet, IMAGE *d8)
 
   nx=GetImNx(outlet);
   npix=GetImNPix(outlet);
-  
-  q = create_fifo4((long int) (npix/1000+1000) ); 
+
+  q = create_fifo4((long int) (npix/1000+1000) );
   if (q == NULL)
     return ERROR;
 
@@ -2442,7 +2462,7 @@ ERROR_TYPE i32_cboutlet(IMAGE *outlet, IMAGE *d8)
 	  if ( (pdir[ofs+shft[k]]==k) && (plbl[ofs+shft[k]]==0) ){ // 2nd condition added on 20100819
 	    pdir[ofs+shft[k]]|=0x80;
 	    plbl[ofs+shft[k]]=plbl[i];
-            fifo4_add(q, (long int)(ofs+shft[k]));	    
+            fifo4_add(q, (long int)(ofs+shft[k]));
 	  }
 	}
       }
@@ -2475,17 +2495,17 @@ ERROR_TYPE cboutlet(IMAGE *outlet, IMAGE *d8)
     (void)sprintf(buf," *cboutlet(IMAGE *outlet, IMAGE *d8): outlet and d8 images must have the same x-y dimensions!\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(outlet)){
 
   case t_USHORT:
     return us_cboutlet(outlet, d8);
     break;
-    
+
   case t_INT32:
     return i32_cboutlet(outlet, d8);
     break;
-    
+
   default:
     (void)sprintf(buf,"cboutlet(im): invalid pixel type, for labelled outlets.\n"); errputstr(buf);
     return(ERROR);
@@ -2508,8 +2528,8 @@ ERROR_TYPE us_cbconfluence(IMAGE *outlet, IMAGE *d8)
 
   nx=GetImNx(outlet);
   npix=GetImNPix(outlet);
-  
-  q = create_fifo4((long int) (npix/1000+1000) ); 
+
+  q = create_fifo4((long int) (npix/1000+1000) );
   if (q == NULL)
     return ERROR;
 
@@ -2590,13 +2610,13 @@ ERROR_TYPE cbconfluence(IMAGE *outlet, IMAGE *d8)
     (void)sprintf(buf," *cbconfluence(IMAGE *outlet, IMAGE *d8): outlet and d8 images must have the same x-y dimensions!\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(outlet)){
 
   case t_USHORT:
     return us_cbconfluence(outlet, d8);
     break;
-    
+
   default:
     (void)sprintf(buf,"cbconfluence(outlet, d8): invalid pixel type, for labelled outlets.\n"); errputstr(buf);
     return(ERROR);
@@ -2618,15 +2638,15 @@ ERROR_TYPE uc_strahler(IMAGE *d8)
   nx=GetImNx(d8);
   npix=GetImNPix(d8);
 
-  q = create_fifo4((long int) (npix/1000+1000) ); 
+  q = create_fifo4((long int) (npix/1000+1000) );
   if (q == NULL)
     return ERROR;
-  qconf = create_fifo4((long int) (npix/1000+1000) ); 
+  qconf = create_fifo4((long int) (npix/1000+1000) );
   if (qconf == NULL)
     return ERROR;
 
   pdir =(PIX_TYPE *)GetImPtr(d8);
-  
+
   /*  flow directions, see d8 for original directions */
   fshft[5] = -nx-1; fshft[3] = -nx; fshft[7] = -nx+1;
   fshft[1] = -1;    fshft[0] = 0;   fshft[2] = +1;
@@ -2636,7 +2656,7 @@ ERROR_TYPE uc_strahler(IMAGE *d8)
   bshft[8] = -nx-1; bshft[4] = -nx; bshft[6] = -nx+1;
   bshft[2] = -1;    bshft[0] = 0;   bshft[1] = +1;
   bshft[7] = nx-1;  bshft[3] = +nx; bshft[5] = nx+1;
- 
+
   /* initialise queue with end points */
   for(i=0;i<npix;i++){
     if(i==115371783){   //pdir[ofs]>8){
@@ -2676,15 +2696,15 @@ ERROR_TYPE uc_strahler(IMAGE *d8)
 	if (soc){
 	  fifo4_add(q, (long int)(ofs));
 	}
-      }	
+      }
     }
     ocrt++;
     // printf("ocrt=%d\n", (int) ocrt+1);
 
     while (fifo4_empty(q) == 0){
       ofs=fifo4_remove(q);
-      // if(ofs==115371783){ 
-      if(ofs==76325582){ 
+      // if(ofs==115371783){
+      if(ofs==76325582){
 	printf("ofs=%d\n", (int)ofs);
 	dumpxyz(d8,ofs-(int)(ofs/nx)*nx,(int)(ofs/nx),0,10,10);
       }
@@ -2726,7 +2746,7 @@ ERROR_TYPE uc_strahler(IMAGE *d8)
   for(i=0;i<npix;i++)
     if(pdir[i])
       pdir[i]-=8;
-  
+
   free_fifo4(q);
   free_fifo4(qconf);
   return NO_ERROR;
@@ -2747,7 +2767,7 @@ ERROR_TYPE strahler(IMAGE *d8)
   case t_UCHAR:
     return uc_strahler(d8);
     break;
-    
+
   default:
     (void)sprintf(buf,"strahler(d8): d8 must be of type UCHAR.\n"); errputstr(buf);
     return(ERROR);

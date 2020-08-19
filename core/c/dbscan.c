@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2012-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -47,7 +67,7 @@ IMAGE *f_dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
 
 #ifdef OPENMP
 #pragma omp parallel for private(j,c)
-#endif      
+#endif
     for (i=0;i<npix;i++){
       if (pmask[i]){
 	psim[i*npix+i]=0.0;
@@ -72,10 +92,10 @@ IMAGE *f_dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
   /* complete matrix */
 #ifdef OPENMP
 #pragma omp parallel for private(i)
-#endif      
+#endif
   for (j=1; j<npix; j++)
     for (i=0; i<j; i++)
-      psim[j*npix+i]=psim[i*npix+j];  
+      psim[j*npix+i]=psim[i*npix+j];
   return sim;
 }
 #undef NCMAX
@@ -91,7 +111,7 @@ IMAGE *dissim(IMAGE **imap, int nc, IMAGE *mask, int type)
   case t_FLOAT:
     return(f_dissim(imap, nc, mask, type));
     break;
-    
+
   default:
     (void)sprintf(buf,"dissim(IMAGE **imap, int nc, IMAGE *mask, int type): invalid pixel type in imap[0]\n"); errputstr(buf);
     return(NULL);
@@ -113,14 +133,14 @@ IMAGE *f_dbscan(IMAGE *dissim, double eps, int minpts)
   FIFO4 *q;
   long int i, x, npix=GetImNx(dissim), ofs;
   int npts;
-  
+
   /* create output label image */
   lblim = (IMAGE *)create_image(t_LBL_PIX_TYPE, npix, 1, 1);
   if (lblim == NULL){
     (void)sprintf(buf,"dbscan(): not enough memory!\n"); errputstr(buf);
     return NULL;
   }
-  
+
   q = create_fifo4(1024L);
   if (q == NULL){
     free_image(lblim);
@@ -174,7 +194,7 @@ IMAGE *dbscan(IMAGE *dissim, double eps, int MinPts)
   case t_FLOAT:
     return(f_dbscan(dissim, eps, MinPts));
     break;
-    
+
   default:
     (void)sprintf(buf,"dbscan(IMAGE *dissim, double eps, int MinPts): invalid pixel type in dissim\n"); errputstr(buf);
     return(NULL);

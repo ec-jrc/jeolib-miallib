@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /* this file is not cleaned ...  old stuff ... */
 
 #include <stdio.h>
@@ -57,7 +77,7 @@ extern ERROR_TYPE knearest_cluster();
     *p2 = (TYPE2) psum[*p2];  \
     p2++;\
   }  \
-}  
+}
 
 #define set_min_type(TYPE1, TYPE2, i1, i2) \
 {\
@@ -75,7 +95,7 @@ extern ERROR_TYPE knearest_cluster();
     *p2 = (TYPE2) psum[*p2];  \
     p2++;\
   }  \
-}  
+}
 
 #define set_range_type(TYPE1, TYPE2, i1, i2) \
 {\
@@ -94,7 +114,7 @@ extern ERROR_TYPE knearest_cluster();
     *p2 =(TYPE2) (pmax[*p2]-pmin[*p2]);		\
     p2++;\
   }  \
-}  
+}
 
 
 #define set_sum_type(TYPE1, TYPE2, i1, i2) \
@@ -111,7 +131,7 @@ extern ERROR_TYPE knearest_cluster();
     *p2 = (TYPE2) psum[*p2];  \
     p2++;\
   }  \
-}  
+}
 
 #define set_sigma_type(TYPE1, TYPE2, i1, i2) \
 {\
@@ -142,7 +162,7 @@ extern ERROR_TYPE knearest_cluster();
     *p2 = (TYPE2) psigma[*p2];  \
     p2++;\
   }  \
-}  
+}
 
 extern IMBLOB *create_blob();
 
@@ -153,7 +173,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
   IMAGE *imhst;
   int i, maxlbl;
   HST1D_TYPE *psum;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL)
     return(ERROR);
@@ -177,13 +197,13 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	case t_USHORT:
 	  set_sum_type(USHORT, USHORT, ival, ilbl);
 	  break;
-	case t_INT32: 
+	case t_INT32:
 	  set_sum_type(INT32,  USHORT , ival, ilbl);
 	  break;
-	case t_FLOAT: 
+	case t_FLOAT:
 	  set_sum_type(MIALFLOAT,  USHORT, ival, ilbl);
 	  break;
-	case t_DOUBLE: 
+	case t_DOUBLE:
 	  set_sum_type(DOUBLE, USHORT, ival, ilbl);
 	  break;
 	default:
@@ -201,13 +221,13 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	case t_USHORT:
 	  set_sum_type(USHORT, INT32, ival, ilbl);
 	  break;
-	case t_INT32: 
+	case t_INT32:
 	  set_sum_type(INT32,  INT32, ival, ilbl);
 	  break;
-	case t_FLOAT: 
+	case t_FLOAT:
 	  set_sum_type(MIALFLOAT,  INT32, ival, ilbl);
 	  break;
-	case t_DOUBLE: 
+	case t_DOUBLE:
 	  set_sum_type(DOUBLE, INT32, ival, ilbl);
 	  break;
 	default:
@@ -225,13 +245,13 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 	case t_USHORT:
 	  set_sum_type(USHORT, UINT32, ival, ilbl);
 	  break;
-	case t_INT32: 
+	case t_INT32:
 	  set_sum_type(INT32,  UINT32, ival, ilbl);
 	  break;
-	case t_FLOAT: 
+	case t_FLOAT:
 	  set_sum_type(MIALFLOAT,  UINT32, ival, ilbl);
 	  break;
-	case t_DOUBLE: 
+	case t_DOUBLE:
 	  set_sum_type(DOUBLE, UINT32, ival, ilbl);
 	  break;
 	default:
@@ -245,7 +265,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       return(ERROR);
     }
-  
+
   free_image(imhst);
   free((char *)psum);
   return(NO_ERROR);
@@ -257,7 +277,7 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
   IMAGE *imhst;
   int i, maxlbl;
   DOUBLE *pmin, *pmax;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL)
     return(ERROR);
@@ -292,13 +312,13 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 	case t_USHORT:
 	  set_range_type(USHORT, USHORT, ival, ilbl);
 	  break;
-	case t_INT32: 
+	case t_INT32:
 	  set_range_type(INT32,  USHORT , ival, ilbl);
 	  break;
-	case t_FLOAT: 
+	case t_FLOAT:
 	  set_range_type(MIALFLOAT,  USHORT, ival, ilbl);
 	  break;
-	case t_DOUBLE: 
+	case t_DOUBLE:
 	  set_range_type(DOUBLE, USHORT, ival, ilbl);
 	  break;
 	default:
@@ -319,13 +339,13 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 	case t_USHORT:
 	  set_range_type(USHORT, INT32, ival, ilbl);
 	  break;
-	case t_INT32: 
+	case t_INT32:
 	  set_range_type(INT32,  INT32, ival, ilbl);
 	  break;
-	case t_FLOAT: 
+	case t_FLOAT:
 	  set_range_type(MIALFLOAT,  INT32, ival, ilbl);
 	  break;
-	case t_DOUBLE: 
+	case t_DOUBLE:
 	  set_range_type(DOUBLE, INT32, ival, ilbl);
 	  break;
 	default:
@@ -345,7 +365,7 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
       errputstr(buf);
       return(ERROR);
     }
-  
+
   free_image(imhst);
   free((char *)pmin);
   free((char *)pmax);
@@ -357,13 +377,13 @@ ERROR_TYPE tessel_mean(IMAGE *ilbl, IMAGE *ival)
   IMAGE *imhst;
   int i, maxlbl;
   HST1D_TYPE *pnbr, *psum;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL)
     return(ERROR);
   maxlbl = GetImNx(imhst);
 
-  
+
   pnbr = (HST1D_TYPE *)GetImPtr(imhst);
   psum = (HST1D_TYPE *)calloc(maxlbl, sizeof(HST1D_TYPE));
   if (psum==NULL){
@@ -434,7 +454,7 @@ ERROR_TYPE tessel_mean(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_mean(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   case t_UINT32:
     switch (GetImDataType(ilbl)){
@@ -455,7 +475,7 @@ ERROR_TYPE tessel_mean(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_mean(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   default:
     free_image(imhst);
@@ -475,7 +495,7 @@ ERROR_TYPE tessel_min(IMAGE *ilbl, IMAGE *ival)
   IMAGE *imhst;
   int i, maxlbl;
   HST1D_TYPE *psum;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL)
     return(ERROR);
@@ -552,7 +572,7 @@ ERROR_TYPE tessel_min(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_min(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   case t_UINT32:
     switch (GetImDataType(ilbl)){
@@ -573,7 +593,7 @@ ERROR_TYPE tessel_min(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_min(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   default:
     free_image(imhst);
@@ -591,7 +611,7 @@ ERROR_TYPE tessel_max(IMAGE *ilbl, IMAGE *ival)
   IMAGE *imhst;
   int i, maxlbl;
   HST1D_TYPE *psum;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL){
     (void)sprintf(buf,"tessel_min(): insufficient memory\n"); errputstr(buf);
@@ -670,7 +690,7 @@ ERROR_TYPE tessel_max(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_max(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   case t_UINT32:
     switch (GetImDataType(ilbl)){
@@ -691,7 +711,7 @@ ERROR_TYPE tessel_max(IMAGE *ilbl, IMAGE *ival)
       free((char *)psum);
       (void)sprintf(buf,"tessel_max(): data type of ilbl not allowed\n"); errputstr(buf);
       return(ERROR);
-    }     
+    }
     break;
   default:
     free_image(imhst);
@@ -710,13 +730,13 @@ ERROR_TYPE tessel_sigma(IMAGE *ilbl, IMAGE *ival)
   int i, maxlbl;
   HST1D_TYPE *pnbr, *psum;
   double *psigma;
-  
+
   imhst = histo1d(ilbl);
   if (imhst==NULL)
     return(ERROR);
   maxlbl = GetImNx(imhst);
 
-  
+
   pnbr = (HST1D_TYPE *)GetImPtr(imhst);
   psum = (HST1D_TYPE *)calloc(maxlbl, sizeof(HST1D_TYPE));
   if (psum==NULL){
@@ -741,7 +761,7 @@ ERROR_TYPE tessel_sigma(IMAGE *ilbl, IMAGE *ival)
     case t_USHORT:
       set_sigma_type(USHORT, LBL_TYPE, ival, ilbl);
       break;
-    case t_INT32: 
+    case t_INT32:
       set_sigma_type(INT32, LBL_TYPE, ival, ilbl);
       break;
     default:
@@ -776,7 +796,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
   nx=GetImNx(ilbl);
   ny=GetImNy(ilbl);
   npix=GetImNPix(ilbl);
-  
+
   pilbl=(LBL_TYPE *)GetImPtr(ilbl);
   pival=(PIX_TYPE *)GetImPtr(ival);
 
@@ -809,7 +829,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
       part[i].ycg = part[i].m01/(double)part[i].m00;
     }
   }
-    
+
   for(y=0; y<ny; y++){ /* centred moments */
     for(x=0; x<nx; x++){
       val=pival[x+nx*y];
@@ -889,7 +909,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
   part[0].r = 0;
   part[0].minor=0;
   part[0].major=0;
-  
+
   /* set each blob to its its computed value */
   if (type==11){ /* gravity centre */
     for (i=1; i<maxlbl; i++)
@@ -945,9 +965,9 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
 
     DOUBLE **pattern;
     int *lblt;
-    
+
     n=maxlbl-1;
-    
+
     pattern=(DOUBLE **)calloc(n,sizeof(DOUBLE *));
     for (i=0; i<n; i++)
       pattern[i]=(DOUBLE *)calloc((size_t)2,sizeof(DOUBLE));
@@ -963,7 +983,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     for (i=0; i<npix; i++)
       if (pilbl[i]>1)
 	pilbl[i]=lblt[pilbl[i]-2]+1;
-    
+
     for (i=0; i<maxlbl-2; i++)
       free((char *)pattern[i]);
     free((char *)pattern);
@@ -1007,7 +1027,7 @@ ERROR_TYPE uc_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     (void)sprintf(buf,"tessel_majorityngb(): image type error\n"); errputstr(buf);
     return(ERROR);
   }
-    
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
@@ -1024,7 +1044,7 @@ ERROR_TYPE uc_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
   ptr = (int **)calloc(maxlbl+1,sizeof(int));
   for (i=0; i<maxlbl+1; i++)
     ptr[i]=(int *)calloc(maxval+1,sizeof(int));
-  
+
   plbl=((USHORT *)GetImPtr(ilbl))+nx+1;
   pval=((UCHAR *)GetImPtr(ival))+nx+1;
   for (j=2; j<ny; j++){
@@ -1045,7 +1065,7 @@ ERROR_TYPE uc_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     maxfreq=0;
     lblmaj=0;
     for (j=0; j<maxval+1; j++){
-      if (*(ptr[i]+j)>maxfreq){ 
+      if (*(ptr[i]+j)>maxfreq){
 	lblmaj=j;
 	maxfreq=*(ptr[i]+j);
       }
@@ -1053,7 +1073,7 @@ ERROR_TYPE uc_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     *(ptr[i])=lblmaj;
   }
   **ptr=0; /* that's the background */
-      
+
   plbl=(USHORT *)GetImPtr(ilbl);
   LOOPDN(i, GetImNPix(ilbl)){
     if (*plbl)
@@ -1082,7 +1102,7 @@ ERROR_TYPE us_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     (void)sprintf(buf,"tessel_majorityngb(): image type error\n"); errputstr(buf);
     return(ERROR);
   }
-    
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
@@ -1099,7 +1119,7 @@ ERROR_TYPE us_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
   ptr = (int **)calloc(maxlbl+1,sizeof(int));
   for (i=0; i<maxlbl+1; i++)
     ptr[i]=(int *)calloc(maxval+1,sizeof(int));
-  
+
   plbl=((USHORT *)GetImPtr(ilbl))+nx+1;
   pval=((USHORT *)GetImPtr(ival))+nx+1;
   for (j=2; j<ny; j++){
@@ -1120,7 +1140,7 @@ ERROR_TYPE us_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     maxfreq=0;
     lblmaj=0;
     for (j=0; j<maxval+1; j++){
-      if (*(ptr[i]+j)>maxfreq){ 
+      if (*(ptr[i]+j)>maxfreq){
 	lblmaj=j;
 	maxfreq=*(ptr[i]+j);
       }
@@ -1128,7 +1148,7 @@ ERROR_TYPE us_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     *(ptr[i])=lblmaj;
   }
   **ptr=0; /* that's the background */
-      
+
   plbl=(USHORT *)GetImPtr(ilbl);
   LOOPDN(i, GetImNPix(ilbl)){
     if (*plbl)
@@ -1156,7 +1176,7 @@ ERROR_TYPE i32_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     (void)sprintf(buf,"l_tessel_majorityngb() image type error\n"); errputstr(buf);
     return(ERROR);
   }
-    
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
@@ -1173,7 +1193,7 @@ ERROR_TYPE i32_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
   ptr = (int **)calloc(maxlbl+1,sizeof(int));
   for (i=0; i<maxlbl+1; i++)
     ptr[i]=(int *)calloc(maxval+1,sizeof(int));
-  
+
   plbl=((INT32 *)GetImPtr(ilbl))+nx+1;
   pval=((UCHAR *)GetImPtr(ival))+nx+1;
   for (j=2; j<ny; j++){
@@ -1194,7 +1214,7 @@ ERROR_TYPE i32_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     maxfreq=0;
     lblmaj=0;
     for (j=0; j<maxval+1; j++){
-      if (*(ptr[i]+j)>maxfreq){ 
+      if (*(ptr[i]+j)>maxfreq){
 	lblmaj=j;
 	maxfreq=*(ptr[i]+j);
       }
@@ -1202,7 +1222,7 @@ ERROR_TYPE i32_tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
     *(ptr[i])=lblmaj;
   }
   **ptr=0; /* that's the background */
-      
+
   plbl=(INT32 *)GetImPtr(ilbl);
   LOOPDN(i, GetImNPix(ilbl)){
     if (*plbl)
@@ -1231,7 +1251,7 @@ ERROR_TYPE tessel_majorityngb(IMAGE *ilbl, IMAGE *ival)
   case t_INT32:
     return(i32_tessel_majorityngb(ilbl,ival));
   }
-  return ERROR;   
+  return ERROR;
 }
 
 ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic)
@@ -1248,7 +1268,7 @@ ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic)
    *		indic = indicateur pouvant prendre les valeurs suivantes:
    *			- 1 ---> moyenne de la zone
    *			- 2 ---> ecart-type
-   *			- 3 ---> maximum 
+   *			- 3 ---> maximum
    *			- 4 ---> minimum
    *			- 5 ---> max - min
    *			- 6 ---> (max + min) / 2
@@ -1284,7 +1304,7 @@ ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic)
                   label image not of type t_LBL_TYPE\n"); errputstr(buf);
     return(ERROR);
   }
-  
+
   switch (indic){
     case 1:
       return(tessel_mean(ilbl, ival));
@@ -1345,7 +1365,7 @@ ERROR_TYPE uc_setregionsgraph(IMAGE *ilbl, IMAGE *ival, int indic, int graph)
   if (set_seq_shift(GetImNx(ilbl), GetImNy(ilbl), GetImNz(ilbl), graph, shft) == ERROR)
     return ERROR;
 
-    
+
   /* get min & max values */
   pg = min_max(ilbl);
   if (pg == NULL)
@@ -1373,17 +1393,17 @@ ERROR_TYPE uc_setregionsgraph(IMAGE *ilbl, IMAGE *ival, int indic, int graph)
     for (i=2; i<nx; i++){
       for (k=0; k<graph; k++){
 	if ( *plbl != *(plbl+shft[k]) ){
-	  
+
 	  if ( ptrmin[*(plbl+shft[k])] > *pval)
 	    ptrmin[*(plbl+shft[k])]=*pval;
 	  else if ( ptrmax[*(plbl+shft[k])] < *pval)
 	    ptrmax[*(plbl+shft[k])]=*pval;
-	  
+
 	  if ( ptrmind[*(plbl+shft[k])] > abs( (int) *pval-*(pval+shft[k])) )
 	    ptrmind[*(plbl+shft[k])]=abs( (int) *pval-*(pval+shft[k]));
 	  else if ( ptrmaxd[*(plbl+shft[k])] < abs( (int) *pval-*(pval+shft[k])))
 	    ptrmaxd[*(plbl+shft[k])]=abs( (int) *pval-*(pval+shft[k]));
- 
+
 	}
       }
       pval++; plbl++;
@@ -1442,7 +1462,7 @@ ERROR_TYPE generic_tessel_surface(IMAGE *im)
   int i, count=0;
   HST1D_TYPE *pnbr;
   IMAGE *imhst;
- 
+
   imhst=histo1d(im);
 
   if (imhst==NULL)
@@ -1452,7 +1472,7 @@ ERROR_TYPE generic_tessel_surface(IMAGE *im)
   p = (PIX_TYPE *)GetImPtr(im);
 
   pnbr[0]=0; /* force background to zero */
-  
+
   LOOPDN(i, GetImNPix(im)){
     if (pnbr[*p]>PIX_MAX){
      count+=1;
@@ -1466,7 +1486,7 @@ ERROR_TYPE generic_tessel_surface(IMAGE *im)
   }
 
   free_image(imhst);
-  
+
   return NO_ERROR;
 }
 #include "g_undef.h"
@@ -1480,7 +1500,7 @@ ERROR_TYPE i32_tessel_surface(IMAGE *im)
   int i, count=0;
   HST1D_TYPE *pnbr;
   IMAGE *imhst;
- 
+
   imhst=histo1d(im);
 
   if (imhst==NULL)
@@ -1490,7 +1510,7 @@ ERROR_TYPE i32_tessel_surface(IMAGE *im)
   p = (PIX_TYPE *)GetImPtr(im);
 
   pnbr[0]=0; /* force background to zero */
-  
+
   LOOPDN(i, GetImNPix(im)){
     if (pnbr[*p]>PIX_MAX){
      count+=1;
@@ -1504,7 +1524,7 @@ ERROR_TYPE i32_tessel_surface(IMAGE *im)
   }
 
   free_image(imhst);
-  
+
   return NO_ERROR;
 }
 #include "i32_undef.h"
@@ -1517,7 +1537,7 @@ ERROR_TYPE u32_tessel_surface(IMAGE *im)
   int i, count=0;
   HST1D_TYPE *pnbr;
   IMAGE *imhst;
- 
+
   imhst=histo1d(im);
 
   if (imhst==NULL)
@@ -1527,7 +1547,7 @@ ERROR_TYPE u32_tessel_surface(IMAGE *im)
   p = (PIX_TYPE *)GetImPtr(im);
 
   pnbr[0]=0; /* force background to zero */
-  
+
   LOOPDN(i, GetImNPix(im)){
     if (pnbr[*p]>PIX_MAX){
      count+=1;
@@ -1541,7 +1561,7 @@ ERROR_TYPE u32_tessel_surface(IMAGE *im)
   }
 
   free_image(imhst);
-  
+
   return NO_ERROR;
 }
 #include "u32_undef.h"
@@ -1554,7 +1574,7 @@ ERROR_TYPE us_tessel_surface(IMAGE *im)
   int i, count=0;
   HST1D_TYPE *pnbr;
   IMAGE *imhst;
- 
+
   imhst=histo1d(im);
 
   if (imhst==NULL)
@@ -1564,7 +1584,7 @@ ERROR_TYPE us_tessel_surface(IMAGE *im)
   p = (PIX_TYPE *)GetImPtr(im);
 
   pnbr[0]=0; /* force background to zero */
-  
+
   LOOPDN(i, GetImNPix(im)){
     if (pnbr[*p]>PIX_MAX){
      count+=1;
@@ -1578,7 +1598,7 @@ ERROR_TYPE us_tessel_surface(IMAGE *im)
   }
 
   free_image(imhst);
-  
+
   return NO_ERROR;
 }
 #include "us_undef.h"
@@ -1598,10 +1618,10 @@ ERROR_TYPE tessel_surface(IMAGE *im)
     case t_USHORT:
       return us_tessel_surface(im);
       break;
-    case t_INT32: 
+    case t_INT32:
       return i32_tessel_surface(im);
       break;
-    case t_UINT32: 
+    case t_UINT32:
       return u32_tessel_surface(im);
       break;
     default:
@@ -1628,7 +1648,7 @@ ERROR_TYPE tessel_surface(IMAGE *im)
     *plbl1 = plbl[*plbl1];  \
     plbl1++;\
   }  \
-}  
+}
 
 #include "u32_def.h"
 ERROR_TYPE u32_relabel(IMAGE *ilbl1, IMAGE *ilbl2, IMAGE *iarea2)
@@ -1660,7 +1680,7 @@ ERROR_TYPE u32_relabel(IMAGE *ilbl1, IMAGE *ilbl2, IMAGE *iarea2)
   free(parea);
   free(plbl);
   return  NO_ERROR;
-  
+
 }
 #include "u32_undef.h"
 
@@ -1668,8 +1688,8 @@ ERROR_TYPE u32_relabel(IMAGE *ilbl1, IMAGE *ilbl2, IMAGE *iarea2)
 ERROR_TYPE relabel(IMAGE *ilbl1, IMAGE *ilbl2, IMAGE *iarea2)
 {
   switch (GetImDataType(ilbl1)){
-    case t_UINT32: 
-    case t_INT32: 
+    case t_UINT32:
+    case t_INT32:
       return u32_relabel(ilbl1, ilbl2, iarea2);
       break;
     default:

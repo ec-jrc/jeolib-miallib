@@ -1,3 +1,35 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2006-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/**
+ * @file   labelci.c
+ * @author Pierre Soille
+ * @date
+ *
+ * @details see also \cite soille2008pami
+ */
+
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -25,15 +57,15 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio;
   long int  k, *shft;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -49,7 +81,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
     free_image(imlbl);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_pq(pq);
@@ -75,7 +107,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -110,7 +142,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       // printf("after init, lbl=%d, rlcrt=%d, rcrt=%d\n", (int)lbl, rlcrt, rcrt);
 
@@ -120,7 +152,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 /* 	if (i>=33 && i<=40){ */
 /* 	  printf("lbl=%d, i=%d\n", lbl, i); */
@@ -128,7 +160,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 
 /* 	  i32_dumpxyz(imlbl,0,0,0,20,20); */
 /* 	} */
-    
+
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
 	prio=apqd[0]->prio;
@@ -157,7 +189,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 	      }
 	    }
 	  }
-	  
+
 	  /* ci=1 set current r-CC to lbl and proceed */
 	  while ( (ofsq=fifo4_remove(q)) != 0)
 	    plbl[ofsq]=lbl;
@@ -170,7 +202,7 @@ IMAGE *uc_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 
 	if (rcrt>rlcrt){ /* reset */
 	myreset:
-  
+
 	  for (j=1; j<pq->size; j++){
 	    if (pq->d[j] != NULL){
 	      ofsq=pq->d[j]->offset;
@@ -271,15 +303,15 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio;
   long int  k, *shft;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -295,7 +327,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
     free_image(imlbl);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_pq(pq);
@@ -321,7 +353,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -356,7 +388,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       // printf("after init, lbl=%d, rlcrt=%d, rcrt=%d\n", (int)lbl, rlcrt, rcrt);
 
@@ -366,7 +398,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 /* 	if (i>=33 && i<=40){ */
 /* 	  printf("lbl=%d, i=%d\n", lbl, i); */
@@ -374,7 +406,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 
 /* 	  i32_dumpxyz(imlbl,0,0,0,20,20); */
 /* 	} */
-    
+
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
 	prio=apqd[0]->prio;
@@ -403,7 +435,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 	      }
 	    }
 	  }
-	  
+
 	  /* ci=1 set current r-CC to lbl and proceed */
 	  while ( (ofsq=fifo4_remove(q)) != 0)
 	    plbl[ofsq]=lbl;
@@ -416,7 +448,7 @@ IMAGE *us_labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
 
 	if (rcrt>rlcrt){ /* reset */
 	myreset:
-  
+
 	  for (j=1; j<pq->size; j++){
 	    if (pq->d[j] != NULL){
 	      ofsq=pq->d[j]->offset;
@@ -507,11 +539,11 @@ IMAGE *labelci(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rl)
   case t_UCHAR:
     return(uc_labelci(im,imse,ox,oy,oz,rl));
     break;
-    
+
   case t_USHORT:
     return(us_labelci(im,imse,ox,oy,oz,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelci(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

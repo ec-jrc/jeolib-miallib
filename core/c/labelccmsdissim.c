@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
  *  Dissimilarity based alpha-omega connected components \cite soille2011ismm
  *  [Version suitable for multi-band images]
@@ -42,14 +62,14 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
   int rgcrt;
 
   im=imap[0];
-  
+
   FIFO4 *q;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   ny = GetImNy(im);
   nz = GetImNz(im);
   npix=nx*ny*nz;
@@ -73,7 +93,7 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -102,7 +122,7 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
 
   /*  Take SE  into account  */
   BOX_2D;
-   
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -127,10 +147,10 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
     //printf("coucou0 ");
     if (plbl[i]<FIRST_LBL){ /* not yet labelled */
       rlcrt=rl;
-      
+
       for (c=0;c<nc;c++)
 	mincc[c]=maxcc[c]=p[c][i];
-      
+
       plbl[i]=lbl;
       if (rlcrt>=prmax[i]) // SPEED-UP
 	rlcrt=prmax[i]-1;
@@ -154,11 +174,11 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -276,9 +296,9 @@ IMAGE *uc_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE
 #undef BORDER_VAL
-#undef FIRST_LBL         
-#undef LBL_BIT           
-#undef BORDER_OR_LBL_BIT 
+#undef FIRST_LBL
+#undef LBL_BIT
+#undef BORDER_OR_LBL_BIT
 #undef R_BIT
 #undef NCMAX
 #include "uc_undef.h"
@@ -311,14 +331,14 @@ IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
   int rgcrt;
 
   im=imap[0];
-  
+
   FIFO4 *q;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   ny = GetImNy(im);
   nz = GetImNz(im);
   npix=nx*ny*nz;
@@ -342,7 +362,7 @@ IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -371,7 +391,7 @@ IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
 
   /*  Take SE  into account  */
   BOX_2D;
-   
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -396,10 +416,10 @@ IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
     //printf("coucou0 ");
     if (plbl[i]<FIRST_LBL){ /* not yet labelled */
       rlcrt=rl;
-      
+
       for (c=0;c<nc;c++)
 	mincc[c]=maxcc[c]=p[c][i];
-      
+
       plbl[i]=lbl;
       if (rlcrt>=prmax[i]) // SPEED-UP
 	rlcrt=prmax[i]-1;
@@ -423,11 +443,11 @@ IMAGE *us_labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, 
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -564,11 +584,11 @@ IMAGE *labelccmsdissim(IMAGE **imap, int nc, IMAGE *imh, IMAGE *imv, int rg, int
   case t_UCHAR:
     return(uc_labelccmsdissim(imap,nc,imh,imv,rg,rl));
     break;
-    
+
   case t_USHORT:
     return(us_labelccmsdissim(imap,nc,imh,imv,rg,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelccdissim(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

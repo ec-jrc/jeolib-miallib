@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include "miallib.h"
 #include "fifo.h"
@@ -24,7 +44,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   /* graph: connectivity */
 
   long int nx, ny, nz, shft[27];
-  
+
   PIX_TYPE *pm, dcrt;
   UCHAR *pr;
   long int i, k;
@@ -44,7 +64,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
- 
+
   q = create_fifo4(nx+ny+nz);
   if (q == NULL)
     return ERROR;
@@ -76,7 +96,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   dcrt = 0;
   while (fifo4_empty(q) == 0){
-    fifo4_add(q, 1L);	
+    fifo4_add(q, 1L);
     dcrt++;
     while ((pm = (PIX_TYPE *)fifo4_remove(q)) != (PIX_TYPE *)1L){
       *pm = dcrt;
@@ -103,7 +123,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   /* graph: connectivity */
 
   long int nx, ny, nz, shft[27];
-  
+
   PIX_TYPE *pm, dcrt;
   UCHAR *pr;
   long int i, k;
@@ -122,7 +142,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
- 
+
   q = create_fifo4(nx+ny+nz);
   if (q == NULL)
     return ERROR;
@@ -154,7 +174,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
 
   dcrt = 0;
   while (fifo4_empty(q) == 0){
-    fifo4_add(q, 1L);	
+    fifo4_add(q, 1L);
     dcrt++;
     while ((pm = (PIX_TYPE *)fifo4_remove(q)) != (PIX_TYPE *)1L){
       *pm = dcrt;
@@ -179,7 +199,7 @@ ERROR_TYPE geodist(IMAGE *im_m, IMAGE *im_r, int graph)
     (void)sprintf(buf,"geodist(im_m, im_r, graph): invalid pixel type for im_r (im_r MUST be UCHAR)\n"); errputstr(buf);
     return ERROR;
   }
-  
+
   switch (GetImDataType(im_m)){
 #ifndef NO_generic_IMAGE
   case t_GENERIC:

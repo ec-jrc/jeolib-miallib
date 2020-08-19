@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "miallib.h"
@@ -27,7 +47,7 @@ extern IMAGE *pixsort(IMAGE *im, IMAGE *imrsum);
 #define PIX_TYPE unsigned char
 #define LABEL_TYPE unsigned char
 #define LABEL_MAX 0x7F
-#define LABEL_MSB 0x80 
+#define LABEL_MSB 0x80
 ERROR_TYPE uc_uc_wsfah(unsigned char *iml, unsigned char *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -74,7 +94,7 @@ ERROR_TYPE uc_uc_wsfah(unsigned char *iml, unsigned char *imr, int nx, int ny, i
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -83,11 +103,11 @@ ERROR_TYPE uc_uc_wsfah(unsigned char *iml, unsigned char *imr, int nx, int ny, i
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -107,7 +127,7 @@ ERROR_TYPE uc_uc_wsfah(unsigned char *iml, unsigned char *imr, int nx, int ny, i
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }
@@ -122,7 +142,7 @@ ERROR_TYPE uc_uc_wsfah(unsigned char *iml, unsigned char *imr, int nx, int ny, i
 #define PIX_TYPE unsigned short
 #define LABEL_TYPE unsigned char
 #define LABEL_MAX 0x7F
-#define LABEL_MSB 0x80 
+#define LABEL_MSB 0x80
 ERROR_TYPE us_uc_wsfah(unsigned char *iml, unsigned short *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -169,7 +189,7 @@ ERROR_TYPE us_uc_wsfah(unsigned char *iml, unsigned short *imr, int nx, int ny, 
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -178,11 +198,11 @@ ERROR_TYPE us_uc_wsfah(unsigned char *iml, unsigned short *imr, int nx, int ny, 
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -202,7 +222,7 @@ ERROR_TYPE us_uc_wsfah(unsigned char *iml, unsigned short *imr, int nx, int ny, 
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }
@@ -216,7 +236,7 @@ ERROR_TYPE us_uc_wsfah(unsigned char *iml, unsigned short *imr, int nx, int ny, 
 #define PIX_TYPE unsigned char
 #define LABEL_TYPE unsigned short
 #define LABEL_MAX 0x7FFF /* 16383 */  /* was  0x7FFF */
-#define LABEL_MSB 0x8000 
+#define LABEL_MSB 0x8000
 ERROR_TYPE uc_us_wsfah(unsigned short *iml, unsigned char *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -262,7 +282,7 @@ ERROR_TYPE uc_us_wsfah(unsigned short *iml, unsigned char *imr, int nx, int ny, 
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -271,11 +291,11 @@ ERROR_TYPE uc_us_wsfah(unsigned short *iml, unsigned char *imr, int nx, int ny, 
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -295,7 +315,7 @@ ERROR_TYPE uc_us_wsfah(unsigned short *iml, unsigned char *imr, int nx, int ny, 
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }
@@ -309,7 +329,7 @@ ERROR_TYPE uc_us_wsfah(unsigned short *iml, unsigned char *imr, int nx, int ny, 
 #define PIX_TYPE unsigned short
 #define LABEL_TYPE unsigned short
 #define LABEL_MAX 0x7FFF /* 16383 */  /* was  0x7FFF */
-#define LABEL_MSB 0x8000 
+#define LABEL_MSB 0x8000
 ERROR_TYPE us_us_wsfah(unsigned short *iml, unsigned short *imr, int nx, int ny, int nz, long int *shft, int nshft, int maxfl)
 {
   /*
@@ -356,7 +376,7 @@ ERROR_TYPE us_us_wsfah(unsigned short *iml, unsigned short *imr, int nx, int ny,
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -365,11 +385,11 @@ ERROR_TYPE us_us_wsfah(unsigned short *iml, unsigned short *imr, int nx, int ny,
       }
     }
   }
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -389,7 +409,7 @@ ERROR_TYPE us_us_wsfah(unsigned short *iml, unsigned short *imr, int nx, int ny,
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }
@@ -448,20 +468,20 @@ ERROR_TYPE uc_u32_wsfah(UINT32 *iml, unsigned char *imr, int nx, int ny, int nz,
   }
 
   /* initialize the queues */
-  if (nshft==8){ // NEW 
+  if (nshft==8){ // NEW
     nshfttmp=4; // NEW
     flag=1;
     // printf("coucou new version with 4 then 8 neighbours\n");
   }
-  else // NEW 
-    nshfttmp=nshft; // NEW 
+  else // NEW
+    nshfttmp=nshft; // NEW
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
     if ((*pl>0)&&(*pl<LABEL_MAX)){
       for (k=0;k<nshfttmp;k++){
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -478,7 +498,7 @@ ERROR_TYPE uc_u32_wsfah(UINT32 *iml, unsigned char *imr, int nx, int ny, int nz,
 	  shftk=shft[k];
 	  if (*(pl+shftk)==0){
 	    if (*(pr+shftk)<maxfl){
-	      *(pl+shftk)=*pl|LABEL_MSB; 
+	      *(pl+shftk)=*pl|LABEL_MSB;
 	      fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    }
 	    else
@@ -489,11 +509,11 @@ ERROR_TYPE uc_u32_wsfah(UINT32 *iml, unsigned char *imr, int nx, int ny, int nz,
     }
   }
   // END NEW
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -570,20 +590,20 @@ ERROR_TYPE us_u32_wsfah(UINT32 *iml, unsigned short *imr, int nx, int ny, int nz
   }
 
   /* initialize the queues */
-  if (nshft==8){ // NEW 
+  if (nshft==8){ // NEW
     nshfttmp=4; // NEW
     flag=1;
     printf("coucou new version with 4 then 8 neighbours\n");
   }
-  else // NEW 
-    nshfttmp=nshft; // NEW 
+  else // NEW
+    nshfttmp=nshft; // NEW
   for (pl=iml,pr=imr,i=0; i<npix; i++,pl++,pr++){
     if ((*pl>0)&&(*pl<LABEL_MAX)){
       for (k=0;k<nshfttmp;k++){  // NEW
 	shftk=shft[k];
 	if (*(pl+shftk)==0){
 	  if (*(pr+shftk)<maxfl){
-	    *(pl+shftk)=*pl|LABEL_MSB; 
+	    *(pl+shftk)=*pl|LABEL_MSB;
 	    fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	  }
 	  else
@@ -600,7 +620,7 @@ ERROR_TYPE us_u32_wsfah(UINT32 *iml, unsigned short *imr, int nx, int ny, int nz
 	  shftk=shft[k];
 	  if (*(pl+shftk)==0){
 	    if (*(pr+shftk)<maxfl){
-	      *(pl+shftk)=*pl|LABEL_MSB; 
+	      *(pl+shftk)=*pl|LABEL_MSB;
 	      fifo_add(fah[*(pr+shftk)],(long int)(i+shftk));
 	    }
 	    else
@@ -611,11 +631,11 @@ ERROR_TYPE us_u32_wsfah(UINT32 *iml, unsigned short *imr, int nx, int ny, int nz
     }
   }
   // END NEW
-   
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -635,7 +655,7 @@ ERROR_TYPE us_u32_wsfah(UINT32 *iml, unsigned short *imr, int nx, int ny, int nz
     }
     clear_fifo(pq);
   }
-   
+
   free(fah);
   return NO_ERROR;
 }
@@ -669,8 +689,8 @@ ERROR_TYPE wsfah(IMAGE *iml, IMAGE *imr, int graph, int maxfl)
 
   //OLD set_seq_shift(GetImNx(iml), GetImNy(iml), GetImNz(iml), graph, shft);
   set_shift(GetImNx(iml), GetImNy(iml), GetImNz(iml), graph, shft);  // NEW 2008 03 8
-  
-  
+
+
 /* here we go */
   switch (GetImDataType(imr)){
   case t_UCHAR:
@@ -794,11 +814,11 @@ ERROR_TYPE uc_skelfah(unsigned short *iml, unsigned char *imr, unsigned char *im
       }
     }
   }
-  
+
   for (i=0,pl=iml; i<npix; i++,pl++)
     if (*pl>LABEL_MAX)
       *pl ^= LABEL_MSB;
-  
+
   /* here we go */
   for (i=0; i<maxfl; i++){
     pq = fah[i];
@@ -826,7 +846,7 @@ ERROR_TYPE uc_skelfah(unsigned short *iml, unsigned char *imr, unsigned char *im
         *pl ^= LABEL_MSB;
     clear_fifo(pq);
   }
-   
+
   free(fah);
   free(shft);
   return NO_ERROR;
@@ -854,7 +874,7 @@ ERROR_TYPE skelfah(IMAGE *iml, IMAGE *imr, IMAGE *imdir, int graph, int maxfl)
 
   shft = (long int *)calloc(graph,sizeof(long int));
   set_seq_shift(GetImNx(iml), GetImNy(iml), GetImNz(iml), graph, shft);
-  
+
   /* here we go */
   switch (GetImDataType(imr)){
   case t_UCHAR:
@@ -930,13 +950,13 @@ ERROR_TYPE us_skelfah2(IMAGE *imc, IMAGE *impskp, int n, int graph)
       cval=*pccrt;
       *(ppskp+offset)=0;
       generic_blank(swin, 0);
-      generic_framebox(swin, box, 0x80); 
+      generic_framebox(swin, box, 0x80);
       for (k=0; k<graph; k++){
 	if (*(pccrt+shft1[k])<=cval){  /* <= necessary */
 	  code=1<<k;
 	  pswincrt=pswin+n*(2*n+1)+n+shft2[k];
 	  *pswincrt|=code;
-	  fifo4_add(q1,(long int)(pccrt+shft1[k]));  
+	  fifo4_add(q1,(long int)(pccrt+shft1[k]));
 	  fifo4_add(q2,(long int) pswincrt);
 	  while(fifo4_empty(q1) == FALSE){
 	    pcrt=(PIX_TYPE *)fifo4_remove(q1);
@@ -947,7 +967,7 @@ ERROR_TYPE us_skelfah2(IMAGE *imc, IMAGE *impskp, int n, int graph)
 		fifo4_add(q1,(long int) (pcrt+shft1[j]));
 	        fifo4_add(q2,(long int) (pswincrt+shft2[j]));
 	      }
-	    }	    
+	    }
 	  }
 	}
       }
@@ -1007,7 +1027,7 @@ ERROR_TYPE us_skelfah2(IMAGE *imc, IMAGE *impskp, int n, int graph)
 
 ERROR_TYPE skelfah2(IMAGE *imc, IMAGE *impskp, int n, int graph)
 {
-  
+
   /* here we go */
   switch (GetImDataType(imc)){
   case t_USHORT:
@@ -1082,7 +1102,7 @@ ERROR_TYPE us_compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int graph)
     {BOX_3D;}
   uc_framebox(g,box,0);
   uc_framebox(mark,box,0);
-  
+
   /* get max value of g */
   pgval = min_max(g);
   if (pgval == NULL)
@@ -1116,7 +1136,7 @@ ERROR_TYPE us_compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int graph)
 	    if (pg[i]){
 	      if (pg[i]!=pg[ofs])
 		continue;
-	    }	      
+	    }
 	    card=pg[ofs];
 	    if(card>1){
 	      pqd = (PQDATUM )malloc(sizeof(struct node));
@@ -1220,7 +1240,7 @@ ERROR_TYPE u32_compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int graph
     {BOX_3D;}
   uc_framebox(g,box,0);
   uc_framebox(mark,box,0);
-  
+
   /* get max value of g */
   pgval = min_max(g);
   if (pgval == NULL)
@@ -1254,7 +1274,7 @@ ERROR_TYPE u32_compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int graph
 	    if (pg[i]){
 	      if (pg[i]!=pg[ofs])
 		continue;
-	    }	      
+	    }
 	    card=pg[ofs];
 	    if(card>1){
 	      pqd = (PQDATUM )malloc(sizeof(struct node));

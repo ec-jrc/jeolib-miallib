@@ -38,7 +38,7 @@
 
 %pythoncode %{
 import numpy
-import imem_base
+from . import imem_base
 
 t_UCHAR    =  3
 t_SHORT    =  4

@@ -1,6 +1,26 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /*
 ** Header file for image analysis routines
-** by Pierre.Soille@ec.europa.eu  1988--2016
+** by Pierre Soille@ec.europa.eu  1988--2016
 */
 
 #ifndef _MIAL_GLUE_H_
@@ -92,13 +112,13 @@
 #endif
 #ifndef UINT64_MAX
 #define UINT64_MAX   0xFFFFFFFFFFFFFFFF
-#endif  
+#endif
 #define MIALFLOAT_MAX    ((float)3.40282346638528860e+38)
 #define MIALFLOAT_MIN    ((float)1.40129846432481707e-45)
-#ifndef DOUBLE_MAX    
+#ifndef DOUBLE_MAX
 #define DOUBLE_MAX   1.797693134862315708e+308
 #endif
-#ifndef DOUBLE_MIN  
+#ifndef DOUBLE_MIN
 #define DOUBLE_MIN   4.94065645841246544e-324
 #endif
 
@@ -298,7 +318,7 @@
 
 
 
-/* 
+/*
   external function declarations
 */
 

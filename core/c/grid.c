@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -94,7 +114,7 @@ IMAGE *uc_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -272,7 +292,7 @@ IMAGE *us_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -449,7 +469,7 @@ IMAGE *s_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 	x2=x1+1.0;
 	ray=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
 	rby=alpha * x2*x2*x2 - 5.0 * alpha * x2*x2 + 8.0 * alpha *  x2 - 4.0 * alpha;
-      
+
 	x1=1.0-x1;
 	x2=x1+1.0;
 	rcy=(alpha+2.0) * x1*x1*x1 - (alpha+3.0) * x1*x1 + 1.0;
@@ -552,16 +572,16 @@ IMAGE *s_grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 #include "s_undef.h"
 
 
-/** 
- * 
- * 
- * @param im 
- * @param roi 
- * @param imx 
- * @param imy 
- * @param alpha 
- * 
- * @return 
+/**
+ *
+ *
+ * @param im
+ * @param roi
+ * @param imx
+ * @param imy
+ * @param alpha
+ *
+ * @return
  */
 IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha)
 {

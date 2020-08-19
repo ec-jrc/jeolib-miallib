@@ -1,12 +1,30 @@
+/***********************************************************************
+Author(s): Dominik Brunner and Pierre Soille
+Copyright (C) 2004-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /***************************************************************************
                           linepool.c  -  description
                              -------------------
     Linepool for storing all lines which are used in order to vectorize
     the segmented image
 
-    begin                : Mon May 17 2004 by Dominik Brunner
-    copyright            : (C) 2004 JRC
-    email                : dominik.brunner@jrc.it Pierre.Soille@jrc.ec.europa.eu
+    begin                : Mon May 17 2004
  ***************************************************************************/
 
 #include <stdio.h>
@@ -46,7 +64,7 @@ void freeLinePool(struct LINEPOOL * linepool)
  *
  *    linepool      pointer to linepool
  *
- *    line          pointer to line which shall be added to linepool 
+ *    line          pointer to line which shall be added to linepool
  *
  *  Return values:
  *
@@ -150,7 +168,7 @@ struct LINE *getLine(struct LINEPOOL * linepool, int startX, int startY, int mid
           }
         }
       }
-    }    
+    }
   }
   return NULL;
 }
@@ -195,5 +213,5 @@ struct LINE *getLineWith2Points(struct LINEPOOL * linepool, int startX, int star
     }
   }
   return NULL;
-} 
+}
 

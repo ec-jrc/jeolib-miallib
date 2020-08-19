@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2003-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "miallib.h"
@@ -28,21 +48,21 @@ ERROR_TYPE uc_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
   ** flag: if 0 then overwrite border else add border
-  
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -71,7 +91,7 @@ ERROR_TYPE uc_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
   nx = GetImNx(mark);
   ny = GetImNy(mark);
   nz = GetImNz(mark);
-  
+
   /* take graph into account */
   if (set_seq_shift(GetImNx(mark), GetImNy(mark), GetImNz(mark), n, shft) == ERROR){
       free_fifo4(q);
@@ -94,7 +114,7 @@ ERROR_TYPE uc_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
       if (*p_im < *p_mk)
 	*p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -147,21 +167,21 @@ ERROR_TYPE us_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** mask: Mask Image (mask <= mark)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
-  
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -213,7 +233,7 @@ ERROR_TYPE us_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
     if (*p_im < *p_mk)
       *p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -266,21 +286,21 @@ ERROR_TYPE i32_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** mask: Mask Image (mask <= mark)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
-  
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -332,7 +352,7 @@ ERROR_TYPE i32_rdil(IMAGE *mark, IMAGE *mask, int n, int flag)
     if (*p_im < *p_mk)
       *p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -458,7 +478,7 @@ ERROR_TYPE uc_rdilpdownhill(IMAGE *im_mark, IMAGE *im_mask, int n, int flag)
 
 /*
  **  Geodesic dilation until idempotence.  Overwriting algorithm.
- **  
+ **
  */
 ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag)
 {
@@ -467,7 +487,7 @@ ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag)
     (void)sprintf(buf,"ERROR in rdil(): incompatible input images\n"); errputstr(buf);
     return(ERROR);
   }
- 
+
   switch (GetImDataType(mark)){
 
   case t_UCHAR:
@@ -505,21 +525,21 @@ ERROR_TYPE uc_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
   ** flag: if 0 then overwrite border else add border
-    
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -570,7 +590,7 @@ ERROR_TYPE uc_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
     if (*p_im > *p_mk)
       *p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -624,21 +644,21 @@ ERROR_TYPE us_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** mask: Mask Image (mask <= mark)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
-  
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -689,7 +709,7 @@ ERROR_TYPE us_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
     if (*p_im > *p_mk)
       *p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -742,21 +762,21 @@ ERROR_TYPE i32_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** mask: Mask Image (mask <= mark)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
-  
+
   ** comment: The transformed image is written in the marker image.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -807,7 +827,7 @@ ERROR_TYPE i32_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
     if (*p_im > *p_mk)
       *p_mk = *p_im;
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -853,7 +873,7 @@ ERROR_TYPE i32_rero(IMAGE *mark, IMAGE *mask, int n, int flag)
 
 /*
  **  Reconstruciton by erosion using Vincent's algorithm [2003-07-02]
- **  
+ **
  */
 ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag)
 {
@@ -862,7 +882,7 @@ ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag)
     (void)sprintf(buf,"ERROR in rero(): incompatible input images\n"); errputstr(buf);
     return(ERROR);
   }
- 
+
   switch (GetImDataType(mark)){
 
   case t_UCHAR:
@@ -895,22 +915,22 @@ ERROR_TYPE uc_rerodilp(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
   ** flag: if 0 then overwrite border else add border
-  
+
   ** comment: The transformed image is written in the marker image.
   Version with a unique queue.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *q;
 
   /* create a queue */
@@ -971,7 +991,7 @@ ERROR_TYPE uc_rerodilp(IMAGE *mark, IMAGE *mask, int n, int flag)
 	*p_mk = *p_im;
     }
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -993,7 +1013,7 @@ ERROR_TYPE uc_rerodilp(IMAGE *mark, IMAGE *mask, int n, int flag)
       if (*p_im > *p_mk)
 	*p_mk = *p_im;
     }
-    
+
     for (k = nav; k < n; k++){
       if ( (*(p_mk + shft[k]) < MIN(*p_mk,*p_im)) && (*(p_mk + shft[k]) < *(p_im + shft[k])) ){
 	fifo4_add(q,(long int)(p_im-pmask)); /* offset to origin in queue */
@@ -1046,22 +1066,22 @@ ERROR_TYPE uc_rerodilp2q(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
   ** flag: if 0 then overwrite border else add border
-  
+
   ** comment: The transformed image is written in the marker image.  Version
   with two queues, one for each reconstruction.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   FIFO4 *qero, *qdil;
 
   /* create a queue */
@@ -1129,7 +1149,7 @@ ERROR_TYPE uc_rerodilp2q(IMAGE *mark, IMAGE *mask, int n, int flag)
 	*p_mk = *p_im;
     }
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -1151,7 +1171,7 @@ ERROR_TYPE uc_rerodilp2q(IMAGE *mark, IMAGE *mask, int n, int flag)
       if (*p_im > *p_mk)
 	*p_mk = *p_im;
     }
-    
+
     for (k = nav; k < n; k++){
       if ( (*(p_mk + shft[k]) < MIN(*p_mk,*p_im)) && (*(p_mk + shft[k]) < *(p_im + shft[k])) ){
 	fifo4_add(qdil,(long int)(p_im-pmask)); /* offset to origin in queue */
@@ -1211,22 +1231,22 @@ ERROR_TYPE uc_rerodilp2pq(IMAGE *mark, IMAGE *mask, int n, int flag)
   ** shft: array of offsets to neighbours
   ** n: number of neighbours
   ** flag: if 0 then overwrite border else add border
-  
+
   ** comment: The transformed image is written in the marker image.  Version
   with two priority queues, one for each reconstruction.
   */
 
   long int shft[27];
 
-  int nav = n>>1;  
-  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;  
+  int nav = n>>1;
+  register PIX_TYPE *p_mk, *p_im, *p_end, *pmask, *pmark;
   register int k;
   long int offset;
   int box[6];
   long int nx = GetImNx(mark);
   long int ny = GetImNy(mark);
   long int nz = GetImNz(mark);
-  
+
   struct pqueue *pqero, *pqdil;
   PQDATUM apqd[1];
   struct node *pqd;
@@ -1293,7 +1313,7 @@ ERROR_TYPE uc_rerodilp2pq(IMAGE *mark, IMAGE *mask, int n, int flag)
 	*p_mk = *p_im;
     }
   }
-  
+
   /*  Backward scan  */
   p_im  = (PIX_TYPE *)GetImPtr(mask) + get_offset_last_pixel(nx, ny, nz, n);
   p_mk  = (PIX_TYPE *)GetImPtr(mark) + get_offset_last_pixel(nx, ny, nz, n);
@@ -1315,7 +1335,7 @@ ERROR_TYPE uc_rerodilp2pq(IMAGE *mark, IMAGE *mask, int n, int flag)
       if (*p_im > *p_mk)
 	*p_mk = *p_im;
     }
-    
+
     for (k = nav; k < n; k++){
       if ( (*(p_mk + shft[k]) < MIN(*p_mk,*p_im)) && (*(p_mk + shft[k]) < *(p_im + shft[k])) ){
 	pqd = (PQDATUM )malloc(sizeof(struct node));
@@ -1469,7 +1489,7 @@ ERROR_TYPE uc_rerodilpdownhill(IMAGE *im_mark, IMAGE *im_mask, int n, int flag)
 /*
  **  Self-dual reconstruction following alternative definition of Soille
  **  (no jump over).
- **  
+ **
  */
 ERROR_TYPE rerodilp(IMAGE *mark, IMAGE *mask, int graph, int flag, int version)
 {
@@ -1479,7 +1499,7 @@ ERROR_TYPE rerodilp(IMAGE *mark, IMAGE *mask, int graph, int flag, int version)
     errputstr(buf);
     return(ERROR);
   }
- 
+
   switch (GetImDataType(mark)){
 
   case t_UCHAR:

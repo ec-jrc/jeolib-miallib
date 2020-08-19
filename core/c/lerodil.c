@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /** @file
  *  Erosion and dilation along arbitrary (periodic) line segments \cite soille-breen-jones96
  *  @author Pierre Soille
@@ -30,7 +50,7 @@
 void generic_genfminomp(PIX_TYPE *f, long int *p, int nx, int K, int nxmax)
 {
   /*
-  ** f: input array. Where 1st member is *(f+p[0]) and 
+  ** f: input array. Where 1st member is *(f+p[0]) and
                            2nd member is = *(f+p[1]) etc.
   ** g: forward array
   ** h: backward array
@@ -49,10 +69,10 @@ void generic_genfminomp(PIX_TYPE *f, long int *p, int nx, int K, int nxmax)
 
   if(!(K%2))
     K += 1;   /* Enforce odd extent */
-    
+
   k = nx/K;
   r1 = nx%K;
-    
+
   /* do forward array */
   for(j=0;j<k;j++){
     *g = *(f+p[index]);
@@ -141,7 +161,7 @@ long int *p;
 int nx, K;
 {
   /*
-  ** f: input array. Where 1st member is *(f+p[0]) and 
+  ** f: input array. Where 1st member is *(f+p[0]) and
                            2nd member is = *(f+p[1]) etc.
   ** g: forward array
   ** h: backward array
@@ -151,13 +171,13 @@ int nx, K;
   */
 
     unsigned i,j,k,r,r1;
-    
+
     if(!(K%2))
 	K += 1;   /* Enforce odd extent */
-    
+
     k = nx/K;
     r1 = nx%K;
-    
+
     /* do forward array */
     for(j=0;j<k;j++){
 	*g = *(f+*p);
@@ -229,7 +249,7 @@ int nx, K;
     h -= r;
     for(i=0;i<r;i++,h--,p--)
 	*(f+*p) = *(h);
-    
+
 }
 #include "g_undef.h"
 #endif /* #ifndef NO_generic_IMAGE */
@@ -242,7 +262,7 @@ long int *p;
 int nx, K;
 {
   /*
-  ** f: input array. Where 1st member is *(f+p[0]) and 
+  ** f: input array. Where 1st member is *(f+p[0]) and
                            2nd member is = *(f+p[1]) etc.
   ** g: forward array
   ** h: backward array
@@ -252,13 +272,13 @@ int nx, K;
   */
 
     unsigned i,j,k,r,r1;
-    
+
     if(!(K%2))
 	K += 1;   /* Enforce odd extent */
-    
+
     k = nx/K;
     r1 = nx%K;
-    
+
     /* do forward array */
     for(j=0;j<k;j++){
 	*g = *(f+*p);
@@ -330,7 +350,7 @@ int nx, K;
     h -= r;
     for(i=0;i<r;i++,h--,p--)
 	*(f+*p) = *(h);
-    
+
 }
 #include "us_undef.h"
 
@@ -342,7 +362,7 @@ long int * p;
 int nx, K;
 {
   /*
-  ** f: input array. Where 1st member is *(f+p[0]) and 
+  ** f: input array. Where 1st member is *(f+p[0]) and
                            2nd member is = *(f+p[1]) etc.
   ** g: forward array
   ** h: backward array
@@ -354,11 +374,11 @@ int nx, K;
     unsigned i,j,k,r,r1;
 
     if(!(K%2))   /* Enforce odd extent */
-	K += 1; 
-    
+	K += 1;
+
     k = nx/K;
     r1 = nx%K;
-    
+
     /* do forward array */
     for(j=0;j<k;j++){
 	*g = *(f+*p);
@@ -430,7 +450,7 @@ int nx, K;
     h -= r;
     for(i=0;i<r;i++,h--,p--)
 	*(f+*p) = *(h);
-    
+
 }
 #include "g_undef.h"
 #endif /* #ifndef NO_generic_IMAGE */
@@ -443,7 +463,7 @@ long int * p;
 int nx, K;
 {
   /*
-  ** f: input array. Where 1st member is *(f+p[0]) and 
+  ** f: input array. Where 1st member is *(f+p[0]) and
                            2nd member is = *(f+p[1]) etc.
   ** g: forward array
   ** h: backward array
@@ -455,11 +475,11 @@ int nx, K;
     unsigned i,j,k,r,r1;
 
     if(!(K%2))   /* Enforce odd extent */
-	K += 1; 
-    
+	K += 1;
+
     k = nx/K;
     r1 = nx%K;
-    
+
     /* do forward array */
     for(j=0;j<k;j++){
 	*g = *(f+*p);
@@ -531,14 +551,14 @@ int nx, K;
     h -= r;
     for(i=0;i<r;i++,h--,p--)
 	*(f+*p) = *(h);
-    
+
 }
 #include "us_undef.h"
 
 
 
 /*
-		From 
+		From
 
 Recursive implementation of erosions and dilations
 along discrete lines at arbitrary angles
@@ -569,7 +589,7 @@ void traceline(int x0, int y0, int dx, int dy, long int p[], long int pb [], int
   ** dx: offset in x
   ** dy: offset in y
   ** p:  pointer to shifts of the line (Bres. or Period.)
-  ** pb: pointer to shifts of the Bres. line 
+  ** pb: pointer to shifts of the Bres. line
   ** rlc: pointer to run length coding of the Bres. line
   ** ncol: number of columns of the image
   ** n: number of pixels in the Bres. line
@@ -577,33 +597,33 @@ void traceline(int x0, int y0, int dx, int dy, long int p[], long int pb [], int
   */
 
   int ix,iy,inc,plotx,ploty,x,y,i,plot,sdx,sdy,flag;
-  int *px, *py, *pxtmp, *pytmp; 
+  int *px, *py, *pxtmp, *pytmp;
 
   px = (int*)calloc(sizeof(int),(unsigned)n);
   py = (int*)calloc(sizeof(int),(unsigned)n);
 
   pxtmp = px;
   pytmp = py;
-     
+
   ix = abs(dx);
   iy = abs(dy);
   inc = ix > iy ? ix : iy;
   sdy = dy > 0 ? 1: dy == 0? 0: -1;
   sdx = dx > 0 ? 1: dx == 0? 0: -1;
-    
+
   plotx = x0;
   ploty = y0;
-  
+
   x = y = 0;
-  
+
   flag = abs(dx) >= abs(dy) ? 0 : 1;
-  
+
   *px++ = plotx;
   *py++ = ploty;
   *p++ = plotx+ncol*ploty;
   *pb++ = plotx+ncol*ploty;
   *rlc += 1;
-  
+
   for(i=0;i<n; i++){
     x += ix;
     y += iy;
@@ -625,7 +645,7 @@ void traceline(int x0, int y0, int dx, int dy, long int p[], long int pb [], int
 	*rlc += 1;  /* hori. */
       else{ /* diag. */
 	rlc++;
-	*rlc += 1; 
+	*rlc += 1;
       }
       *px++ = plotx;
       *py++ = ploty;
@@ -662,7 +682,7 @@ ERROR_TYPE generic_glinemin(PIX_TYPE *f, int ncol, int nlin, int dx,int dy, int 
   int inc, incx, incy, var;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la;
   int period, cycle, j0, rj;
- 
+
 #ifdef XLDEBUG
   long int start;
   start = clock();
@@ -671,7 +691,7 @@ ERROR_TYPE generic_glinemin(PIX_TYPE *f, int ncol, int nlin, int dx,int dy, int 
   /* set coordinates of p array */
   if (dx<0){
     dx = -dx; dy = -dy;
-  }  
+  }
   if (abs(dx) >= abs(dy)){
     if (dx==0)
       return(NO_ERROR);
@@ -777,7 +797,7 @@ ERROR_TYPE generic_glinemin(PIX_TYPE *f, int ncol, int nlin, int dx,int dy, int 
 
   rj=(j+period-1)%period;
   j0=(j+period-1)/period;
-  
+
 #ifdef OPENMP
 #pragma omp parallel for private(i,ftmp,cycle)
 #endif
@@ -796,14 +816,14 @@ ERROR_TYPE generic_glinemin(PIX_TYPE *f, int ncol, int nlin, int dx,int dy, int 
   f+=(l2-l1)*inc;
 
   ptmp=p;  // check whether ptmp=p+rlc[l1-1]; would be correct
-  
+
 
   printf("starting decreasing\n");
 
 
 #ifdef OPENMP
 #pragma omp parallel for private(i,ftmp,j,j0,rj,cycle) firstprivate(pbtmp,ptmp)
-#endif 
+#endif
   for (i=0; i<la; i++){ /* decr. length */
     printf("i=%d\n", i);
     if (period>1){
@@ -862,7 +882,7 @@ ERROR_TYPE generic_glineminfirstwithomp(f,ncol,nlin,dx,dy,k,line_type)
   int inc, incx, incy, var;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la;
   int period, cycle, j0, rj;
-  
+
 #ifdef XLDEBUG
   long int start;
   start = clock();
@@ -871,7 +891,7 @@ ERROR_TYPE generic_glineminfirstwithomp(f,ncol,nlin,dx,dy,k,line_type)
   /* set coordinates of p array */
   if (dx<0){
     dx = -dx; dy = -dy;
-  }  
+  }
   if (abs(dx) >= abs(dy)){
     if (dx==0)
       return(NO_ERROR);
@@ -905,7 +925,7 @@ ERROR_TYPE generic_glineminfirstwithomp(f,ncol,nlin,dx,dy,k,line_type)
   else  /* periodic line */
     period = max(abs(dx),abs(dy));
   traceline(pxf,pyf,dx,dy,p,pb,rlc,ncol,nx,period);
-  
+
   /* allocate memory for g and  h arrays */
   // not used in omp version
   //g = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
@@ -1038,7 +1058,7 @@ ERROR_TYPE us_glinemin(f,ncol,nlin,dx,dy,k,line_type)
   int inc, incx, incy, var;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la;
   int period, cycle, j0, rj;
-  
+
 #ifdef XLDEBUG
   long int start;
   start = clock();
@@ -1046,7 +1066,7 @@ ERROR_TYPE us_glinemin(f,ncol,nlin,dx,dy,k,line_type)
   /* set coordinates of p array */
   if (dx<0){
     dx = -dx; dy = -dy;
-  }  
+  }
   if (abs(dx) >= abs(dy)){
     if (dx==0)
       return(NO_ERROR);
@@ -1080,7 +1100,7 @@ ERROR_TYPE us_glinemin(f,ncol,nlin,dx,dy,k,line_type)
   else  /* periodic line */
     period = max(abs(dx),abs(dy));
   traceline(pxf,pyf,dx,dy,p,pb,rlc,ncol,nx,period);
-  
+
   /* allocate memory for g and  h arrays */
   g = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
   h = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
@@ -1210,14 +1230,14 @@ ERROR_TYPE generic_glinemax(f,ncol,nlin,dx,dy,k,line_type)
    ** k: extent of SE in pixels
    ** line_type: 0 for BRESENHAM and 1 for PERIODIC
    */
-  
+
   PIX_TYPE *g,*h;
   long int *p, *pb, *ptmp, *pbtmp;
   int *rlc;
   int inc, incx, incy, var;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la;
   int period, cycle, j0, rj;
-  
+
 #ifdef XLDEBUG
   long int start;
   start = clock();
@@ -1226,7 +1246,7 @@ ERROR_TYPE generic_glinemax(f,ncol,nlin,dx,dy,k,line_type)
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     if (dx==0)
@@ -1258,7 +1278,7 @@ ERROR_TYPE generic_glinemax(f,ncol,nlin,dx,dy,k,line_type)
   p   = (long int*)calloc(sizeof(long int),(unsigned)nx);
   pb  = (long int*)calloc(sizeof(long int),(unsigned)nx);
   rlc = (int*)calloc(sizeof(int),(unsigned)nx);
-  
+
   if (line_type==BRES){
     period = 1;
   }
@@ -1266,7 +1286,7 @@ ERROR_TYPE generic_glinemax(f,ncol,nlin,dx,dy,k,line_type)
     period = max(abs(dx),abs(dy));
   }
   traceline(pxf, pyf, dx, dy, p, pb, rlc, ncol, nx, period);
-  
+
   /* allocate memory for g and  h arrays */
   g = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
   h = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
@@ -1377,14 +1397,14 @@ ERROR_TYPE us_glinemax(f,ncol,nlin,dx,dy,k,line_type)
    ** k: extent of SE in pixels
    ** line_type: 0 for BRESENHAM and 1 for PERIODIC
    */
-  
+
   PIX_TYPE *g,*h;
   long int *p, *pb, *ptmp, *pbtmp;
   int *rlc;
   int inc, incx, incy, var;
   int pxf = 0, pyf = 0, nx, i, j, l, l1, l2, la;
   int period, cycle, j0, rj;
-  
+
 #ifdef XLDEBUG
   long int start;
   start = clock();
@@ -1393,7 +1413,7 @@ ERROR_TYPE us_glinemax(f,ncol,nlin,dx,dy,k,line_type)
   if (dx<0){
     dx = -dx; dy = -dy;
   }
-    
+
   /* set coordinates of p array */
   if (abs(dx) >= abs(dy)){
     if (dx==0)
@@ -1425,7 +1445,7 @@ ERROR_TYPE us_glinemax(f,ncol,nlin,dx,dy,k,line_type)
   p   = (long int*)calloc(sizeof(long int),(unsigned)nx);
   pb  = (long int*)calloc(sizeof(long int),(unsigned)nx);
   rlc = (int*)calloc(sizeof(int),(unsigned)nx);
-  
+
   if (line_type==BRES){
     period = 1;
   }
@@ -1433,7 +1453,7 @@ ERROR_TYPE us_glinemax(f,ncol,nlin,dx,dy,k,line_type)
     period = max(abs(dx),abs(dy));
   }
   traceline(pxf, pyf, dx, dy, p, pb, rlc, ncol, nx, period);
-  
+
   /* allocate memory for g and  h arrays */
   g = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);
   h = (PIX_TYPE*)calloc(sizeof(PIX_TYPE),(unsigned)nx);

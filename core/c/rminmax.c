@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include "miallib.h"
 #include "fifo.h"
@@ -24,7 +44,7 @@ IMAGE *generic_minima(IMAGE *im1, int graph)
   im2 = create_image(t_UCHAR, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (im2 == NULL)
     return NULL;
- 
+
   q = create_fifo4(GetImNx(im1)+GetImNy(im1));
   if (q == NULL){
     free_image(im2);
@@ -33,7 +53,7 @@ IMAGE *generic_minima(IMAGE *im1, int graph)
 
   /* set to 1 im2 */
   generic_blank(im2, 1);
-  
+
   /* draw frames */
   if ( GetImNz(im1) > 1)
     {BOX_3D;}
@@ -44,7 +64,7 @@ IMAGE *generic_minima(IMAGE *im1, int graph)
 
   /* set shift array */
   set_seq_shift(GetImNx(im1), GetImNy(im1), GetImNz(im1), graph, shft);
-       
+
   /* Here we go */
   nelem = GetImNPix(im1);
   pim2=(UCHAR *)GetImPtr(im2);
@@ -59,14 +79,14 @@ IMAGE *generic_minima(IMAGE *im1, int graph)
 	break;
       }
     }
-    
+
     p = (PIX_TYPE *)fifo4_remove(q);
     while (p){
       for (k = 0; k < graph; ++k){
 	if (*(pp = p + shft[k]) == *p && pim2[pp - pim1] != 0){
 	  pim2[pp - pim1] = 0;
 	  fifo4_add(q, (long int)pp);
-	}    
+	}
       }
       p = (PIX_TYPE *)fifo4_remove(q);
     }
@@ -93,7 +113,7 @@ IMAGE *us_minima(IMAGE *im1, int graph)
   im2 = create_image(t_UCHAR, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (im2 == NULL)
     return NULL;
- 
+
   q = create_fifo4(GetImNx(im1)+GetImNy(im1));
   if (q == NULL){
     free_image(im2);
@@ -102,7 +122,7 @@ IMAGE *us_minima(IMAGE *im1, int graph)
 
   /* set to 1 im2 */
   generic_blank(im2, 1);
-  
+
   /* draw frames */
   if ( GetImNz(im1) > 1)
     {BOX_3D;}
@@ -111,11 +131,11 @@ IMAGE *us_minima(IMAGE *im1, int graph)
   us_framebox(im1, box, PIX_MAX);
   uc_framebox(im2, box, 0);
 
-  
+
   /* set shift array */
   set_seq_shift(GetImNx(im1), GetImNy(im1), GetImNz(im1), graph, shft);
- 
-      
+
+
   /* Here we go */
   nelem = GetImNPix(im1);
   pim2=(UCHAR *)GetImPtr(im2);
@@ -129,14 +149,14 @@ IMAGE *us_minima(IMAGE *im1, int graph)
 	break;
       }
     }
-    
+
     p = (PIX_TYPE *)fifo4_remove(q);
     while (p){
       for (k = 0; k < graph; ++k){
 	if (*(pp = p + shft[k]) == *p && pim2[pp - pim1] != 0){
 	  pim2[pp - pim1] = 0;
 	  fifo4_add(q, (long int)pp);
-	}    
+	}
       }
       p = (PIX_TYPE *)fifo4_remove(q);
     }
@@ -162,7 +182,7 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
   im2 = create_image(t_UCHAR, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (im2 == NULL)
     return NULL;
- 
+
   q = create_fifo4(GetImNx(im1)+GetImNy(im1));
   if (q == NULL){
     free_image(im2);
@@ -171,7 +191,7 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
 
   /* set to 1 im2 */
   generic_blank(im2, 1);
-  
+
   /* draw frames */
   if ( GetImNz(im1) > 1)
     {BOX_3D;}
@@ -179,10 +199,10 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
     {BOX_2D;}
   i32_framebox(im1, box, PIX_MAX);
   uc_framebox(im2, box, 0);
-  
+
   /* set shift array */
   set_seq_shift(GetImNx(im1), GetImNy(im1), GetImNz(im1), graph, shft);
-       
+
   /* Here we go */
   nelem = GetImNPix(im1);
   pim2=(UCHAR *)GetImPtr(im2);
@@ -196,14 +216,14 @@ IMAGE *i32_minima(IMAGE *im1, int graph)
 	break;
       }
     }
-    
+
     p = (PIX_TYPE *)fifo4_remove(q);
     while (p){
       for (k = 0; k < graph; ++k){
 	if (*(pp = p + shft[k]) == *p && pim2[pp - pim1] != 0){
 	  pim2[pp - pim1] = 0;
 	  fifo4_add(q, (long int)pp);
-	}    
+	}
       }
       p = (PIX_TYPE *)fifo4_remove(q);
     }

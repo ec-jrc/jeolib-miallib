@@ -1,4 +1,24 @@
-/* by Pierre.Soille@jrc.ec.europa.eu
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2012-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/* by Pierre Soille@ec.europa.eu
    version with optimisation of distribution of load through correspondence table.
    However, the load remains unbalanced if the size of the target CCs is uneven!
 */
@@ -50,8 +70,8 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
   int box[6];
   long int shft[27];
   FIFO4 *q;
-  
-  
+
+
   imout=create_image(t_CC_LBL_TYPE, GetImNx(imblbl), GetImNy(imblbl), GetImNz(imblbl));
   if (imout == NULL){
     (void)sprintf(buf,"alphatreetoCCs(): not enough memory for output image!\n"); errputstr(buf);
@@ -77,7 +97,7 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
     return NULL;
   pofs=(UINT32 *)GetImPtr(iofs);
 
-  
+
   prtlbl=(CC_LBL_TYPE* )GetImPtr(atree[0]);
   pblbl=(CC_LBL_TYPE* )GetImPtr(atree[1]);
   palphalbl=(PIX_TYPE* )GetImPtr(atree[3]);
@@ -100,7 +120,7 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
 
   /* first collect first point of each CC in an array
      for subsequent parallel processing */
-  
+
   // printf("starting to search for 1st pix of each CC npix=%lu\n",npix);
 
   pofs[0]=1;
@@ -130,7 +150,7 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
 	  pflut[i]=i;  //(here version with base label of this node) pblbl[i]; /* check ! */
 	else /* redundant node */
 	  pflut[i]=0;
-	
+
       }
     }
     break;
@@ -241,8 +261,8 @@ IMAGE *uc_alphatreetoCCs_OMP(IMAGE **atree, IMAGE *imblbl, IMAGE *flaglut, int r
 #ifndef OPENMP
   free_fifo4(q);
 #endif
-  
-  return imout;  
+
+  return imout;
 }
 #undef CC_LBL_TYPE
 #undef t_CC_LBL_TYPE

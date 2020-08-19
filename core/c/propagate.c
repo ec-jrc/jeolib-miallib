@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +42,7 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
   LBL_TYPE *pl;
   DST_TYPE *pd;
   long int shft[27];
-  
+
   FIFO4 *q;
 
   q = create_fifo4(16384L+GetImNx(dst)+GetImNy(dst));
@@ -31,14 +51,14 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
     return ERROR;
   }
 
-  set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft); 
+  set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft);
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for  (c=0; c<nc; c++)
     pim[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   pl=(LBL_TYPE *)GetImPtr(lbl);
   pd=(DST_TYPE *)GetImPtr(dst);
-  
+
   /* treat pixels with unit distance while initialising queue */
   for (ofs=0; ofs<npix; ofs++){
     if (pd[ofs]==1){
@@ -107,20 +127,20 @@ ERROR_TYPE uc_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
   }
 
   fprintf(stderr, "number of ties in propagate= %d\n", nties);
- 
+
 #ifdef OPENMP
 #pragma omp parallel for
-#endif 
+#endif
   for (ofs=0; ofs<npix; ofs++) /* reset distance image */
     pd[ofs]&=PIX_DST;
   free_fifo4(q);
   free(pim);
   return NO_ERROR;
 }
-#undef DST_TYPE    
-#undef PIX_DST_MSB  
-#undef PIX_DST     
-#undef LBL_TYPE    
+#undef DST_TYPE
+#undef PIX_DST_MSB
+#undef PIX_DST
+#undef LBL_TYPE
 #include "uc_undef.h"
 
 
@@ -138,7 +158,7 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
   LBL_TYPE *pl;
   DST_TYPE *pd;
   long int shft[27];
-  
+
   FIFO4 *q;
 
   q = create_fifo4(16384L+GetImNx(dst)+GetImNy(dst));
@@ -147,14 +167,14 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
     return ERROR;
   }
 
-  set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft); 
+  set_shift(GetImNx(lbl), GetImNy(lbl), GetImNz(lbl), graph, shft);
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for  (c=0; c<nc; c++)
     pim[c]=(PIX_TYPE *)GetImPtr(imap[c]);
   pl=(LBL_TYPE *)GetImPtr(lbl);
   pd=(DST_TYPE *)GetImPtr(dst);
-  
+
   /* treat pixels with unit distance while initialising queue */
   for (ofs=0; ofs<npix; ofs++){
     if (pd[ofs]==1){
@@ -223,20 +243,20 @@ ERROR_TYPE us_propagate(IMAGE *lbl, IMAGE *dst, IMAGE **imap, int nc, int graph)
   }
 
   fprintf(stderr, "number of ties in propagate= %d\n", nties);
- 
+
 #ifdef OPENMP
 #pragma omp parallel for
-#endif 
+#endif
   for (ofs=0; ofs<npix; ofs++) /* reset distance image */
     pd[ofs]&=PIX_DST;
   free_fifo4(q);
   free(pim);
   return NO_ERROR;
 }
-#undef DST_TYPE    
-#undef PIX_DST_MSB  
-#undef PIX_DST     
-#undef LBL_TYPE    
+#undef DST_TYPE
+#undef PIX_DST_MSB
+#undef PIX_DST
+#undef LBL_TYPE
 #include "us_undef.h"
 
 

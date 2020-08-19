@@ -44,28 +44,28 @@
 
 
 # packages with base only definitions
-import convolve_base
-import dem_base
-import dist_base
-import erodil_base
-import hmt_base
-import label_base
-import opclo_base
-import proj_base
-import segment_base
+from . import convolve_base
+from . import dem_base
+from . import dist_base
+from . import erodil_base
+from . import hmt_base
+from . import label_base
+from . import opclo_base
+from . import proj_base
+from . import segment_base
 
 # packages with base and extended definitions
-import format
-import geometry
-import geodesy
-import stats
-import io
-import pointop
-import visu
-import dist
+from . import format
+from . import geometry
+from . import geodesy
+from . import stats
+from . import io
+from . import pointop
+from . import visu
+from . import dist
 
 
-import miallib as base_functions
+from . import miallib as base_functions
 
 
 # use . to secure that the local subpackage is imported

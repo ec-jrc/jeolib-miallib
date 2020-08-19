@@ -1,6 +1,6 @@
 core/build/
 xlisp/build/
-swig/
+#swig/
 
 core/c/banner.h
 xlisp/c/banner_mialib.h

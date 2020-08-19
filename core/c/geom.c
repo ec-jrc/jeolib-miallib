@@ -1,7 +1,26 @@
-/* 
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/*
 **
-**  By Pierre.Soille@jrc.it
-**  August 30, 2002.
+**  Begin: August 30, 2002.
 */
 
 
@@ -32,7 +51,7 @@ void generic_imcut(IMAGE *imin, IMAGE *imout, int x1, int y1, int z1, int x2, in
 
   nx = GetImNx(imin);
   ny = GetImNy(imin);
-  
+
   nnxb = (x2-x1+1)*sizeof(PIX_TYPE);
   nnx  = (x2-x1+1);
   nny = y2-y1+1;
@@ -61,7 +80,7 @@ void us_imcut(IMAGE *imin, IMAGE *imout, int x1, int y1, int z1, int x2, int y2,
 
   nx = GetImNx(imin);
   ny = GetImNy(imin);
-  
+
   nnxb = (x2-x1+1)*sizeof(PIX_TYPE);
   nnx  = (x2-x1+1);
   nny  = y2-y1+1;
@@ -90,7 +109,7 @@ void i32_imcut(IMAGE *imin, IMAGE *imout, int x1, int y1, int z1, int x2, int y2
 
   nx = GetImNx(imin);
   ny = GetImNy(imin);
-  
+
   nnxb = (x2-x1+1)*sizeof(PIX_TYPE);
   nnx  = (x2-x1+1);
   nny  = y2-y1+1;
@@ -154,7 +173,7 @@ IMAGE *imcut(IMAGE *im, int x1, int y1, int z1, int x2, int y2, int z2)
   case t_USHORT:
     us_imcut(im, imout, x1, y1, z1, x2, y2, z2);
     break;
-    
+
   case t_UINT32:
   case t_INT32:
   case t_FLOAT:
@@ -204,7 +223,7 @@ IMAGE *uc_getframebox(IMAGE *im, int *box)
 
   pout = (PIX_TYPE *)GetImPtr(imout);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -265,7 +284,7 @@ IMAGE *us_getframebox(IMAGE *im, int *box)
 
   pout = (PIX_TYPE *)GetImPtr(imout);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -326,7 +345,7 @@ IMAGE *i32_getframebox(IMAGE *im, int *box)
 
   pout = (PIX_TYPE *)GetImPtr(imout);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -365,7 +384,7 @@ IMAGE *getframebox(IMAGE *im, int *box)
 {
   if ( (box[0]+box[1]+box[2]+box[3]+box[4]+box[5]) == 0)
     return NULL;
-  
+
   switch (GetImDataType(im)){
 
   case t_UCHAR:
@@ -413,7 +432,7 @@ ERROR_TYPE uc_setframebox(IMAGE *im, IMAGE *imframe, int *box)
 
   pframe  =  (PIX_TYPE *)GetImPtr(imframe);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -472,7 +491,7 @@ ERROR_TYPE us_setframebox(IMAGE *im, IMAGE *imframe, int *box)
 
   pframe  =  (PIX_TYPE *)GetImPtr(imframe);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -531,7 +550,7 @@ ERROR_TYPE i32_setframebox(IMAGE *im, IMAGE *imframe, int *box)
 
   pframe  =  (PIX_TYPE *)GetImPtr(imframe);
   pim  = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -609,7 +628,7 @@ ERROR_TYPE generic_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -663,7 +682,7 @@ ERROR_TYPE u32_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -716,7 +735,7 @@ ERROR_TYPE uc_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -769,7 +788,7 @@ ERROR_TYPE i32_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -822,7 +841,7 @@ ERROR_TYPE us_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -874,7 +893,7 @@ ERROR_TYPE f_framebox(IMAGE *im, int *box, PIX_TYPE val)
   ny = GetImNy(im);
   nz = GetImNz(im);
   pim = (PIX_TYPE *)GetImPtr(im);
-  
+
   l1 = box[0]; l2 = box[1];	/* left and right borders */
   for (z = 0; z < nz; z++){
     for (y = 0; y < ny; y++){
@@ -965,7 +984,7 @@ ERROR_TYPE us_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   nxo = nxi + box[0] + box[1];
   nyo = nyi + box[2] + box[3];
   nzo = nzi + box[4] + box[5];
-  
+
   nbyte=nxo*nyo*nzo*sizeof(PIX_TYPE);
   if (nbyte%sizeof(long int)) /* pad for word size */
     nbyte+=sizeof(long int);
@@ -1022,8 +1041,8 @@ ERROR_TYPE us_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "us_undef.h"
 
 
@@ -1042,7 +1061,7 @@ ERROR_TYPE s_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   nxo = nxi + box[0] + box[1];
   nyo = nyi + box[2] + box[3];
   nzo = nzi + box[4] + box[5];
-  
+
   nbyte=nxo*nyo*nzo*sizeof(PIX_TYPE);
   if (nbyte%sizeof(long int)) /* pad for word size */
     nbyte+=sizeof(long int);
@@ -1099,8 +1118,8 @@ ERROR_TYPE s_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "s_undef.h"
 
 
@@ -1176,8 +1195,8 @@ ERROR_TYPE generic_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "g_undef.h"
 #endif /* #ifndef NO_generic_IMAGE */
 
@@ -1198,7 +1217,7 @@ ERROR_TYPE i32_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   nxo = nxi + box[0] + box[1];
   nyo = nyi + box[2] + box[3];
   nzo = nzi + box[4] + box[5];
-  
+
   nbyte=nxo*nyo*nzo*sizeof(PIX_TYPE);
   if (nbyte%sizeof(long int)) /* pad for word size */
     nbyte+=sizeof(long int);
@@ -1254,8 +1273,8 @@ ERROR_TYPE i32_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "i32_undef.h"
 
 #include "u32_def.h"
@@ -1329,8 +1348,8 @@ ERROR_TYPE u32_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "u32_undef.h"
 
 
@@ -1405,8 +1424,8 @@ ERROR_TYPE f_addframebox(IMAGE *im, int *box, PIX_TYPE val)
   for (x = 0; x < l1; x++)
     *po-- = val;
 
-  return NO_ERROR; 
-} 
+  return NO_ERROR;
+}
 #include "f_undef.h"
 
 
@@ -1419,7 +1438,7 @@ ERROR_TYPE addframebox(IMAGE *im, int *box, G_TYPE gval)
 {
   if ( (box[0]+box[1]+box[2]+box[3]+box[4]+box[5]) == 0)
     return NO_ERROR;
-  
+
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE
@@ -1467,7 +1486,7 @@ ERROR_TYPE generic_subframebox(IMAGE *im, int *box)
   long int x, y, z;
   PIX_TYPE *pi, *po;
 
-  
+
   nxi = GetImNx(im);
   nyi = GetImNy(im);
   nzi = GetImNz(im);
@@ -1503,9 +1522,9 @@ ERROR_TYPE generic_subframebox(IMAGE *im, int *box)
   SetImNz(im, nzo);
   SetImPtr(im, po);
   SetImNByte(im, nbyte);
-    
-  return NO_ERROR; 
-} 
+
+  return NO_ERROR;
+}
 #include "g_undef.h"
 #endif /* #ifndef NO_generic_IMAGE */
 
@@ -1519,7 +1538,7 @@ ERROR_TYPE i32_subframebox(IMAGE *im, int *box)
   long int x, y, z;
   PIX_TYPE *pi, *po;
 
-  
+
   nxi = GetImNx(im);
   nyi = GetImNy(im);
   nzi = GetImNz(im);
@@ -1555,9 +1574,9 @@ ERROR_TYPE i32_subframebox(IMAGE *im, int *box)
   SetImNz(im, nzo);
   SetImPtr(im, po);
   SetImNByte(im, nbyte);
-    
-  return NO_ERROR; 
-} 
+
+  return NO_ERROR;
+}
 #include "i32_undef.h"
 
 #include "us_def.h"
@@ -1569,7 +1588,7 @@ ERROR_TYPE us_subframebox(IMAGE *im, int *box)
   long int x, y, z;
   PIX_TYPE *pi, *po;
 
-  
+
   nxi = GetImNx(im);
   nyi = GetImNy(im);
   nzi = GetImNz(im);
@@ -1606,9 +1625,9 @@ ERROR_TYPE us_subframebox(IMAGE *im, int *box)
   SetImNz(im, nzo);
   SetImPtr(im, po);
   SetImNByte(im, nbyte);
-    
-  return NO_ERROR; 
-} 
+
+  return NO_ERROR;
+}
 #include "us_undef.h"
 
 
@@ -1617,7 +1636,7 @@ ERROR_TYPE subframebox(IMAGE *im, int *box)
 
   if ( (box[0]+box[1]+box[2]+box[3]+box[4]+box[5]) == 0)
     return NO_ERROR;
-  
+
   switch (GetImDataType(im)){
 
 #ifndef NO_generic_IMAGE
@@ -1709,7 +1728,7 @@ ERROR_TYPE generic_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, in
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -1724,7 +1743,7 @@ ERROR_TYPE generic_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, in
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -1884,7 +1903,7 @@ ERROR_TYPE us_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -1909,7 +1928,7 @@ ERROR_TYPE us_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2058,7 +2077,7 @@ ERROR_TYPE s_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2083,7 +2102,7 @@ ERROR_TYPE s_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2234,7 +2253,7 @@ ERROR_TYPE f_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2249,7 +2268,7 @@ ERROR_TYPE f_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op)
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2410,7 +2429,7 @@ ERROR_TYPE i32_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2425,7 +2444,7 @@ ERROR_TYPE i32_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2588,7 +2607,7 @@ ERROR_TYPE u32_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op
 	  if (test > PIX_MAX){
 	    *p = PIX_MAX;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2603,7 +2622,7 @@ ERROR_TYPE u32_imputop(IMAGE *imout, IMAGE *imin, int x1, int y1, int z1, int op
 	  if (test < PIX_MIN){
 	    *p = PIX_MIN;
 	  }
-	  else 
+	  else
 	    *p=(PIX_TYPE) test;
 	}
       }
@@ -2731,7 +2750,7 @@ ERROR_TYPE imputop(IMAGE *im1, IMAGE *im2, int x, int y, int z, int op)
   case t_SHORT:
     return(s_imputop(im1, im2, x, y, z, op));
     break;
-    
+
   case t_USHORT:
     return(us_imputop(im1, im2, x, y, z, op));
     break;
@@ -2785,7 +2804,7 @@ ERROR_TYPE uc_uc_imputcompose(IMAGE *imin, IMAGE *imlbl, IMAGE *imout, int x1, i
   }
   return(NO_ERROR);
 }
-#undef PIX_IMLBL_TYPE 
+#undef PIX_IMLBL_TYPE
 #include "uc_undef.h"
 
 #include "uc_def.h"
@@ -2817,7 +2836,7 @@ ERROR_TYPE us_uc_imputcompose(IMAGE *imin, IMAGE *imlbl, IMAGE *imout, int x1, i
   }
   return(NO_ERROR);
 }
-#undef PIX_IMLBL_TYPE 
+#undef PIX_IMLBL_TYPE
 #include "uc_undef.h"
 
 ERROR_TYPE imputcompose(IMAGE *im1, IMAGE *imlbl, IMAGE *im2, int x, int y, int z, int val)

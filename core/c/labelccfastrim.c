@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2006-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -33,15 +53,15 @@ IMAGE *uc_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio, mincc, maxcc, reset=0;
   long int  k, *shft;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -74,7 +94,7 @@ IMAGE *uc_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -102,7 +122,7 @@ IMAGE *uc_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -148,13 +168,13 @@ IMAGE *uc_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       // DEBUG 2007-01-22 if (lbl==635)
       // DEBUG 2007-01-22 printf("rlcrt=%d\n", (int)rlcrt);
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -257,7 +277,7 @@ IMAGE *uc_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
 //BUG 2007 01 21        }
 
 	// plut[lbl-LAST_NLBL]=rlcrt;
-	
+
       lbl++;
     }
   }
@@ -304,15 +324,15 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
   unsigned long int npix, i, j, ofs, ofsq, ofsk;
   int rk, rcrt=0, rlcrt, prio, mincc, maxcc, reset=0;
   long int  k, *shft;
-  
+
   FIFO4 *q;
   int n, nx, ny, nz;
   int box[BOXELEM];
-  
+
   PQDATUM apqd[1];
   struct node *pqd;
   struct pqueue *pq;
-  
+
   nx = GetImNx(im);
   ny = GetImNy(im);
   nz = GetImNz(im);
@@ -345,7 +365,7 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
     free_image(imrmax);
     return NULL;
   }
-  q = create_fifo4(500); 
+  q = create_fifo4(500);
   if (q == NULL){
     free_image(imlbl);
     free_image(imrmax);
@@ -373,7 +393,7 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
   box[4] = oy;
   box[5] = oz;
   set_shift_and_box((UCHAR *)GetImPtr(imse), box, GetImNx(im), GetImNy(im), shft);
-  
+
   if (u32_framebox(imlbl,box,BORDER_VAL)==ERROR){
     free_image(imlbl);
     free_pq(pq);
@@ -419,13 +439,13 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	pqd->prio = rk;
 	pqd->offset= (long int)ofsk;
-	pqmininsert(pq, pqd);	
+	pqmininsert(pq, pqd);
       }
       // DEBUG 2007-01-22 if (lbl==635)
       // DEBUG 2007-01-22 printf("rlcrt=%d\n", (int)rlcrt);
       /* here we go */
       if( pqpeek(pq, apqd) != NULL)
-	rcrt=apqd[0]->prio;      
+	rcrt=apqd[0]->prio;
       while (pqpeek(pq, apqd) != NULL){
 	pqminremove(pq, apqd);
 	ofs=apqd[0]->offset;
@@ -528,7 +548,7 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
 //BUG 2007 01 21        }
 
 	// plut[lbl-LAST_NLBL]=rlcrt;
-	
+
       lbl++;
     }
   }
@@ -558,7 +578,7 @@ IMAGE *us_labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl
 
 
 
-/** 
+/**
  * @synopsis computes the alpha-omega connected components of an image
  *
  * @param im: an image
@@ -577,11 +597,11 @@ IMAGE *labelcc(IMAGE *im, IMAGE *imse, int ox, int oy, int oz, int rg, int rl)
   case t_UCHAR:
     return(uc_labelcc(im,imse,ox,oy,oz,rg,rl));
     break;
-    
+
   case t_USHORT:
     return(us_labelcc(im,imse,ox,oy,oz,rg,rl));
     break;
-    
+
   default:
     (void)sprintf(buf,"labelcc(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

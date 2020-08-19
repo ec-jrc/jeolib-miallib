@@ -1,8 +1,8 @@
-import miallib as _miallib
+from . import miallib as _miallib
 
 
-from geometry_base import *
-import imem_base as _imem_base
+from .geometry_base import *
+from . import imem_base as _imem_base
 
 def d_framebox(i0, box, val):
     r=framebox(i0, box, val)
@@ -45,20 +45,20 @@ def d_imputintopgeo(im1, im2, op, geotifffn1, geotifffn2, multfactor=1):
     oy2 = ulcy2 * multfactor
 
     if res1 != res2:
-        print 'input images must have the same pixel size'
+        print('input images must have the same pixel size')
         return
         
     if int(ox2-ox1) != int((ox2-ox1)/res1)*res1:
-        print 'X-GLOUP THIS SHOULD NEVER HAPPEN'
+        print('X-GLOUP THIS SHOULD NEVER HAPPEN')
         return
     else:
-        print 'X-FINE'
+        print('X-FINE')
 
     if int(oy1-oy2) != int((oy1-oy2)/res1)*res1:
-        print 'Y-GLOUP THIS SHOULD NEVER HAPPEN'
+        print('Y-GLOUP THIS SHOULD NEVER HAPPEN')
         return
     else:
-        print 'Y-FINE'
+        print('Y-FINE')
                 
 
     d_imputintop(im1, im2, int((ox2-ox1)/res1), int((oy1-oy2)/res1), 0, op)

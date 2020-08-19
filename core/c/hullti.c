@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -108,12 +128,12 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   rlc = (int*)calloc(sizeof(int),(unsigned)nx);
   bresenham(pxf,pyf,pxf+dx,pyf+dy,p,offset2,rlc,ncol);  /* draw elementary pattern only of Bresenham line */
 
-  /* 
+  /*
   ** Get array of order of each pixel along the calculated line
   */
   adx=abs(dx);
   ady=abs(dy);
-  
+
   /* sort offsets in increasing order (first will be processed first etc.) */
   indexx(t,offset2-1,indxori-1);
   free(offset2);
@@ -274,7 +294,7 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   /*
   ** close with 2nd half-plane and output the
   ** point-wise maximum between both closings */
-  ptmp = p; 
+  ptmp = p;
   inc = incx + ncol*incy;
   fi -= inc; fo -= inc;
   j = 0; la = (l2-l1) >= 0 ? l1:l2;

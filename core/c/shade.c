@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdio.h>
 #include "miallib.h"
 
@@ -74,8 +94,8 @@ IMAGE *generic_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -89,7 +109,7 @@ IMAGE *generic_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -156,8 +176,8 @@ IMAGE *us_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -171,7 +191,7 @@ IMAGE *us_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -237,8 +257,8 @@ IMAGE *i32_shade(IMAGE *im, int dir)
   itmp = (IMAGE *)create_image(t_INT32, nx, GetImNy(im), GetImNz(im));
   if (itmp==NULL)
     return(NULL);
-  
-  /* Here we go */ 
+
+  /* Here we go */
   p1 = (PIX_TYPE *)GetImPtr(im) + nx + 1;
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   pfin = p2 + nx*GetImNy(im)-nx-1;
@@ -252,7 +272,7 @@ IMAGE *i32_shade(IMAGE *im, int dir)
   p2 = (INT32 *)GetImPtr(itmp) + nx + 1;
   for (; p2 < pfin; p2++)
     *p2 -= min;
-  
+
   BOX_2D;
 
   i32_framebox(itmp,box,0L);
@@ -319,19 +339,19 @@ IMAGE *us_LineDilate3D(IMAGE *im, float dh)
      Actual masks are simply obtained by applying the backward rotation.
 
 
-     by Pierre.Soille@jrc.ec.europa.eu
+     by Pierre Soille
 
      First: 20141203
 
      First working: 20141203
 
      TODO: adapt processing along arbitrary line segments to avoid
-     rotation.     
+     rotation.
   */
   PIX_TYPE *pi, *picrt, a;
   IMAGE *imout;
   MIALFLOAT *po, *pocrt, b;
-  
+
   int i, j, nx, ny;
 
   nx=GetImNx(im);

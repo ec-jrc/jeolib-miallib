@@ -1,3 +1,31 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
+/** @file
+ *  Functions dealing with distance calculations inlcuding geodesic distances and influence zones.
+ *  For the Euclidean distance function edistfifo2d using a FIFO, see \cite soille91
+ *  @author Pierre Soille
+ */
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -15,13 +43,13 @@ ERROR_TYPE generic_dst2d4(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend, tmp;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (generic_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -29,7 +57,7 @@ ERROR_TYPE generic_dst2d4(IMAGE *im)
     if (*p)
       *p = (*(p-1)+1)<(*(p-nx)+1) ? *(p-1)+1 : *(p-nx)+1;
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -53,13 +81,13 @@ ERROR_TYPE us_dst2d4(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend, tmp;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (us_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -67,7 +95,7 @@ ERROR_TYPE us_dst2d4(IMAGE *im)
     if (*p)
       *p = (*(p-1)+1)<(*(p-nx)+1) ? *(p-1)+1 : *(p-nx)+1;
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -119,13 +147,13 @@ ERROR_TYPE generic_dst2dchamfer(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (generic_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -140,7 +168,7 @@ ERROR_TYPE generic_dst2dchamfer(IMAGE *im)
 	*p = *(p - 1) + 5;
     }
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -168,13 +196,13 @@ ERROR_TYPE us_dst2dchamfer(IMAGE *im)
   int box[BOXELEM];
   PIX_TYPE *p, *pend;
   int nx = GetImNx(im);
-  
+
   /* Set borders to zero */
   box[0]=box[1]=box[2]=box[3]=1;
   box[4]=box[5]=0;
   if (us_framebox(im,box,0)==ERROR)
     return ERROR;
-  
+
   /* forward scan */
   p    = (PIX_TYPE *)GetImPtr(im);
   pend = p+nx*GetImNy(im)-GetImNx(im)-1;
@@ -189,7 +217,7 @@ ERROR_TYPE us_dst2dchamfer(IMAGE *im)
 	*p = *(p - 1) + 5;
     }
   }
-  
+
   /* backward scan */
   pend = (PIX_TYPE *)GetImPtr(im)+GetImNx(im);
   p    = (PIX_TYPE *)GetImPtr(im)+nx*GetImNy(im);
@@ -284,9 +312,9 @@ ERROR_TYPE setdxdy(int *dx, int *dy, int graph)
 ERROR_TYPE cqentercontour(IMAGE *im, int obj, int bgd, int graph, int inqueue, FIFO4 *q)
 {
   long int k, shift, shft[27];
-  
+
   if (set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft) != NO_ERROR)
-    return ERROR;  
+    return ERROR;
 
   switch (GetImDataType(im)){
     case t_UCHAR:
@@ -331,7 +359,7 @@ ERROR_TYPE cqentercontour(IMAGE *im, int obj, int bgd, int graph, int inqueue, F
 }
 
 
-/* distance function using a FIFO \cite{soille91} */
+/* distance function using a FIFO \cite soille91 */
 #include "us_def.h" /* for output */
 IMAGE *edistfifo2d(IMAGE *im, int graph)
 {
@@ -343,9 +371,9 @@ IMAGE *edistfifo2d(IMAGE *im, int graph)
   IMAGE *imn, *imw;
   long int shft[27];
   int box[6];
-  
+
   if (set_seq_shift(GetImNx(im), GetImNy(im), GetImNz(im), graph, shft) != NO_ERROR)
-    return NULL;  
+    return NULL;
 
   if (setdxdy(dx, dy, graph) != NO_ERROR)
     return NULL;
@@ -360,7 +388,7 @@ IMAGE *edistfifo2d(IMAGE *im, int graph)
   imw=copy_image(imn);
   if (imn==NULL){
     (void) sprintf(buf, "eudistance(): not enough memory"); errputstr(buf);
-    free_image(imn); 
+    free_image(imn);
     return NULL;
   }
 
@@ -439,7 +467,7 @@ ERROR_TYPE generic_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */
@@ -550,7 +578,7 @@ ERROR_TYPE us_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */
@@ -661,7 +689,7 @@ ERROR_TYPE i32_chamfer2d(IMAGE *im, int type)
   int *shft, n, k;
   PIX_TYPE *dval, dcrt;
   PIX_TYPE *p, *pend;
-  
+
   /* Set borders to zero */
   switch (type){
     case 1: /* city-block or 4-connected distance */

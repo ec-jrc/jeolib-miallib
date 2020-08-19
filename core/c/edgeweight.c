@@ -1,11 +1,30 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2010-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 /**
  * @file   edgeweight.c
  * @author Pierre SOILLE
  * @date   Mon Oct 18 14:00:02 2010
- * 
- * @brief  
- * 
- * 
+ *
+ * @details See also \cite soille2011ismm
+ *
  */
 
 
@@ -62,7 +81,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case RANGE:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=abs(pin[y*nx+x]-pin[y*nx+x+shft]);
@@ -72,7 +91,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case MAXVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MAX(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -82,7 +101,7 @@ IMAGE *uc_edgeweight(IMAGE *im, int dir, int type)
   case MINVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MIN(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -141,7 +160,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case RANGE:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=abs(pin[y*nx+x]-pin[y*nx+x+shft]);
@@ -151,7 +170,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case MAXVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MAX(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -161,7 +180,7 @@ IMAGE *us_edgeweight(IMAGE *im, int dir, int type)
   case MINVAL:
 #ifdef OPENMP
 #pragma omp parallel for private(x)
-#endif  
+#endif
   for (y=0; y<nylast; y++){
     for (x=0; x<nxlast; x++){
       pout[y*nxout+x]=MIN(pin[y*nx+x],pin[y*nx+x+shft]);
@@ -188,11 +207,11 @@ IMAGE *edgeweight(IMAGE *im, int dir, int type)
   case t_UCHAR:
     return(uc_edgeweight(im, dir, type));
     break;
-    
+
   case t_USHORT:
     return(us_edgeweight(im, dir, type));
     break;
-    
+
   default:
     (void)sprintf(buf,"edgeweight(): invalid pixel type\n"); errputstr(buf);
     return(NULL);

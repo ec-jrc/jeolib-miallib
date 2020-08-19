@@ -1,3 +1,23 @@
+/***********************************************************************
+Author(s): Pierre Soille
+Copyright (C) 2000-2020 European Union (Joint Research Centre)
+
+This file is part of miallib.
+
+miallib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+miallib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with miallib.  If not, see <https://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -50,7 +70,7 @@ void f_indexx(int n, float arrin[], int indx[])
   int l,j,ir,indxt,i;
   float q;
 
-  for (j=1;j<=n;j++) indx[j]=j; 
+  for (j=1;j<=n;j++) indx[j]=j;
   if (n == 1) return;
   l=(n >> 1) + 1;
   ir=n;
@@ -103,7 +123,7 @@ IMAGE *sortindex(IMAGE *i0)
     if (flag)
       free_image(itmp);
     return NULL;
-  }   
+  }
 
   f_indexx(GetImNPix(i0), ((MIALFLOAT *)GetImPtr(itmp))-1, ((int *)GetImPtr(imidx))-1);
   if (flag)
