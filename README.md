@@ -20,6 +20,7 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     swig \
     python \
     python-numpy \
+    uthash-dev \
     texlive
 ```
 
