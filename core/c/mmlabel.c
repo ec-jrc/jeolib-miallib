@@ -52,9 +52,6 @@ IMAGE *u32_erodelabel(IMAGE *im1, int graph)
     (void)sprintf(buf,"ul_erodelabel(): not enough memory!\n"); errputstr(buf);
     return(im2);
   }
-  generic_blank(im2, 1);
-
-
   if (GetImNy(im1) == 1)
     {BOX_1D;}
   else if (GetImNz(im1) == 1)
@@ -62,15 +59,16 @@ IMAGE *u32_erodelabel(IMAGE *im1, int graph)
   else
     {BOX_3D;}
 
-  u32_framebox(im1, box, 0);
+  generic_blank(im2, 1);
+  generic_framebox(im2, box, 0);
 
   p1=(PIX_TYPE *)GetImPtr(im1);
   p2=(UCHAR *)GetImPtr(im2);
   p1last=p1+GetImNPix(im1);
 
   for (; p1<p1last; p1++, p2++){
-    lblcrt=*p1;
-    if (lblcrt){
+    if (*p2){
+      lblcrt=*p1;
       for (k=0; k<graph; k++){
 	if (*(p1+shft[k])!=lblcrt){
 	  *p2=0;
