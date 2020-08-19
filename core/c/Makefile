@@ -14,7 +14,14 @@ CXX        = c++
 CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON
-PYVER=3.5
+
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
+
+PYVER=${python_version_major}.${python_version_minor}
+
 prefix     = /usr/local
 exec_prefix= ${prefix}
 

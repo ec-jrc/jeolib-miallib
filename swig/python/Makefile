@@ -38,8 +38,13 @@ endif
 
 BINDING = python
 
-PYVER      = 3.5
-PYVERSHORT = 3
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
+
+PYVER=${python_version_major}.${python_version_minor}
+PYVERSHORT = ${python_version_major}
 
 #GDAL include ../SWIGmake.base
 WRAPPER = $(TARGET)_wrap.c
