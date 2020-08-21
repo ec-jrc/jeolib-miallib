@@ -2518,8 +2518,8 @@ ERROR_TYPE getminmax(IMAGE *im, double *minval, double *maxval)
     *maxval=(double) pgmax.us_val;
     break;
   case t_SHORT:
-    *minval=(double) pgmin.us_val;
-    *maxval=(double) pgmax.us_val;
+    *minval=(double) pgmin.s_val;
+    *maxval=(double) pgmax.s_val;
     break;
   case t_INT32:
     *minval=(double) pgmin.i32_val;
