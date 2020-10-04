@@ -1,6 +1,6 @@
 # ------------------------------------------------------------
 #
-# note: compile with -DCLUSTER for additional types in set_regions but requires dcluster.c
+# note: compile with -DCURE_CLUSTER for additional types in set_regions but requires additional library
 #
 
 BASE       = miallib
@@ -11,7 +11,7 @@ CXX        = c++
 # defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
-CFLAGS     = -DDEBUG -DOPENMP -DCLUSTER -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
+CFLAGS     = -DDEBUG -DOPENMP -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON
 
@@ -43,7 +43,7 @@ SRCS	   = imem.c shm.c pointop.c \
 		format.c colconv.c  miscel.c \
 		setshft.c \
 		fifo.c fah.c pqueue.c \
-		alloc.c error.c graph.c cluster.c dcluster.c \
+		dcluster.c \
 		label.c mslabel.c mmlabel.c \
 		setreg.c setreglut.c \
 		labelccfastrim.c labelccms.c labelccmi.c labelci.c labelcims.c labelccvar.c \

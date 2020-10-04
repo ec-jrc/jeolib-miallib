@@ -33,12 +33,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-#ifdef CLUSTER /* this requires dcluster.c */
 extern int cluster();
 extern ERROR_TYPE agglo_cluster();
 extern ERROR_TYPE nearest_cluster();
 extern ERROR_TYPE knearest_cluster();
-#endif
 
 #define set_mean_type(TYPE1, TYPE2, i1, i2) \
 {\
@@ -787,9 +785,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
   IMBLOB *part, *blob;
   long int i, npix;
   int x,y,nx,ny,area,m00;
-#if defined(CLUSTER)
   int *px, *py, n;
-#endif
   double xcg=0.0,ycg=0.0,phi,mu11,mu20,mu02,c,ratio;
   double r=0.0,slope,cst; /* for the linear regression */
 
@@ -915,7 +911,6 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     for (i=1; i<maxlbl; i++)
        pilbl[(int)(part[i].xcg)+(int)(part[i].ycg)*nx]=1;
   }
-#if defined(CLUSTER)
   else if (type==16){ /* agglomerative clustering */
     n=maxlbl-2;
     px=(int *)calloc(n, sizeof(int));
@@ -961,8 +956,8 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     free((char *)py);
 
   }
-  else if (type==19){ /* clustering using Stolcke source code */
-
+#if defined(CURE_CLUSTER)
+  else if (type==19){ /* clustering using CURE clustering algorithm */
     DOUBLE **pattern;
     int *lblt;
 
@@ -990,7 +985,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     free((char *)lblt);
 
   }
-#endif /* if defined(CLUSTER) */
+#endif /* if defined(CURE_CLUSTER) */
   else{
     for (i=0; i<npix; i++){
       if (type==9)
@@ -1320,17 +1315,17 @@ ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic)
       break;
     case 8:
       return(tessel_sum(ilbl, ival));
-      break;
-    case 9:
-    case 10:
-    case 11:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:  /* k nearest neighbours */
-    case 19:  /* stolcke hierarchical clustering */
+      break;     
+    case 9:  /* orientation of matching ellipsis */
+    case 10: /* correlation coefficient */
+    case 11: /* gravity centre */ 
+    case 13: /* minor axis of matching ellipsis */
+    case 14: /* major axis of matching ellipsis */
+    case 15: /* irradiance */
+    case 16: /* agglomerative clustering */
+    case 17: /* nearest neighbours */
+    case 18: /* k nearest neighbours */
+    case 19: /* CURE hierarchical clustering */
       return(uc_tessel_dir(ilbl,ival,indic));
       break;
     case 12:
