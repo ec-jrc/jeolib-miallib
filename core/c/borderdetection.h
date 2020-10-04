@@ -1,5 +1,5 @@
 /***********************************************************************
-Author(s): Dominik Brunnner and Pierre Soille
+Author(s): Dominik Brunner and Pierre Soille
 Copyright (C) 2004-2020 European Union (Joint Research Centre)
 
 This file is part of miallib.
