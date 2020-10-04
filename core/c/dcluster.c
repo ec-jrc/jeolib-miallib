@@ -156,7 +156,7 @@ ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double ma
   DOUBLE *pdst;
 
   int x1, y1, x2, y2;
-  int *indx;
+  size_t *indx;
 
 
   /* create image of distances */
@@ -173,14 +173,12 @@ ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double ma
 	pdst[i+j*n]=sqrt((double) ((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])));
 
 
-  indx=(int *)calloc(n, sizeof(int));
+  indx=(size_t *)calloc(n, sizeof(size_t));
 
   k=MIN(k,n);
 
   for (i=0; i<n; i++){
-    indexx(n, pdst+i*n-1, indx-1);
-    for (j=0; j<n; j++)
-      indx[j]-=1;
+    indexx(n, pdst+i*n, indx);
     for (j=0; j<k; j++){
       if (pdst[i*n+indx[j]]<=maxdst){ /* link i with j */
 	x1=x[i]; y1=y[i];

@@ -33,7 +33,7 @@ typedef struct tms Ttime ;
 #define min(a,b) ((a)<(b)?(a):(b))
 #endif
 
-extern void indexx(int n, double arrin[], int indx[]);
+extern void indexx(size_t n, double arrin[], size_t indx[]);
 extern void bresenham(int x1, int y1, int x2, int y2, int pb[], double offset2[], int rlc[], int ncol);
 
 
@@ -63,8 +63,8 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   // double offset2[25000];  /* must be dynamically allocated (t values) ... quick and dirty */
   // int indxori[25000];       /* for order of t first pixels */
 
-  double *offset2=(double *)calloc(MAX(GetImNx(im), GetImNy(im))+1,sizeof(double));
-  int *indxori=(int *)calloc(MAX(GetImNx(im), GetImNy(im))+1,sizeof(int));
+  double *offset2=(double *)calloc(MAX(GetImNx(im), GetImNy(im))+1, sizeof(double));
+  size_t *indxori=(size_t *)calloc(MAX(GetImNx(im), GetImNy(im))+1, sizeof(size_t));
 
 
   int *indx;       /* for order of  pixels along line */
@@ -135,7 +135,7 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   ady=abs(dy);
 
   /* sort offsets in increasing order (first will be processed first etc.) */
-  indexx(t,offset2-1,indxori-1);
+  indexx(t,offset2,indxori);
   free(offset2);
   for (i=0; i<t; i++)
     indx[indxori[i]-1]=i;

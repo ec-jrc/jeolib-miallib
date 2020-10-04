@@ -1735,7 +1735,7 @@ ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
   LOCAL_LBL_TYPE *plbl, maxlbl;
   long int i, npix=GetImNPix(g);
   double *doo;  /* doo[i]=number of images available for region with label i */
-  int *indx, *irank;
+  size_t *indx, *irank;
   G_TYPE *pg;
 
   /* get min & max values */
@@ -1745,8 +1745,8 @@ ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
   maxlbl = pg[1].us_val;
   free((char *)pg);
   doo=(double *)calloc(maxlbl+1,sizeof(double));
-  indx=(int *)calloc(maxlbl+1,sizeof(int));
-  irank=(int *)calloc(maxlbl+1,sizeof(int));
+  indx=(size_t *)calloc(maxlbl+1,sizeof(size_t));
+  irank=(size_t *)calloc(maxlbl+1,sizeof(size_t));
 
   pgim=(PIX_TYPE *)GetImPtr(g);
   plbl=(LOCAL_LBL_TYPE *)GetImPtr(imlbl);
@@ -1761,9 +1761,7 @@ ERROR_TYPE us_gorder(IMAGE *imlbl, IMAGE *g, int n)
   for (i=0;i<maxlbl+1;i++)
     indx[i]=i;
 
-  indexx(maxlbl+1, doo-1, indx-1);
-  for (i=0;i<maxlbl+1;i++)
-    indx[i]=indx[i]-1; /* numerical recipes indices start with 1 */
+  indexx(maxlbl+1, doo, indx);
   for (i=0;i<maxlbl+1;i++)
     irank[indx[i]]=i;
 
@@ -1788,7 +1786,7 @@ ERROR_TYPE u32_gorder(IMAGE *imlbl, IMAGE *g, int n)
   LOCAL_LBL_TYPE *plbl, maxlbl;
   long int i, npix=GetImNPix(g);
   double *doo;  /* doo[i]=number of images available for region with label i */
-  int *indx, *irank;
+  size_t *indx, *irank;
   G_TYPE *pg;
 
   /* get min & max values */
@@ -1798,8 +1796,8 @@ ERROR_TYPE u32_gorder(IMAGE *imlbl, IMAGE *g, int n)
   maxlbl = pg[1].u32_val;
   free((char *)pg);
   doo=(double *)calloc(maxlbl+1,sizeof(double));
-  indx=(int *)calloc(maxlbl+1,sizeof(int));
-  irank=(int *)calloc(maxlbl+1,sizeof(int));
+  indx=(size_t *)calloc(maxlbl+1,sizeof(size_t));
+  irank=(size_t *)calloc(maxlbl+1,sizeof(size_t));
 
   pgim=(PIX_TYPE *)GetImPtr(g);
   plbl=(LOCAL_LBL_TYPE *)GetImPtr(imlbl);
@@ -1814,9 +1812,7 @@ ERROR_TYPE u32_gorder(IMAGE *imlbl, IMAGE *g, int n)
   for (i=0;i<maxlbl+1;i++)
     indx[i]=i;
 
-  indexx(maxlbl+1, doo-1, indx-1);
-  for (i=0;i<maxlbl+1;i++)
-    indx[i]=indx[i]-1; /* numerical recipes indices start with 1 */
+  indexx(maxlbl+1, doo, indx);
   for (i=0;i<maxlbl+1;i++)
     irank[indx[i]]=i;
 

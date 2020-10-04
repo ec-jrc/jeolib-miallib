@@ -509,7 +509,7 @@ extern ERROR_TYPE i32_addframebox(IMAGE *im, int *box,  INT32 gval);
 extern ERROR_TYPE u32_addframebox(IMAGE *im, int *box,  UINT32 gval);
 
 /* indexx.c */
-extern void indexx(int , double [], int []);
+extern void indexx(size_t , double [], size_t []);
 
 /* miscel.c */
 extern IMAGE *deinterleave(IMAGE *im);
