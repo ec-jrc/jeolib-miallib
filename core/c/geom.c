@@ -3085,6 +3085,10 @@ IMAGE *u32_magnify(IMAGE *im, int n)
 
 IMAGE *magnify(IMAGE *im, int n)
 {
+  if (GetImNz(im) > 1){
+    (void)sprintf(buf,"magnify(im, n): input image im must be 2-D\n"); errputstr(buf);
+    return(NULL);
+  }
   switch (GetImDataType(im)){
   case t_UCHAR:
     return(uc_magnify(im, n));
