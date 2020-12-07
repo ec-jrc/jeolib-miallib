@@ -1,4 +1,3 @@
-
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
 python_version_major := $(word 1,${python_version_full})
 python_version_minor := $(word 2,${python_version_full})
@@ -16,6 +15,8 @@ build:
 	cd swig/python && make -e -j 1 build
 	cd xlisp/c && make -j all
 
+generic:
+	cd core/c && make -e -j generic
 
 
 #
@@ -37,11 +38,17 @@ install:
 	cd xlisp/c && make install
 	#cd xlisp/doc && make install
 
+install-generic:
+	cd core/c && make install
+
 uninstall:
 	cd core/c && make uninstall
 	cd swig/python && make uninstall
 	cd xlisp/c && make uninstall
 	cd xlisp/doc && make uninstall
+
+uninstall-generic:
+	cd core/c && make uninstall
 
 clean:
 	-cd core/c && make clean

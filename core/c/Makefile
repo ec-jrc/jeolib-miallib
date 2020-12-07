@@ -11,7 +11,7 @@ CXX        = c++
 # defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
-CFLAGS     = -DDEBUG -DOPENMP -DLIBPROJ -DUNIX -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
+CFLAGS     = -DDEBUG -DOPENMP -DLIBPROJ -DUNIX -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON
 
@@ -111,7 +111,12 @@ INCLUDE    = -I./ -I/usr/include/python${PYVER}/ -I/usr/include/gdal/
 
 # TODO: add -lcsa -lnn
 
-LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
+ifdef $(NOSHP)
+	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
+else
+	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
+endif
+
 INTERFACE  = imem.i
 SWIGOPT    =
 SWIG       = swig
@@ -238,8 +243,9 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 
 
 
-
 build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
+
+generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
 
 doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
