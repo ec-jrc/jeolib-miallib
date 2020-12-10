@@ -29,18 +29,15 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
 make build
 ```
 
-+ By default the build will occur for python3.6.  To specifically build for python2.7, the PYVER and PYVERSHORT environment variables need to be set to 2.7 and resp. 2 beforehand:
-
-```
-PYVER=2.7
-PYVERSHORT=2
-```
-
 The documentation generation for pymia used epydoc for python2.7 and sphinx for 3.6.
 
 + Caveat: for the documentation, if texlive version is >= 2019, doxygen >= 1.8.16 needs to be installed!
 
+To build just the generic library without Python and Lisp for pyjeo:
 
+```
+make generic
+```
 
 ### Local builds only!!!
 
@@ -53,39 +50,16 @@ For local builds though, we also need to link `miallib` with `libshp`. So:
 sudo apt install -y libshp-dev
 ```
 
-and then apply this patch:
-
-```
-diff --git a/core/c/Makefile b/core/c/Makefile
-index 113f117..bec3be1 100644
---- a/core/c/Makefile
-+++ b/core/c/Makefile
-@@ -103,7 +103,7 @@ INCLUDE    = -I./ -I/usr/include/python2.7/ -I/usr/include/gdal/
-
- # TODO: add -lcsa -lnn
-
--LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
-+LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
- INTERFACE  = imem.i
- SWIGOPT    =
- SWIG       = swig
-diff --git a/xlisp/c/Makefile b/xlisp/c/Makefile
-index 8e6910a..e1bb369 100755
---- a/xlisp/c/Makefile
-+++ b/xlisp/c/Makefile
-@@ -25,7 +25,7 @@ CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG
-
-
- $(BUILDDIR)/mialisp: banner_miallib.h $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a
--       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj
-+       g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lproj -lshp
-```
-
 ## Install
 
 ```
 sudo make install
+```
 
+To install just the generic library without Python and Lisp for pyjeo:
+
+```
+sudo make install-generic
 ```
 
 ## Usage
