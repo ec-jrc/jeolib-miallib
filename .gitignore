@@ -4,3 +4,10 @@ xlisp/build/
 
 core/c/banner.h
 xlisp/c/banner_mialib.h
+core/c/alloc.c
+core/c/alloc.h
+core/c/cluster.c
+core/c/cluster.h
+core/c/error.c
+core/c/error.h
+core/c/graph.c
