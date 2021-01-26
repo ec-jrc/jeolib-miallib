@@ -1,5 +1,9 @@
 Welcomne to miallib!
 
+# Installation for pyjeo
+
+This part explains how to install miallib as a dependency for pyjeo
+
 ## Build time dependencies
 
 ```
@@ -21,45 +25,60 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     python \
     python-numpy \
     uthash-dev \
-    texlive
+    libshp-dev
 ```
 
-
-```
-make build
-```
-
-The documentation generation for pymia used epydoc for python2.7 and sphinx for 3.6.
-
-+ Caveat: for the documentation, if texlive version is >= 2019, doxygen >= 1.8.16 needs to be installed!
-
-To build just the generic library without Python and Lisp for pyjeo:
+To build just the generic library for pyjeo:
 
 ```
 make generic
 ```
 
-### Local builds only!!!
-
-Our docker containers use a customized gdal build which links to `libshp`.
-When we use that, we shouldn't link `miallib` to `libshp`.
-
-For local builds though, we also need to link `miallib` with `libshp`. So:
+## Install
 
 ```
-sudo apt install -y libshp-dev
+sudo make install-generic
+```
+
+# Full installation (not for pyjeo)
+
+This part explains how to install miallib (not only as a dependency for pyjeo)
+
+## Build time dependencies
+
+```
+sudo apt update
+DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
+    git \
+    build-essential \
+    libgsl-dev \
+    libgsl0-dev \
+    libfann-dev \
+    libgeotiff-dev \
+    libfftw3-dev \
+    libproj-dev \
+    libjsoncpp-dev \
+    libgdal-dev \
+    libssl-dev \
+    doxygen \
+    swig \
+    python \
+    python-numpy \
+    uthash-dev \
+    libshp-dev \
+    texlive
+```
+
+To build:
+
+```
+make build
 ```
 
 ## Install
 
 ```
 sudo make install
-```
-
-To install just the generic library without Python and Lisp for pyjeo:
-
-```
-sudo make install-generic
 ```
 
 ## Usage
