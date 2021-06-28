@@ -252,6 +252,7 @@ doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 all: build doc
 
 install:
+	mkdir -p $(prefix)/lib
 	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
 	mkdir -p $(prefix)/include/$(BASE)/
 	cp -a mialtypes.h $(prefix)/include/$(BASE)/
