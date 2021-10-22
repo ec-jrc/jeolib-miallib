@@ -248,7 +248,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
  */
 SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
   //go on here
-  int i,bool=1, * trace;
+  int i,mybool=1, * trace;
   struct LINE * line, ** lineArray,* hLine;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   double * xVertices, * yVertices;
@@ -272,10 +272,10 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
     }
   }
   crtPoint=line->points[line->crtPos-1];
-  while(bool){
+  while(mybool){
     newPoint=getNextPoint(region, crtPoint, trace);
     if(newPoint==NULL){
-      bool=0;
+      mybool=0;
       break;
     }
     //line = getLineSegment(region, crtPoint, newPoint);
@@ -307,7 +307,7 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
       }
     }
     if(arePointsEqual(newPoint, firstPoint)){
-      bool=0;
+      mybool=0;
       if(line->points[i]->useFlag){
         addPointToLine(hLine, newPoint);
       }

@@ -182,7 +182,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
 {
   //go on here
   char buffer[200];
-  int i,bool=1, * trace;
+  int i,mybool=1, * trace;
   struct LINE * line, ** lineArray;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   int * colorValues;
@@ -221,7 +221,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
     }
   }
   crtPoint=line->points[line->crtPos-1];
-  while(bool){
+  while(mybool){
     newPoint=getNextPoint(region, crtPoint, trace);
     if(newPoint==NULL){
       break;
@@ -267,7 +267,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
       }
     }
     if(arePointsEqual(newPoint, firstPoint)){
-      bool=0;
+      mybool=0;
     }else{
       if(line->points[i]->useFlag){
         if(gtif!=NULL){
