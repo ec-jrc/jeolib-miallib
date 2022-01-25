@@ -273,7 +273,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t  i, maxlbl;
   DOUBLE *pmin, *pmax;
 
   imhst = histo1d(ilbl);
