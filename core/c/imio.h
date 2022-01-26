@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2022 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -52,8 +52,6 @@ enum tiff_tags {WIDTH, LENGTH, BPS, PMI, NAME, DESC, SOT, SPP, SBC, XR, YR, SF, 
 /* SF=SampleFormat  added on 17-2-2004 */
 
 #define ColorMap N_PLANE
-
-int ptr_dir2; /*Offset to second directory*/
 
 
 /*

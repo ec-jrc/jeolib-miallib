@@ -658,6 +658,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   int xr_n = 1, xr_d = 1, yr_n = 1, yr_d = 1, swapflag=0;
   G_TYPE *pg;
   short int pmi=3; /* must be 3 when there is a ColorMap */
+  int ptr_dir2=0; /*Offset to second directory*/
 
   strcpy(doc_name, fn);
 
@@ -787,9 +788,6 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 
 #endif /* big-endian */
 
-  /*  Offset to next directory (if any) initialisation  */
-  ptr_dir2 = 0;
-
   /*  Open output file  */
   if ((fp = fopen(fn, "wb")) == NULL){
     (void)sprintf(buf, "write_tiff(): unable to open output file\n"); errputstr(buf);
@@ -849,6 +847,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   int xr_n = 1, xr_d = 1, yr_n = 1, yr_d = 1, swapflag=0;
   short int eight=8;
   G_TYPE *pg=NULL;
+  int ptr_dir2 = 0;  /*  Offset to next directory (if any) initialisation  */
 
   strcpy(doc_name, fn);
 
@@ -1045,8 +1044,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 #else
  #error BYTE_ORDER must be either BIG_ENDIAN or LITTLE_ENDIAN
 #endif
-  /*  Offset to next directory (if any) initialisation  */
-  ptr_dir2 = 0;
 
   /*  Open output file  */
   if ((fp = fopen(fn, "wb")) == NULL){
