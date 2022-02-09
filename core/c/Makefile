@@ -87,6 +87,13 @@ SRCS	   = imem.c shm.c pointop.c \
 
 OBJS       = $(SRCS:.c=.o)
 
+
+SRCS-MSPA = fifo.c label.c wshed.c bresenham.c pointop.c wsfah.c dcluster.c ced.c \
+		lerodil.c oiht.c imem.c erodil.c imio.c skel.c recons.c imstat.c \
+		indexx.c pqueue.c fah.c efedt.c miscel.c format.c setreg.c setshft.c geom.c
+
+OBJS-MSPA  = $(SRCS-MSPA:.c=.o)
+
 BUILDDIR   = ../build
 LDIR 	   = $(BUILDDIR)/lib
 DOCDIR     = ../doc
@@ -101,6 +108,7 @@ SOBJS-XLISP	   =  $(SRCS:%.c=$(SDIR-XLISP)/%.o)
 
 SDIR-GENERIC	   =  $(BUILDDIR)/build-static-generic
 SOBJS-GENERIC	   =  $(SRCS:%.c=$(SDIR-GENERIC)/%.o)
+SOBJS-MSPA         =  $(SRCS-MSPA:%.c=$(SDIR-GENERIC)/%.o)
 
 DDIR-GENERIC	   =  $(BUILDDIR)/build-shared-generic
 DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
@@ -175,6 +183,10 @@ $(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
 
+$(LDIR)/$(TARGET)_mspa.a: $(SOBJS-MSPA)
+	@mkdir -p $(@D)
+	$(LDSTATIC) $@ $(SOBJS-MSPA) && ranlib $@
+
 $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
 	$(LDSTATIC) $@ $(SOBJS-GENERIC) && ranlib $@
@@ -243,7 +255,7 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 
 
 
-build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
+build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so $(LDIR)/$(TARGET)_mspa.a
 
 generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
 
