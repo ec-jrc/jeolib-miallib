@@ -56,11 +56,11 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   else
     {BOX_3D;}
   generic_framebox(im_m, box, 0);
+  generic_framebox(im_r, box, 0);
 
-
-  nx =GetImNx(im_m);
-  ny =GetImNy(im_m);
-  nz =GetImNz(im_m);
+  nx=GetImNx(im_m);
+  ny=GetImNy(im_m);
+  nz=GetImNz(im_m);
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
@@ -135,10 +135,11 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   else
     {BOX_3D;}
   us_framebox(im_m, box, 0);
+  generic_framebox(im_r, box, 0);
 
-  nx =GetImNx(im_m);
-  ny =GetImNy(im_m);
-  nz =GetImNz(im_m);
+  nx=GetImNx(im_m);
+  ny=GetImNy(im_m);
+  nz=GetImNz(im_m);
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
