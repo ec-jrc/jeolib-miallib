@@ -56,13 +56,15 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
+#define EFEDT_G_IS_UINT32 1
+
 
 #include "uc_def.h"
 #ifdef  EFEDT_G_IS_UINT32
 #define GTYPE UINT32
 #define t_GTYPE t_UINT32
 #define GTYPE_MAX UINT32_MAX
-#define BIGVAL (m+n)
+#define BIGVAL (GTYPE_MAX/2)
 #else
 #define GTYPE USHORT
 #define t_GTYPE t_USHORT
@@ -78,7 +80,7 @@ IMAGE *uc_sqedt(IMAGE *im)
   GTYPE *g, bigval;
   DTYPE *dt;
   long int *t, *s;
-  long int x, y, w, m, n, q, sep;
+  long long int x, y, w, m, n, q, sep;
 
   unsigned long int offset, yxm;
 

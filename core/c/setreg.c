@@ -273,7 +273,7 @@ ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t  i, maxlbl;
   DOUBLE *pmin, *pmax;
 
   imhst = histo1d(ilbl);
@@ -785,7 +785,9 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
   IMBLOB *part, *blob;
   long int i, npix;
   int x,y,nx,ny,area,m00;
+#ifndef MSPA
   int *px, *py, n;
+#endif
   double xcg=0.0,ycg=0.0,phi,mu11,mu20,mu02,c,ratio;
   double r=0.0,slope,cst; /* for the linear regression */
 
@@ -911,6 +913,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     for (i=1; i<maxlbl; i++)
        pilbl[(int)(part[i].xcg)+(int)(part[i].ycg)*nx]=1;
   }
+#ifndef MSPA
   else if (type==16){ /* agglomerative clustering */
     n=maxlbl-2;
     px=(int *)calloc(n, sizeof(int));
@@ -956,6 +959,7 @@ ERROR_TYPE uc_tessel_dir(IMAGE *ilbl, IMAGE *ival, int type)
     free((char *)py);
 
   }
+#endif /* ifndef MSPA */
 #if defined(CURE_CLUSTER)
   else if (type==19){ /* clustering using CURE clustering algorithm */
     DOUBLE **pattern;

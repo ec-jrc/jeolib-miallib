@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2012-2020 European Union (Joint Research Centre)
+Copyright (C) 2012-2022 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -48,6 +48,18 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
   CC_LBL_TYPE *plbl, lbl=0;
   long int nx, ny, x, y, ofs;
   FIFO4 *q;
+  int box[6];
+
+  
+  if (alpha >= dissmax){
+    (void)sprintf(buf,"alphacc(): alpha must be < %d\n", dissmax); errputstr(buf);
+    return NULL;
+  }
+
+  BOX_2D;
+
+  uc_framebox(dissx, box, dissmax);
+  uc_framebox(dissy, box, dissmax);
 
   nx=GetImNx(dissy);
   ny=GetImNy(dissx);

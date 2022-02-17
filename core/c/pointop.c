@@ -42,8 +42,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op)
 {
   long int *pim1, *pim2;
-  unsigned long int i, nbyte, nword;
-
+  mia_size_t i, nbyte, nword;
+  
   nbyte = GetImNByte(im1);
   nword=nbyte/sizeof(long int);
 

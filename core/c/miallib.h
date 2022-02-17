@@ -48,6 +48,15 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define BITPERWORD   (sizeof(long int)*8)
 #define BYTEPERWORD  sizeof(long int)
 #define BITPERBAND   8
+
+#if _WIN32 || _WIN64
+#if _WIN64
+#define __WORDSIZE 64
+#else
+#define __WORDSIZE 32
+#endif
+#endif
+
 #if (__WORDSIZE==32)
 #define W_MSB        0x80000000
 #elif (__WORDSIZE==64)

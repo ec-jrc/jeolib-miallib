@@ -102,7 +102,7 @@ void hsi2rgb(double *h, double *s, double *i)
 IMAGE *generic_imhsi2rgb(IMAGE *imh, IMAGE *ims, IMAGE *imi)
 {
   double h, s, i;
-  int k, npix;
+  mia_size_t k, npix;
   IMAGE *imout;
   PIX_TYPE *pimh, *pims, *pimi, *pout;
 
@@ -218,7 +218,7 @@ void hls2rgb(double *phr, double *plg, double *psb)
 IMAGE *generic_imhls2rgb(IMAGE *imh, IMAGE *iml, IMAGE *ims)
 {
   double h, l, s;
-  int k, npix;
+  long int k, npix;
   IMAGE *imout;
   PIX_TYPE *pimh, *piml, *pims, *pout;
 
@@ -420,7 +420,7 @@ IMAGE **imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
 IMAGE *generic_crgb2rgb(IMAGE *imh, IMAGE *iml, IMAGE *ims)
 {
   PIX_TYPE h, l, s;
-  int k, npix;
+  mia_size_t k, npix;
   IMAGE *imout;
   PIX_TYPE *pimh, *piml, *pims, *pout;
 

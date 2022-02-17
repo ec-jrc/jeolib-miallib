@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille and Peter Vogt
-Copyright (C) 2008-2020 European Union (Joint Research Centre)
+Copyright (C) 2008-2022 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -20,6 +20,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 /** @file
  *  Morphological Segmentation of Binary Patterns \cite soille-vogt2009
+ *  https://doi.org/10.1016/j.patrec.2008.10.015
  *  @author Pierre Soille and Peter Vogt
  */
 
@@ -148,7 +149,6 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
 /* 	      0 size 0 */
 /* 	      OR_op) */
   imputop(lbim, lb, GetImNx(lbim)-1, 0, 0, OR_op);
-
   dirmax(lbim, 3);
   imputop(im, lbim, 0, size, 0, 11);
 
@@ -164,7 +164,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
 /* 	      OR_op) */
   imputop(rbim, rb, 0, 0, 0, 11);
   dirmax(rbim, 1);
-  imputop(im, rbim, GetImNx(im)-size, size, 0, OR_op);
+  imputop(im, rbim, GetImNx(im)-size-1, size, 0, OR_op);
 
 /*     (@imputop out (@dirmax (@imputintop tbim tb */
 /* 					0 */
@@ -412,7 +412,9 @@ IMAGE *getcorridor(IMAGE *connector, IMAGE *core, IMAGE *opening, float size, in
   free_image(imref);
 
   cor=to_int32(connector);
+  cor->DataType = t_UINT32;
   label(cor, se, 1, 1, 0);
+  cor->DataType = t_INT32;
 
   lbl->DataType=t_INT32;
   set_regions(cor, lbl, 20); // 20 for range
@@ -650,10 +652,10 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
     // remove("allHoles.tif");
     coreHoles=copy_image(tmp);
     arith(coreHoles, core, SUB_op);
-    arith(allHoles, coreHoles, SUB_op);
+    negation(coreHoles);
+    bitwise_op(allHoles, coreHoles, AND_op);  /* A \ B=A \int (\complement B) */
     free_image(coreHoles);
     generic_setlevel(allHoles, 1, 1, 220);
-
     arith(tmp, core, SUB_op);
     free_image(core);
 

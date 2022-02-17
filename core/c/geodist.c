@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2022 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -56,6 +56,7 @@ ERROR_TYPE generic_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   else
     {BOX_3D;}
   generic_framebox(im_m, box, 0);
+  generic_framebox(im_r, box, 0);
 
 
   nx =GetImNx(im_m);
@@ -135,6 +136,7 @@ ERROR_TYPE us_geodist(IMAGE *im_m, IMAGE *im_r, long int graph)
   else
     {BOX_3D;}
   us_framebox(im_m, box, 0);
+  generic_framebox(im_r, box, 0);
 
   nx =GetImNx(im_m);
   ny =GetImNy(im_m);

@@ -68,7 +68,6 @@ extern void gc();
 
 #define FALSE 0
 #define TRUE  1
-typedef unsigned char bool;
 
 #define ACTIVE_ROOT -1
 #define DONE_ROOT -2

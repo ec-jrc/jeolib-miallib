@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Dominik Brunner Pierre Soille
-Copyright (C) 2004-2020 European Union (Joint Research Centre)
+Copyright (C) 2004-2022 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -88,7 +88,7 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
   long int shft[27], offset, i, crtOffset, neighbourOffset;
   LBL_TYPE *pLabelIm, lval;
   PIX_TYPE *pInputIm;
-  int nx, ny, k, bool, n;
+  int nx, ny, k, abool, n;
   FIFO4 *hq;
   int box[6];
   box[0] = 1;
@@ -155,7 +155,7 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
       pLabelIm[offset]=++lval;
       // check the neighbours
       for (k = 0; k < graph; k++){
-	bool = 1;
+	abool = 1;
 	neighbourOffset = offset + shft[k];
 	// check whether neighbour has same value for all
 	// channels
@@ -164,12 +164,12 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	    pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	    if ((( ((INT32) pInputIm[offset])-lambda) >pInputIm[neighbourOffset]) || \
 		(( ((INT32) pInputIm[offset])+lambda)<pInputIm[neighbourOffset])){
-	      bool = 0;
+	      abool = 0;
 	      break;
 	    }
 	  }
 	  // if yes => put in queue
-	  if (bool){
+	  if (abool){
 	    fifo4_add(hq, (long int) (neighbourOffset));
 	    pLabelIm[neighbourOffset] = lval;
 	  }
@@ -182,7 +182,7 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	  // check whether Pixel has no label
 	  neighbourOffset = crtOffset + shft[k];
 	  if (pLabelIm[neighbourOffset] == NOTLABELED){
-	    bool = 1;
+	    abool = 1;
 	    // check whether neighbour has same value
 	    // for all channels
 	    for (n = 0; n < nc; n++){
@@ -190,12 +190,12 @@ IMAGE *uc_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	      /* srtOffset used here, was offset in previous version */
 	      if (((  ((INT32) pInputIm[crtOffset])-lambda)>pInputIm[neighbourOffset]) || \
 		   (( ((INT32) pInputIm[crtOffset])+lambda)<pInputIm[neighbourOffset])){
-		bool = 0;
+		abool = 0;
 		break;
 	      }
 	    }
 	    // if yes => put in queue
-	    if (bool){
+	    if (abool){
 	      fifo4_add(hq,(long int) (neighbourOffset));
 	      pLabelIm[neighbourOffset] = lval;
 	    }
@@ -219,7 +219,7 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
   long int shft[27], offset, i, crtOffset, neighbourOffset;
   LBL_TYPE *pLabelIm, lval;
   PIX_TYPE *pInputIm;
-  int nx, ny, k, bool, n;
+  int nx, ny, k, abool, n;
   FIFO4 *hq;
   int box[6];
   box[0] = 1;
@@ -287,7 +287,7 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
       pLabelIm[offset]=++lval;
       // check the neighbours
       for (k = 0; k < graph; k++){
-	bool = 1;
+	abool = 1;
 	neighbourOffset = offset + shft[k];
 	// check whether neighbour has same value for all
 	// channels
@@ -296,12 +296,12 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	    pInputIm = (PIX_TYPE *) GetImPtr(imap[n]);
 	    if ((( ((INT32) pInputIm[offset])-lambda) >pInputIm[neighbourOffset]) || \
 		(( ((INT32) pInputIm[offset])+lambda)<pInputIm[neighbourOffset])){
-	      bool = 0;
+	      abool = 0;
 	      break;
 	    }
 	  }
 	  // if yes => put in queue
-	  if (bool){
+	  if (abool){
 	    fifo4_add(hq, (long int) (neighbourOffset));
 	    pLabelIm[neighbourOffset] = lval;
 	  }
@@ -314,7 +314,7 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	  // check whether Pixel has no label
 	  neighbourOffset = crtOffset + shft[k];
 	  if (pLabelIm[neighbourOffset] == NOTLABELED){
-	    bool = 1;
+	    abool = 1;
 	    // check whether neighbour has same value
 	    // for all channels
 	    for (n = 0; n < nc; n++){
@@ -322,12 +322,12 @@ IMAGE *us_labelImage(IMAGE **imap, int nc, IMAGE *labelIm, int graph, long int l
 	      /* srtOffset used here, was offset in previous version */
 	      if (((  ((INT32) pInputIm[crtOffset])-lambda)>pInputIm[neighbourOffset]) || \
 		   (( ((INT32) pInputIm[crtOffset])+lambda)<pInputIm[neighbourOffset])){
-		bool = 0;
+		abool = 0;
 		break;
 	      }
 	    }
 	    // if yes => put in queue
-	    if (bool){
+	    if (abool){
 	      fifo4_add(hq,(long int) (neighbourOffset));
 	      pLabelIm[neighbourOffset] = lval;
 	    }
