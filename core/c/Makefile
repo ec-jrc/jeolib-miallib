@@ -3,8 +3,16 @@
 # note: compile with -DCURE_CLUSTER for additional types in set_regions but requires additional library
 #
 
+MAJOR := 1
+MINOR := 0
+PATCH := 1
+
 BASE       = miallib
 TARGET     = lib$(BASE)
+LINKERNAME = $(TARGET)_generic.so
+SONAME     = $(LINKERNAME).$(MAJOR)
+MINORNAME  = $(SONAME).$(MINOR)
+REALNAME   = $(MINORNAME).$(PATCH)
 CC         = gcc
 CXX        = c++
 
@@ -199,9 +207,9 @@ $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
 	$(LDSTATIC) $@ $(SOBJS-GENERIC) && ranlib $@
 
-$(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
+$(LDIR)/$(REALNAME): $(DOBJS-GENERIC)
 	@mkdir -p $(@D)
-	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS) -o $@
+	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS) -o $@ -Wl,-soname,$(SONAME)
 
 
 ##################################################################
@@ -263,9 +271,9 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 
 
 
-build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so $(LDIR)/$(TARGET)_mspa.a
+build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(LINKERNAME) $(LDIR)/$(TARGET)_mspa.a
 
-generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
+generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME)
 
 doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
@@ -273,7 +281,11 @@ all: build doc
 
 install:
 	mkdir -p $(prefix)/lib
-	cp -a $(LDIR)/$(TARGET)_*.so $(prefix)/lib/
+	cp -a $(LDIR)/$(REALNAME) $(prefix)/lib/
+	cp -a $(LDIR)/$(TARGET)*.so* $(prefix)/lib/
+	ln -s $(prefix)/lib/$(REALNAME) $(prefix)/lib/$(MINORNAME)
+	ln -s $(prefix)/lib/$(MINORNAME) $(prefix)/lib/$(SONAME)
+	ln -s $(prefix)/lib/$(SONAME) $(prefix)/lib/$(LINKERNAME)
 	mkdir -p $(prefix)/include/$(BASE)/
 	cp -a mialtypes.h $(prefix)/include/$(BASE)/
 	cp -a miallib_*.h $(prefix)/include/$(BASE)/
