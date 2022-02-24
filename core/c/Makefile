@@ -131,9 +131,9 @@ INCLUDE    = -I./ -I/usr/include/python${PYVER}/ -I/usr/include/gdal/
 # TODO: add -lcsa -lnn
 
 ifdef $(NOSHP)
-	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
+	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lfftw3_threads -lgsl -lgslcblas
 else
-	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
+	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lfftw3_threads -lgsl -lgslcblas -lshp
 endif
 
 INTERFACE  = imem.i
