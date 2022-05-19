@@ -7795,6 +7795,40 @@ LVAL iwsfah()
   return (xlim1);
 }
 
+LVAL isegmentBinaryPatterns()
+{
+  LVAL xlim1;
+  float size=1.0;
+  int graph=4, transition=0, internal=0;
+
+  if (!moreargs())
+    xlabort("(*segmentBinaryPatterns im size graph transition internal)");
+
+/*
+  \lspfunction{*}{segmentBinaryPatterns}{im size graphfg transition internal}
+  \param{im}{an image node holding an UCHAR image with foreground pixels set to 2, background pixles set to 1, and no data pixels set to 0)}
+  \param{size}{a float number greater or equal to 1 indicating the width of the edges}
+  \param{graph}{integer for foreground connectivity (4 or 8)}
+  \param{transition}{a Boolean value indicating how transitions should be processed}
+  \param{internal}{a Boolean value indicating how embedded components should be processed (0 for no special treatment, 1 for assigning special values to pixels belonging to embedded components (like core components fully surrounded by a larger core component)}
+  \return{an image with classes matching the morphological segmentation of binary patterns described in \citep{soille-vogt2009}}
+  \desc{see \citep{soille-vogt2009}}
+  \cfunction{\cf}
+  \cfile{mspa.c}
+  \example{}{}
+*/
+  xlim1 = xlgaimage();
+ 
+  size = (float) getflonum(xlgaflonum());
+  graph = (int) getfixnum(xlgafixnum());
+  transition = (int) getfixnum(xlgafixnum());
+  internal = (int) getfixnum(xlgafixnum());
+ 
+  xllastarg();
+
+  return cvimage(segmentBinaryPatterns((IMAGE *)getimage(xlim1),  size, graph, transition, internal));
+}
+
 LVAL isrg()
 {
   LVAL xlim1, xlim2, xlim3;

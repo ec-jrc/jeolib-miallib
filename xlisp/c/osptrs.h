@@ -272,6 +272,11 @@
 {   "@SKELFAH",     S,  iskelfah         },
 {   "@SKELFAH2",    S,  iskelfah2        },
 {   "@COMPOSE",     S,  icompose         },
+  
+/* mspa.c */
+{   "*SEGMENTBINARYPATTERNS",       S,  isegmentBinaryPatterns  },
+
+  
 /* ovlmatrix.c */
 {   "OVLMATRIX",   S,  iovlmatrix         },
   

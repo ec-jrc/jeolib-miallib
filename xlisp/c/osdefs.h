@@ -184,6 +184,9 @@ extern LVAL iovlmatrix();
 extern LVAL ihistcompress();
 extern LVAL iws();
 
+/* mspa.c */
+extern LVAL isegmentBinaryPatterns();
+
 /* phase_correlation.c */
 extern LVAL iphase_correlation();
 
