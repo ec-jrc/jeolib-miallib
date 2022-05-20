@@ -271,7 +271,7 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 
 
 
-build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(LINKERNAME) $(LDIR)/$(TARGET)_mspa.a
+build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME) $(LDIR)/$(TARGET)_mspa.a
 
 generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME)
 
