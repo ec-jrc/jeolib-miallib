@@ -299,8 +299,10 @@ extern LVAL igrid();
 #ifdef NNI
 extern LVAL inni();
 #endif
+#if defined(LIBPROJ4)
 extern LVAL iproj();
 extern LVAL ics2cs();
+#endif
 extern LVAL ijulian_date();
 #endif /* #ifdef MIAL */
 

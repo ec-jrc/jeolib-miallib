@@ -297,7 +297,9 @@ extern IMAGE *labelccattr(IMAGE *im, int graph, int rg, int rl);
 extern IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha);
 
 /* projection.c */
+#if defined(LIBPROJ4)
 extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no);
+#endif
 
 /* remsens.c  */
 extern double julian_date(short int year, short int month, short int day, double hour);

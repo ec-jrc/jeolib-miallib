@@ -9549,6 +9549,7 @@ LVAL ifitlinear()
 \basesection
 */
 
+#if defined(LIBPROJ4)
 #define NPARMS 32
 LVAL iproj()
 {
@@ -9691,6 +9692,9 @@ LVAL ics2cs()
   free(imarray);
   return result;
 }
+#undef NPARMS
+#endif
+
 LVAL ijulian_date()
 {
   short int year, month, day;
