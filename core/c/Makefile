@@ -283,6 +283,9 @@ install:
 	mkdir -p $(prefix)/lib
 	cp -a $(LDIR)/$(REALNAME) $(prefix)/lib/
 	cp -a $(LDIR)/$(TARGET)*.so* $(prefix)/lib/
+	-rm $(prefix)/lib/$(MINORNAME)
+	-rm $(prefix)/lib/$(SONAME)
+	-rm $(prefix)/lib/$(LINKERNAME)
 	-ln -s $(prefix)/lib/$(REALNAME) $(prefix)/lib/$(MINORNAME)
 	-ln -s $(prefix)/lib/$(MINORNAME) $(prefix)/lib/$(SONAME)
 	-ln -s $(prefix)/lib/$(SONAME) $(prefix)/lib/$(LINKERNAME)
