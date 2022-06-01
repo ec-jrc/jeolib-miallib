@@ -22,6 +22,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  Morphological Segmentation of Binary Patterns \cite soille-vogt2009
  *  https://doi.org/10.1016/j.patrec.2008.10.015
  *  @author Pierre Soille and Peter Vogt
+ *  Version 2.3, February 2022
  */
 
 #include <stdlib.h>
@@ -193,7 +194,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
 /* 	      OR_op) */
   imputop(bbim, bb, 0, 0, 0, 11);
   dirmax(bbim, 2);
-  imputop(im, bbim, size, GetImNy(im)-size, 0, OR_op);
+  imputop(im, bbim, size, GetImNy(im)-size -1 , 0, OR_op);
 
   free_image(rb); free_image(lb); free_image(bb); free_image(tb);
   free_image(rbim); free_image(lbim); free_image(tbim); free_image(bbim);
@@ -401,6 +402,7 @@ IMAGE *getcorridor(IMAGE *connector, IMAGE *core, IMAGE *opening, float size, in
     pse[0]=1; pse[2]=1; pse[6]=1; pse[8]=1;
   }
   lbl=to_int32(core);
+  lbl->DataType = t_UINT32;
   label(lbl, se, 1, 1, 0);
 
   imref=copy_image(opening);
