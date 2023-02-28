@@ -5,10 +5,12 @@
 
 MAJOR := 1
 MINOR := 0
-PATCH := 2
+PATCH := 3
 
-BASE       = miallib
+MIAL       = mial
+BASE       = $(MIAL)lib
 TARGET     = lib$(BASE)
+LINKERBASE = $(BASE)_generic
 LINKERNAME = $(TARGET)_generic.so
 SONAME     = $(LINKERNAME).$(MAJOR)
 MINORNAME  = $(SONAME).$(MINOR)
@@ -177,10 +179,21 @@ banner.h: $(SRCS)
 	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
 
 
-
 ##################################################################
 #####                       GENERIC                         ######
 ##################################################################
+
+exec_prefix=${prefix}
+includedir=${prefix}/include/$(BASE)
+libdir=${exec_prefix}/lib
+
+$(MIAL).pc: $(SRCS)
+	@echo "Name: $(REALNAME)" > $(MIAL).pc
+	@echo "Description: The generic maillib library" >> $(MIAL).pc
+	@echo "Version: $(MAJOR).$(MINOR).$(PATCH)" >> $(MIAL).pc
+	@echo "Cflags: -I$(includedir)" >> $(MIAL).pc
+	@echo "Libs: -L$(libdir) -l$(LINKERBASE)" >> $(MIAL).pc
+	@echo "" >> $(MIAL).pc
 
 # ----------------------------------------------------------------
 # Build static library
@@ -270,38 +283,40 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 ##################################################################
 
 
-
 build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME) $(LDIR)/$(TARGET)_mspa.a
 
-generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME)
+generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME) $(MIAL).pc
 
 doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
 all: build doc
 
 install:
-	mkdir -p $(prefix)/lib
+	mkdir -p $(prefix)/lib/pkgconfig
+	mkdir -p $(prefix)/include/$(BASE)
 	cp -a $(LDIR)/$(REALNAME) $(prefix)/lib/
 	cp -a $(LDIR)/$(TARGET)*.so* $(prefix)/lib/
 	-rm $(prefix)/lib/$(MINORNAME)
 	-rm $(prefix)/lib/$(SONAME)
 	-rm $(prefix)/lib/$(LINKERNAME)
+	-rm $(prefix)/lib/pkgconfig/$(MIAL).pc
 	-ln -s $(prefix)/lib/$(REALNAME) $(prefix)/lib/$(MINORNAME)
 	-ln -s $(prefix)/lib/$(MINORNAME) $(prefix)/lib/$(SONAME)
 	-ln -s $(prefix)/lib/$(SONAME) $(prefix)/lib/$(LINKERNAME)
-	mkdir -p $(prefix)/include/$(BASE)/
 	cp -a mialtypes.h $(prefix)/include/$(BASE)/
 	cp -a miallib_*.h $(prefix)/include/$(BASE)/
 	cp -a op.h $(prefix)/include/$(BASE)/
+	cp -a $(MIAL).pc $(prefix)/lib/pkgconfig/$(MIAL).pc
 
 uninstall:
 	-rm -f $(prefix)/lib/*miallib*
 	-rm -f $(prefix)/include/$(BASE)/mialtypes.h
 	-rm -f $(prefix)/include/$(BASE)/miallib_*.h
 	-rm -f $(prefix)/include/$(BASE)/op.h
+	-rm -f $(prefix)/lib/pkgconfig/$(MIAL).pc
 
 clean:
 	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
-	-rm -f banner.h
+	-rm -f banner.h $(MIAL).pc
 
 
