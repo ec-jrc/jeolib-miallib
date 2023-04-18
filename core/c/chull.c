@@ -29,7 +29,7 @@ typedef struct {
 } intpair_t;
 
 
-inline INT32 isLeft( intpair_t P0, intpair_t P1, intpair_t P2 )
+inline static INT32 isLeft( intpair_t P0, intpair_t P1, intpair_t P2 )
 {
     return (P1.a - P0.a)*(P2.b - P0.b) - (P2.a - P0.a)*(P1.b - P0.b);
 }

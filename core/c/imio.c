@@ -33,7 +33,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <tiffio.h>
 //#include "xtiffio.h" /* 2005-10-24 */
 // #include "geotiff.h" /* 2005-10-24 */
-#include "banner.h"  /* 2007-12-10 */
+/* #include "banner.h"  /\* 2007-12-10 *\/ */
 #include "miallib.h"
 #include "imio.h"
 
@@ -1102,7 +1102,8 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
     int bpp = GetImBitPerPixel(im)/8;
     int stripCount, sf;
     char timeString[20];
-    char imdesc[512] = MYBANNER;
+    /* char imdesc[512] = MYBANNER; */
+    char imdesc[512] = { [0 ... 511] = ' ' };
     USHORT *lut;
     char mode[10];
     char *mp=mode;

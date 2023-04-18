@@ -32,7 +32,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <geotiff/xtiffio.h>
 #include <tiffio.h>
 #include <geotiff/geotiffio.h> /* 2005-12-20 */
-#include "banner.h"  /* 2007-12-10 */
+/* #include "banner.h"  /\* 2007-12-10 *\/ */
 
 #if (!defined(SEEK_CUR))
 #define SEEK_CUR 1
@@ -96,7 +96,8 @@ void InstallGDALTiffTags()
 
 void print_mia_banner()
 {
-  char banner[512] = MIA_BANNER;
+  /* char banner[512] = MIA_BANNER; */
+  char banner[512] = { [0 ... 511] = ' ' };
   printf("%s\n", banner);
 }
 
@@ -825,7 +826,8 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     GTIF *gtif=(GTIF*)0;
     double pixsize[3], tiepoint[6];
     void *lbuf;
-    char imdesc[512] = MYBANNER;
+    /* char imdesc[512] = MYBANNER; */
+    char imdesc[512] = { [0 ... 511] = ' ' };
     char mode[10];
     char *mp=mode;
 
@@ -1062,7 +1064,8 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     GTIF *gtif=(GTIF*)0;
     double pixsize[3], tiepoint[6];
     void *lbuf;
-    char imdesc[512] = MYBANNER;
+    /* char imdesc[512] = MYBANNER; */
+    char imdesc[512] = { [0 ... 511] = ' ' };
     char mode[10];
     char *mp=mode;
 
