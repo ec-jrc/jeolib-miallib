@@ -35,10 +35,10 @@ set (MIALLIB_SOVERSION "${MIALLIB_VERSION_MAJOR}")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 message(STATUS "cmake module path: ${CMAKE_MODULE_PATH}")
 
-# file(GLOB SRC_FILES "core/c/*.c")
-# set(SOURCES
-#   ${SRC_FILES}
-#   )
+file(GLOB SRC_FILES "core/c/*.c")
+set(SOURCES
+  ${SRC_FILES}
+  )
 
 set(SOURCES
   core/c/aflood.c
@@ -218,7 +218,6 @@ set(SOURCES
   core/c/wshed.c
   )
 
-
 # Setup output directories.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
@@ -295,13 +294,9 @@ if(GSL_FOUND)
 endif()
 
 
-# find_package(SHP REQUIRED)
-# target_link_libraries(${MIALLIB_LIB_NAME} shp)
 find_package(SHAPELIB REQUIRED)
-# message(STATUS "Found SHAPE library: ${SHAPELIB_LIBRARY}")
 message(STATUS "Found SHAPELIB libraries: ${SHAPELIB_LIBRARIES}")
 message(STATUS "Found SHAPELIB include dir: ${SHAPELIB_INCLUDE_DIRS}")
-message(STATUS "Found SHAPELIB_LIBRARY: ${SHAPELIB_LIBRARY}")
 include_directories(${SHAPELIB_INCLUDE_DIRS})
 target_link_libraries(${MIALLIB_LIB_NAME} ${SHAPELIB_LIBRARIES})
 add_definitions(-DSHAPE_DLL)
