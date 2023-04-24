@@ -36,6 +36,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <unistd.h>
 
 #include "mialtypes.h"
+#include "config_miallib.h"
 
 
 /* adjust to local system */
