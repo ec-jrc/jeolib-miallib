@@ -4,8 +4,8 @@
 #
 
 MAJOR := 1
-MINOR := 0
-PATCH := 2
+MINOR := 1
+PATCH := 0
 
 BASE       = miallib
 TARGET     = lib$(BASE)
@@ -172,10 +172,9 @@ CXXSHARED=      gcc -shared
 ##################################################################
 
 
-banner.h: $(SRCS)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
-
+# banner.h: $(SRCS)
+	# echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
+	# echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
 
 
 ##################################################################
@@ -186,16 +185,16 @@ banner.h: $(SRCS)
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
+$(SDIR-GENERIC)/%.o: %.c miallib.h #banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -o $@ $<
 
-$(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
+$(DDIR-GENERIC)/%.o: %.c miallib.h #banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
 
 
-$(SDIR-MSPA)/%.o: %.c miallib.h banner.h
+$(SDIR-MSPA)/%.o: %.c miallib.h #banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) -DMSPA $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -o $@ $<
 
@@ -245,11 +244,11 @@ PYTHON_DLNK   =
 # Build static and dynamic libraries
 # ----------------------------------------------------------------
 
-$(SDIR)/%.o: %.c miallib.h banner.h
+$(SDIR)/%.o: %.c miallib.h #banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 
-$(DDIR)/%.o: %.c miallib.h banner.h
+$(DDIR)/%.o: %.c miallib.h #banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
 
@@ -272,8 +271,10 @@ $(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyf
 
 
 build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME) $(LDIR)/$(TARGET)_mspa.a
+	@echo "#define OPENMP 1" > config_miallib.h
 
 generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(REALNAME)
+	@echo "#define OPENMP 1" > config_miallib.h
 
 doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
