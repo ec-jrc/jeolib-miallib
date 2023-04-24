@@ -17,7 +17,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -43,7 +42,7 @@ ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op)
 {
   long int *pim1, *pim2;
   mia_size_t i, nbyte, nword;
-  
+
   nbyte = GetImNByte(im1);
   nword=nbyte/sizeof(long int);
 
@@ -59,22 +58,30 @@ ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op)
   /* here we go */
   switch(op){
   case AND_op: /* bitwise AND */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<nword; i++)
       pim1[i] &= pim2[i];
     break;
   case OR_op: /* bitwise OR */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<nword; i++)
       pim1[i] |= pim2[i];
     break;
   case XOR_op: /* bitwise XOR */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<nword; i++)
       pim1[i] ^= pim2[i];
     break;
   case NAND_op: /* bitwise AND */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<nword; i++){
       pim1[i] &= pim2[i];
       pim1[i] = ~pim1[i];
@@ -168,7 +175,8 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -177,27 +185,37 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
 
   switch(op){
   case AND_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] &= p2[i];
     break;
   case OR_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] |= p2[i];
     break;
   case XOR_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] ^= p2[i];
     break;
   case ADD_op_ovfl: /* allow overflow */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] += p2[i];
     break;
   case ADD_op: /* set to PIX_MAX if overflow occurs */
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
       test = p1[i] + p2[i];
       if (test > PIX_MAX){
@@ -208,7 +226,9 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case SUB_op:
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
       test = p1[i] - p2[i];
       if (test < PIX_MIN){
@@ -219,7 +239,9 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case SUBSWAP_op:
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
       test = p2[i] - p1[i];
       if (test < PIX_MIN){
@@ -230,19 +252,25 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case SUB_op_ovfl:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] -= p2[i];
     }
     break;
   case SUBSWAP_op_ovfl:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] = p2[i] - p1[i];
     }
     break;
   case ABSSUB_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
 #if FLOATING
       p1[i] = (PIX_TYPE)fabs((double)p1[i]-(double)p2[i]);
@@ -252,7 +280,9 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case MULT_op:
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++)  {
       test = p1[i] * p2[i];
       if (test > PIX_MAX){
@@ -263,12 +293,16 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case MULT_op_ovfl:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] *=  p2[i];
     break;
   case DIV_op:
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
       if (p2[i] == (PIX_TYPE)0){
 	if (p1[i] != 0){
@@ -285,31 +319,41 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case INF_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p2[i] < p1[i])
 	p1[i] = p2[i];
     break;
   case SUP_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p2[i] > p1[i])
 	p1[i] = p2[i];
     break;
   case MASK_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p2[i] != (PIX_TYPE)0)
 	p1[i] = p2[i];
     break;
   case MASK_op2:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p1[i] ==(PIX_TYPE) 0)
 	p1[i] = p2[i];
     break;
   case CMP_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       if (p1[i] < p2[i])
 	p1[i] = 1;
@@ -320,7 +364,9 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case EQUAL_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       if (p1[i] == p2[i])
 	p1[i] = 1;
@@ -329,9 +375,11 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
     }
     break;
   case NDI_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
-      dval=(double)p1[i]+(double)p2[i];
+      double dval=(double)p1[i]+(double)p2[i];
       if (dval==0.0)
 	p1[i]=PIX_MAX;
       else
@@ -360,7 +408,8 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -507,7 +556,7 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -535,7 +584,8 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -682,7 +732,7 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -712,7 +762,8 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -859,7 +910,7 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -891,7 +942,8 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1038,7 +1090,7 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -1070,7 +1122,8 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1197,7 +1250,7 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -1229,7 +1282,8 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1356,7 +1410,7 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -1388,7 +1442,8 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -1515,7 +1570,7 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
 	*p1=PIX_MAX;
       else
@@ -1544,7 +1599,8 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -1671,11 +1727,11 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1703,7 +1759,8 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1830,11 +1887,11 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1862,7 +1919,8 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -1974,11 +2032,11 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
 #if FLOATING
@@ -2026,7 +2084,8 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -2138,11 +2197,11 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -2169,7 +2228,8 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -2281,11 +2341,11 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -2310,7 +2370,8 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
+  //pk 24/04/2023 prepare for parallel loop in future...
+  /* double dval; */
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -2422,11 +2483,11 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
     break;
   case NDI_op:
     for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
+      double dval=(double)*p1+(double)*p2;
       if (dval==0.)
-	*p1=PIX_MAX;
+        *p1=PIX_MAX;
       else
-	*p1=((double)*p1-(double)*p2)/dval;
+        *p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -2565,7 +2626,9 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
 
   switch(op){
   case AND_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] &= cst;
     }
@@ -2573,32 +2636,42 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
 #if (SIGNED==0)
   case NAND_op:
     cst=~cst;
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] &= cst;
     }
     break;
 #endif
   case OR_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] |= cst;
     }
     break;
   case XOR_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] ^= cst;
     }
     break;
   case ADD_op_ovfl: /* allow overflow */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] += cst;
     }
     break;
   case ADD_op: /* set to PIX_MAX if overflow occurs */
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
 #if OVFL_TEST
       test = p1[i] + cst;
@@ -2613,7 +2686,9 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     }
     break;
   case SUB_op:
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++){
 #if OVFL_TEST
       test = p1[i] - cst;
@@ -2628,13 +2703,17 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     }
     break;
   case SUB_op_ovfl:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       p1[i] -= cst;
     }
     break;
   case ABSSUB_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
 #if FLOATING
       p1[i] = (PIX_TYPE)fabs((double)p1[i]-cst);
@@ -2644,7 +2723,9 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     }
     break;
   case MULT_op:
+#ifdef OPENMP
 #pragma omp parallel for private(test) reduction(+:ovfl)
+#endif
     for (i=0; i<npix; i++)  {
 #if OVFL_TEST
       test = p1[i] * cst;
@@ -2659,12 +2740,16 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     }
     break;
   case MULT_op_ovfl:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i] *= cst;
     break;
   case DIV_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       if (cst == 0){
 	if (p1[i] != 0){
@@ -2681,31 +2766,41 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     }
     break;
   case INF_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (cst < p1[i])
 	p1[i] = cst;
     break;
   case SUP_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (cst > p1[i])
 	p1[i] = cst;
     break;
   case MASK_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (cst != 0)
 	p1[i] = cst;
     break;
   case MASK_op2:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p1[i] == 0)
 	p1[i] = cst;
     break;
   case CMP_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       if (p1[i] < cst)
 	p1[i] = 1;
@@ -2716,14 +2811,18 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
     break;
 #if SIGNED
   case SUBSWAPCST_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++)
       p1[i]=cst-p1[i];
     break;
 #endif
 #if (SIGNED==0)
   case FirstBitOn_op:
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
     for (i=0; i<npix; i++){
       for (k=0;k<BitPerPixel;k++){
 	if (p1[i] & 1<<k){
@@ -3902,7 +4001,9 @@ ERROR_TYPE s_imsqrt(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
 #if SIGNED
     if (p1[i]<0){
@@ -3935,7 +4036,9 @@ ERROR_TYPE us_imsqrt(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix; i++){
 #if SIGNED
     if (p1[i]<0){
@@ -3968,7 +4071,9 @@ ERROR_TYPE i32_imsqrt(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
 #if SIGNED
     if (p1[i]<0){
@@ -4002,7 +4107,9 @@ ERROR_TYPE u32_imsqrt(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
 #if SIGNED
     if (p1[i]<0){
@@ -4035,7 +4142,9 @@ ERROR_TYPE f_imsqrt(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
 #if SIGNED
     if (p1[i]<0){
@@ -4099,7 +4208,9 @@ ERROR_TYPE f_imlog(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)logf(p1[i]);
   }
@@ -4133,7 +4244,9 @@ ERROR_TYPE f_imatan(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)atanf(p1[i]);
   }
@@ -4169,7 +4282,9 @@ ERROR_TYPE f_imcos(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)cosf(p1[i]);
   }
@@ -4204,7 +4319,9 @@ ERROR_TYPE f_imacos(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)acosf(p1[i]);
   }
@@ -4238,7 +4355,9 @@ ERROR_TYPE f_imsin(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)sinf(p1[i]);
   }
@@ -4273,7 +4392,9 @@ ERROR_TYPE f_imasin(IMAGE *im)
 
   npix = GetImNPix(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix;i++){
       p1[i] = (PIX_TYPE)asinf(p1[i]);
   }
@@ -5668,7 +5789,8 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* MIALFLOAT dval; */
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -5681,10 +5803,11 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
-
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
   for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
+    MIALFLOAT dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
       /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
@@ -5713,7 +5836,8 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* MIALFLOAT dval; */
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -5726,10 +5850,11 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   pout = (MIALFLOAT *)GetImPtr(imout);
 
   npix = GetImNPix(im1);
-
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
   for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
+    MIALFLOAT dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
       /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
@@ -5757,7 +5882,8 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* MIALFLOAT dval; */
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -5771,9 +5897,11 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
 
   npix = GetImNPix(im1);
 
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
   for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
+    MIALFLOAT dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
       /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
@@ -5801,7 +5929,8 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* MIALFLOAT dval; */
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -5815,9 +5944,11 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
 
   npix = GetImNPix(im1);
 
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
   for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
+    MIALFLOAT dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
       /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
@@ -5845,7 +5976,8 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
+  //pk 24/04/2023 Dangerous: should be defined as local variable within parallel loop
+  /* MIALFLOAT dval; */
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -5859,9 +5991,11 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
 
   npix = GetImNPix(im1);
 
+#ifdef OPENMP
 #pragma omp parallel for reduction(+:ovfl)
+#endif
   for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
+    MIALFLOAT dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
     if (dval==0.0){
       pout[i]=-2;
       /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
@@ -5884,7 +6018,6 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
 
 IMAGE *ndi(IMAGE *im1, IMAGE *im2)
 {
-
   /* check for possible errors */
   if (szcompat(im1, im2) != NO_ERROR){
     (void)sprintf(buf,"ERROR in arith(im1, im2, op): \
