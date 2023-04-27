@@ -43,6 +43,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 message(STATUS "cmake module path: ${CMAKE_MODULE_PATH}")
 
 file(GLOB SRC_FILES "core/c/*.c")
+#simple way to get all src files, but not recommended
 # set(SOURCES
 #   ${SRC_FILES}
 #   )
@@ -245,33 +246,11 @@ SET_TARGET_PROPERTIES(${MIALLIB_LIB_NAME}
   VERSION ${MIALLIB_VERSION}
   )
 
-if(PROCESS_IN_PARALLEL)
-  find_package(OpenMP REQUIRED)
-  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set (CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set(PARALLEL_BOOL 1)
-  message(STATUS "parallel processing: ${PARALLEL_BOOL}")
-  SET(CMAKE_C_FLAGS "-DOPENMP=${PARALLEL_BOOL}")
-  target_link_libraries(${MIALLIB_LIB_NAME} OpenMP::OpenMP_CXX)
-else(PROCESS_IN_PARALLEL)
-  set(PARALLEL_BOOL 0)
-  message(STATUS "parallel processing: ${PARALLEL_BOOL}")
-endif(PROCESS_IN_PARALLEL)
-
-# find_package(OpenMP REQUIRED)
-# if (OPENMP_FOUND)
-# message(STATUS "Found OPENMP: ${OpenMP_LIBRARIES}")
-#   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-#   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-# endif(OPENMP_FOUND)
-
 include_directories("core/c")
 
 find_package(PkgConfig REQUIRED)
 
 # Setup configure file
-
 # configure a header file to pass some of the CMake settings to the source code
 
 configure_file ( "cmake-config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/core/c/config_miallib.h")
@@ -299,65 +278,31 @@ target_link_libraries(${MIALLIB_LIB_NAME} ${CMAKE_DL_LIBS})
 ### BEGIN FFTW
 
 find_package(FFTW REQUIRED)
-message(STATUS "Found FFTW: ${FFTW_LIBRARIES}")
-# target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_LIBRARIES})
-target_link_libraries(${MIALLIB_LIB_NAME} /usr/lib/x86_64-linux-gnu/libfftw3.so;/usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so)
-target_link_libraries(${MIALLIB_LIB_NAME} /usr/lib/x86_64-linux-gnu/libfftw3_omp.so;/usr/lib/x86_64-linux-gnu/libfftw3f_omp.so /usr/lib/x86_64-linux-gnu/libfftw3l_omp.so)
+message(STATUS "Found FFTW_LIBRARIES: ${FFTW_LIBRARIES}")
+target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_LIBRARIES})
+
+if(PROCESS_IN_PARALLEL)
+  find_package(OpenMP REQUIRED)
+  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+  set (CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+  set(PARALLEL_BOOL 1)
+  message(STATUS "parallel processing: ${PARALLEL_BOOL}")
+  SET(CMAKE_C_FLAGS "-DOPENMP=${PARALLEL_BOOL}")
+  target_link_libraries(${MIALLIB_LIB_NAME} OpenMP::OpenMP_CXX)
+  string(REPLACE ".so" "_omp.so" FFTW_OMP_LIBRARIES "${FFTW_LIBRARIES}")
+  message(STATUS "FFTW_OMP_LIBRARIES: ${FFTW_OMP_LIBRARIES}")
+  target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_OMP_LIBRARIES})
+else(PROCESS_IN_PARALLEL)
+  set(PARALLEL_BOOL 0)
+  message(STATUS "parallel processing: ${PARALLEL_BOOL}")
+endif(PROCESS_IN_PARALLEL)
 
 find_package(PkgConfig REQUIRED)
 
 set(BLA_VENDOR OpenBLAS)
 set(CMAKE_C_FLAGS -fopenmp)
 find_package(BLAS REQUIRED)
-# target_link_libraries(${MIALLIB_LIB_NAME})
-
-# find_package(FFTW REQUIRED THREADS OMP MKL)
-# pkg_check_modules(FFTW IMPORTED_TARGET REQUIRED fftw3)
-
-# if( NOT FFTW_ROOT AND DEFINED ENV{FFTWDIR} )
-#   message(STATUS "Not FFTW_ROOT AND DEFINED ENV: ${FFTWDIR}")
-#   set( FFTW_ROOT $ENV{FFTWDIR} )
-# else()
-#   message(STATUS "FFTW_ROOT DEFINED: ${FFTW_ROOT}")
-#   message(STATUS "FFTW_DIR DEFINED: ${FFTW_DIR}")
-# endif()
-
-find_library(
-  FFTW_DOUBLE_THREADS_LIB
-  NAMES "fftw3_threads"
-  PATHS ${PKG_FFTW_LIBRARY_DIRS} ${LIB_INSTALL_DIR}
-  )
-
-# if (FFTW_OMP_LIB)
-#   message(STATUS "Found FFTW_OMP_LIB: ${FFTW_OMP_LIB}")
-#   set(FFTW_OMP_LIB_FOUND TRUE)
-#   set(FFTW_LIBRARIES ${FFTW_LIBRARIES} ${FFTW_OMP_LIB})
-#   add_library(FFTW::DoubleThreads INTERFACE IMPORTED)
-#   set_target_properties(FFTW::DoubleThreads
-#     PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FFTW_INCLUDE_DIRS}"
-#     INTERFACE_LINK_LIBRARIES "${FFTW_OMP_LIB}"
-#     )
-# else()
-#   set(FFTW_OMP_LIB_FOUND FALSE)
-# endif()
-
-# if (FFTW_DOUBLE_THREADS_LIB)
-#   message(STATUS "Found FFTW_OMP_LIB: ${FFTW_OMP_LIB}")
-#   set(FFTW_DOUBLE_THREADS_LIB_FOUND TRUE)
-#   set(FFTW_LIBRARIES ${FFTW_LIBRARIES} ${FFTW_DOUBLE_THREADS_LIB})
-#   add_library(FFTW::DoubleThreads INTERFACE IMPORTED)
-#   set_target_properties(FFTW::DoubleThreads
-#     PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${FFTW_INCLUDE_DIRS}"
-#     INTERFACE_LINK_LIBRARIES "${FFTW_DOUBLE_THREADS_LIB}"
-#     )
-# else()
-#   set(FFTW_DOUBLE_THREADS_LIB_FOUND FALSE)
-# endif()
-
-# target_link_libraries(${MIALLIB_LIB_NAME} PkgConfig::FFTW)
-# target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_DOUBLE_THREADS_LIB})
-# target_link_libraries(${MIALLIB_LIB_NAME} OpenMP::OpenMP_CXX PkgConfig::FFTW ${FFTW_DOUBLE_THREADS_LIB})
-### END FFTW
 
 find_package(GSL REQUIRED)
 if(GSL_FOUND)
