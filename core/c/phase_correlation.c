@@ -30,6 +30,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "config_miallib.h"
 #ifdef OPENMP
 #include <omp.h>
 #endif
