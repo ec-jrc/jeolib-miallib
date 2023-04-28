@@ -4,13 +4,14 @@ Welcomne to miallib!
 
 This part explains how to install miallib as a dependency for pyjeo
 
-## Build time dependencies
+## Build dependencies
 
 ```
 sudo apt update
 DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     git \
     build-essential \
+    cmake \
     libgsl-dev \
     libgsl0-dev \
     libfann-dev \
@@ -26,7 +27,7 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     libshp-dev
 ```
 
-To build the miallib library via cmake for pyjeo:
+To build and install the miallib library via cmake for pyjeo:
 
 ```
 mkdir build
@@ -34,12 +35,6 @@ cd build
 cmake ..
 make
 sudo make install
-```
-
-## Install
-
-```
-sudo make install-generic
 ```
 
 # Full installation (not for pyjeo)
