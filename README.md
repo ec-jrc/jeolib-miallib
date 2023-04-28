@@ -20,18 +20,20 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     libjsoncpp-dev \
     libgdal-dev \
     libssl-dev \
-    doxygen \
     swig \
-    python \
-    python-numpy \
     uthash-dev \
+    libopenblas-dev \
     libshp-dev
 ```
 
-To build just the generic library for pyjeo:
+To build the miallib library via cmake for pyjeo:
 
 ```
-make generic
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
 ```
 
 ## Install
