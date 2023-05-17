@@ -34,7 +34,7 @@ set(MIALLIB_LIB_NAME miallib)
 
 set (MIALLIB_VERSION_MAJOR 1)
 set (MIALLIB_VERSION_MINOR 1)
-set (MIALLIB_VERSION_PATCH 0)
+set (MIALLIB_VERSION_PATCH 1)
 set (MIALLIB_VERSION "${MIALLIB_VERSION_MAJOR}.${MIALLIB_VERSION_MINOR}.${MIALLIB_VERSION_PATCH}")
 set (MIALLIB_SOVERSION "${MIALLIB_VERSION_MAJOR}")
 
@@ -264,6 +264,11 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/core/c")# needed for config_mia
 add_definitions(-DHAVE_CONFIG_H)
 
 configure_file ( "cmake.pc.in" "miallib.pc"  @ONLY)
+
+find_package(ZLIB .00 REQUIRED)
+target_link_libraries(${MIALLIB_LIB_NAME} ${ZLIB_LIBRARIES})
+include_directories(${ZLIB_INCLUDE_DIRS})
+message(STATUS "Found ZLIB_INCLUDE_DIRS: ${ZLIB_INCLUDE_DIRS}")
 
 find_package(GDAL 3.00 REQUIRED)
 target_link_libraries(${MIALLIB_LIB_NAME} ${GDAL_LIBRARIES})
