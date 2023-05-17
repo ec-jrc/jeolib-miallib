@@ -265,7 +265,7 @@ add_definitions(-DHAVE_CONFIG_H)
 
 configure_file ( "cmake.pc.in" "miallib.pc"  @ONLY)
 
-find_package(ZLIB .00 REQUIRED)
+find_package(ZLIB REQUIRED)
 target_link_libraries(${MIALLIB_LIB_NAME} ${ZLIB_LIBRARIES})
 include_directories(${ZLIB_INCLUDE_DIRS})
 message(STATUS "Found ZLIB_INCLUDE_DIRS: ${ZLIB_INCLUDE_DIRS}")
