@@ -1,4 +1,4 @@
-Welcomne to miallib!
+Welcome to miallib!
 
 # Installation for pyjeo
 
