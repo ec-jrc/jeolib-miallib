@@ -278,6 +278,7 @@ find_package(TIFF)
 target_link_libraries(${MIALLIB_LIB_NAME} tiff)
 
 find_package(PROJ REQUIRED IMPORTED)
+message(STATUS "Found PROJ INCLUDE DIRS: ${PROJ_INCLUDE_DIRS}")
 target_link_libraries(${MIALLIB_LIB_NAME} ${PROJ_LIBRARIES})
 
 
