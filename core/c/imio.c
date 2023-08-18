@@ -930,7 +930,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
       uc_maxi = pg[1].uc_val;
       free(pg);
       if (uc_maxi < 2){
-	printf("converting to 1 bit per pixel\n");
+	/* printf("converting to 1 bit per pixel\n"); */
 	imtmp = to_tiff1bitpp(im);
 	if (imtmp == NULL){
 	  free((char *)tag_info);
@@ -939,10 +939,10 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 	im = imtmp;
 	swapflag = 1;
 	nbyte=GetImNy(im)*(GetImNx(im)/8+(GetImNx(im)%8 ? 1: 0))*sizeof(UCHAR);
-	printf("nbyte=%lu\n", nbyte);
+	/* printf("nbyte=%lu\n", nbyte); */
       }
       else if (uc_maxi < 16){
-	printf("converting to 4 bits per pixel\n");
+	/* printf("converting to 4 bits per pixel\n"); */
 	imtmp = to_tiff4bitpp(im);
 	if (imtmp == NULL){
 	  free((char *)tag_info);
@@ -951,7 +951,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 	im = imtmp;
 	swapflag = 1;
 	nbyte=GetImNy(im)*(GetImNx(im)/2+(GetImNx(im)%2))*sizeof(UCHAR);
-	printf("nbyte=%lu\n", nbyte);
+	/* printf("nbyte=%lu\n", nbyte); */
       }
     }
   }

@@ -129,7 +129,7 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
     }
   }
   free_fifo4(q);
-  printf("alphacc(): number of labels=%ud\n", lbl);
+  /* printf("alphacc(): number of labels=%ud\n", lbl); */
   ilbl->g.u32_val=lbl;
   return ilbl;
 }

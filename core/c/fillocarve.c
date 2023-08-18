@@ -519,7 +519,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   free(fah);
   free_pq(heap);
 
-  printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
+  /* printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede); */
 
   us_framebox(&(im[0]),box,0);
   return imdir;
@@ -1007,7 +1007,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
   free(fah);
   free_pq(heap);
 
-  printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
+  /* printf("casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede); */
 
   us_framebox(&(im[0]),box,0);
   return imdir;
@@ -1456,7 +1456,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
   free(fah);
   free_pq(heap);
 
-  printf("casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased);
+  /* printf("casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased); */
 
   us_framebox(&(im[0]),box,0);
   return imdir;
