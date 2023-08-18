@@ -259,9 +259,29 @@ find_package(PkgConfig REQUIRED)
 # configure a header file to pass some of the CMake settings to the source code
 
 configure_file ( "cmake-config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/core/c/config_miallib.h")
-configure_file ( "cmake-config.in" "${CMAKE_CURRENT_BINARY_DIR}/miallib-config" @ONLY )
+# configure_file ( "cmake-config.in" "${CMAKE_CURRENT_BINARY_DIR}/miallib-config" @ONLY )
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/core/c")# needed for config_miallib.h
 add_definitions(-DHAVE_CONFIG_H)
+
+include(GNUInstallDirs)
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/miallib
+  CACHE PATH "Location of header files" )
+set(SYSCONFIG_INSTALL_DIR ${CMAKE_INSTALL_SYSCONFDIR}/miallib
+  CACHE PATH "Location of configuration files" )
+
+#Generating Package Files
+include(CMakePackageConfigHelpers)
+configure_package_config_file(MiallibConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/maillib
+  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfigVersion.cmake
+  VERSION ${MIALLIB_VERSION}
+  COMPATIBILITY SameMajorVersion )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib )
 
 configure_file ( "cmake.pc.in" "miallib.pc"  @ONLY)
 
@@ -294,6 +314,8 @@ target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_LIBRARIES})
 
 if(PROCESS_IN_PARALLEL)
   find_package(OpenMP REQUIRED)
+  set(<variable> <value>... CACHE <type> <docstring> [FORCE])
+  set (ENABLE_OPENMP_FFTW ON CACHE BOOL "Enable OPENMP for FFTW")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
   set (CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -301,7 +323,7 @@ if(PROCESS_IN_PARALLEL)
   message(STATUS "parallel processing: ${PARALLEL_BOOL}")
   SET(CMAKE_C_FLAGS "-DOPENMP=${PARALLEL_BOOL}")
   target_link_libraries(${MIALLIB_LIB_NAME} OpenMP::OpenMP_CXX)
-  string(REPLACE ".so" "_omp.so" FFTW_OMP_LIBRARIES "${FFTW_LIBRARIES}")
+  # string(REPLACE ".so" "_omp.so" FFTW_OMP_LIBRARIES "${FFTW_LIBRARIES}")
   message(STATUS "FFTW_OMP_LIBRARIES: ${FFTW_OMP_LIBRARIES}")
   target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_OMP_LIBRARIES})
 else(PROCESS_IN_PARALLEL)

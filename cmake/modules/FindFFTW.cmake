@@ -140,7 +140,8 @@ if(FFTWL_LIB)
   set(FFTW_LIBRARIES ${FFTW_LIBRARIES} ${FFTWL_LIB})
 endif()
 
-option (ENABLE_OPENMP_FFTW "Enable usage of OpenMP in FFTW, if possible" ${ENABLE_OPENMP})
+# we will set ENABLE_OPENMP_FFTW from CMakelLists in miallib
+# option (ENABLE_OPENMP_FFTW "Enable usage of OpenMP in FFTW, if possible" ${ENABLE_OPENMP})
 
 if (FFTW_LIB_OMP AND ENABLE_OPENMP_FFTW)
   set(FFTW_LIBRARIES ${FFTW_LIB_OMP} ${FFTW_LIBRARIES})
