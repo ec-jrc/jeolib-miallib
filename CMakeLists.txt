@@ -273,7 +273,7 @@ set(SYSCONFIG_INSTALL_DIR ${CMAKE_INSTALL_SYSCONFDIR}/miallib
 include(CMakePackageConfigHelpers)
 configure_package_config_file(MiallibConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfig.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/maillib
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
   PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
 write_basic_package_version_file(
   ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfigVersion.cmake
