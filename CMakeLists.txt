@@ -314,8 +314,6 @@ target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_LIBRARIES})
 
 if(PROCESS_IN_PARALLEL)
   find_package(OpenMP REQUIRED)
-  set(<variable> <value>... CACHE <type> <docstring> [FORCE])
-  set (ENABLE_OPENMP_FFTW ON CACHE BOOL "Enable OPENMP for FFTW")
   set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
   set (CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
