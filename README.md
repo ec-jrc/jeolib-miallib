@@ -33,8 +33,8 @@ To build and install the miallib library via cmake for pyjeo:
 mkdir build
 cd build
 cmake ..
-make
-sudo make install
+cmake --build .
+sudo cmake --install .
 ```
 
 # Full installation (not for pyjeo)
