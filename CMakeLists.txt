@@ -22,7 +22,7 @@
 # libopenblas-dev
 # libfftw3-mpi-dev
 
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.15)
 
 # The project's name and version
 project(miallib)
@@ -242,13 +242,14 @@ option (BUILD_SHARED_LIBS "Build with shared library" ON)
 ###############################################################################
 # Define the miallib library.
 # add_library( ${MIALLIB_LIB_NAME} ${SRC_FILES})
-add_library( ${MIALLIB_LIB_NAME} ${SOURCES})
+add_library(${MIALLIB_LIB_NAME} ${SOURCES})
 ###############################################################################
 
 SET_TARGET_PROPERTIES(${MIALLIB_LIB_NAME}
   PROPERTIES
   SOVERSION ${MIALLIB_SOVERSION}
   VERSION ${MIALLIB_VERSION}
+  NAMESPACE ${MIALLIB_LIB_NAME}::
   )
 
 include_directories("core/c")
@@ -266,22 +267,31 @@ add_definitions(-DHAVE_CONFIG_H)
 include(GNUInstallDirs)
 set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_INCLUDEDIR}/miallib
   CACHE PATH "Location of header files" )
-set(SYSCONFIG_INSTALL_DIR ${CMAKE_INSTALL_SYSCONFDIR}/miallib
-  CACHE PATH "Location of configuration files" )
+set(LIBRARY_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}
+  CACHE PATH "Location of library files" )
 
 #Generating Package Files
 include(CMakePackageConfigHelpers)
-configure_package_config_file(MiallibConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfig.cmake
+
+configure_package_config_file(
+  miallib-config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
-  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR)
+  PATH_VARS INCLUDE_INSTALL_DIR LIBRARY_INSTALL_DIR
+  )
+
+# Generate MIALLIBConfigVersion.cmake
 write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfigVersion.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
   VERSION ${MIALLIB_VERSION}
-  COMPATIBILITY SameMajorVersion )
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfig.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/MiallibConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib )
+  COMPATIBILITY AnyNewerVersion
+  )
+
+# Install MIALLIBConfig.cmake and MIALLIBConfigVersion.cmake
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
+  )
 
 configure_file ( "cmake.pc.in" "miallib.pc"  @ONLY)
 
