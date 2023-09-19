@@ -38,8 +38,36 @@ set (MIALLIB_VERSION_PATCH 1)
 set (MIALLIB_VERSION "${MIALLIB_VERSION_MAJOR}.${MIALLIB_VERSION_MINOR}.${MIALLIB_VERSION_PATCH}")
 set (MIALLIB_SOVERSION "${MIALLIB_VERSION_MAJOR}")
 
-set(PROCESS_IN_PARALLEL TRUE CACHE BOOL "Choose if jiplib should be run in parallel")
+set(PROCESS_IN_PARALLEL TRUE CACHE BOOL "Choose if miallib should be run in parallel")
 
+# build a CPack driven installer package
+INCLUDE (InstallRequiredSystemLibraries)
+SET(CPACK_RESOURCE_FILE_LICENSE
+     "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
+SET(CPACK_PACKAGE_VERSION_MAJOR "${MIALLIB_VERSION_MAJOR}")
+SET(CPACK_PACKAGE_VERSION_MINOR "${MIALLIB_VERSION_MINOR}")
+SET(CPACK_PACKAGE_VERSION_PATCH "${MIALLIB_VERSION_PATCH}")
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pieter Kempeneers")
+SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+INCLUDE(CPack)
+# Set files to ignore
+list(APPEND CPACK_SOURCE_IGNORE_FILES "_CPack_Packages")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".gz")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".bz2")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".zip")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".svn")
+list(APPEND CPACK_SOURCE_IGNORE_FILES ".git")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "HOWTORELEASE.txt")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "CMakeCache.txt")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "CPackConfig.cmake")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "schemas")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/build/;~$;${CPACK_SOURCE_IGNORE_FILES}")
+
+cpack_add_component(libraries)
+cpack_add_component(headers)
+
+SET(CPACK_DEB_COMPONENT_INSTALL YES)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 message(STATUS "cmake module path: ${CMAKE_MODULE_PATH}")
 
@@ -287,12 +315,6 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
   )
 
-# Install MIALLIBConfig.cmake and MIALLIBConfigVersion.cmake
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
-  )
-
 configure_file ( "cmake.pc.in" "miallib.pc"  @ONLY)
 
 find_package(ZLIB REQUIRED)
@@ -361,5 +383,17 @@ include_directories(${SHAPELIB_INCLUDE_DIRS})
 target_link_libraries(${MIALLIB_LIB_NAME} ${SHAPELIB_LIBRARIES})
 add_definitions(-DSHAPE_DLL)
 
-INSTALL (TARGETS ${MIALLIB_LIB_NAME} LIBRARY DESTINATION lib)
-INSTALL (FILES ${MIALLIB_H} DESTINATION include/miallib/)
+INSTALL(TARGETS ${MIALLIB_LIB_NAME}
+  EXPORT "${MIALLIB_LIB_NAME}"
+  COMPONENT libraries
+  LIBRARY DESTINATION lib)
+INSTALL(FILES ${MIALLIB_H} DESTINATION include/miallib/)
+# Install MIALLIBConfig.cmake and MIALLIBConfigVersion.cmake
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
+  COMPONENT headers
+  )
+SET(CPACK_COMPONENTS_ALL libraries headers)
+MESSAGE(STATUS "Components to pack: ${CPACK_COMPONENTS_ALL}")
+INCLUDE (CPack)
