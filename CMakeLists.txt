@@ -29,8 +29,6 @@ project(miallib)
 
 # set(MIALLIB_LIB_NAME miallib_generic)
 set(MIALLIB_LIB_NAME miallib)
-# enable_testing()
-# include(CTest)
 
 set (MIALLIB_VERSION_MAJOR 1)
 set (MIALLIB_VERSION_MINOR 1)
@@ -42,6 +40,7 @@ set(PROCESS_IN_PARALLEL TRUE CACHE BOOL "Choose if miallib should be run in para
 
 # build a CPack driven installer package
 INCLUDE (InstallRequiredSystemLibraries)
+SET(CPACK_COMPONENTS_ALL libraries headers)
 SET(CPACK_RESOURCE_FILE_LICENSE
      "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
 SET(CPACK_PACKAGE_VERSION_MAJOR "${MIALLIB_VERSION_MAJOR}")
@@ -50,7 +49,6 @@ SET(CPACK_PACKAGE_VERSION_PATCH "${MIALLIB_VERSION_PATCH}")
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pieter Kempeneers")
 SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-INCLUDE(CPack)
 # Set files to ignore
 list(APPEND CPACK_SOURCE_IGNORE_FILES "_CPack_Packages")
 list(APPEND CPACK_SOURCE_IGNORE_FILES ".gz")
@@ -64,10 +62,13 @@ list(APPEND CPACK_SOURCE_IGNORE_FILES "CPackConfig.cmake")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "schemas")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "/build/;~$;${CPACK_SOURCE_IGNORE_FILES}")
 
-cpack_add_component(libraries)
-cpack_add_component(headers)
-
 SET(CPACK_DEB_COMPONENT_INSTALL YES)
+INCLUDE(CPack)
+CPACK_ADD_COMPONENT(libraries)
+CPACK_ADD_COMPONENT(headers)
+SET(CPACK_DEB_COMPONENT_INSTALL YES)
+SET(CPACK_COMPONENTS_ALL libraries headers)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 message(STATUS "cmake module path: ${CMAKE_MODULE_PATH}")
 
@@ -388,12 +389,8 @@ INSTALL(TARGETS ${MIALLIB_LIB_NAME}
   COMPONENT libraries
   LIBRARY DESTINATION lib)
 INSTALL(FILES ${MIALLIB_H} DESTINATION include/miallib/)
-# Install MIALLIBConfig.cmake and MIALLIBConfigVersion.cmake
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
   ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
   COMPONENT headers
   )
-SET(CPACK_COMPONENTS_ALL libraries headers)
-MESSAGE(STATUS "Components to pack: ${CPACK_COMPONENTS_ALL}")
-INCLUDE (CPack)
