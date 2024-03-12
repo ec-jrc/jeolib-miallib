@@ -366,7 +366,7 @@ find_package(PkgConfig REQUIRED)
 
 set(BLA_VENDOR OpenBLAS)
 set(CMAKE_C_FLAGS -fopenmp)
-find_package(BLAS REQUIRED)
+#find_package(BLAS REQUIRED)
 
 find_package(GSL REQUIRED)
 if(GSL_FOUND)
