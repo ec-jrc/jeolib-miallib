@@ -1,9 +1,0 @@
-$EXTERNAL_UP_LINK = "http://jeodpp.jrc.ec.europa.eu";
-$EXTERNAL_UP_TITLE = "JRC Big Data Platform (JEODPP)";
-#$MAX_SPLIT_DEPTH = 2;
-$TITLE = "MIAL";
-$BOTTOM_NAVIGATION = 1;
-$LOCAL_ICONS = 1;
-$TOC_DEPTH = 2;
-$TEXINPUTS = "../build/doc/texinputs:.";
-$DESTDIR = "../build/doc/html";
