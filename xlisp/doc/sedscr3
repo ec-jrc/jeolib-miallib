@@ -1,2 +1,0 @@
-s/\\"/$\\backslash$"/g
-s/}{http:\/\/ltpwww.gsfc.nasa.gov\/IAS\/handbook\/handbook\\_/}{http:\/\/ltpwww.gsfc.nasa.gov\/IAS\/handbook\/handbook_/g
