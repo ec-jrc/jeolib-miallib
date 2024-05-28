@@ -28,7 +28,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define init_writeShapeFile
 
 #include "borderdetection.h"
-#include <geotiff/geotiff.h>
+#include <geotiff.h>
 #include <gdal.h>
 
 ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fileName);

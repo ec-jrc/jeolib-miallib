@@ -327,6 +327,11 @@ find_package(GDAL 3.00 REQUIRED)
 target_link_libraries(${MIALLIB_LIB_NAME} ${GDAL_LIBRARIES})
 include_directories(${GDAL_INCLUDE_DIRS})
 
+find_package(GeoTIFF)
+message(STATUS "Found GEOTIFF_INCLUDE_DIR: ${GEOTIFF_INCLUDE_DIR}")
+include_directories(${GEOTIFF_INCLUDE_DIR})
+target_link_libraries(${MIALLIB_LIB_NAME} ${GEOTIFF_LIBRARIES})
+
 find_package(TIFF)
 target_link_libraries(${MIALLIB_LIB_NAME} tiff)
 
@@ -394,3 +399,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
   COMPONENT headers
   )
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib.pc
+        DESTINATION lib/pkgconfig
+)
