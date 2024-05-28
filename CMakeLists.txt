@@ -328,7 +328,7 @@ target_link_libraries(${MIALLIB_LIB_NAME} ${GDAL_LIBRARIES})
 include_directories(${GDAL_INCLUDE_DIRS})
 
 find_package(GeoTIFF)
-message(STATUS "Found GEOTIFF_INCLUDE_DIR: ${GEOTIFF_INCLUDE_DIR}")
+message(STATUS "Found GEOTIFF_INCLUDE_DIRS: ${GEOTIFF_INCLUDE_DIRS}")
 include_directories(${GEOTIFF_INCLUDE_DIR})
 target_link_libraries(${MIALLIB_LIB_NAME} ${GEOTIFF_LIBRARIES})
 
