@@ -24,16 +24,16 @@
 
 cmake_minimum_required(VERSION 3.15)
 
+# The project's name and version
 project(miallib)
 
-# The project's name and version
+# set(MIALLIB_LIB_NAME miallib_generic)
 set(MIALLIB_LIB_NAME miallib)
 
 set (MIALLIB_VERSION_MAJOR 1)
 set (MIALLIB_VERSION_MINOR 1)
 set (MIALLIB_VERSION_PATCH 3)
 set (MIALLIB_VERSION "${MIALLIB_VERSION_MAJOR}.${MIALLIB_VERSION_MINOR}.${MIALLIB_VERSION_PATCH}")
-set (PACKAGE_VERSION "${MIALLIB_VERSION}")
 set (MIALLIB_SOVERSION "${MIALLIB_VERSION_MAJOR}")
 
 set(PROCESS_IN_PARALLEL TRUE CACHE BOOL "Choose if miallib should be run in parallel")
@@ -401,8 +401,4 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
   )
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib.pc
         DESTINATION lib/pkgconfig
-<<<<<<< HEAD
 )
-=======
-)
->>>>>>> develop
