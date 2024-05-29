@@ -1053,7 +1053,7 @@ ERROR_TYPE detectBorders(IMAGE * inputIm, struct REGION ** regions, int regionNu
 #define init_writeShapeFile
 
 #include "borderdetection.h"
-#include <geotiff/geotiff.h>
+#include <geotiff.h>
 #include <gdal.h>
 
 extern ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fileName);
@@ -1070,7 +1070,7 @@ extern SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif);
 
 
 #include "borderdetection.h"
-#include <geotiff/geotiff.h>
+#include <geotiff.h>
 #include <gdal.h>
 
 extern ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile fhd, GTIF *gtif);

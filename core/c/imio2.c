@@ -29,9 +29,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #endif
 #include "miallib.h"
 #include "imio.h"
-#include <geotiff/xtiffio.h>
+#include <xtiffio.h>
 #include <tiffio.h>
-#include <geotiff/geotiffio.h> /* 2005-12-20 */
+#include <geotiffio.h> /* 2005-12-20 */
 /* #include "banner.h"  /\* 2007-12-10 *\/ */
 
 #if (!defined(SEEK_CUR))
