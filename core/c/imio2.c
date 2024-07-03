@@ -344,7 +344,7 @@ IMAGE *GetTIFFTagGeo(char *fn, char *tagname)
   TIFF *tiffp=NULL;
   IMAGE *im=NULL;
   int i, erflag=0;
-  uint16 count=0;
+  uint16_t count=0;
   double *data=NULL;
   double *ptr=NULL;
   GTIF *gtif=(GTIF*)NULL; /* GeoKey-level descriptor */
