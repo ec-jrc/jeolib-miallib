@@ -305,8 +305,8 @@ IMAGE *read_image(char *fn)
   IMAGE *im;
   TIFF *tiffp;
   unsigned long int nbyte=0, bread=0;
-  uint32 *s_o_t, rps;
-  uint16 spp=1, pc=1;
+  uint32_t *s_o_t, rps;
+  uint16_t spp=1, pc=1;
   long int fsot; /* offset to 1st pixel */
   unsigned short int *tred, *tgreen, *tblue;
   unsigned short int *red, *green, *blue;
@@ -419,9 +419,9 @@ IMAGE *read_image(char *fn)
     TIFFGetField(tiffp, TIFFTAG_STRIPOFFSETS, &s_o_t);
     fsot = (long)*s_o_t;
     TIFFGetField(tiffp, TIFFTAG_BITSPERSAMPLE, &bitpp);
-    red = (uint16 *)malloc(1<<bitpp*sizeof(uint16));
-    green = (uint16 *)malloc(1<<bitpp*sizeof(uint16));
-    blue = (uint16 *)malloc(1<<bitpp*sizeof(uint16));
+    red = (uint16_t *)malloc(1<<bitpp*sizeof(uint16_t));
+    green = (uint16_t *)malloc(1<<bitpp*sizeof(uint16_t));
+    blue = (uint16_t *)malloc(1<<bitpp*sizeof(uint16_t));
     TIFFGetField(tiffp, TIFFTAG_PHOTOMETRIC, &pmi);
     if (TIFFGetField(tiffp, TIFFTAG_COLORMAP, &tred, &tgreen, &tblue) != 1)
       cm=0;
@@ -1219,8 +1219,8 @@ IMAGE *read_image_to_type(char *fn, int data_type)
   IMAGE *im, *lim;
   TIFF *tiffp;
   unsigned long int nbyte=0, bread=0;
-  uint32 rps;
-  uint16 spp=1, pc=1;
+  uint32_t rps;
+  uint16_t spp=1, pc=1;
   tstrip_t nstrip, strip;
   long int i;
   int nx, ny;

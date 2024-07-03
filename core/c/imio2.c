@@ -23,6 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <string.h>
 #include <time.h>
 #include <unistd.h>  /* for gethostname */
+#include <stdint.h>
 #ifndef UNIX
 // #include "bytesex.h" /* <endian.h> only for linux ... */
 #include  <endian.h>
@@ -117,8 +118,8 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
 {
   TIFF *tiffp;
   GTIF *gtif=NULL;
-  uint32 a_uint32;
-  uint16  a_uint16;
+  uint32_t a_uint32;
+  uint16_t  a_uint16;
   geocode_t gkey_val;
 /*   if ((tiffp = TIFFOpen(fn, "rc")) == NULL){ */
 /*     (void)sprintf(buf,"ERROR in tiffinfo(): invalid TIFF file name \"%s\" \n", fn); errputstr(buf); */
@@ -220,8 +221,8 @@ IMAGE *tiffinfoJIP(char *fn)
   GTIF *gtif=NULL;
   IMAGE *im=NULL;
   UINT32 *pim;
-  uint32 a_uint32;
-  uint16  a_uint16;
+  uint32_t a_uint32;
+  uint16_t  a_uint16;
   geocode_t gkey_val;
 
   /* Open TIFF descriptor to read GeoTIFF tags */
@@ -716,8 +717,8 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
     TIFF *tif;
     UCHAR *pim = NULL, *ptmp = NULL;
     unsigned long stripCount;
-    uint16 bps, spp, rps, comp, sf, bpp;
-    uint32 nx, ny;
+    uint16_t bps, spp, rps, comp, sf, bpp;
+    uint32_t nx, ny;
     int data_type;
     IMAGE *im=NULL;
 
