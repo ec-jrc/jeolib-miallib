@@ -32,11 +32,11 @@ set(MIALLIB_LIB_NAME miallib)
 
 set (MIALLIB_VERSION_MAJOR 1)
 set (MIALLIB_VERSION_MINOR 1)
-set (MIALLIB_VERSION_PATCH 4)
+set (MIALLIB_VERSION_PATCH 5)
 set (MIALLIB_VERSION "${MIALLIB_VERSION_MAJOR}.${MIALLIB_VERSION_MINOR}.${MIALLIB_VERSION_PATCH}")
 set (MIALLIB_SOVERSION "${MIALLIB_VERSION_MAJOR}")
 
-set(PROCESS_IN_PARALLEL TRUE CACHE BOOL "Choose if miallib should be run in parallel")
+set(PROCESS_IN_PARALLEL FALSE CACHE BOOL "Choose if miallib should be run in parallel")
 
 # build a CPack driven installer package
 INCLUDE (InstallRequiredSystemLibraries)
@@ -117,7 +117,6 @@ set(SOURCES
   ${MIALLIB_SRC_DIR}/b_undef.h
   ${MIALLIB_SRC_DIR}/bytesex.h
   ${MIALLIB_SRC_DIR}/ced.c
-  ${MIALLIB_SRC_DIR}/chull.c
   ${MIALLIB_SRC_DIR}/classification.c
   ${MIALLIB_SRC_DIR}/colconv.c
   ${MIALLIB_SRC_DIR}/complete.c
