@@ -1,6 +1,8 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2010-2020 European Union (Joint Research Centre)
+           Pieter Kempeneers (repaced ut_vector with std::vector and
+                             re-implemented chainHull_2D for license)
+Copyright (C) 2010-2024 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -23,6 +25,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <iostream>
+
 #include "miallib.h"
 #include "fifo.h"
 #ifdef OPENMP
@@ -35,7 +42,43 @@ typedef struct {
     INT32 b;
 } intpair_t;
 
-#include <utarray.h>
+// Function to find the convex hull using Andrew's monotone chain algorithm
+std::vector<intpair_t> chainHull_2D(std::vector<intpair_t>& points){
+    std::sort(points.begin(), points.end(), [](const intpair_t& a, const intpair_t& b) {
+        return a.a < b.a || (a.a == b.a && a.b < b.b);
+    });
+
+    auto orientation = [](intpair_t p, intpair_t q, intpair_t r){
+        return (q.b - p.b) * (r.a - q.a) - (q.a - p.a) * (r.b - q.b);
+    };
+
+    std::vector<intpair_t> hull;
+    
+    // Build lower hull
+    for (const intpair_t& p : points){
+        while (hull.size() >= 2 && orientation(hull[hull.size() - 2], hull[hull.size() - 1], p) <= 0){
+            hull.pop_back();
+        }
+        hull.push_back(p);
+    }
+
+    // Build upper hull
+    for (int i = points.size() - 2, t = hull.size() + 1; i >= 0; i--){
+        const intpair_t& p = points[i];
+        while (hull.size() >= t && orientation(hull[hull.size() - 2], hull[hull.size() - 1], p) <= 0){
+            hull.pop_back();
+        }
+        hull.push_back(p);
+    }
+
+    // Remove duplicates from hull
+    hull.pop_back();
+    
+    return hull;
+}
+
+
+// #include <utarray.h>
 
 int intsort(const void *a,const void*b) {
     int _a = *(int*)a;
@@ -43,14 +86,14 @@ int intsort(const void *a,const void*b) {
     return _a - _b;
 }
 
-int intpairsort(const void *a,const void*b) {
-    intpair_t _a = *(intpair_t*)a;
-    intpair_t _b = *(intpair_t*)b;
-    return _a.a < _b.a || (_a.a == _b.a && _a.b < _b.b);
-}
+// int intpairsort(const void *a,const void*b) {
+//     intpair_t _a = *(intpair_t*)a;
+//     intpair_t _b = *(intpair_t*)b;
+//     return _a.a < _b.a || (_a.a == _b.a && _a.b < _b.b);
+// }
 
-extern double polygonArea(intpair_t *P, int points);
-extern int chainHull_2D( intpair_t * P, int n, intpair_t * H );
+// extern double polygonArea(intpair_t *P, int points);
+// extern int chainHull_2D( intpair_t * P, int n, intpair_t * H );
 
 
 /** \addtogroup group_opclo
@@ -70,9 +113,8 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
      assumes border is set to zero to avoid border overflow.
      Pierre Soille
      First 20100930 (for building footprint characterisation)
-
-     Use utarray for convex hull computations: beware that it exits in case
-     not enough memory is availbale for the dynamic memory allocation!
+     Pieter Kempeneers 13/09/2024: replace utarray with c++ std::vector
+     and reimplement hull for license issue
 
      based on Moore's contour tracing algorithm with Jacob's condition, see
      http://www.thebigblob.com/moore-neighbor-contour-tracing-algorithm-in-c/
@@ -171,12 +213,16 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
     int n = 0; // number of points with change of direction
     int nh = 0; // number of points in convex hull
 
-    UT_array *pairs;
-    UT_icd intpair_icd = {sizeof(intpair_t), NULL, NULL, NULL};
-    intpair_t ip, *ph, *phori;
+    // UT_array *pairs;
+    // UT_icd intpair_icd = {sizeof(intpair_t), NULL, NULL, NULL};
+    // intpair_t ip, *ph, *phori;
+    intpair_t ip;
+    std::vector<intpair_t> ph;
     int j;
 
-    utarray_new(pairs,&intpair_icd);
+    // utarray_new(pairs,&intpair_icd);
+    std::vector<intpair_t> pairs;
+    // utarray_new(pairs,&intpair_icd);
 
     if (startPos!=0){
       lbl=plbl[startPos];
@@ -186,86 +232,95 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph)
 
       // Trace around the neighborhood
       while(1){
-	checkPosition = pos + neighborhood[checkLocationNr-1][0];
-	newCheckLocationNr = neighborhood[checkLocationNr-1][1];
+        checkPosition = pos + neighborhood[checkLocationNr-1][0];
+        newCheckLocationNr = neighborhood[checkLocationNr-1][1];
 
-	if( plbl[checkPosition] == lbl) { // Next border point found
-	  if(checkPosition == startPos){
+        if( plbl[checkPosition] == lbl) { // Next border point found
+          if(checkPosition == startPos){
 
-	    pout[pos]=checkLocationNr; // direction of next border point
+            pout[pos]=checkLocationNr; // direction of next border point
 
-	    // set to 9 if point of change of direction
-	    if (checkLocationNr!=prevCheckLocationNr){
-	      pout[pos]=9;
-	      pout[checkPosition]=9;
-	      prevCheckLocationNr=checkLocationNr;
-	      ip.a=pos%nx;  // x coor
-	      ip.b=pos/nx;  // y coor
-	      utarray_push_back(pairs, &ip);
-	      n++;
-	    }
+            // set to 9 if point of change of direction
+            if (checkLocationNr!=prevCheckLocationNr){
+              pout[pos]=9;
+              pout[checkPosition]=9;
+              prevCheckLocationNr=checkLocationNr;
+              ip.a=pos%nx;  // x coor
+              ip.b=pos/nx;  // y coor
+              pairs.push_back(ip);
+              // utarray_push_back(pairs, &ip);
+              n++;
+            }
 
-	    counter ++;
-	    // Stopping criterion (jacob)
-	    if(newCheckLocationNr == 1 || counter >= 1) { // Close loop
-	      break;
-	    }
-	  }
-	  pout[pos]=checkLocationNr; // direction of next border point
+            counter ++;
+            // Stopping criterion (jacob)
+            if(newCheckLocationNr == 1 || counter >= 1) { // Close loop
+              break;
+            }
+          }
+          pout[pos]=checkLocationNr; // direction of next border point
 
-	  // set to 9 if point of change of direction
-	  if (checkLocationNr!=prevCheckLocationNr){
-	      pout[pos]=9;
-	      pout[checkPosition]=9;
-	      prevCheckLocationNr=checkLocationNr;
-	      ip.a=pos%nx;  // x coor
-	      ip.b=pos/nx;  // y coor
-	      utarray_push_back(pairs, &ip);
-	      n++;
-	  }
+          // set to 9 if point of change of direction
+          if (checkLocationNr!=prevCheckLocationNr){
+              pout[pos]=9;
+              pout[checkPosition]=9;
+              prevCheckLocationNr=checkLocationNr;
+              ip.a=pos%nx;  // x coor
+              ip.b=pos/nx;  // y coor
+              pairs.push_back(ip);
+              // utarray_push_back(pairs, &ip);
+              n++;
+          }
 
-	  checkLocationNr = newCheckLocationNr;// Update which neighborhood position we should check next
-	  pos = checkPosition;
-	  counter2 = 0;    // Reset the counter that keeps track of how many neighbors we have visited
-	}
-	else{
-	  // Rotate clockwise in the neighborhood
-	  checkLocationNr = 1 + (checkLocationNr % graph);
-	  if(counter2 > graph){
-	    // If counter2 is above 8 we have traced around the neighborhood and
-	    // therefore the border is a single black pixel and we can exit
-	    counter2 = 0;
-	      ip.a=pos%nx;  // x coor
-	      ip.b=pos/nx;  // y coor
-	      utarray_push_back(pairs, &ip);
-	      n++;
-	    break;
-	  }
-	  else{
-	    counter2 ++;
-	  }
-	}
+          checkLocationNr = newCheckLocationNr;// Update which neighborhood position we should check next
+          pos = checkPosition;
+          counter2 = 0;    // Reset the counter that keeps track of how many neighbors we have visited
+        }
+        else{
+          // Rotate clockwise in the neighborhood
+          checkLocationNr = 1 + (checkLocationNr % graph);
+          if(counter2 > graph){
+            // If counter2 is above 8 we have traced around the neighborhood and
+            // therefore the border is a single black pixel and we can exit
+            counter2 = 0;
+              ip.a=pos%nx;  // x coor
+              ip.b=pos/nx;  // y coor
+              pairs.push_back(ip);
+              // utarray_push_back(pairs, &ip);
+              n++;
+            break;
+          }
+          else{
+            counter2 ++;
+          }
+        }
       }
       //printf("n=%d\n", n);
 
-      ph=phori=(intpair_t *)calloc((size_t) n+1, sizeof(intpair_t));
+      // ph=phori=(intpair_t *)calloc((size_t) n+1, sizeof(intpair_t));
+      ph.resize(n+1);
 
-      if (ph==NULL){
-	printf("cannot allocate %ld bytes for point array in convex hull computation of lbl=%ud\n", \
-	       (n+1)*sizeof(intpair_t), lbl);
-        utarray_free(pairs);
-	continue;
-      }
-      utarray_sort(pairs, &intpairsort);
-      nh=chainHull_2D( (intpair_t *)utarray_eltptr(pairs, 0), n,  ph );
+      // if (ph==NULL){
+      //   printf("cannot allocate %ld bytes for point array in convex hull computation of lbl=%ud\n", \
+      //   (n+1)*sizeof(intpair_t), lbl);
+      //   utarray_free(pairs);
+      //   continue;
+      // }
+      // utarray_sort(pairs, &intpairsort);
+      // nh=chainHull_2D( (intpair_t *)utarray_eltptr(pairs, 0), n,  ph );
+
+      ph = chainHull_2D(pairs);
       //printf("nh=%d\n", nh);
 
-      for(j=0; j<nh; j++)
-	pout[ph[j].a + ph[j].b * nx]=10;
+      for (auto it = ph.begin(); it!=ph.end(); ++it)
+        pout[it->a + it->b *nx] = 10;
 
-      free(phori);
+      // for(j=0; j<nh; j++)
+      //   pout[ph[j].a + ph[j].b * nx]=10;
 
-      utarray_free(pairs);
+      // free(phori);
+
+      // utarray_free(pairs);
     } // startPos != 0
   } // for each label
   free_image(lut);
@@ -288,8 +343,9 @@ IMAGE *chull(IMAGE *ilbl, int graph)
     break;
 
   default:
-    (void)sprintf(buf, "ERROR in chull(IMAGE *ilbl, int graph): \
-                invalid ImDataType\n"); errputstr(buf);
+    std::cerr << "ERROR in chull chull(IMAGE *ilbl, int graph): invalid ImDataType" << std::endl;
+    // (void)sprintf(buf, "ERROR in chull(IMAGE *ilbl, int graph): \
+    //             invalid ImDataType\n"); errputstr(buf);
     return(NULL);
   }
 }
