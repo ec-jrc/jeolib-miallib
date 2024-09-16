@@ -31,7 +31,7 @@ extern IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph);
 extern IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambdaVal, int graph);
 
 /* myhull.c  */
-extern IMAGE *chull(IMAGE *ilbl, int graph);
+// extern IMAGE *chull(IMAGE *ilbl, int graph);
 
 /* hull.c */
 extern IMAGE *hpclose(IMAGE *im, int dx, int dy);

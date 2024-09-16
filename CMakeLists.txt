@@ -100,6 +100,7 @@ set(MIALLIB_H
   ${MIALLIB_SRC_DIR}/miallib_stats.h
   ${MIALLIB_SRC_DIR}/miallib_swig.h
   ${MIALLIB_SRC_DIR}/mialtypes.h
+  ${MIALLIB_SRC_DIR}/myhull.h
   ${MIALLIB_SRC_DIR}/op.h
   )
 

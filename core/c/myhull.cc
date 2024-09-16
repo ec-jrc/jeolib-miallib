@@ -30,17 +30,14 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <iostream>
 
+#include "myhull.h"
+extern "C" {
 #include "miallib.h"
 #include "fifo.h"
+}
 #ifdef OPENMP
 #include <omp.h>
 #endif
-
-/* for point with integer coordinates */
-typedef struct {
-    INT32 a;
-    INT32 b;
-} intpair_t;
 
 // Function to find the convex hull using Andrew's monotone chain algorithm
 std::vector<intpair_t> chainHull_2D(std::vector<intpair_t>& points){
