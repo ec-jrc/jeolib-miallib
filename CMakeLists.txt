@@ -199,10 +199,7 @@ set(SOURCES
   ${MIALLIB_SRC_DIR}/msmm.c
   ${MIALLIB_SRC_DIR}/mspa.c
   ${MIALLIB_SRC_DIR}/myhull.cc
-<<<<<<< Updated upstream
-=======
   ${MIALLIB_SRC_DIR}/myhull.h
->>>>>>> Stashed changes
   ${MIALLIB_SRC_DIR}/natngbint.c
   ${MIALLIB_SRC_DIR}/newlabelcc.c
   ${MIALLIB_SRC_DIR}/oiht.c
