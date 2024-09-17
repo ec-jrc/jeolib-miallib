@@ -199,6 +199,10 @@ set(SOURCES
   ${MIALLIB_SRC_DIR}/msmm.c
   ${MIALLIB_SRC_DIR}/mspa.c
   ${MIALLIB_SRC_DIR}/myhull.cc
+<<<<<<< Updated upstream
+=======
+  ${MIALLIB_SRC_DIR}/myhull.h
+>>>>>>> Stashed changes
   ${MIALLIB_SRC_DIR}/natngbint.c
   ${MIALLIB_SRC_DIR}/newlabelcc.c
   ${MIALLIB_SRC_DIR}/oiht.c
@@ -345,8 +349,13 @@ target_link_libraries(${MIALLIB_LIB_NAME} ${CMAKE_DL_LIBS})
 
 ### BEGIN FFTW
 
-find_package(FFTW REQUIRED)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+include_directories(PkgConfig::FFTW)
+link_libraries(PkgConfig::FFTW)
+
+#find_package(FFTW REQUIRED)
 message(STATUS "Found FFTW_LIBRARIES: ${FFTW_LIBRARIES}")
+message(STATUS "Found FFTW_INCLUDE_DIRS: ${FFTW_INCLUDE_DIRS}")
 target_link_libraries(${MIALLIB_LIB_NAME} ${FFTW_LIBRARIES})
 
 if(PROCESS_IN_PARALLEL)
