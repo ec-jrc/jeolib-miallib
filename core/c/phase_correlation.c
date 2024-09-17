@@ -31,9 +31,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <string.h>
 #include <math.h>
 #include "config_miallib.h"
-#ifdef OPENMP
-#include <omp.h>
-#endif
+//#ifdef OPENMP
+//#include <omp.h>
+//#endif
 #include <fftw3.h>
 #include "miallib.h"
 
@@ -81,9 +81,9 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
   pout=(double *)GetImPtr(imout);
 
   // data alloc
-#ifdef OPENMP
-  int fftw_init_threads(void);
-#endif
+//#ifdef OPENMP
+//  int fftw_init_threads(void);
+//#endif
   image_data        = ( fftw_complex* ) fftw_malloc( sizeof( fftw_complex ) * size );
   image_fft_result  = ( fftw_complex* ) fftw_malloc( sizeof( fftw_complex ) * size );
   templ_data        = ( fftw_complex* ) fftw_malloc( sizeof( fftw_complex ) * size );
@@ -91,17 +91,17 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
   mul_result        = ( fftw_complex* ) fftw_malloc( sizeof( fftw_complex ) * size );
   ifft_result       = ( fftw_complex* ) fftw_malloc( sizeof( fftw_complex ) * size );
 
-#ifdef OPENMP
-  fftw_plan_with_nthreads(omp_get_max_threads());
-#endif
+//#ifdef OPENMP
+//  fftw_plan_with_nthreads(omp_get_max_threads());
+//#endif
   image_plan_forward_2d  = fftw_plan_dft_2d( size_w, size_h, image_data, image_fft_result, FFTW_FORWARD,  FFTW_ESTIMATE );
-#ifdef OPENMP
-  fftw_plan_with_nthreads(omp_get_max_threads());
-#endif
+//#ifdef OPENMP
+//  fftw_plan_with_nthreads(omp_get_max_threads());
+//#endif
   templ_plan_forward_2d  = fftw_plan_dft_2d( size_w, size_h, templ_data, templ_fft_result, FFTW_FORWARD,  FFTW_ESTIMATE );
-#ifdef OPENMP
-  fftw_plan_with_nthreads(omp_get_max_threads());
-#endif
+//#ifdef OPENMP
+//  fftw_plan_with_nthreads(omp_get_max_threads());
+//#endif
   plan_backward_2d       = fftw_plan_dft_2d( size_w, size_h, mul_result, ifft_result,      FFTW_BACKWARD, FFTW_ESTIMATE );
 
   /* CAUTION (from FFTW documentation):
@@ -162,9 +162,9 @@ IMAGE *uc_phase_correlation(IMAGE *im, IMAGE *im_template)
   fftw_free(templ_fft_result);
   fftw_free(ifft_result );
 
-#ifdef OPENMP
-  void fftw_cleanup_threads(void);
-#endif
+//#ifdef OPENMP
+//  void fftw_cleanup_threads(void);
+//#endif
 
   return(imout);
 }
