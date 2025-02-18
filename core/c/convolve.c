@@ -1014,7 +1014,7 @@ IMAGE *mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   }
   return NULL;
 }
-extern ERROR_TYPE write_tiff();
+extern ERROR_TYPE write_tiff(IMAGE *im, char *fn);
 
 
 #include "uc_def.h"
