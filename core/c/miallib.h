@@ -355,8 +355,8 @@ extern void stdputstr(char *); /* print a message to the standard output */
 extern void errputstr(char *); /* print a message to the standard error  */
 #else
 static char buf[1024];       /* used by sprintf() and stdputstr() */
-extern void stdputstr(); /* print a message to the standard output */
-extern void errputstr(); /* print a message to the standard error  */
+extern void stdputstr(char *); /* print a message to the standard output */
+extern void errputstr(char *); /* print a message to the standard error  */
 #endif /* #if (defined(XLISP)) */
 #endif
 

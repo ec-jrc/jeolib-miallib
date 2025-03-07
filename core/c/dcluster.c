@@ -26,7 +26,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 
-extern ERROR_TYPE us_plotline();
+extern ERROR_TYPE us_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val);
 
 
 ERROR_TYPE agglo_cluster(int *x, int *y, int *pn, double maxdst)
