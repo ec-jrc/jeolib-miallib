@@ -175,7 +175,7 @@ IMAGE *u32_chull(IMAGE *ilbl, int graph) {
 #pragma omp parallel for private(lbl, pos)
 #endif
     for (i = 1; i <= maxlbl; i++) {  // lbl==0 for background or border
-        int checkLocationNr  1;  // The neighbor number of the location we want to check for a
+        int checkLocationNr = 1;  // The neighbor number of the location we want to check for a
                                 // new border point
         int checkPosition;      // The corresponding absolute array address of checkLocationNr
         int newCheckLocationNr; // Variable that holds the neighborhood position we want to
