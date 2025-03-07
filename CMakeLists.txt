@@ -198,7 +198,7 @@ set(SOURCES
   ${MIALLIB_SRC_DIR}/mslabel.h
   ${MIALLIB_SRC_DIR}/msmm.c
   ${MIALLIB_SRC_DIR}/mspa.c
-  ${MIALLIB_SRC_DIR}/myhull.cc
+  ${MIALLIB_SRC_DIR}/myhull.c
   ${MIALLIB_SRC_DIR}/myhull.h
   ${MIALLIB_SRC_DIR}/natngbint.c
   ${MIALLIB_SRC_DIR}/newlabelcc.c
