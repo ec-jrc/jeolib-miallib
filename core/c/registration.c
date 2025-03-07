@@ -61,7 +61,7 @@ IMAGE *uc_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
   /* check w leads to windows falling in imin */
   if( (xi-(wd2+nxtd2)<0) ||  (xi+(wd2+nxtd2)>=nxi) || \
       (yi-(wd2+nytd2)<0) ||  (yi+(wd2+nytd2)>=nyi) ){
-    (void)sprintf(buf,"*ssda(): lead to a window falling outside imin defintion domain\n"); errputstr(buf);
+    (void)sprintf(buf,"*ssda(): lead to a window falling outside imin definition domain\n"); errputstr(buf);
     return NULL;
   }
 
@@ -141,7 +141,7 @@ IMAGE *us_ssda(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
   /* check w leads to windows falling in imin */
   if( (xi-(wd2+nxtd2)<0) ||  (xi+(wd2+nxtd2)>=nxi) || \
       (yi-(wd2+nytd2)<0) ||  (yi+(wd2+nytd2)>=nyi) ){
-    (void)sprintf(buf,"*ssda(): lead to a window falling outside imin defintion domain\n"); errputstr(buf);
+    (void)sprintf(buf,"*ssda(): lead to a window falling outside imin definition domain\n"); errputstr(buf);
     return NULL;
   }
 
@@ -248,7 +248,7 @@ IMAGE *uc_ncclewis(IMAGE *imin, IMAGE *imt, IMAGE *sim, IMAGE *ssqim, int xi, in
     /* check w leads to windows falling in imin */
     if( (xi-(wd2+nxtd2)<0) ||  (xi+(wd2+nxtd2)>=nxi) || \
 	(yi-(wd2+nytd2)<0) ||  (yi+(wd2+nytd2)>=nyi) ){
-     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin defintion domain\n"); errputstr(buf);
+     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin definition domain\n"); errputstr(buf);
       return NULL;
     }
 
@@ -386,7 +386,7 @@ IMAGE *uc_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     /* check w leads to windows falling in imin */
     if( (xi-(wd2+nxtd2)<0) ||  (xi+(wd2+nxtd2)>=nxi) || \
 	(yi-(wd2+nytd2)<0) ||  (yi+(wd2+nytd2)>=nyi) ){
-     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin defintion domain\n"); errputstr(buf);
+     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin definition domain\n"); errputstr(buf);
       return NULL;
     }
 
@@ -482,7 +482,7 @@ IMAGE *us_ncc(IMAGE *imin, IMAGE *imt, int xi, int yi, int w)
     /* check w leads to windows falling in imin */
     if( (xi-(wd2+nxtd2)<0) ||  (xi+(wd2+nxtd2)>=nxi) || \
 	(yi-(wd2+nytd2)<0) ||  (yi+(wd2+nytd2)>=nyi) ){
-     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin defintion domain\n"); errputstr(buf);
+     (void)sprintf(buf,"*ncc(): lead to a window falling outside imin definition domain\n"); errputstr(buf);
       return NULL;
     }
 
