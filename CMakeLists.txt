@@ -271,15 +271,40 @@ option (BUILD_SHARED_LIBS "Build with shared library" ON)
 ###############################################################################
 # Define the miallib library.
 # add_library( ${MIALLIB_LIB_NAME} ${SRC_FILES})
-add_library(${MIALLIB_LIB_NAME} ${SOURCES})
+
+#test
+add_library(${MIALLIB_LIB_NAME} SHARED ${SOURCES})
+#add_library(${MIALLIB_LIB_NAME} ${SOURCES})
 ###############################################################################
 
+#test
 SET_TARGET_PROPERTIES(${MIALLIB_LIB_NAME}
   PROPERTIES
-  SOVERSION ${MIALLIB_SOVERSION}
   VERSION ${MIALLIB_VERSION}
-  NAMESPACE ${MIALLIB_LIB_NAME}::
+  SOVERSION ${MIALLIB_SOVERSION}
   )
+#SET_TARGET_PROPERTIES(${MIALLIB_LIB_NAME}
+#  PROPERTIES
+#  SOVERSION ${MIALLIB_SOVERSION}
+#  VERSION ${MIALLIB_VERSION}
+#  NAMESPACE ${MIALLIB_LIB_NAME}::
+#  )
+
+#test
+# Crucial: Allow the Master file or other libraries to find headers
+
+target_include_directories(${MIALLIB_LIB_NAME} PUBLIC 
+    # 1. Path used when building this project locally (as a subdirectory)
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/core/c>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+
+    # 2. Path used after the library is installed (e.g., in a Debian package)
+    $<INSTALL_INTERFACE:include>
+)
+#target_include_directories(${MIALLIB_LIB_NAME} PUBLIC 
+#    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+#    $<INSTALL_INTERFACE:include>
+#)
 
 include_directories("core/c")
 
@@ -392,16 +417,26 @@ include_directories(${SHAPELIB_INCLUDE_DIRS})
 target_link_libraries(${MIALLIB_LIB_NAME} ${SHAPELIB_LIBRARIES})
 add_definitions(-DSHAPE_DLL)
 
-INSTALL(TARGETS ${MIALLIB_LIB_NAME}
-  EXPORT "${MIALLIB_LIB_NAME}"
-  COMPONENT libraries
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${MIALLIB_H} DESTINATION include/miallib/)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
-  COMPONENT headers
-  )
-INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib.pc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-)
+#INSTALL(TARGETS ${MIALLIB_LIB_NAME}
+#  EXPORT "${MIALLIB_LIB_NAME}"
+#  COMPONENT libraries
+#  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+#INSTALL(FILES ${MIALLIB_H} DESTINATION include/miallib/)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib-config.cmake
+#  ${CMAKE_CURRENT_BINARY_DIR}/miallib-config-version.cmake
+#  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/miallib
+#  COMPONENT headers
+#  )
+#INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/miallib.pc
+#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+#)
+#
+## 1. This creates a "miallibTargets.cmake" file in your build folder
+## This is what find_package actually looks for to resolve the library
+#export(EXPORT ${MIALLIB_LIB_NAME}
+#       FILE "${CMAKE_CURRENT_BINARY_DIR}/miallibTargets.cmake"
+#       NAMESPACE MIALLIB::)
+#
+## 2. Export the package to the CMake User Package Registry (Optional but helpful)
+## This allows other projects on your machine to find this build tree
+#export(PACKAGE MIALLIB)
