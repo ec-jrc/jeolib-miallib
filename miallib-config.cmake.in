@@ -10,4 +10,6 @@ set_and_check(MIALLIB_LIBRARY_DIR "@PACKAGE_LIBRARY_INSTALL_DIR@")
 set_and_check(MIALLIB_LIBRARY "@PACKAGE_LIBRARY_INSTALL_DIR@/libmiallib.so")
 set_and_check(MIALLIB_LIBRARIES ${MIALLIB_LIBRARY})
 
+include("${CMAKE_CURRENT_LIST_DIR}/miallib-targets.cmake")
+
 check_required_components(miallib)
