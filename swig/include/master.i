@@ -576,8 +576,8 @@ extern void free_image(IMAGE *);
   $2=dim;
   for (i = 0; i < dim; i++) {
     PyObject *o = PySequence_GetItem($input,i);
-    if (PyString_Check(o)) {
-      $1[i] = (char *)PyString_AsString(o);
+    if (PyUnicode_Check(o)) {
+      $1[i] = (char *)PyUnicode_AsUTF8(o);
       printf("para: %s\n", $1[i]);
     }
     else {
@@ -607,8 +607,8 @@ extern void free_image(IMAGE *);
   $2=dim;
   for (i = 0; i < dim; i++) {
     PyObject *o = PySequence_GetItem($input,i);
-    if (PyString_Check(o)) {
-      $1[i] = (char *)PyString_AsString(o);
+    if (PyUnicode_Check(o)) {
+      $1[i] = (char *)PyUnicode_AsUTF8(o);
     }
     else {
       PyErr_SetString(PyExc_ValueError,"Sequence elements must be strings");      
@@ -638,8 +638,8 @@ extern void free_image(IMAGE *);
     for (i = 0; i < dim; i++) {
       PyObject *o = PySequence_GetItem($input,i);
       // https://docs.python.org/3.5/c-api/long.html
-      if (PyInt_Check(o)) {
-	$1[i] = (int)PyInt_AsLong(o);
+      if (PyLong_Check(o)) {
+	$1[i] = (int)PyLong_AsLong(o);
       }
       else {
 	PyErr_SetString(PyExc_ValueError,"Sequence elements must be integers");      
