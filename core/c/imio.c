@@ -25,6 +25,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <time.h>
 //#ifndef UNIX
 //#include "bytesex.h" /* <endian.h> only for linux ... */
