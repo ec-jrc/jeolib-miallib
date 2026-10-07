@@ -23,6 +23,7 @@ generic:
 # documentation generation of xlisp part requires latex, pdflatex, and latex2hmtl to be installed!
 #
 doc:
+	cd core/c && make doc
 	cd xlisp/doc && make -j 1 all
 
 all: build doc
