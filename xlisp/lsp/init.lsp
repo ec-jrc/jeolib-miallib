@@ -23,6 +23,7 @@
        ;; "/mnt/isferea/Shared_Isferea/Soillpi/mialisp/"
        ;;"/mnt/public/Isferea/Shared_Isferea/Soillpi/mialisp/"
        ;;"/home/soillpi/workstation/mialisp/"
+       "/home/psoille/git/jeolib/mial/xlisp/"
        "/mnt/cidstorage/cidportal/data/ciddoc/BigDataEOSS/Development/Processing/mialisp/python/jip/xlisp/"
        "/home/soillpi/workstation/c_new/python/jip/xlisp/"
        "/usr/local/share/mialisp/"

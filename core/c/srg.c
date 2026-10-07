@@ -27,9 +27,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #if (defined(XLISP))
 extern void gc();
+extern void xmem();
 #endif
-
-
 
 /** \addtogroup group_seg
  *  @{

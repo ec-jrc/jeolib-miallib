@@ -14,9 +14,17 @@
 /* Portions of this code from XLISP-STAT Copyright (c) 1988, Luke Tierney */
 
 
+#ifdef PROTOTYPES
+#define _(args) args
+#else
+#define _(args) ()
+#endif
+
 /* system specific definitions */
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+
 
 #if defined(_Windows)
 #define WINDOWS
@@ -597,10 +605,10 @@ extern char *stackbase;
 #define OSAGETC osagetc
 #define OSAPUTC osaputc
 #ifdef FILETABLE
-extern int osagetc(int), osaputc(int,int);
+extern int osagetc(int), osaputc(int, int);
 extern int osopen(const char *name, const char *mode);
 #else /* No FILETABLE */
-extern int osagetc(FILE*), osaputc(int,FILE*);
+extern int osagetc(FILE*), osaputc(int, FILE*);
 extern FILE *osopen(const char *name, const char *mode);
 #endif
 #undef MEDMEM
@@ -681,7 +689,7 @@ extern FILE *osopen(const char *name, const char *mode);
 #undef ASCII8
 #define remove unlink   /* not all Unix systems have remove */
 #ifdef FILETABLE
-extern int osopen();
+extern int osopen(const char *name, const char *mode);
 #define OSAOPEN osopen
 #define OSBOPEN osopen
 /* use default FILETABLE declaration for OSCLOSE */
@@ -750,11 +758,11 @@ extern int osopen();
 #define VOID void    
 #endif
 
-#ifdef ANSI /* thanks for this trick go to Hume Smith */
-#define _(x) x
-#else
-#define _(x) ()
-#endif
+/* #ifdef ANSI /\* thanks for this trick go to Hume Smith *\/ */
+/* #define _(x) x */
+/* #else */
+/* #define _(x) () */
+/* #endif */
 
 /* Handle the FILETABLE specification -- non-windows */
 #ifdef FILETABLE
@@ -1138,9 +1146,9 @@ extern VOID osclose _((int i)); /* we must define this */
 #endif /* MIAL */
 #endif
 
-#ifdef ANSI
-#include <stdlib.h>
-#endif
+/* #ifdef ANSI */
+/* #include <stdlib.h> */
+/* #endif */
 
 /************* END OF COMPILER/ENVIRONMENT OPTIONS ************/
 
@@ -1395,7 +1403,7 @@ typedef struct context {
 
 /* OS system interface, *stuff file */
 extern VOID oscheck _((void));  /* check for control character during exec */
-extern VOID osinit _((char *banner)); /* initialize os interface */
+extern VOID osinit (char *str); /* initialize os interface */
 extern VOID osfinish _((void)); /* restore os interface */
 extern VOID osflush _((void));  /* flush terminal input buffer */
 extern long osrand _((long));   /* next random number in sequence */
@@ -1459,9 +1467,9 @@ extern int xlpeek _((LVAL fptr));
 extern VOID xlputc _((LVAL fptr, int ch));
 extern VOID xlflush _((void));
 extern VOID stdprint _((LVAL expr));
-extern VOID stdputstr _((char *str));
+extern void stdputstr(char *str);
+extern void errputstr(char *str);
 extern VOID errprint _((LVAL expr));
-extern VOID errputstr _((char *str));
 extern VOID dbgprint _((LVAL expr));
 extern VOID dbgputstr _((char *str));
 extern VOID trcprin1 _((LVAL expr));

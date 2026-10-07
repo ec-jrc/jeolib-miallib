@@ -52,6 +52,8 @@
 
 #include "xlisp.h"
 
+extern int getslot();
+
 /******************************************************************************
  * Prim_POPEN - start a process and open a pipe for read/write 
  * (code stolen from xlfio.c:xopen())
@@ -68,6 +70,32 @@
  *
  * Added to XLISP by Niels Mayer
  ******************************************************************************/
+FILEP ospipeopen(char *name, char *mode)
+{
+    int i=getslot();
+    char namebuf[FNAMEMAX+1];
+    FILE *fp;
+
+    if (!truename((char *)name, namebuf))
+        strcpy(namebuf, name);  /* should not happen */
+
+    if ((filetab[i].tname = (char *)malloc(strlen(namebuf)+1)) == NULL){
+        /* free(filetab[i].tname); */
+        xlfail("insufficient memory");
+    }
+
+    if ((fp = popen(name,mode)) == NULL){
+        free(filetab[i].tname);
+        return CLOSED;
+    }
+
+    filetab[i].fp = fp;
+
+    strcpy(filetab[i].tname, namebuf);
+
+    return i;
+}
+
 LVAL Prim_POPEN()
 {
   char *name;           /* file name string */
@@ -100,34 +128,6 @@ LVAL Prim_POPEN()
   return cvfile(fp,iomode);
 }
 
-FILEP ospipeopen(name, mode)
-  char *name, *mode;
-{
-    int i=getslot();
-    char namebuf[FNAMEMAX+1];
-    FILE *fp;
-    
-    if (!truename((char *)name, namebuf))
-        strcpy(namebuf, name);  /* should not happen */
-
-    if ((filetab[i].tname = (char *)malloc(strlen(namebuf)+1)) == NULL){
-        /* free(filetab[i].tname); */
-        xlfail("insufficient memory");
-    }
-    
-    
-    if ((fp = popen(name,mode)) == NULL){
-        free(filetab[i].tname);
-        return CLOSED;
-    }
-
-    filetab[i].fp = fp;
-
-    strcpy(filetab[i].tname, namebuf);
-
-    return i;
-}
-
 /******************************************************************************
  * Prim_PCLOSE - close a pipe opened by Prim_POPEN().
  * (code stolen from xlfio.c:xclose())
@@ -139,6 +139,17 @@ FILEP ospipeopen(name, mode)
  *
  * Added to XLISP by Niels Mayer
  ******************************************************************************/
+int ospipeclose(FILEP f)
+{
+  int result;
+
+  result = pclose(filetab[f].fp);
+  free(filetab[f].tname);
+  filetab[f].tname = NULL;
+  filetab[f].fp = NULL;
+  return result;
+}
+
 LVAL Prim_PCLOSE()
 {
   LVAL fptr;            /* the pipe stream to close */
@@ -171,17 +182,6 @@ LVAL Prim_PCLOSE()
   return (result ? cvfixnum((FIXTYPE) result) : s_true);
 }
 
-ospipeclose (f)
-     FILEP f;
-{
-  int result;
-
-  result = pclose(filetab[f].fp);
-  free(filetab[f].tname);
-  filetab[f].tname = NULL;
-  filetab[f].fp = NULL;
-  return result;
-}
 
 /*
  * others to be converted later from Winterp version:

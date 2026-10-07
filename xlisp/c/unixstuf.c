@@ -28,6 +28,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/times.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <errno.h>
 #include <ctype.h>
@@ -63,9 +64,6 @@ struct termio newtty;
 #ifndef HZ
 #define HZ 60
 #endif
-
-/* -- external functions */
-extern long times();
 
 /* -- local variables */
 static  char    lbuf[LBSIZE];
@@ -121,7 +119,7 @@ struct termios term;			/* parameters of terminal */
 LVAL
 xsystem()
 {
-    char *          getenv();
+  /* char *          getenv();*/
     char           *comstr;
     LVAL            command;
     int             result;
@@ -182,6 +180,135 @@ xsystem()
 
 /******************************************************************************/
 /* -- Written by dbetz for XLISP 2.0 */
+/* xflush - flush the input line buffer and start a new line */
+static VOID xflush()
+{
+  osflush();
+  ostputc('\n');
+}
+
+#ifdef POSIX
+static void onsusp(int sig)
+#else
+static onsusp(int sig)
+#endif
+{
+#ifdef SIGTSTP
+#ifdef POSIX
+    struct sigaction sa;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+#endif
+
+    /* ignore SIGTTOU so we dont get stopped if csh grabs the tty */
+#ifdef POSIX
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGTTOU, &sa, NULL);
+#else
+    signal(SIGTTOU, SIG_IGN);
+#endif
+    stty(0, &savetty);
+    xflush();
+#ifdef POSIX
+    sa.sa_handler = SIG_DFL;
+    sigaction(SIGTTOU, &sa, NULL);
+#else
+    signal(SIGTTOU,SIG_DFL);
+#endif
+
+    /* send the TSTP signal to suspend our process group */
+#ifdef POSIX
+    sa.sa_handler = SIG_DFL;
+    sigaction(SIGTSTP, &sa, NULL);
+    sigprocmask(SIG_SETMASK, &sa.sa_mask, NULL);
+#else
+    signal(SIGTSTP, SIG_DFL);
+    sigsetmask(0);
+#endif
+    kill(0, SIGTSTP);
+    /* pause for station break */
+
+    /* we re back */
+#ifdef POSIX
+    sa.sa_handler = onsusp;
+    sigaction(SIGTSTP, &sa, NULL);
+#else
+    signal(SIGTSTP, onsusp);
+#endif
+    stty(0, &newtty);
+#endif
+}
+
+
+static int sigint_received;
+
+static void handle_interrupt(int sig)
+{
+#if !defined(BSD) && !defined(POSIX)
+    /* SYS V requires reseting of SIGINT */
+    signal(SIGINT, handle_interrupt);
+#endif
+    sigint_received = 1;
+}
+
+int init_tty(void)
+{
+        /* extern sigcatch(); */
+#ifdef POSIX
+    struct sigaction sa, old_sa;
+    sa.sa_handler = handle_interrupt;
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &sa, NULL);
+    
+#ifdef SIGTSTP
+    sigaction(SIGTSTP, NULL, &old_sa);
+    if (old_sa.sa_handler == SIG_DFL){
+        sa.sa_handler = onsusp;
+        sigaction(SIGTSTP, &sa, NULL);
+    }
+#endif
+#else
+    signal(SIGINT, handle_interrupt);
+    signal(SIGQUIT, SIG_IGN);
+
+#ifdef SIGTSTP
+    if (signal(SIGTSTP, onsusp) == SIG_DFL){
+        signal(SIGTSTP, onsusp);
+    }
+#endif
+#endif
+
+    if (gtty(0, &savetty) == -1){
+        printf("ioctl failed: not a tty\n");
+        exit(1);
+    }
+
+    newtty = savetty;
+
+#ifdef BSD
+    newtty.sg_flags |= CBREAK;      /* turn off canonical mode */
+                                    /* i.e., turn on cbreak mode */
+    newtty.sg_flags &= ~ECHO;       /* turn off character echo */
+#else
+    newtty.c_lflag &= ~ICANON;  /* SYS 5 */
+    newtty.c_lflag &= ~ECHO;
+    newtty.c_cc[VMIN] = 1;
+    newtty.c_cc[VTIME] = 1;
+#endif
+    /*
+     * You can't request that it try to give you at least
+     * 5 characters, nor set the timeout to 10 seconds,
+     * as you can in the S5 example.  If characters come
+     * in fast enough, though, you may get more than one.
+     */
+    if (stty(0, &newtty) == -1){
+        printf("cannot put tty into cbreak mode\n");
+        exit(1);
+    }
+}
 
 
 /* -- osinit - initialize */
@@ -191,7 +318,7 @@ char       *banner;
 #if(defined(EDITOR))
   int i1;
 #endif
-        char *getenv();
+  /* char *getenv(); */
 
         redirectout = !isatty(fileno(stdout));
         redirectin = !isatty(fileno(stdin));
@@ -321,8 +448,7 @@ int getslot()
 }
 
 
-FILEP osopen(name, mode)
-  char *name, *mode;
+FILEP osopen(const char *name, const char *mode)
 {
     int i=getslot();
     char namebuf[FNAMEMAX+1];
@@ -384,7 +510,7 @@ FILEP ospopen(name, ascii)
 char *name;
 int ascii;  /* value not used in UNIX */
 {
-    char *getenv();
+  /* char *getenv(); */
     FILEP fp;
     char *path = getenv(PATHNAMES);
     char *newnamep;
@@ -460,13 +586,219 @@ int     ostgetc()
         return( lbuf[lindex++] );
 }
 #else
+
+/* xinfo - show information on control-t */
+static VOID xinfo()
+{
+  char tymebuf[100];
+  time_t tyme;
+  char buf[500];
+
+  time(&tyme);
+  strcpy(tymebuf, ctime(&tyme));
+  tymebuf[19] = '\0';
+  sprintf(buf,"\n[ %s Free: %d, GC calls: %d, Total: %ld ]",
+    tymebuf, nfree,gccalls,total);
+  errputstr(buf);
+}
+
+void osx_check(char ch)
+{
+     switch (ch){
+        case '\003':
+          xltoplevel(); /* control-c */
+        case '\007':
+          xlcleanup();  /* control-g */
+        case '\020':
+          xlcontinue(); /* control-p */
+        case '\024':    /* control-t */
+          xinfo();
+          printf("\n ");
+     }
+}
+
+/* one line editor like doskey
+ * tilman jochems 03/95
+ * commands:
+ *	nl			;end line editing
+ *	del			;delete character backwords
+ *	dc4			;go to top-level
+ *	esc arrow left 		;cursor to the left
+ *	esc arrow right 	;cursor to the right
+ *	esc arrow up		;previous edited line
+ *	esc arrow down		;next edited line
+ *	esc esc arrow left 	;one word to the left
+ *	esc esc arrow right 	;one word to the right
+ *	esc esc arrow up	;begin of line
+ *	esc esc arrow down	;end of line
+ */
+void editline(unsigned char res[]) /* is called with output buffer */
+{
+ int i1;
+ unsigned char ch,*pc1,*pc2;
+ int pos=0;			/* position in line */
+ int len=0; 			/* length of the line */
+ static int act=0;		/* nr of actual line for elmem */
+ int recall;			/* nr of line to recall */
+ int del=FALSE;			/* flag: delete */
+ recall=act;
+
+ for(;;){
+   /* read character */
+   ch=getchar();
+
+   /* new line : end line editing */
+   if(ch==NL){
+
+     /* display CR */
+     res[len++]=NL;
+     for(pc1=&res[pos];*pc1!=NL;pc1++) putchar(*pc1);
+     putchar(NL);
+
+     /* save line in elmem */
+     for(pc1=res,pc2=elmem[act]; *pc1!=NL; pc1++,pc2++) *pc2=*pc1;
+     *pc2=NL;
+     act=(act+1)%LINENUM;
+
+     break; /* loop */
+
+   }/*if*/
+
+   /* normal printable character: insert in res */
+   if(ch>=0x20 && ch <=0x7e){
+
+     for(i1=len;i1>pos;i1--) res[i1]=res[i1-1]; /* insert character */
+     res[pos]=ch;
+     if (len<CHARNUM) len++;
+     if (pos<len){pos++;putchar(ch);}
+
+     /* redisplay string */
+     for(i1=pos;i1<len;i1++) putchar(res[i1]);	/* display */
+     for(i1=pos;i1<len;i1++) putchar(BS);		/* cursor on pos */
+
+     continue; /* loop */
+   }/*if*/
+
+   /* test if ch is a command */
+   switch(ch){
+
+   case '\002' :                 /* CTRL-b */
+   case '\003' :                 /* CTRL-c */
+   case '\007' :                 /* CTRL-g */
+   case '\020' :                 /* CTRL-p */
+   case '\024' : osx_check(ch);  /* CTRL-t */
+     break;
+
+   case DEL:			/* del */
+     del=TRUE;
+     if(len>0) len--;
+     if(pos>0){pos--;putchar(BS);}
+     for(i1=pos;i1<len;i1++){ res[i1]=res[i1+1];putchar(res[i1]); }
+     putchar(SP);putchar(BS);	/* clean last character */
+     for(i1=pos;i1<len;i1++) putchar(BS);
+     break;
+
+
+   case ESC:			/* escape */
+     ch=getchar();
+     switch(ch){
+
+     case ARROW:		/* escape arrow */
+       ch=getchar();
+       switch(ch){
+
+       case A_LEFT:		/* escape arrow left */
+	 if(pos>0){ putchar(BS); pos--; }
+	 break;
+
+       case A_RIGHT:		/* escape arrow right */
+	 if(pos<len) putchar(res[pos++]);
+	 break;
+
+       case A_UP:		/* escape arrow up */
+
+	 /* clear line */
+	 for(;pos>0;pos--) putchar(BS);
+	 for(pos=0;pos<len;pos++) putchar(SP);
+	 for(pos=0;pos<len;pos++) putchar(BS);
+
+	 /* copy recall into actual line */
+	 recall=(recall+LINENUM-1) % LINENUM;
+	 for(pc1=res,pc2=elmem[recall],len=0;
+	     *pc2!=NL;
+	     len++,pc1++,pc2++){*pc1=*pc2;putchar(*pc2);};
+	 pos=len;
+	 break;
+
+       case A_DOWN:		/* escape arrow down */
+
+	 /* clear line */
+	 for(;pos>0;pos--) putchar(BS);
+	 for(pos=0;pos<len;pos++) putchar(SP);
+	 for(pos=0;pos<len;pos++) putchar(BS);
+
+	 /* copy recall into actual line */
+	 recall=(recall+1) % LINENUM;
+	 for(pc1=res,pc2=elmem[recall],len=0;
+	     *pc2!=NL;
+	     len++,pc1++,pc2++){*pc1=*pc2;putchar(*pc2);};
+	 pos=len;
+	 break;
+       }/*switch*/
+       break;			/* escape arrow */
+
+     case ESC:			/* escape escape */
+       ch=getchar();
+       switch(ch){		/* escape escape arrow */
+
+       case ARROW:
+	 ch=getchar();
+	 switch(ch){
+
+         case A_LEFT:		/* escape escape arrow left */
+	   if(pos>0){pos--;putchar(BS);}
+	   for(;pos>0 && res[pos]!=SP;pos--) putchar(BS);
+	   break;
+
+         case A_RIGHT:		/* escape escape arrow right */
+	   if(pos<len) putchar(res[pos++]);
+	   for(;pos<len && res[pos]!=SP;pos++) putchar(res[pos]);
+	   break;
+
+         case A_UP:		/* escape escape arrow up */
+	   for(;pos>0;pos--) putchar(BS);
+	   break;
+
+         case A_DOWN:		/* escape escape arrow down */
+	   for(;pos<len;pos++) putchar(res[pos]);
+	   break;
+	 }/*switch*/
+	 break;			/* escape escape arrow */
+
+       }/*switch*/
+       break;			/* escape escape */
+
+     }/*switch*/
+     break; 			/* escape */
+
+   }/*switch*/
+
+ }/*for*/
+}/* editline */
+
+
+
+
+
+
+
 /* ostgetc - get a character from the terminal (by T. JOCHEMS) */
 int ostgetc()
 {
  unsigned char ch;
  static unsigned char *pc=NULL;
  static unsigned char line[1+CHARNUM];			/* line to edit */
- void editline();
+ /* void editline(); */
 
  /* read new string */
  if(pc==NULL){ editline(line); pc=line; }
@@ -512,68 +844,12 @@ int     ch;
 
 
 
-/* -- osflush - flush the terminal input buffer */
-VOID osflush()
-{
-        lindex = lcount = 0;
-}
-
-static int sigint_received;
-
-VOID oscheck()
-{
-    if (sigint_received){
-        sigint_received = 0;
-        xltoplevel();
-    }
-}
-
-static VOID xinfo();
-
-osx_check(ch)
-char ch;
-{
-     switch (ch){
-        case '\003':
-          xltoplevel(); /* control-c */
-        case '\007':
-          xlcleanup();  /* control-g */
-        case '\020':
-          xlcontinue(); /* control-p */
-        case '\024':    /* control-t */
-          xinfo();
-          printf("\n ");
-     }
-}
-
 
 /* -- ossymbols - enter os-specific symbols */
 VOID ossymbols()
 {
 }
 
-
-/* xinfo - show information on control-t */
-static VOID xinfo()
-{
-  char tymebuf[100];
-  time_t tyme;
-  char buf[500];
-
-  time(&tyme);
-  strcpy(tymebuf, ctime(&tyme));
-  tymebuf[19] = '\0';
-  sprintf(buf,"\n[ %s Free: %d, GC calls: %d, Total: %ld ]",
-    tymebuf, nfree,gccalls,total);
-  errputstr(buf);
-}
-
-/* xflush - flush the input line buffer and start a new line */
-static VOID xflush()
-{
-  osflush();
-  ostputc('\n');
-}
 
 
 
@@ -603,133 +879,20 @@ int read_keybd()
 #endif
 
 
-static void handle_interrupt(int sig)
+
+/* -- osflush - flush the terminal input buffer */
+VOID osflush()
 {
-#if !defined(BSD) && !defined(POSIX)
-    /* SYS V requires reseting of SIGINT */
-    signal(SIGINT, handle_interrupt);
-#endif
-    sigint_received = 1;
+        lindex = lcount = 0;
 }
 
-#ifdef POSIX
-static void onsusp();
-#else
-static onsusp();
-#endif
-
-init_tty()
+VOID oscheck()
 {
-        /* extern sigcatch(); */
-#ifdef POSIX
-    struct sigaction sa, old_sa;
-    sa.sa_handler = handle_interrupt;
-    sa.sa_flags = 0;
-    sigemptyset(&sa.sa_mask);
-    sigaction(SIGINT, &sa, NULL);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGQUIT, &sa, NULL);
-    
-#ifdef SIGTSTP
-    sigaction(SIGTSTP, NULL, &old_sa);
-    if (old_sa.sa_handler == SIG_DFL){
-        sa.sa_handler = onsusp;
-        sigaction(SIGTSTP, &sa, NULL);
-    }
-#endif
-#else
-    signal(SIGINT, handle_interrupt);
-    signal(SIGQUIT, SIG_IGN);
-
-#ifdef SIGTSTP
-    if (signal(SIGTSTP, onsusp) == SIG_DFL){
-        signal(SIGTSTP, onsusp);
-    }
-#endif
-#endif
-
-    if (gtty(0, &savetty) == -1){
-        printf("ioctl failed: not a tty\n");
-        exit(1);
-    }
-
-    newtty = savetty;
-
-    
-#ifdef BSD
-    newtty.sg_flags |= CBREAK;      /* turn off canonical mode */
-                                    /* i.e., turn on cbreak mode */
-    newtty.sg_flags &= ~ECHO;       /* turn off character echo */
-#else
-    newtty.c_lflag &= ~ICANON;  /* SYS 5 */
-    newtty.c_lflag &= ~ECHO;
-    newtty.c_cc[VMIN] = 1;
-    newtty.c_cc[VTIME] = 1;
-#endif
-    /*
-     * You can't request that it try to give you at least
-     * 5 characters, nor set the timeout to 10 seconds,
-     * as you can in the S5 example.  If characters come
-     * in fast enough, though, you may get more than one.
-     */
-    if (stty(0, &newtty) == -1){
-        printf("cannot put tty into cbreak mode\n");
-        exit(1);
+    if (sigint_received){
+        sigint_received = 0;
+        xltoplevel();
     }
 }
-
-static
-#ifdef POSIX
-void
-#endif
-onsusp()
-{
-#ifdef SIGTSTP
-#ifdef POSIX
-    struct sigaction sa;
-    sa.sa_flags = 0;
-    sigemptyset(&sa.sa_mask);
-#endif
-    
-    /* ignore SIGTTOU so we dont get stopped if csh grabs the tty */
-#ifdef POSIX
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGTTOU, &sa, NULL);
-#else
-    signal(SIGTTOU, SIG_IGN);
-#endif
-    stty(0, &savetty);
-    xflush();
-#ifdef POSIX
-    sa.sa_handler = SIG_DFL;
-    sigaction(SIGTTOU, &sa, NULL);
-#else
-    signal(SIGTTOU,SIG_DFL);
-#endif
-
-    /* send the TSTP signal to suspend our process group */
-#ifdef POSIX
-    sa.sa_handler = SIG_DFL;
-    sigaction(SIGTSTP, &sa, NULL);
-    sigprocmask(SIG_SETMASK, &sa.sa_mask, NULL);
-#else
-    signal(SIGTSTP, SIG_DFL);
-    sigsetmask(0);
-#endif
-    kill(0, SIGTSTP);
-    /* pause for station break */
-
-    /* we re back */
-#ifdef POSIX
-    sa.sa_handler = onsusp;
-    sigaction(SIGTSTP, &sa, NULL);
-#else
-    signal(SIGTSTP, onsusp);
-#endif
-    stty(0, &newtty);
-#endif
-}
-
 
 
 #if(!defined(EDITOR))
@@ -857,180 +1020,4 @@ char *oldname,*newname;
 #endif
 #endif
 
-
-
-
-#if defined(EDITOR)
-/* one line editor like doskey 
- * tilman jochems 03/95
- * commands:
- *	nl			;end line editing
- *	del			;delete character backwords	
- *	dc4			;go to top-level
- *	esc arrow left 		;cursor to the left
- *	esc arrow right 	;cursor to the right
- *	esc arrow up		;previous edited line
- *	esc arrow down		;next edited line
- *	esc esc arrow left 	;one word to the left
- *	esc esc arrow right 	;one word to the right
- *	esc esc arrow up	;begin of line
- *	esc esc arrow down	;end of line
- */
-void editline(res)
-unsigned char res[];			/* is called with output buffer */
-{
- int i1;
- unsigned char ch,*pc1,*pc2;
- int pos=0;			/* position in line */
- int len=0; 			/* length of the line */
- static int act=0;		/* nr of actual line for elmem */
- int recall;			/* nr of line to recall */
- int del=FALSE;			/* flag: delete */
- recall=act;
-
- for(;;){
- 
-  /* read character */
-  ch=getchar();
-
-  /* new line : end line editing */
-  if(ch==NL){
-
-   /* display CR */
-   res[len++]=NL;
-   for(pc1=&res[pos];*pc1!=NL;pc1++) putchar(*pc1);
-   putchar(NL);
-
-   /* save line in elmem */
-   for(pc1=res,pc2=elmem[act]; *pc1!=NL; pc1++,pc2++) *pc2=*pc1;
-   *pc2=NL;
-   act=(act+1)%LINENUM;
-
-   break; /* loop */
-
-  }/*if*/
-
-  /* normal printable character: insert in res */
-  if(ch>=0x20 && ch <=0x7e){
-
-   for(i1=len;i1>pos;i1--) res[i1]=res[i1-1]; /* insert character */
-   res[pos]=ch;
-   if (len<CHARNUM) len++;
-   if (pos<len){pos++;putchar(ch);}
-
-   /* redisplay string */
-   for(i1=pos;i1<len;i1++) putchar(res[i1]);	/* display */
-   for(i1=pos;i1<len;i1++) putchar(BS);		/* cursor on pos */
-
-   continue; /* loop */
-  }/*if*/
-
-  /* test if ch is a command */
-  switch(ch){
-
-   case '\002' :                 /* CTRL-b */
-   case '\003' :                 /* CTRL-c */
-   case '\007' :                 /* CTRL-g */
-   case '\020' :                 /* CTRL-p */
-   case '\024' : osx_check(ch);  /* CTRL-t */
-   break;
-
-   case DEL:			/* del */
-    del=TRUE;
-    if(len>0) len--;
-    if(pos>0){pos--;putchar(BS);}
-    for(i1=pos;i1<len;i1++){ res[i1]=res[i1+1];putchar(res[i1]); }
-    putchar(SP);putchar(BS);	/* clean last character */
-    for(i1=pos;i1<len;i1++) putchar(BS);
-   break;
-
-
-   case ESC:			/* escape */
-    ch=getchar();
-    switch(ch){
-
-     case ARROW:		/* escape arrow */
-      ch=getchar();
-      switch(ch){
-
-       case A_LEFT:		/* escape arrow left */
-        if(pos>0){ putchar(BS); pos--; }
-       break;
-
-       case A_RIGHT:		/* escape arrow right */
-        if(pos<len) putchar(res[pos++]);
-       break;
-
-       case A_UP:		/* escape arrow up */
-
-        /* clear line */
-        for(;pos>0;pos--) putchar(BS);
-        for(pos=0;pos<len;pos++) putchar(SP);
-        for(pos=0;pos<len;pos++) putchar(BS);
-
-        /* copy recall into actual line */
-        recall=(recall+LINENUM-1) % LINENUM;
-        for(pc1=res,pc2=elmem[recall],len=0;
-            *pc2!=NL;
-            len++,pc1++,pc2++){*pc1=*pc2;putchar(*pc2);};
-        pos=len;
-       break;
-
-       case A_DOWN:		/* escape arrow down */
-
-        /* clear line */
-        for(;pos>0;pos--) putchar(BS);
-        for(pos=0;pos<len;pos++) putchar(SP);
-        for(pos=0;pos<len;pos++) putchar(BS);
-
-        /* copy recall into actual line */
-        recall=(recall+1) % LINENUM;
-        for(pc1=res,pc2=elmem[recall],len=0;
-            *pc2!=NL;
-            len++,pc1++,pc2++){*pc1=*pc2;putchar(*pc2);};
-        pos=len;
-       break;
-       
-      }/*switch*/
-     break;			/* escape arrow */
-
-     case ESC:			/* escape escape */
-      ch=getchar();
-      switch(ch){		/* escape escape arrow */
-
-       case ARROW:
-        ch=getchar();
-        switch(ch){
-
-         case A_LEFT:		/* escape escape arrow left */		
-          if(pos>0){pos--;putchar(BS);}
-	  for(;pos>0 && res[pos]!=SP;pos--) putchar(BS);
-          break;
-
-         case A_RIGHT:		/* escape escape arrow right */
-          if(pos<len) putchar(res[pos++]);
-	  for(;pos<len && res[pos]!=SP;pos++) putchar(res[pos]);
-          break;
-
-         case A_UP:		/* escape escape arrow up */
-          for(;pos>0;pos--) putchar(BS);
-          break;
-
-         case A_DOWN:		/* escape escape arrow down */
-          for(;pos<len;pos++) putchar(res[pos]);
-          break;
-        }/*switch*/
-       break;			/* escape escape arrow */
-
-      }/*switch*/
-     break;			/* escape escape */
-
-    }/*switch*/ 
-   break; 			/* escape */
-
-  }/*switch*/
-
- }/*for*/
-}/* editline */
-#endif /* if (defined(EDITOR)) */
 

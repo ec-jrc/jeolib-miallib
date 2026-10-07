@@ -57,6 +57,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #if (defined(XLISP))
 extern void gc();
+extern void xmem();
 /*PSRM char buf[256]; PSRM*/
 #endif
 

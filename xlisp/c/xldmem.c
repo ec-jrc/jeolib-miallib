@@ -51,7 +51,7 @@ int _tint = 0;
 #endif
 
 #ifdef MIAL
-extern void free_image();
+extern void free_image(IMAGE *);
 #endif
 
 

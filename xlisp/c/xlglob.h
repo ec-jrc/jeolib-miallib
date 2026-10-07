@@ -165,9 +165,9 @@ extern LVAL xlresults[];        /* multiple values array */
 /* Garbage collection reporting variables */
 extern long gccalls, nfree;
 #ifdef MIAL
-long long total;
+extern long long total;
 #else
-long total;
+extern long total;
 #endif
 
 /* debugging variables */

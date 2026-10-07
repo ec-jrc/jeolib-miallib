@@ -75,8 +75,7 @@ static VOID init_filetab()
 #endif
 
 /* main - the main routine */
-int CDECL main(argc,argv)
-  int argc; char *argv[];
+int CDECL main(int argc, char *argv[])
 {
     char *transcript;
     CONTXT cntxt;
@@ -319,8 +318,7 @@ LOCAL VOID toplevelloop()
 }
 
 /* xlrdsave - save the last expression returned by the reader */
-VOID xlrdsave(expr)
-  LVAL expr;
+VOID xlrdsave(LVAL expr)
 {
     setvalue(s_3plus,getvalue(s_2plus));
     setvalue(s_2plus,getvalue(s_1plus));
@@ -329,8 +327,7 @@ VOID xlrdsave(expr)
 }
 
 /* xlevsave - save the last expression returned by the evaluator */
-VOID xlevsave(expr)
-  LVAL expr;
+VOID xlevsave(LVAL expr)
 {
     setvalue(s_3star,getvalue(s_2star));
     setvalue(s_2star,getvalue(s_1star));
@@ -338,8 +335,7 @@ VOID xlevsave(expr)
 }
 
 /* xlfatal - print a fatal error message and exit */
-VOID xlfatal(msg)
-  char *msg;
+VOID xlfatal(char *msg)
 {
     xoserror(msg);
     wrapup();

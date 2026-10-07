@@ -411,8 +411,10 @@
 #ifdef NNI
 {   "*NNI",        S,  inni            },
 #endif
+#if defined(LIBPROJ)
 {   "*PROJ",        S,  iproj            },
 {   "*CS2CS",       S,  ics2cs           },
+#endif
 {   "*JULIANDATE",  S,  ijulian_date     },
 #ifdef COMPATIBILITY /* with old lisp terminology */
 {   "@LINERANK",       S,  ilinerank        },

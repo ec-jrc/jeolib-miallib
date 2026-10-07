@@ -4,10 +4,10 @@
         Permission is granted for unrestricted non-commercial use       */
 
 #include "xlisp.h"
-#ifndef ANSI
-double atof();  /* TAA MOD 3/98 -- some compilers didn't have atof defined
-                    in math.h, so changed to explicitly define it */
-#endif
+/* #ifndef ANSI */
+/* double atof();  /\* TAA MOD 3/98 -- some compilers didn't have atof defined */
+/*                     in math.h, so changed to explicitly define it *\/ */
+/* #endif */
 #ifdef AMIGA
 #include <math.h>
 #endif

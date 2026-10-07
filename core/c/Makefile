@@ -11,16 +11,11 @@ CXX        = c++
 # defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
-CFLAGS     = -DDEBUG -DOPENMP -DLIBPROJ -DUNIX -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
+
+CFLAGS     = -DXLDEBUG -DDEBUG -DOPENMP  -DUNIX -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
+
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON
-
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python3 --version 2>&1)))
-python_version_major := $(word 1,${python_version_full})
-python_version_minor := $(word 2,${python_version_full})
-python_version_patch := $(word 3,${python_version_full})
-
-PYVER=${python_version_major}.${python_version_minor}
 
 prefix     = /usr/local
 exec_prefix= ${prefix}
@@ -98,10 +93,6 @@ BUILDDIR   = ../build
 LDIR 	   = $(BUILDDIR)/lib
 DOCDIR     = ../doc
 
-DDIR	   =  $(BUILDDIR)/build-shared-python
-DOBJS	   =  $(SRCS:%.c=$(DDIR)/%.o)
-SDIR	   =  $(BUILDDIR)/build-static-python
-SOBJS	   =  $(SRCS:%.c=$(SDIR)/%.o)
 
 SDIR-XLISP	   =  $(BUILDDIR)/build-static-xlisp
 SOBJS-XLISP	   =  $(SRCS:%.c=$(SDIR-XLISP)/%.o)
@@ -113,9 +104,7 @@ SOBJS-MSPA         =  $(SRCS-MSPA:%.c=$(SDIR-GENERIC)/%.o)
 DDIR-GENERIC	   =  $(BUILDDIR)/build-shared-generic
 DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
 
-
-
-INCLUDE    = -I./ -I/usr/include/python${PYVER}/ -I/usr/include/gdal/
+INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}/ -I/usr/include/gdal/
 
 # TODO: add -lcsa -lnn
 
@@ -195,6 +184,8 @@ $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 	@mkdir -p $(@D)
 	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS) -o $@
 
+$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(DOCDIR)/Doxyfile
+	cd $(DOCDIR) && make clean && make doc
 
 ##################################################################
 #####                       XLISP                           ######
@@ -213,53 +204,13 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 	$(LDSTATIC) $@ $(SOBJS-XLISP) && ranlib $@
 
 
-##################################################################
-#####                       PYTHON                          ######
-##################################################################
-
-# Make sure these locate your Python installation
-PYTHON_INCLUDE= -DHAVE_CONFIG_H -I/usr/include/python${PYVER}
-PYTHON_LIB    =
-
-# Extra Python specific dynamic linking options
-PYTHON_DLNK   =
 
 
-# ----------------------------------------------------------------
-# Build static and dynamic libraries
-# ----------------------------------------------------------------
-
-$(SDIR)/%.o: %.c miallib.h banner.h
-	@mkdir -p $(@D)
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
-
-$(DDIR)/%.o: %.c miallib.h banner.h
-	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-PYTHON) $(INCLUDE) -o $@ $<
-
-$(LDIR)/$(TARGET)_python.a: $(SOBJS)
-	@mkdir -p $(@D)
-	$(LDSTATIC) $@ $(SOBJS) && ranlib $@
-
-$(LDIR)/$(TARGET)_python.so: $(DOBJS)
-	@mkdir -p $(@D)
-	$(LDSHARED) $(DOBJS) $(LIBS) -o $@
-
-
-##################################################################
-
-$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(LDIR)/$(TARGET)_python.a $(DOCDIR)/Doxyfile
-	cd $(DOCDIR) && make clean && make doc
-
-##################################################################
-
-
-
-build: $(LDIR)/$(TARGET)_python.so $(LDIR)/$(TARGET)_python.a $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so $(LDIR)/$(TARGET)_mspa.a
+build: $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so $(LDIR)/$(TARGET)_mspa.a
 
 generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
 
-doc:  $(LDIR)/$(TARGET)_python.a  $(BUILDDIR)/doc/xml/mial_doxy2swig.i
+doc: $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
 all: build doc
 
