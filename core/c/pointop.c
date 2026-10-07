@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -1691,8 +1691,6 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
 }
 #include "u32_undef.h"
 
-
-
 #include "u32_def.h"
 #define PIX_TYPE2 UCHAR
 ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
@@ -1843,7 +1841,7 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
     return(ERROR);
   }
   if (ovfl){
-    (void)sprintf(buf, "WARNING in usuc_arith(im1, im2, op=%d): \
+    (void)sprintf(buf, "WARNING in uluc_arith(im1, im2, op=%d): \
              %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
@@ -1852,6 +1850,164 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
 #include "u32_undef.h"
 
 
+
+#include "u32_def.h"
+#define PIX_TYPE2 USHORT
+ERROR_TYPE ulus_arith(IMAGE *im1, IMAGE *im2, int op)
+{
+  mia_size_t i, ovfl = 0, npix;
+#if OVFL_TEST
+  long int test;
+#endif
+  PIX_TYPE *p1;
+  PIX_TYPE2 *p2;
+  double dval;
+
+  p1 = (PIX_TYPE *)GetImPtr(im1);
+  p2 = (PIX_TYPE2 *)GetImPtr(im2);
+
+  npix = GetImNPix(im1);
+
+  switch(op){
+  case AND_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 &= *p2;
+    }
+    break;
+  case OR_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 |= *p2;
+    }
+    break;
+  case XOR_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 ^= *p2;
+    }
+    break;
+  case ADD_op_ovfl: /* allow overflow */
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 += *p2;
+    }
+    break;
+  case ADD_op: /* set to PIX_MAX if overflow occurs */
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 = *p1 + *p2;
+    }
+    break;
+  case SUB_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 = *p1 - *p2;
+    }
+    break;
+  case SUBSWAP_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 =  *p2 - *p1;
+    }
+    break;
+  case SUB_op_ovfl:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 -= *p2;
+    }
+    break;
+  case SUBSWAP_op_ovfl:
+    for (i=0; i<npix; i++, p1++, p2++){
+      *p1 = *p2 - *p1;
+    }
+    break;
+  case ABSSUB_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+#if FLOATING
+      *p1 = (PIX_TYPE)fabs((double)*p1-(double)*p2);
+#else
+      *p1 = (PIX_TYPE)abs((int)*p1-(int)*p2);
+#endif
+    }
+    break;
+  case MULT_op:
+    for (i=0; i<npix; i++, p1++, p2++)  {
+      *p1 =  *p1 * *p2;
+    }
+    break;
+  case MULT_op_ovfl:
+    for (i=0; i<npix; i++, p1++, p2++)
+      *p1 *=  *p2;
+    break;
+  case DIV_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      if (*p2 == 0){
+	if (*p1 != 0){
+#if SIGNED
+	*p1 = SGN(*p1)*PIX_MAX;
+#else
+	*p1 = (*p1 & 0x1)*PIX_MAX;
+#endif
+	ovfl++;
+	}
+      }
+      else
+	*p1 /=  *p2;
+    }
+    break;
+  case INF_op:
+    for (i=0; i<npix; i++, p1++, p2++)
+      if (*p2 < *p1)
+	*p1 = *p2;
+    break;
+  case SUP_op:
+    for (i=0; i<npix; i++, p1++, p2++)
+      if (*p2 > *p1)
+	*p1 = *p2;
+    break;
+  case MASK_op:
+    for (i=0; i<npix; i++, p1++, p2++)
+      if (*p2 != 0)
+	*p1 = *p2;
+    break;
+  case MASK_op2:
+    for (i=0; i<npix; i++, p1++, p2++)
+      if (*p1 == 0)
+	*p1 = *p2;
+    break;
+  case CMP_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      if (*p1 < *p2)
+	*p1 = 1;
+      else if (*p1 > *p2)
+	*p1 = 2;
+      else
+	*p1 = 0;
+    }
+    break;
+  case EQUAL_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      if (*p1 == *p2)
+	*p1 = 1;
+      else
+	*p1 = 0;
+    }
+    break;
+  case NDI_op:
+    for (i=0; i<npix; i++, p1++, p2++){
+      dval=(double)*p1+(double)*p2;
+      if (dval==0.)
+	*p1=PIX_MAX;
+      else
+	*p1=((double)*p1-(double)*p2)/dval;
+    }
+    break;
+  default:
+    (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
+                invalid op value\n"); errputstr(buf);
+    return(ERROR);
+  }
+  if (ovfl){
+    (void)sprintf(buf, "WARNING in ulus_arith(im1, im2, op=%d): \
+             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+  }
+  return(NO_ERROR);
+}
+#undef PIX_TYPE2
+#include "u32_undef.h"
 
 
 #include "f_def.h"
@@ -2510,6 +2666,9 @@ ERROR_TYPE arith(IMAGE *im1, IMAGE *im2, int op)
   case t_UINT32: /* overflow check is turned off ! */
     if (GetImDataType(im2) == t_UCHAR){
       return(uluc_arith(im1, im2, op));
+    }
+    if (GetImDataType(im2) == t_USHORT){
+      return(ulus_arith(im1, im2, op));
     }
     else if (GetImDataType(im1) != GetImDataType(im2)){
       (void)sprintf(buf,"ERROR in arith(im1, im2, op): \
