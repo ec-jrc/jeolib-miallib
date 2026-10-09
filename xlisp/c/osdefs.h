@@ -180,6 +180,8 @@ extern LVAL iskelfah();
 extern LVAL iskelfah2();
 extern LVAL icompose();
 extern LVAL iovlmatrix();
+/* mspa.c */
+extern LVAL isegmentBinaryPatterns();
 /* wshed.c */
 extern LVAL ihistcompress();
 extern LVAL iws();

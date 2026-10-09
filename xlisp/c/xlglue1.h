@@ -160,6 +160,8 @@ extern ERROR_TYPE compose(IMAGE *mark, IMAGE *mask, IMAGE *g, IMAGE *lbl, int gr
 /* wshed.c */
 extern IMAGE *ws(IMAGE *im, int graph);
 
+/* mspa.c */
+extern IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transition, int internal);
 
 /* linerank.c */
 extern ERROR_TYPE linerank(IMAGE *im, int dx, int dy, int k, int rank, int o);
