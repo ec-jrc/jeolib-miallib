@@ -47,6 +47,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
   - upgrade triangle.c from current version 1.4 to version 1.6
   available from Richard: https://www.cs.cmu.edu/~quake/triangle.html;
+  https://doi.org/10.1016/S0925-7721(01)00047-5
 
   - deal with NaN returned for points outside convex hull when wmin=0;
 

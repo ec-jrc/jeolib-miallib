@@ -21,7 +21,6 @@ prefix     = /usr/local
 exec_prefix= ${prefix}
 
 # NOTES:
-# probably unused: ngb.c
 # skipped so far: smoothcc_grazzja.c
 # note that natngbint.c # requires NNI to be defined and the libcsa and libnn libraries.  libnn makefile,in needs to pe patched to include -fPIC when compiling
 # note that phase_correlation.c requires -lfftw3
@@ -78,11 +77,7 @@ SRCS	   = imem.c shm.c pointop.c \
 		mspa.c \
 		compose.c
 
-# problem with libnn and libcsa:
-#		natngbint.c # requires NNI to be defined
-
 OBJS       = $(SRCS:.c=.o)
-
 
 SRCS-MSPA = fifo.c label.c wshed.c bresenham.c pointop.c wsfah.c	\
 		ced.c lerodil.c oiht.c imem.c erodil.c imio.c skel.c	\

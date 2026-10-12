@@ -2553,7 +2553,7 @@ LVAL inni()
   \param{ny}{integer with number of points of grid in y}
   \param{wmin}{a floating value with minimum allowed weight (0.0 for interpolation restricted to convex hull of input points)}
   \return{an image node}
-  \desc{Calls Pavel Sakov's code for nni (CSIRO Marine Research).  This latter code relies itself on efficient triangle.c (version 1.4) from Jonathan Richard Shewchuk, Berkeley California.  Downloaded from googlecode  on 20140226}
+  \desc{Calls Pavel Sakov's code for nni (CSIRO Marine Research).  This latter code relies itself on efficient triangle.c (version 1.4) from Jonathan Richard Shewchuk, Berkeley California \citep{shewchuk2022}, see also \url{https://www.cs.cmu.edu/~quake/triangle.html} and \url{https://www.netlib.org/voronoi/index.html}.}
   \cfunction{\cfnni}
   \cfile{natngbint.c}
   \example{}{}
