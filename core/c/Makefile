@@ -12,7 +12,7 @@ CXX        = c++
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
 
-CFLAGS     = -DXLDEBUG -DDEBUG -DOPENMP -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
+CFLAGS     = -DOPENMP -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
 
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON
@@ -217,9 +217,13 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 
 
 
-build: $(LDIR)/$(TARGET)_xlisp.a $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so $(LDIR)/$(TARGET)_mspa.a
+build: generic lib4mspa lib4xlisp
 
 generic: $(LDIR)/$(TARGET)_generic.a  $(LDIR)/$(TARGET)_generic.so
+
+lib4mspa: $(LDIR)/$(TARGET)_mspa.a $(LDIR)/$(TARGET)_mspa.so
+
+lib4xlisp: $(LDIR)/$(TARGET)_xlisp.a
 
 doc: $(BUILDDIR)/doc/xml/mial_doxy2swig.i
 
