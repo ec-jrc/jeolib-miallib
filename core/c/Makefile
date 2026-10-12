@@ -95,11 +95,14 @@ SDIR-XLISP	   =  $(BUILDDIR)/build-static-xlisp
 SOBJS-XLISP	   =  $(SRCS:%.c=$(SDIR-XLISP)/%.o)
 
 SDIR-GENERIC	   =  $(BUILDDIR)/build-static-generic
+SDIR-MSPA	   =  $(BUILDDIR)/build-static-mspa
 SOBJS-GENERIC	   =  $(SRCS:%.c=$(SDIR-GENERIC)/%.o)
-SOBJS-MSPA         =  $(SRCS-MSPA:%.c=$(SDIR-GENERIC)/%.o)
+SOBJS-MSPA         =  $(SRCS-MSPA:%.c=$(SDIR-MSPA)/%.o)
 
 DDIR-GENERIC	   =  $(BUILDDIR)/build-shared-generic
+DDIR-MSPA	   =  $(BUILDDIR)/build-shared-mspa
 DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
+DOBJS-MSPA	   =  $(SRCS-MSPA:%.c=$(DDIR-MSPA)/%.o)
 
 INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}/ -I/usr/include/gdal/
 
@@ -152,14 +155,29 @@ banner.h: $(SRCS)
 	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
 
 
+##################################################################
+#####                       MSPA                         ######
+##################################################################
+
+$(SDIR-MSPA)/%.o: %.c miallib.h banner.h
+	@mkdir -p $(@D)
+	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -DMSPA -o $@ $<
+
+$(DDIR-MSPA)/%.o: %.c miallib.h banner.h
+	@mkdir -p $(@D)
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -DMSPA -o $@ $<
+
+$(LDIR)/$(TARGET)_mspa.a: $(SOBJS-MSPA)
+	@mkdir -p $(@D)
+	$(LDSTATIC) $@ $(SOBJS-MSPA) && ranlib $@
+
+$(LDIR)/$(TARGET)_mspa.so: $(DOBJS-MSPA)
+	@mkdir -p $(@D)
+	$(LDSHARED) $(DOBJS-MSPA) $(LIBS) -o $@
 
 ##################################################################
 #####                       GENERIC                         ######
 ##################################################################
-
-# ----------------------------------------------------------------
-# Build static library
-# ----------------------------------------------------------------
 
 $(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
@@ -168,10 +186,6 @@ $(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
 $(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
-
-$(LDIR)/$(TARGET)_mspa.a: $(SOBJS-MSPA)
-	@mkdir -p $(@D)
-	$(LDSTATIC) $@ $(SOBJS-MSPA) && ranlib $@
 
 $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
