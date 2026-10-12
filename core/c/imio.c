@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -26,19 +26,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#ifndef UNIX
-//#include "bytesex.h" /* <endian.h> only for linux ... */
-//#endif
-//#include "/home/soillpi/coolsoft/tiff-4.0.0beta7/libtiff/tiffiop.h"  /* added p in name for bigtiff 20110513 */
 #include <tiffio.h>
-//#include "xtiffio.h" /* 2005-10-24 */
-// #include "geotiff.h" /* 2005-10-24 */
 #include "banner.h"  /* 2007-12-10 */
 #include "miallib.h"
 #include "imio.h"
-
-#define BYTE_ORDER      1234
-//#define TIFF_BIGTIFF 0x80000
 
 extern IMAGE *deinterleave(IMAGE *);
 
@@ -656,7 +647,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   struct tag *tag_info=NULL;
   int spp=1;
   int xr_n = 1, xr_d = 1, yr_n = 1, yr_d = 1, swapflag=0;
-  G_TYPE *pg;
+  G_TYPE *pg=NULL;
   short int pmi=3; /* must be 3 when there is a ColorMap */
   int ptr_dir2=0; /*Offset to second directory*/
 

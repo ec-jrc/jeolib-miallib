@@ -3,7 +3,7 @@ Author(s):  Michael Wilkinson, Arnold Meijster, and Jos Roerdink
 Copyright (C) 2000 Michael Wilkinson, Arnold Meijster, and Jos Roerdink
 
 Adapted by Pierre Soille to fit miallib with permission of the authors
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -68,7 +68,6 @@ extern void gc();
 
 #define FALSE 0
 #define TRUE  1
-typedef unsigned char mybool;
 
 #define ACTIVE_ROOT -1
 #define DONE_ROOT -2

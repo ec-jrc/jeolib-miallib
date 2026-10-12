@@ -33,8 +33,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -160,27 +158,24 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
 #ifdef RLIMIT
   struct rusage usage[1];
   struct rlimit rlim[1];
-#endif
-
-#ifdef RLIMIT
-    getrusage(RUSAGE_SELF, usage);
-    getrlimit(RLIMIT_FSIZE, rlim);
-    fprintf(stderr, "RLIMIT_FSIZE cur=%d\n", rlim->rlim_cur);
-    fprintf(stderr, "RLIMIT_FSIZE max=%d\n", rlim->rlim_max);
-    getrlimit(RLIMIT_DATA, rlim);
-    fprintf(stderr, "RLIMIT_DATA cur=%d\n", rlim->rlim_cur);
-    fprintf(stderr, "RLIMIT_DATA max=%d\n", rlim->rlim_max);
-    getrlimit(RLIMIT_CORE, rlim);
-    fprintf(stderr, "RLIMIT_CORE cur=%d\n", rlim->rlim_cur);
-    fprintf(stderr, "RLIMIT_CORE max=%d\n", rlim->rlim_max);
-    rlim->rlim_cur=RLIM_INFINITY;
-    setrlimit(RLIMIT_CORE, rlim);
-    getrlimit(RLIMIT_MEMLOCK, rlim);
-    fprintf(stderr, "RLIMIT_MEMLOCK cur=%d\n", rlim->rlim_cur);
-    fprintf(stderr, "RLIMIT_MEMLOCK max=%d\n", rlim->rlim_max);
-    getrlimit(RLIMIT_AS, rlim);
-    fprintf(stderr, "RLIMIT_AS cur=%d\n", rlim->rlim_cur);
-    fprintf(stderr, "RLIMIT_AS max=%d\n", rlim->rlim_max);
+  getrusage(RUSAGE_SELF, usage);
+  getrlimit(RLIMIT_FSIZE, rlim);
+  fprintf(stderr, "RLIMIT_FSIZE cur=%d\n", rlim->rlim_cur);
+  fprintf(stderr, "RLIMIT_FSIZE max=%d\n", rlim->rlim_max);
+  getrlimit(RLIMIT_DATA, rlim);
+  fprintf(stderr, "RLIMIT_DATA cur=%d\n", rlim->rlim_cur);
+  fprintf(stderr, "RLIMIT_DATA max=%d\n", rlim->rlim_max);
+  getrlimit(RLIMIT_CORE, rlim);
+  fprintf(stderr, "RLIMIT_CORE cur=%d\n", rlim->rlim_cur);
+  fprintf(stderr, "RLIMIT_CORE max=%d\n", rlim->rlim_max);
+  rlim->rlim_cur=RLIM_INFINITY;
+  setrlimit(RLIMIT_CORE, rlim);
+  getrlimit(RLIMIT_MEMLOCK, rlim);
+  fprintf(stderr, "RLIMIT_MEMLOCK cur=%d\n", rlim->rlim_cur);
+  fprintf(stderr, "RLIMIT_MEMLOCK max=%d\n", rlim->rlim_max);
+  getrlimit(RLIMIT_AS, rlim);
+  fprintf(stderr, "RLIMIT_AS cur=%d\n", rlim->rlim_cur);
+  fprintf(stderr, "RLIMIT_AS max=%d\n", rlim->rlim_max);
 #endif
 
     im = (IMAGE *)calloc((size_t)1, sizeof(IMAGE));

@@ -23,10 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <string.h>
 #include <time.h>
 #include <unistd.h>  /* for gethostname */
-#ifndef UNIX
-// #include "bytesex.h" /* <endian.h> only for linux ... */
-#include  <endian.h>
-#endif
+
 #include "miallib.h"
 #include "imio.h"
 #include <geotiff/xtiffio.h>

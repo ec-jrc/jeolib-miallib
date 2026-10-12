@@ -19,14 +19,48 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
 
 /* processor specific definitions (see endian.h under linux */
+#if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__MSYS__)
+   /* Native Windows (MSVC, MinGW-w64): all supported CPUs are little-endian */
+#  ifndef BYTE_ORDER
+#    define LITTLE_ENDIAN 1234
+#    define BIG_ENDIAN    4321
+#    define PDP_ENDIAN    3412
+#    define BYTE_ORDER    LITTLE_ENDIAN
+#  endif
 
-#ifndef LITTLE_ENDIAN /* intel processors */
-#define	LITTLE_ENDIAN	1234
-#endif
-#ifndef BIG_ENDIAN
-#define	BIG_ENDIAN	4321
+#elif defined(__APPLE__) && defined(__MACH__)
+   /* macOS (Darwin): BSD-style macros are in <machine/endian.h> */
+#  include <machine/endian.h>
+
+#elif defined(__FreeBSD__) || defined(__DragonFly__) || defined(__NetBSD__) \
+   || defined(__OpenBSD__)
+| --- |
+   /* The BSDs: <sys/endian.h> defines the macros natively */
+#  include <sys/endian.h>
+
+#else
+   /* Linux/glibc, Cygwin, MSYS2 */
+#  include <endian.h>
+#  ifndef BYTE_ORDER            /* hidden by strict -std= flags on glibc */
+#    define BYTE_ORDER    __BYTE_ORDER
+#    define LITTLE_ENDIAN __LITTLE_ENDIAN
+#    define BIG_ENDIAN    __BIG_ENDIAN
+#    define PDP_ENDIAN    __PDP_ENDIAN
+#  endif
 #endif
 
+/* Safety net: fall back to the macros GCC and Clang predefine on every target. */
+#ifndef BYTE_ORDER
+#  if defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) \
+      && defined(__ORDER_BIG_ENDIAN__)
+#    define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+#    define BIG_ENDIAN    __ORDER_BIG_ENDIAN__
+#    define PDP_ENDIAN    3412
+#    define BYTE_ORDER    __BYTE_ORDER__
+#  else
+#    error "BYTE_ORDER could not be determined for this platform"
+#  endif
+#endif
 
 /*
  **	TIFF structures.

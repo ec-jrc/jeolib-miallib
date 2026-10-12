@@ -75,7 +75,8 @@ SRCS	   = imem.c shm.c pointop.c \
 		msmm.c \
 		natngbint.c \
 		remsens.c  \
-		mspa.c
+		mspa.c \
+		compose.c
 
 # problem with libnn and libcsa:
 #		natngbint.c # requires NNI to be defined
@@ -83,9 +84,10 @@ SRCS	   = imem.c shm.c pointop.c \
 OBJS       = $(SRCS:.c=.o)
 
 
-SRCS-MSPA = fifo.c label.c wshed.c bresenham.c pointop.c wsfah.c dcluster.c ced.c \
-		lerodil.c oiht.c imem.c erodil.c imio.c skel.c recons.c imstat.c \
-		indexx.c pqueue.c fah.c efedt.c miscel.c format.c setreg.c setshft.c geom.c
+SRCS-MSPA = fifo.c label.c wshed.c bresenham.c pointop.c wsfah.c	\
+		ced.c lerodil.c oiht.c imem.c erodil.c imio.c skel.c	\
+		recons.c imstat.c pqueue.c fah.c efedt.c miscel.c	\
+		format.c setreg.c setshft.c geom.c
 
 OBJS-MSPA  = $(SRCS-MSPA:.c=.o)
 

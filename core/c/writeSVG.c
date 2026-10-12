@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Dominik Brunner and Pierre Soille
-Copyright (C) 2004-2020 European Union (Joint Research Centre)
+Copyright (C) 2004-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -182,7 +182,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
 {
   //go on here
   char buffer[200];
-  int i,mybool=1, * trace;
+  int i,abool=1, * trace;
   struct LINE * line, ** lineArray;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   int * colorValues;
@@ -221,7 +221,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
     }
   }
   crtPoint=line->points[line->crtPos-1];
-  while(mybool){
+  while(abool){
     newPoint=getNextPoint(region, crtPoint, trace);
     if(newPoint==NULL){
       break;
@@ -267,7 +267,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
       }
     }
     if(arePointsEqual(newPoint, firstPoint)){
-      mybool=0;
+      abool=0;
     }else{
       if(line->points[i]->useFlag){
         if(gtif!=NULL){

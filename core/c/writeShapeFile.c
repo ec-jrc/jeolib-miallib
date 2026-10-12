@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Dominik Brunner and Pierre Soille
-Copyright (C) 2004-2020 European Union (Joint Research Centre)
+Copyright (C) 2004-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -248,7 +248,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
  */
 SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
   //go on here
-  int i,mybool=1, * trace;
+  int i,abool=1, * trace;
   struct LINE * line, ** lineArray,* hLine;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   double * xVertices, * yVertices;
@@ -272,10 +272,10 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
     }
   }
   crtPoint=line->points[line->crtPos-1];
-  while(mybool){
+  while(abool){
     newPoint=getNextPoint(region, crtPoint, trace);
     if(newPoint==NULL){
-      mybool=0;
+      abool=0;
       break;
     }
     //line = getLineSegment(region, crtPoint, newPoint);
@@ -307,7 +307,7 @@ SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
       }
     }
     if(arePointsEqual(newPoint, firstPoint)){
-      mybool=0;
+      abool=0;
       if(line->points[i]->useFlag){
         addPointToLine(hLine, newPoint);
       }
