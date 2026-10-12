@@ -12,7 +12,7 @@ CXX        = c++
 # skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
 
-CFLAGS     = -DXLDEBUG -DDEBUG -DOPENMP  -DUNIX -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
+CFLAGS     = -DXLDEBUG -DDEBUG -DOPENMP -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
 
 CFLAGS-XLISP = -DXLISP
 CFLAGS-PYTHON = -DPYTHON

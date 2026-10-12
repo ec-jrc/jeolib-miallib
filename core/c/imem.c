@@ -36,9 +36,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef UNIX
-#include <strings.h>  /* DOES NOT WORK ON WINDOWS */
-#endif
 #ifdef RLIMIT
 #include <sys/time.h>
 #include <sys/resource.h>
