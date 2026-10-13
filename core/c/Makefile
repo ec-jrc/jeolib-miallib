@@ -14,8 +14,8 @@ CXX        = c++
 
 CFLAGS     = -DOPENMP -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
 
-CFLAGS-XLISP = -DXLISP
-CFLAGS-PYTHON = -DPYTHON
+CFLAGS-XLISP  = -DXLISP
+CFLAGS-MSPA   = -DMSPA
 
 prefix     = /usr/local
 exec_prefix= ${prefix}
@@ -161,11 +161,11 @@ banner.h: $(SRCS)
 
 $(SDIR-MSPA)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -DMSPA -o $@ $<
+	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-MSPA) $(INCLUDE) -o $@ $<
 
 $(DDIR-MSPA)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -DMSPA -o $@ $<
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-MSPA) $(INCLUDE) -o $@ $<
 
 $(LDIR)/$(TARGET)_mspa.a: $(SOBJS-MSPA)
 	@mkdir -p $(@D)
@@ -181,11 +181,11 @@ $(LDIR)/$(TARGET)_mspa.so: $(DOBJS-MSPA)
 
 $(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC)  $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC) $(INCLUDE) -o $@ $<
 
 $(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED)  $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED) $(INCLUDE) -o $@ $<
 
 $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
@@ -245,6 +245,6 @@ uninstall:
 
 clean:
 	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
-	-rm -f banner.h
+	-rm -f banner.h *.o
 
 
