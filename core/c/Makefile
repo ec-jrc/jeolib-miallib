@@ -181,11 +181,11 @@ $(LDIR)/$(TARGET)_mspa.so: $(DOBJS-MSPA)
 
 $(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC) $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSTATIC) $(CFLAGS) $(INCLUDE) -o $@ $<
 
 $(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-SHARED) $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(INCLUDE) -o $@ $<
 
 $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
@@ -215,6 +215,9 @@ $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 	$(LDSTATIC) $@ $(SOBJS-XLISP) && ranlib $@
 
 
+##################################################################
+#####                       BUILD                           ######
+##################################################################
 
 
 build: generic lib4mspa lib4xlisp
