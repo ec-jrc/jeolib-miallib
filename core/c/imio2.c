@@ -22,6 +22,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdint.h>
 #include <unistd.h>  /* for gethostname */
 
 #include "miallib.h"
@@ -113,8 +114,8 @@ ERROR_TYPE tiffinfo(char *fn, char *field, float *val)
 {
   TIFF *tiffp;
   GTIF *gtif=NULL;
-  uint32 a_uint32;
-  uint16  a_uint16;
+  uint32_t a_uint32;
+  uint16_t  a_uint16;
   geocode_t gkey_val;
 /*   if ((tiffp = TIFFOpen(fn, "rc")) == NULL){ */
 /*     (void)sprintf(buf,"ERROR in tiffinfo(): invalid TIFF file name \"%s\" \n", fn); errputstr(buf); */
@@ -216,8 +217,8 @@ IMAGE *tiffinfoJIP(char *fn)
   GTIF *gtif=NULL;
   IMAGE *im=NULL;
   UINT32 *pim;
-  uint32 a_uint32;
-  uint16  a_uint16;
+  uint32_t a_uint32;
+  uint16_t  a_uint16;
   geocode_t gkey_val;
 
   /* Open TIFF descriptor to read GeoTIFF tags */
@@ -339,7 +340,7 @@ IMAGE *GetTIFFTagGeo(char *fn, char *tagname)
   TIFF *tiffp=NULL;
   IMAGE *im=NULL;
   int i, erflag=0;
-  uint16 count=0;
+  uint16_t count=0;
   double *data=NULL;
   double *ptr=NULL;
   GTIF *gtif=(GTIF*)NULL; /* GeoKey-level descriptor */
@@ -712,8 +713,8 @@ IMAGE *readTiffSubset(char *fn, int x, int y, unsigned szx, unsigned szy)
     TIFF *tif;
     UCHAR *pim = NULL, *ptmp = NULL;
     unsigned long stripCount;
-    uint16 bps, spp, rps, comp, sf, bpp;
-    uint32 nx, ny;
+    uint16_t bps, spp, rps, comp, sf, bpp;
+    uint32_t  nx, ny;
     int data_type;
     IMAGE *im=NULL;
 
