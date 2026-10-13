@@ -1696,7 +1696,7 @@ set xrange ") outfn)
 ; \example{}{}
 ; \feature{}
 ; \authors{}
-; \creationdate{20130604 in freccia rossa per Frascati (ESA)}
+; \creationdate{20130604}
   (if (<= ori1 ori2)
       (if (<= (+ ori1 length1) ori2)
 	  (return-from intervalint 'nil)
@@ -1737,7 +1737,7 @@ set xrange ") outfn)
 ; \example{}{}
 ; \feature{}
 ; \authors{}
-; \creationdate{20130604 in freccia rossa per Frascati (ESA}
+; \creationdate{20130604}
   (let*
       (
       (xint (intervalint ulcx1 (* nx1 resx1) ulcx2 (* nx2 resx2)))

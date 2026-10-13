@@ -236,7 +236,7 @@
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
 ; \example{}{}
-; \creationdate{20130911 by Pierre Soille}
+; \creationdate{20130911}
   (let*
       (
        (resx_1 (*getpixi (*gdalinfo fn1) 1))
@@ -1564,7 +1564,7 @@
 ; \desc{converts an image into a pictex latex file with pixel values centered within a circle.  In addition, .  The use of this file with latex requires the pic2e package.}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
-; \creationdate{2010-11-26 by Pierre Soille}
+; \creationdate{2010-11-26}
 ; \example{}{}
   (let* (
 	(nx (*getnx im))
@@ -2161,7 +2161,7 @@
 ; \desc{converts an image into a pictex latex file with pixel values centered within a circle.  In addition, .  The use of this file with latex requires the pic2e package.}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
-; \creationdate{2010-11-26 by Pierre Soille}
+; \creationdate{2010-11-26}
 ; \example{}{}
   (let* (
 	 (nx (*getnx im))
@@ -2251,7 +2251,7 @@
 ; \desc{converts an image into a pictex latex file with pixel values centered within a circle.  In addition, .  The use of this file with latex requires the pic2e package.}
 ; \myseealso{}
 ; \lspfile{\crtlspfile}
-; \creationdate{2010-11-26 by Pierre Soille}
+; \creationdate{2010-11-2}
 ; \example{}{}
   (let* (
 	 (nx (*getnx im))
