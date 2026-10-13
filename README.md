@@ -17,7 +17,7 @@ conda activate mial
 ## Build miallib and mialisp
 
 ```
-make build
+make all
 ```
 
 # Use mialisp

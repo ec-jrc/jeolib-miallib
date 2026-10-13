@@ -149,7 +149,6 @@ CXXSHARED=      gcc -shared
 #####                     SUPERCLASS                        ######
 ##################################################################
 
-
 banner.h: $(SRCS)
 	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date`\"" > banner.h
 	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
@@ -195,8 +194,6 @@ $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 	@mkdir -p $(@D)
 	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS) -o $@
 
-$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(DOCDIR)/Doxyfile
-	cd $(DOCDIR) && make clean && make doc
 
 ##################################################################
 #####                       XLISP                           ######
@@ -213,6 +210,14 @@ $(SDIR-XLISP)/%.o: %.c miallib.h banner.h
 $(LDIR)/$(TARGET)_xlisp.a: $(SOBJS-XLISP)
 	@mkdir -p $(@D)
 	$(LDSTATIC) $@ $(SOBJS-XLISP) && ranlib $@
+
+
+##################################################################
+#####                       DOC                             ######
+##################################################################
+
+$(BUILDDIR)/doc/xml/mial_doxy2swig.i: $(DOCDIR)/Doxyfile
+	cd $(DOCDIR) && make clean && make doc
 
 
 ##################################################################
@@ -249,5 +254,3 @@ uninstall:
 clean:
 	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
 	-rm -f banner.h *.o
-
-
