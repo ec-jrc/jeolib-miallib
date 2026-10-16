@@ -157,6 +157,20 @@ unsigned long n; int sign;
   return (FIXBIGDIGS > 2) ? normalBignum(x) : x;
 }
 
+LVAL cvtuint64bignum(n, sign)
+unsigned long n; int sign;
+{
+  LVAL x = newbignum(4);
+  BIGNUMDATA FAR *v = getbignumarray(x);
+  int i;
+
+  *v++ = (BIGNUMDATA) sign;
+  v += 4 - 1;  /* advance to point to least significant digit */
+  for (i = 0; i < 4; i++, n >>= 16)
+    *v-- = (BIGNUMDATA)(n & 0xffff);
+  return (4 > 2) ? normalBignum(x) : x;
+}
+
 LOCAL double setmant(x,expo)
 LVAL x; int *expo;
 {

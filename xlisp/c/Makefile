@@ -56,4 +56,5 @@ uninstall:
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete
 	test -f banner_miallib.h && rm banner_miallib.h
+	-rm -rf *.o
 

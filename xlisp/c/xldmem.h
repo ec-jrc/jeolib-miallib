@@ -347,6 +347,7 @@ extern LVAL cvflonum _((FLOTYPE n));    /* convert a flonum */
 #ifdef BIGNUMS
 extern LVAL cvratio _((FIXTYPE n, FIXTYPE d));  /* convert a ratio */
 extern LVAL cvbratio _((LVAL n, LVAL d));  /* convert a ratio */
+extern LVAL cvbignum _((FIXTYPE n));            /* convert a fixnum value to a bignum */
 #endif
 
 #ifdef MIAL

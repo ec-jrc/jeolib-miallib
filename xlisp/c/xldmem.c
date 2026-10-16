@@ -326,6 +326,27 @@ LVAL cvchar(n)
 #endif
 
 #ifdef BIGNUMS
+/* cvbignum - convert an integer to a bignum node
+   (always yields a BIGNUM, even for values in fixnum range) */
+LVAL cvbignum(n)
+  FIXTYPE n;
+{
+    unsigned long mag;
+    int sign;
+
+    if (n < 0) {
+        sign = TRUE;
+        /* -(n+1)+1 avoids overflow when n == MINFIX */
+        mag = (unsigned long)(-(n + 1)) + 1UL;
+    }
+    else {
+        sign = FALSE;
+        mag = (unsigned long)n;
+    }
+
+    /* cvtulongbignum allocates and fills the node (sign word + digits) */
+    return cvtuint64bignum(mag, sign);
+}
 /* cvbratio - convert a pair of bignums into a ratio node */
 LVAL cvbratio(num, denom)
 LVAL num, denom;
@@ -751,10 +772,11 @@ LOCAL VOID NEAR mark(ptr)
             else{
                 if ((i & ARRAY) != 0)
                     for (i = 0, n = getsize(this); i < n;)
-                        if ((tmp = getelement(this,i++)) != NIL)
+		      if ((tmp = getelement(this,i++)) != NIL){
                             if (!(tmp->n_type&MARK) && tmp->n_type >= CONS)
                                 mark(tmp);
                             else tmp->n_type |= MARK;
+		      }
                 break;
             }
         }

@@ -1333,6 +1333,7 @@ extern VOID osclose _((int i)); /* we must define this */
 #define xlgastrorsym()  (testarg(symbolp(*xlargv) ? getpname(nextarg()) : typearg(stringp)))
 #define xlgaobject()    (testarg(typearg(objectp)))
 #define xlgafixnum()    (testarg(typearg(fixp)))
+#define xlgabignum()    (testarg(typearg(bignump)))
 #define xlgaflonum()    (testarg(typearg(floatp)))
 #define xlgachar()      (testarg(typearg(charp)))
 #define xlgavector()    (testarg(typearg(vectorp)))
@@ -1428,6 +1429,7 @@ extern int truename _((char *name, char *rname));
 extern LVAL copybignum _((LVAL x, int sign));
 extern LVAL normalBignum _((LVAL x));
 extern LVAL cvtulongbignum _((unsigned long n, int sign));
+extern LVAL cvtuint64bignum _((unsigned long n, int sign));
 extern LVAL cvtfixbignum _((FIXTYPE n));
 extern LVAL cvtflobignum _((FLOTYPE n));
 extern int cvtbigfixnum _((LVAL x, FIXTYPE *n));

@@ -1032,9 +1032,9 @@ LVAL igetmax()
   case t_UINT32:
     return(cvfixnum((int) pgs.u32_val));
   case t_INT64:
-    return(cvfixnum((int) pgs.i64_val));
+    return(cvbignum((long int) pgs.i64_val));
   case t_UINT64:
-    return(cvfixnum((int) pgs.u64_val));
+    return(cvbignum((unsigned long int) pgs.u64_val));
   case t_FLOAT:
     return(cvflonum((float) pgs.f_val));
   case t_DOUBLE:
@@ -1062,16 +1062,16 @@ LVAL igetfirstmaxpos()
   xllastarg();
 
   if (getfirstmaxpos((IMAGE *)getimage(xlim1), &pos) == ERROR)
-   xlabort("*getfirstmaxpos: error");
+    xlabort("*getfirstmaxpos: error");
 
-  return(cvfixnum((int) pos));
+  return(cvbignum(pos));
 }
 
 LVAL igetpix()
 {
   LVAL a = NIL;
   int x, y, z;
-  unsigned offset;
+  unsigned long int offset;
 
   if (!moreargs())
     xlabort("(*getpix im x y z) ; x y z values not checked for overflows!");
@@ -1103,9 +1103,9 @@ LVAL igetpix()
   case t_UINT32:
       return(cvfixnum((int) *((UINT32 *) a->n_info.n_image->p_im + offset)));
   case t_INT64:
-      return(cvfixnum((int) *((INT64 *) a->n_info.n_image->p_im + offset)));
+      return(cvbignum((int) *((INT64 *) a->n_info.n_image->p_im + offset)));
   case t_UINT64:
-      return(cvfixnum((int) *((UINT64 *) a->n_info.n_image->p_im + offset)));
+      return(cvbignum((int) *((UINT64 *) a->n_info.n_image->p_im + offset)));
   case t_FLOAT:
       return(cvflonum((float) *((MIALFLOAT *) a->n_info.n_image->p_im + offset)));
   case t_DOUBLE:
@@ -1217,8 +1217,13 @@ LVAL igetpixmax()
   case t_SHORT:
       return(cvfixnum((int) SHORT_MAX));
   case t_INT32:
-  case t_UINT32:
       return(cvfixnum((int) INT32_MAX));
+  case t_UINT32:
+      return(cvbignum((long int) UINT32_MAX));
+  case t_INT64:
+      return(cvbignum((long int) INT64_MAX));
+  case t_UINT64:
+    return(cvbignum((unsigned long int) UINT64_MAX));
   case t_FLOAT:
       return(cvflonum((float) MIALFLOAT_MAX));
   case t_DOUBLE:
@@ -3111,10 +3116,6 @@ LVAL icondmean()
   IMAGE *imarray[maxNumberOfBands];
   int n=0;
 
-  printf("COUCOUC\n");
-  printf("COUCOUC\n");
-  printf("COUCOUC\n");
-
   if (!moreargs())
     xlabort("(@condmean imlist)\n");
 /*
@@ -3141,9 +3142,6 @@ LVAL icondmean()
   else
     xlbadtype(arg);
 
-  printf("CO\n");
-  printf("CO\n");
-  printf("CO\n");
   if (condmean(imarray, n) == ERROR)
     return NIL;
   return argi;  
@@ -3982,7 +3980,7 @@ LVAL iFindPixWithVal()
   if (FindPixWithVal((IMAGE *)getimage(xlim1), gt, &ofs)==ERROR)
     return NIL;
 
-  return(cvfixnum(ofs));
+  return(cvbignum(ofs));
 }
 
 LVAL iswap()
@@ -8406,7 +8404,7 @@ LVAL iIsPartitionFiner()
   if (IsPartitionFiner((IMAGE *)getimage(xlim1), (IMAGE *)getimage(xlim2), graph, &ofs)==ERROR)
     return NIL;
 
-  return(cvfixnum(ofs));
+  return(cvbignum(ofs));
 }
 
 LVAL iPartitionSimilarity()
