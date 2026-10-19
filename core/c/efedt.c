@@ -78,10 +78,9 @@ IMAGE *ucu32_sqedt(IMAGE *im)
   PIX_TYPE *b;
   GTYPE *g, bigval;
   DTYPE *dt;
-  long int *t, *s;
-  long long int x, y, w, m, n, q, sep;
-
-  unsigned long int offset, yxm;
+  INT64 *t, *s;
+  INT64 x, y, w, m, n, q, sep;
+  UINT64 offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
@@ -103,8 +102,8 @@ IMAGE *ucu32_sqedt(IMAGE *im)
 
   /* create t and s arrays */
 #ifndef OPENMP
-  t = (long int *)calloc(sizeof(long int), m);
-  s = (long int *)calloc(sizeof(long int), m);
+  t = (INT64 *)calloc(sizeof(INT64), m);
+  s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
 
   b=(PIX_TYPE *)GetImPtr(im);
@@ -140,8 +139,8 @@ IMAGE *ucu32_sqedt(IMAGE *im)
 #endif
   for (y=0; y<n; y++){
 #ifdef OPENMP
-    t = (long int *)calloc(sizeof(long int), m);
-    s = (long int *)calloc(sizeof(long int), m);
+    t = (INT64 *)calloc(sizeof(INT64), m);
+    s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
     yxm=y*m;
     q=0;
@@ -209,10 +208,9 @@ IMAGE *ucu64_sqedt(IMAGE *im)
   PIX_TYPE *b;
   GTYPE *g, bigval;
   DTYPE *dt;
-  long int *t, *s;
-  long long int x, y, w, m, n, q, sep;
-
-  unsigned long int offset, yxm;
+  INT64 *t, *s;
+  INT64 int x, y, w, m, n, q, sep;
+  UINT64 offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
@@ -234,8 +232,8 @@ IMAGE *ucu64_sqedt(IMAGE *im)
 
   /* create t and s arrays */
 #ifndef OPENMP
-  t = (long int *)calloc(sizeof(long int), m);
-  s = (long int *)calloc(sizeof(long int), m);
+  t = (INT64 *)calloc(sizeof(INT64), m);
+  s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
 
   b=(PIX_TYPE *)GetImPtr(im);
@@ -271,8 +269,8 @@ IMAGE *ucu64_sqedt(IMAGE *im)
 #endif
   for (y=0; y<n; y++){
 #ifdef OPENMP
-    t = (long int *)calloc(sizeof(long int), m);
-    s = (long int *)calloc(sizeof(long int), m);
+    t = (INT64 *)calloc(sizeof(INT64), m);
+    s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
     yxm=y*m;
     q=0;
@@ -357,11 +355,11 @@ IMAGE *uc_iz(IMAGE *im)
   PIX_TYPE *b, *iz;
   GTYPE *g, bigval;
 
-  long int *t, *s;
+  INT64 *t, *s;
   int x, y, w, m, n, q, sep;
-  long int i;
+  INT64 i;
 
-  unsigned long int offset, yxm;
+  UINT64 offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
@@ -390,8 +388,8 @@ IMAGE *uc_iz(IMAGE *im)
 
 #ifndef OPENMP
   /* create t and s arrays */
-  t = (long int *)calloc(sizeof(long int), m);
-  s = (long int *)calloc(sizeof(long int), m);
+  t = (INT64 *)calloc(sizeof(INT64), m);
+  s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
 
   b=(PIX_TYPE *)GetImPtr(im);
@@ -429,8 +427,8 @@ IMAGE *uc_iz(IMAGE *im)
 #endif
   for (y=0; y<n; y++){
 #ifdef OPENMP
-    t = (long int *)calloc(sizeof(long int), m);
-    s = (long int *)calloc(sizeof(long int), m);
+    t = (INT64 *)calloc(sizeof(INT64), m);
+    s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
     yxm=y*m;
     q=0;
@@ -501,11 +499,11 @@ IMAGE *us_iz(IMAGE *im)
   PIX_TYPE *b, *iz;
   GTYPE *g, bigval;
 
-  long int *t, *s;
+  INT64 *t, *s;
   int x, y, w, m, n, q, sep;
-  long int i;
+  INT64  i;
 
-  unsigned long int offset, yxm;
+  UINT64 offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
@@ -534,8 +532,8 @@ IMAGE *us_iz(IMAGE *im)
 
 #ifndef OPENMP
   /* create t and s arrays */
-  t = (long int *)calloc(sizeof(long int), m);
-  s = (long int *)calloc(sizeof(long int), m);
+  t = (INT64 *)calloc(sizeof(INT64), m);
+  s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
 
   b=(PIX_TYPE *)GetImPtr(im);
@@ -573,8 +571,8 @@ IMAGE *us_iz(IMAGE *im)
 #endif
   for (y=0; y<n; y++){
 #ifdef OPENMP
-    t = (long int *)calloc(sizeof(long int), m);
-    s = (long int *)calloc(sizeof(long int), m);
+    t = (INT64 *)calloc(sizeof(INT64), m);
+    s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
     yxm=y*m;
     q=0;
@@ -645,11 +643,11 @@ IMAGE *u32_iz(IMAGE *im)
   PIX_TYPE *b, *iz;
   GTYPE *g, bigval;
 
-  long int *t, *s;
+  INT64 *t, *s;
   int x, y, w, m, n, q, sep;
-  long int i;
+  INT64 i;
 
-  unsigned long int offset, yxm;
+  UINT64 offset, yxm;
 
   m=GetImNx(im);
   n=GetImNy(im);
@@ -679,8 +677,8 @@ IMAGE *u32_iz(IMAGE *im)
 
 #ifndef OPENMP
   /* create t and s arrays */
-  t = (long int *)calloc(sizeof(long int), m);
-  s = (long int *)calloc(sizeof(long int), m);
+  t = (INT64 *)calloc(sizeof(INT64), m);
+  s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
 
   b=(PIX_TYPE *)GetImPtr(im);
@@ -718,8 +716,8 @@ IMAGE *u32_iz(IMAGE *im)
 #endif
   for (y=0; y<n; y++){
 #ifdef OPENMP
-    t = (long int *)calloc(sizeof(long int), m);
-    s = (long int *)calloc(sizeof(long int), m);
+    t = (INT64 *)calloc(sizeof(INT64), m);
+    s = (INT64 *)calloc(sizeof(INT64), m);
 #endif
     yxm=y*m;
     q=0;
