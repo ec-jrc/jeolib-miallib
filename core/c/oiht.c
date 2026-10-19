@@ -40,18 +40,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #define OIHTLABEL_TYPE int
 
-extern void free_image(IMAGE *);
-extern IMAGE *copy_image(IMAGE *);
-extern ERROR_TYPE rdil(IMAGE *, IMAGE *, int, int);
-extern ERROR_TYPE generic_blank(IMAGE *, UCHAR );
-extern ERROR_TYPE i32_label(IMAGE *, IMAGE *, int, int, int );
-extern IMAGE *to_int32(IMAGE *);
-extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
-extern ERROR_TYPE generic_addframebox(IMAGE *, int *, UCHAR);
-extern ERROR_TYPE us_addframebox(IMAGE *, int *, USHORT);
-extern ERROR_TYPE subframebox(IMAGE *, int *);
-extern G_TYPE *min_max(IMAGE *);
 
+extern ERROR_TYPE i32_label(IMAGE *, IMAGE *, int, int, int);
+extern IMAGE *to_int32(IMAGE *);
 
 #include "uc_def.h"
 int ronsetest(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, int* neighbours)

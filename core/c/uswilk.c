@@ -1505,8 +1505,6 @@ int MAXROIVAL  =  65534;   /* pixels outside ROI should be at 255,
 int OUTROI     = 65535;
 
 
-extern ERROR_TYPE set_seq_shift();
-
 void GreyAttributeClosingROI ( double lambdaVal,    /* threshold on attribute */
                             int width,        /* image width  */
                             int height,       /* image height */

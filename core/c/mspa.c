@@ -34,18 +34,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "miallib.h"
 #include "op.h"
 
-extern ERROR_TYPE binOIthin_FIFO(IMAGE *imin, int stype, int atype, IMAGE *imanchor);
-extern IMAGE *ced(IMAGE *ref, IMAGE *mask);
-extern ERROR_TYPE dirmax(IMAGE *im, int dir);
-extern ERROR_TYPE label(IMAGE *im1, IMAGE *im2, int ox, int oy, int oz);
-extern ERROR_TYPE rdil(IMAGE *mark, IMAGE *mask, int graph, int flag);
-extern ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag);
-extern ERROR_TYPE set_regions(IMAGE *ilbl, IMAGE *ival, int indic);
 extern ERROR_TYPE f_threshstrict(IMAGE *, float, float, float, float);
-extern ERROR_TYPE i32_setlevel(IMAGE *, INT32, INT32, INT32);
-extern ERROR_TYPE i32_thresh(IMAGE *, INT32, INT32, INT32, INT32);
-extern ERROR_TYPE wsfah(IMAGE *iml, IMAGE *imr, int graph, int maxfl);
-
+extern ERROR_TYPE d_threshstrict(IMAGE *im, double, double, double, double);
 
 IMAGE *getexternalboundary(IMAGE *im, float size, float edu, int sqedt_type)
 {
@@ -54,10 +44,20 @@ IMAGE *getexternalboundary(IMAGE *im, float size, float edu, int sqedt_type)
   nim=(IMAGE *)copy_image(im);
   negation(nim);
   imsqedt=(IMAGE *)sqedt(nim, sqedt_type);
-  uint32_to_float(imsqedt);
-  edt=imsqedt;
-  imsqrt(edt);
-  f_thresh(edt, 0.0,  size*edu, 0.0, 1.0);
+
+  if (sqedt_type == t_UINT32 ){
+    uint32_to_float(imsqedt);
+    imsqrt(imsqedt);
+    edt=imsqedt;
+    f_thresh(edt, 0.0,  size*edu, 0.0, 1.0);
+  }
+  else{
+    uint64_to_double(imsqedt);
+    imsqrt(imsqedt);
+    edt=imsqedt;
+    d_thresh(edt, 0.0,  size*edu, 0.0, 1.0);
+  }
+
   to_uchar(edt);
   bitwise_op(edt, nim, AND_op);
 
@@ -250,11 +250,20 @@ IMAGE *getcore(IMAGE *im, float size, float edu, int sqedt_type)
   IMAGE *imsqedt, *edt;
 
   imsqedt=(IMAGE *)sqedt(im, sqedt_type);
-  uint32_to_float(imsqedt);
-  edt=imsqedt;
-  imsqrt(edt);
-  //f_thresh(edt, (size*edu) + 0.001, 65535.0, 0.0, 1.0);
-  f_threshstrict(edt, (size*edu), 65535.0, 0.0, 1.0);
+
+  if (sqedt_type == t_UINT32 ){
+    uint32_to_float(imsqedt);
+    imsqrt(imsqedt);
+    edt=imsqedt;
+    f_threshstrict(edt, (float) (size*edu), MIALFLOAT_MAX, (float)0.0, (float)1.0);
+  }
+  else{
+    uint64_to_double(imsqedt);
+    imsqrt(imsqedt);
+    edt=imsqedt;
+    d_threshstrict(edt, (double) (size*edu), DOUBLE_MAX, (double)0.0, (double)1.0);
+  }
+
   to_uchar(edt);
 
   return(edt);

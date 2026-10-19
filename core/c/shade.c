@@ -38,8 +38,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 **	Reference:	R. Sternberg (1986) Grayscale morphology. CVGIP, 35, 333-355.
 */
 
-extern int histcompress(IMAGE *);
-
 
 #ifndef NO_generic_IMAGE
 #include "g_def.h"

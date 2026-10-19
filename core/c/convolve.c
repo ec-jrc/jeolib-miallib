@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -856,8 +856,6 @@ IMAGE *mean2d(IMAGE *im, int width)
 }
 
 
-extern ERROR_TYPE bitwise_op(IMAGE *, IMAGE *, int);
-
 #include "uc_def.h"
 IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
 {
@@ -1014,7 +1012,6 @@ IMAGE *mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   }
   return NULL;
 }
-extern ERROR_TYPE write_tiff();
 
 
 #include "uc_def.h"

@@ -28,7 +28,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <time.h>
 #include <stdint.h>
 #include <tiffio.h>
-#include "banner.h"  /* 2007-12-10 */
+#include "banner.h"
 #include "miallib.h"
 #include "imio.h"
 
@@ -296,7 +296,7 @@ IMAGE *read_image(char *fn)
   FILE *fp;
   IMAGE *im;
   TIFF *tiffp;
-  unsigned long int nbyte=0, bread=0;
+  mia_size_t nbyte=0, bread=0;
   uint32_t *s_o_t, rps;
   uint16_t spp=1, pc=1;
   long int fsot; /* offset to 1st pixel */
@@ -1209,7 +1209,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
 {
   IMAGE *im, *lim;
   TIFF *tiffp;
-  unsigned long int nbyte=0;
+  mia_size_t nbyte=0;
   uint32_t rps;
   uint16_t spp=1, pc=1;
   tstrip_t nstrip, strip;
