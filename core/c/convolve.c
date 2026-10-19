@@ -21,12 +21,12 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#ifdef OPENMP
-#include <omp.h>
-#endif
 #include "miallib.h"
 #include "op.h"
 
+#ifdef OPENMP
+#include <omp.h>
+#endif
 
 /** @defgroup group_convolve Image convolution, correlation, and other kernel operations
  *  Functions dealing with image convolution, correlationm, and other kernel operations.

@@ -30,11 +30,13 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <fftw3.h>
+#include "miallib.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include <fftw3.h>
-#include "miallib.h"
+
 
 /** \addtogroup group_convolve
  *  @{

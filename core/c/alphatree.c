@@ -31,14 +31,13 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#ifdef OPENMP
-#include <omp.h>
-#endif
-
 #include "miallib.h"
 #include "fifo.h"
 #include "pqueue.h"
 
+#ifdef OPENMP
+#include <omp.h>
+#endif
 
 /** \addtogroup group_label
  *  @{

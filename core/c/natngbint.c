@@ -24,13 +24,14 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <math.h>
 #include <nan.h>  /* installed in nn-c-master/nn */
+#include <nn.h> /* installed from nn-c-master/nn */
+#include <csa.h> /* installed from csa-c-master/csa */
+#include "miallib.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include "miallib.h"
 
-#include <nn.h> /* installed from nn-c-master/nn */
-#include <csa.h> /* installed from csa-c-master/csa */
 
 /*
   Calls Pavel Sakov's code for nni (CSIRO Marine Research).  This

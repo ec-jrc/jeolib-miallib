@@ -23,6 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include  <math.h>
 #include  "miallib.h"
 #include  "fifo.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif

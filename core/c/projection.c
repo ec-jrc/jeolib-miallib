@@ -25,10 +25,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #include <proj_api.h>
 #endif
+#include "miallib.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include "miallib.h"
 
 
 

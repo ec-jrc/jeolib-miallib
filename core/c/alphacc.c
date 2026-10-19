@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2012-2020 European Union (Joint Research Centre)
+Copyright (C) 2012-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -28,6 +28,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <math.h>
 #include "miallib.h"
 #include "fifo.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
