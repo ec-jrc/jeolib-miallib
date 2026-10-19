@@ -478,7 +478,7 @@ extern ERROR_TYPE generic_thresh(IMAGE *, UCHAR, UCHAR, UCHAR, UCHAR);
 extern ERROR_TYPE f_thresh(IMAGE *, MIALFLOAT, MIALFLOAT, MIALFLOAT, MIALFLOAT);
 
 /* efedt.c */
-extern IMAGE *sqedt(IMAGE *);
+extern IMAGE *sqedt(IMAGE *, int);
 extern IMAGE *iz(IMAGE *);
 
 

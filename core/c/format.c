@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -132,7 +132,7 @@ ERROR_TYPE b_to_uchar(IMAGE *im, IMAGE *imout)
      /* not used (beware that there are two input arguments
       contrary to all other to_uchar functions */
 {
-  unsigned long int i, npix, der, reste;
+  mia_size_t i, npix, der, reste;
   long int nx, ny, nz;
   int k, j;
   UCHAR *p2;
@@ -1069,7 +1069,7 @@ ERROR_TYPE dbltofloat(IMAGE *im)
 {
   double *pim =(double *)GetImPtr(im);
   float  *pout=(float *)GetImPtr(im);
-  unsigned long int i, npix=GetImNPix(im), nbyte;
+  mia_size_t i, npix=GetImNPix(im), nbyte;
 
   if (GetImDataType(im)!=t_DOUBLE){
     (void)sprintf(buf,"dbltofloat(im): im must be of type double\n"); errputstr(buf);
@@ -1227,7 +1227,7 @@ ERROR_TYPE uint32_to_float(IMAGE *im)
 {
   UINT32 *puint32;
   float *pfloat;
-  long int i, npix=GetImNPix(im);
+  mia_size_t i, npix=GetImNPix(im);
 
   if (GetImDataType(im)!= t_UINT32)
     return ERROR;
@@ -1240,6 +1240,27 @@ ERROR_TYPE uint32_to_float(IMAGE *im)
     pfloat[i]=(float)puint32[i];
 
   im->DataType=t_FLOAT;
+
+  return NO_ERROR;
+}
+
+ERROR_TYPE uint64_to_double(IMAGE *im)
+{
+  UINT64 *puint64;
+  double *pdouble;
+  mia_size_t i, npix=GetImNPix(im);
+
+  if (GetImDataType(im)!= t_UINT64)
+    return ERROR;
+
+  puint64=(UINT64 *)GetImPtr(im);
+  pdouble=(double *)GetImPtr(im);
+
+#pragma omp parallel for
+  for (i=0; i<npix; i++)
+    pdouble[i]=(double)puint64[i];
+
+  im->DataType=t_DOUBLE;
 
   return NO_ERROR;
 }
@@ -1303,7 +1324,7 @@ void swap_short(SHORT *pl)
 
 ERROR_TYPE swap(IMAGE *im)
 {
-  unsigned long int i, nbyte;
+  mia_size_t i, nbyte;
 
   nbyte = GetImNPix(im);
 

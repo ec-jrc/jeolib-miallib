@@ -4149,7 +4149,6 @@ ERROR_TYPE i32_imsqrt(IMAGE *im)
 }
 #include "i32_undef.h"
 
-
 #include "u32_def.h"
 ERROR_TYPE u32_imsqrt(IMAGE *im)
 {
@@ -4182,6 +4181,39 @@ ERROR_TYPE u32_imsqrt(IMAGE *im)
   return(NO_ERROR);
 }
 #include "u32_undef.h"
+
+#include "u64_def.h"
+ERROR_TYPE u64_imsqrt(IMAGE *im)
+{
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+  int flag=0;
+
+  p1 = (PIX_TYPE *)GetImPtr(im);
+
+  npix = GetImNPix(im);
+
+#pragma omp parallel for
+  for (i=0; i<npix;i++){
+#if SIGNED
+    if (p1[i]<0){
+      flag=1;
+      p1[i]=-1;
+    }
+    else
+      p1[i] = (PIX_TYPE)sqrt((double)p1[i]);
+#else
+    p1[i] = (PIX_TYPE)sqrt((double)p1[i]);
+#endif
+  }
+
+  if(flag){
+    (void)sprintf(buf,"sqrt(im): WARNING negative input value (output set to -1)\n");
+    errputstr(buf);
+  }
+  return(NO_ERROR);
+}
+#include "u64_undef.h"
 
 #include "f_def.h"
 ERROR_TYPE f_imsqrt(IMAGE *im)
@@ -4216,6 +4248,39 @@ ERROR_TYPE f_imsqrt(IMAGE *im)
 }
 #include "f_undef.h"
 
+#include "d_def.h"
+ERROR_TYPE d_imsqrt(IMAGE *im)
+{
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+  int flag=0;
+
+  p1 = (PIX_TYPE *)GetImPtr(im);
+
+  npix = GetImNPix(im);
+
+#pragma omp parallel for
+  for (i=0; i<npix;i++){
+#if SIGNED
+    if (p1[i]<0){
+      flag=1;
+      p1[i]=-1;
+    }
+    else
+      p1[i] = (PIX_TYPE)sqrt((double)p1[i]);
+#else
+    p1[i] = (PIX_TYPE)sqrt((double)p1[i]);
+#endif
+  }
+
+  if(flag){
+    (void)sprintf(buf,"sqrt(im): WARNING negative input value (output set to -1)\n");
+    errputstr(buf);
+  }
+  return(NO_ERROR);
+}
+#include "d_undef.h"
+
 
 ERROR_TYPE imsqrt(IMAGE *im)
 {
@@ -4237,8 +4302,16 @@ ERROR_TYPE imsqrt(IMAGE *im)
     return(u32_imsqrt(im));
     break;
 
+  case t_UINT64:
+    return(u64_imsqrt(im));
+    break;
+
   case t_FLOAT:
     return(f_imsqrt(im));
+    break;
+
+  case t_DOUBLE:
+    return(d_imsqrt(im));
     break;
 
   default:
@@ -4598,6 +4671,28 @@ ERROR_TYPE f_thresh(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE bg, PIX_TYPE f
 }
 #include "f_undef.h"
 
+#include "d_def.h"
+ERROR_TYPE d_thresh(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE bg, PIX_TYPE fg)
+{
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+
+  p1 = (PIX_TYPE *)GetImPtr(im);
+  npix = GetImNPix(im);
+
+#ifdef OPENMP
+#pragma omp parallel for
+#endif
+  for (i=0; i<npix; i++){
+    if (p1[i] >= t1 && p1[i] <= t2)
+      p1[i] = fg;
+    else
+      p1[i] = bg;
+  }
+  return(NO_ERROR);
+}
+#include "d_undef.h"
+
 #include "f_def.h"
 ERROR_TYPE f_threshstrict(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE bg, PIX_TYPE fg)
 {
@@ -4619,6 +4714,28 @@ ERROR_TYPE f_threshstrict(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE bg, PIX_
   return(NO_ERROR);
 }
 #include "f_undef.h"
+
+#include "d_def.h"
+ERROR_TYPE d_threshstrict(IMAGE *im, PIX_TYPE t1, PIX_TYPE t2, PIX_TYPE bg, PIX_TYPE fg)
+{
+  mia_size_t i, npix;
+  PIX_TYPE *p1;
+
+  p1 = (PIX_TYPE *)GetImPtr(im);
+  npix = GetImNPix(im);
+
+#ifdef OPENMP
+#pragma omp parallel for
+#endif
+  for (i=0; i<npix; i++){
+    if (p1[i] > t1 && p1[i] < t2)
+      p1[i] = fg;
+    else
+      p1[i] = bg;
+  }
+  return(NO_ERROR);
+}
+#include "d_undef.h"
 
 ERROR_TYPE thresh(IMAGE *im, G_TYPE gt1, G_TYPE gt2, G_TYPE gbg, G_TYPE gfg)
 {
@@ -4657,11 +4774,9 @@ ERROR_TYPE thresh(IMAGE *im, G_TYPE gt1, G_TYPE gt2, G_TYPE gbg, G_TYPE gfg)
     return(f_thresh(im, gt1.f_val, gt2.f_val, gbg.f_val, gfg.f_val));
     break;
 
-#ifndef NO_d_IMAGE
   case t_DOUBLE:
     return(d_thresh(im, gt1.d_val, gt2.d_val, gbg.d_val, gfg.d_val));
     break;
-#endif
 
   default:
     (void)sprintf(buf,"thresh(im, gt1, gt2, gbg, gfg): invalid pixel type\n"); errputstr(buf);

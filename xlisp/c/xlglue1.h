@@ -19,7 +19,7 @@ extern ERROR_TYPE chamfer2d(IMAGE *im, int type);
 extern IMAGE *edistfifo2d();
 
 /* efedt.c */
-extern IMAGE *sqedt(IMAGE *im);
+extern IMAGE *sqedt(IMAGE *im, int);
 extern IMAGE *iz(IMAGE *im);
 
 /* format.c */

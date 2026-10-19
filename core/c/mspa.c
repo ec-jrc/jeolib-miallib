@@ -47,13 +47,13 @@ extern ERROR_TYPE i32_thresh(IMAGE *, INT32, INT32, INT32, INT32);
 extern ERROR_TYPE wsfah(IMAGE *iml, IMAGE *imr, int graph, int maxfl);
 
 
-IMAGE *getexternalboundary(IMAGE *im, float size, float edu)
+IMAGE *getexternalboundary(IMAGE *im, float size, float edu, int sqedt_type)
 {
   IMAGE *nim, *imsqedt, *edt;
 
   nim=(IMAGE *)copy_image(im);
   negation(nim);
-  imsqedt=(IMAGE *)sqedt(nim);
+  imsqedt=(IMAGE *)sqedt(nim, sqedt_type);
   uint32_to_float(imsqedt);
   edt=imsqedt;
   imsqrt(edt);
@@ -69,18 +69,18 @@ IMAGE *getexternalboundary(IMAGE *im, float size, float edu)
  * Image preparation assuming that the input iamge has 0 for no data,
  * 1 for background, and 2 for foreground pixels.
  */
-IMAGE *fm_preproc(IMAGE *fm, float size, float edu)
+IMAGE *fm_preproc(IMAGE *fm, float size, float edu, int sqedt_type)
 {
   IMAGE *da, *fa, *dda, *dfa;
 
   da=(IMAGE *)copy_image(fm);
   generic_thresh(da, 1, 255, 0, 1); /* 0 missing 1 for background 2 for foreground */
-  dda=getexternalboundary(da, size, edu);
+  dda=getexternalboundary(da, size, edu, sqedt_type);
 
   free_image(da);
   fa=(IMAGE *)copy_image(fm);
   generic_thresh(fa, 2, 255, 0, 1);
-  dfa=getexternalboundary(fa, size, edu);
+  dfa=getexternalboundary(fa, size, edu, sqedt_type);
   arith(dfa, fa, OR_op);
 
   arith(dfa, dda, INF_op);
@@ -245,11 +245,11 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
  * are further away than a distance threshold (size in pixel units)
  * from the boundary of the foreground pixels.
  */
-IMAGE *getcore(IMAGE *im, float size, float edu)
+IMAGE *getcore(IMAGE *im, float size, float edu, int sqedt_type)
 {
   IMAGE *imsqedt, *edt;
 
-  imsqedt=(IMAGE *)sqedt(im);
+  imsqedt=(IMAGE *)sqedt(im, sqedt_type);
   uint32_to_float(imsqedt);
   edt=imsqedt;
   imsqrt(edt);
@@ -260,7 +260,7 @@ IMAGE *getcore(IMAGE *im, float size, float edu)
   return(edt);
 }
 
-IMAGE *getpatch(IMAGE *im, float size, int graphfg, float edu)
+IMAGE *getpatch(IMAGE *im, float size, int graphfg, float edu, int sqedt_type)
 {
   IMAGE *core;
 
@@ -270,7 +270,7 @@ IMAGE *getpatch(IMAGE *im, float size, int graphfg, float edu)
 /* 	) */
 /*   ) */
 
-  core=getcore(im, size, edu);
+  core=getcore(im, size, edu, sqedt_type);
   rdil(core, im, graphfg, 1);
   arith(core, im, SUBSWAP_op);
 
@@ -292,16 +292,14 @@ IMAGE *uc_fillhole(IMAGE *im, int graph)
   return marker;
 }
 
-IMAGE **setedges(IMAGE *im, float size, int graphfg, int graphbg, float edu)
+IMAGE **setedges(IMAGE *im, float size, int graphfg, int graphbg, float edu, int sqedt_type)
 {
   IMAGE **iml;
   IMAGE *core, *outer, *corefill, *loecher, *edges, *core1=NULL;
   IMAGE *crt_edges;
   IMAGE *i0;
-  int counter;
 
-  core=getcore(im, size, edu);
-
+  core=getcore(im, size, edu, sqedt_type);
 
   core1=copy_image(core);
 
@@ -313,12 +311,12 @@ IMAGE **setedges(IMAGE *im, float size, int graphfg, int graphbg, float edu)
 
   iml=calloc(2,sizeof(IMAGE *));
 
-  for(counter=0;;counter++){
+  for(;;){
     volume(corefill);
     // printf("volume=%d\n", (int)GetImVol(corefill));
     if (GetImVol(corefill)==0.0)
       break;
-    crt_edges=getexternalboundary(corefill, size, edu);
+    crt_edges=getexternalboundary(corefill, size, edu, sqedt_type);
 
     bitwise_op(edges, crt_edges, OR_op);
     free_image(crt_edges);
@@ -336,7 +334,7 @@ IMAGE **setedges(IMAGE *im, float size, int graphfg, int graphbg, float edu)
   }
   iml[0]=edges;
 
-  outer=getexternalboundary(core1, size, edu);
+  outer=getexternalboundary(core1, size, edu, sqedt_type);
 
   negation(core1);
   bitwise_op(edges, core1, AND_op);
@@ -469,7 +467,7 @@ IMAGE *getcorridor(IMAGE *connector, IMAGE *core, IMAGE *opening, float size, in
 }
 
 //void fsp(char fnin[], char fnout[], float size, int graphfg, int disk, int transition, int internal)
-IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transition, int internal)
+IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transition, int internal, int sqedt_type)
 {
   IMAGE *im, *i0, *core, *patch;
   IMAGE *allHoles, *coreHoles;
@@ -516,7 +514,7 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
 
   // get all holes
   if (internal==1){
-    i0=fm_preproc(im, 1, edu);
+    i0=fm_preproc(im, 1, edu, sqedt_type);
     allHoles=uc_fillhole(i0, graphbg);
     arith(allHoles, i0, SUB_op);
     //writeTiffOneStripPerLine(allHoles, "allHoles.tif", NULL);
@@ -524,7 +522,7 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
   }
 
   // (setq i0 (*fm_preproc im size))
-  i0=fm_preproc(im, size, edu);
+  i0=fm_preproc(im, size, edu, sqedt_type);
   free_image(im);
 
   // (@fm_frame_out i0 bufsize)
@@ -541,14 +539,14 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
   box[4]=box[5]=0;
 
   // (setq core  (*getcore i0 size))
-  core=getcore(i0, size, edu);
+  core=getcore(i0, size, edu, sqedt_type);
 
   //(setq patch (*getpatch i0 size graphfg))
-  patch=getpatch(i0, size, graphfg, edu);
+  patch=getpatch(i0, size, graphfg, edu, sqedt_type);
 
   // (setq outer (*getexternalboundary core size))
   // (setq opening (*add outer core))
-  opening=getexternalboundary(core, size, edu);
+  opening=getexternalboundary(core, size, edu, sqedt_type);
   arith(opening, core, ADD_op);
 
   // (setq iml (*setedges i0 size))
@@ -566,7 +564,7 @@ IMAGE *segmentBinaryPatterns(IMAGE *imin, float size, int graphfg, int transitio
     free_image(core);
   }
 
-  iml=setedges(i0, size, graphfg, graphbg, edu);
+  iml=setedges(i0, size, graphfg, graphbg, edu, sqedt_type);
 
   edges=iml[0];
   perforation=iml[1];

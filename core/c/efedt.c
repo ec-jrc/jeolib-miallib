@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2003-2020 European Union (Joint Research Centre)
+Copyright (C) 2003-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -56,10 +56,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-#define EFEDT_G_IS_UINT32 1
-
 
 #include "uc_def.h"
+#define EFEDT_G_IS_UINT32
 #ifdef  EFEDT_G_IS_UINT32
 #define GTYPE UINT32
 #define t_GTYPE t_UINT32
@@ -73,7 +72,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #endif
 #define DTYPE UINT32
 #define t_DTYPE t_UINT32
-IMAGE *uc_sqedt(IMAGE *im)
+IMAGE *ucu32_sqedt(IMAGE *im)
 {
   IMAGE *img, *imdt;
   PIX_TYPE *b;
@@ -86,8 +85,6 @@ IMAGE *uc_sqedt(IMAGE *im)
 
   m=GetImNx(im);
   n=GetImNy(im);
-
-  /* ursprunglich!!! bigval=m+n and mit fixed Type UINT32; geaendert am 20131002 for USHORT */
 
   bigval=BIGVAL;
 
@@ -191,14 +188,150 @@ IMAGE *uc_sqedt(IMAGE *im)
 #undef GTYPE_MAX
 #include "uc_undef.h"
 
+#include "uc_def.h"
+#define EFEDT_G_IS_UINT32
+#ifdef  EFEDT_G_IS_UINT32
+#define GTYPE UINT32
+#define t_GTYPE t_UINT32
+#define GTYPE_MAX UINT32_MAX
+#define BIGVAL (GTYPE_MAX/2)
+#else
+#define GTYPE USHORT
+#define t_GTYPE t_USHORT
+#define GTYPE_MAX USHORT_MAX
+#define BIGVAL (GTYPE_MAX/2)
+#endif
+#define DTYPE UINT64
+#define t_DTYPE t_UINT64
+IMAGE *ucu64_sqedt(IMAGE *im)
+{
+  IMAGE *img, *imdt;
+  PIX_TYPE *b;
+  GTYPE *g, bigval;
+  DTYPE *dt;
+  long int *t, *s;
+  long long int x, y, w, m, n, q, sep;
 
-IMAGE *sqedt(IMAGE *im)
+  unsigned long int offset, yxm;
+
+  m=GetImNx(im);
+  n=GetImNy(im);
+
+  bigval=BIGVAL;
+
+  /* create temporary and output images */
+  img = create_image(t_GTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
+  if (img == NULL){
+    (void)sprintf(buf,"IMAGE  *uc_sqedt(IMAGE *im): not enough memory!\n"); errputstr(buf);
+    return(NULL);
+  }
+  imdt = create_image(t_DTYPE, GetImNx(im), GetImNy(im), GetImNz(im));
+  if (imdt == NULL){
+    (void)sprintf(buf,"IMAGE  *uc_sqedt(IMAGE *im): not enough memory!\n"); errputstr(buf);
+    free_image(img);
+    return(NULL);
+  }
+
+  /* create t and s arrays */
+#ifndef OPENMP
+  t = (long int *)calloc(sizeof(long int), m);
+  s = (long int *)calloc(sizeof(long int), m);
+#endif
+
+  b=(PIX_TYPE *)GetImPtr(im);
+  g=(GTYPE *)GetImPtr(img);
+  dt=(DTYPE *)GetImPtr(imdt);
+
+  /* scans 1 and 2 */
+#ifdef OPENMP
+#pragma omp parallel for private(x,offset,y)
+#endif
+  for (x=0; x<m; x++){
+    if ( *(b+x) == 0 ) /* background pixel */
+      *(g+x)=0;
+    else
+      *(g+x)=bigval;
+    for (y=1; y<n; y++){ /* forward column scan */
+      offset=x+y*m;
+      if ( *(b+offset) == 0 )
+	*(g+offset)=0;
+      else
+	*(g+offset)=1+*(g+offset-m);
+    }
+    for (y=n-2; y>=0; y--){ /* backward column scan */
+      offset=x+y*m;
+      if ( *(g+offset+m) < *(g+offset) )
+	*(g+offset)=1+*(g+offset+m);
+    }
+  }
+
+  /* scans 3 and 4 */
+#ifdef OPENMP
+#pragma omp parallel for private(t,s,yxm,q,x,sep,w)
+#endif
+  for (y=0; y<n; y++){
+#ifdef OPENMP
+    t = (long int *)calloc(sizeof(long int), m);
+    s = (long int *)calloc(sizeof(long int), m);
+#endif
+    yxm=y*m;
+    q=0;
+    s[0]=0;
+    t[0]=0;
+    for (x=1; x<m; x++){
+      while ( (q>=0) && (NORMU(t[q]-s[q],*(g+s[q]+yxm)) > NORMU(t[q]-x,*(g+x+yxm))) )
+	q--;
+      if (q<0){
+	q=0;
+	s[0]=x;
+      }
+      else{
+	sep=(SQU(x)-SQU(s[q])+SQU(*(g+x+yxm))-SQU(*(g+s[q]+yxm))) / (2*(x-s[q]));
+	w=1+ sep;
+	if (w<m){
+	  q++;
+	  s[q]=x;
+	  t[q]=w;
+	}
+      }
+    }
+    for (x=m-1; x>=0; x--){
+      *(dt+x+yxm)=NORMU(x-s[q],*(g+s[q]+yxm));
+      if( x==t[q] )
+	q--;
+    }
+#ifdef OPENMP
+  free(s); free(t);
+#endif
+  }
+
+#ifndef OPENMP
+  free(s); free(t);
+#endif
+  free_image(img);
+  return(imdt);
+}
+#undef BIGVAL
+#undef GTYPE
+#undef t_GTYPE
+#undef DTYPE
+#undef t_DTYPE
+#undef GTYPE_MAX
+#include "uc_undef.h"
+
+IMAGE *sqedt(IMAGE *im, int out_type)
 {
   switch (GetImDataType(im)){
-
   case t_UCHAR:
-    return (uc_sqedt(im));
-    break;
+    switch (out_type){
+    case t_UINT32:
+      return (ucu32_sqedt(im));
+    case t_UINT64:
+      return (ucu64_sqedt(im));
+    default:
+      (void)sprintf(buf,"sqedt(im, out_type): invalid out_type: must be t_UINT32 or t_UINT64\n"); errputstr(buf);
+      return(NULL);
+    }
   default:
     (void)sprintf(buf,"sqedt(im): invalid pixel type: im must be of type UCHAR\n"); errputstr(buf);
     return(NULL);

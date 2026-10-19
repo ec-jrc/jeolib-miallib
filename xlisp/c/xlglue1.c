@@ -5852,12 +5852,14 @@ LVAL iedistfifo()
 LVAL isqedt()
 {
   LVAL xlim1;
+  int out_type;
 
   if (!moreargs())
-    xlabort("(*sqedt im)");
+    xlabort("(*sqedt im &opt (out_type t_UINT32))");
 /*
   \lspfunction{*}{sqedt}{im}
   \param{im}{an UCHAR image node}
+  \param{out_type}{output image type: t_UINT32 or t_UINT64 (default is UINT32}
   \return{an image node of type INT32}
   \desc{outputs the squared Euclidean distance transform of im.  im must be a 2-D binary image.  Original algorihtm proposed by \citet{saito-toriwaki94} and then optimised independently by \citep{hirata96} and \citep{meijster-roerdink-hesselink2000}.  See also *edt for the actual Euclidean distance transform.  Note that a temporary buffer of type UINT16 is used for sums along/lines and columns so that uncontrolled results will occur if an object shows more than $16^2/2$ foreground pixels along a given line or column.}
   \cfunction{\cfsqedt}
@@ -5866,10 +5868,14 @@ LVAL isqedt()
   \changedate{20131002}
 */
   xlim1 = xlgaimage();
+  if (!moreargs())
+    out_type = t_UINT32;
+  else
+    out_type = (int)getfixnum(xlgafixnum());
 
   xllastarg();
 
-  return(cvimage(sqedt((IMAGE *)getimage(xlim1))));
+  return(cvimage(sqedt((IMAGE *)getimage(xlim1), out_type)));
 }
 
 LVAL iiz()
