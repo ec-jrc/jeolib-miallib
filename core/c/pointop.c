@@ -345,7 +345,7 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -521,7 +521,7 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in s_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -696,7 +696,7 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -873,7 +873,7 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in usuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1052,7 +1052,7 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in usuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1211,7 +1211,7 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in usuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1370,7 +1370,7 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in usuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1529,7 +1529,7 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1685,7 +1685,7 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -1842,7 +1842,7 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in uluc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2002,7 +2002,7 @@ ERROR_TYPE ulus_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in ulus_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2166,7 +2166,7 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2308,7 +2308,7 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in fuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2451,7 +2451,7 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in fuc_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2592,7 +2592,7 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arith(im1, im2, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -2900,7 +2900,7 @@ ERROR_TYPE generic_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3068,7 +3068,7 @@ ERROR_TYPE us_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in us_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3216,7 +3216,7 @@ ERROR_TYPE s_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in s_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3348,7 +3348,7 @@ ERROR_TYPE i32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in i32_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3515,7 +3515,7 @@ ERROR_TYPE u32_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3635,7 +3635,7 @@ ERROR_TYPE f_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in f_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -3815,7 +3815,7 @@ ERROR_TYPE d_arithcst(IMAGE *im1, PIX_TYPE cst, int op)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_arithcst(im1, cst, op=%d): \
-             %ld over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
+             %llu over- and underflow(s) or division(s) by 0\n", op, ovfl); stdputstr(buf);
   }
   return(NO_ERROR);
 }
@@ -5973,7 +5973,7 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_ndi(im1, im2): \
-             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+             %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
   }
   return(imout);
 }
@@ -6018,7 +6018,7 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in us_ndi(im1, im2): \
-             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+             %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
   }
   return(imout);
 }
@@ -6062,7 +6062,7 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in i32_ndi(im1, im2): \
-             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+             %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
   }
   return(imout);
 }
@@ -6106,7 +6106,7 @@ IMAGE *u32_ndi(IMAGE *im1, IMAGE *im2)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in u32_ndi(im1, im2): \
-             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+             %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
   }
   return(imout);
 }
@@ -6150,7 +6150,7 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in f_ndi(im1, im2): \
-             %ld division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
+             %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
   }
   return(imout);
 }

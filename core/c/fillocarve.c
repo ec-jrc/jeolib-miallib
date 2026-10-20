@@ -464,7 +464,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   free_pq(heap);
 
   (void)sprintf(buf, "casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
-  errputstr(buf);
+  stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
   return imdir;
@@ -900,7 +900,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
   free_pq(heap);
 
   (void)sprintf(buf, "casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
-  errputstr(buf);
+  stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
   return imdir;
@@ -1299,7 +1299,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
   free_pq(heap);
 
   (void)sprintf(buf,"casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased);
-  errputstr(buf);
+  stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
   return imdir;

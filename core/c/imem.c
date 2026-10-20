@@ -216,7 +216,7 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
     xmem();
     gc();
     xmem();
-    printf("nbyte=%lu\n", nbyte);
+    printf("nbyte=%llu\n", nbyte);
     p = (char *)calloc(nbyte, sizeof(char));
     if (p == NULL){
       (void)sprintf(buf,"ERROR in create_image(data_type=%d, nx=%ld, ny=%d, nz=%d) \
@@ -990,7 +990,7 @@ IMAGE *arraytoim(IMAGE *im, IMAGE *imroi)
 ERROR_TYPE generic_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1023,11 +1023,11 @@ ERROR_TYPE generic_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1046,7 +1046,7 @@ ERROR_TYPE generic_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE s_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1078,11 +1078,11 @@ ERROR_TYPE s_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1100,7 +1100,7 @@ ERROR_TYPE s_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE us_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1132,11 +1132,11 @@ ERROR_TYPE us_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1154,7 +1154,7 @@ ERROR_TYPE us_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE i32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1187,11 +1187,11 @@ ERROR_TYPE i32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1209,7 +1209,7 @@ ERROR_TYPE i32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE u32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1242,11 +1242,11 @@ ERROR_TYPE u32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1264,7 +1264,7 @@ ERROR_TYPE u32_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE i64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1297,11 +1297,11 @@ ERROR_TYPE i64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1319,7 +1319,7 @@ ERROR_TYPE i64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE u64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1352,11 +1352,11 @@ ERROR_TYPE u64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %4ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %4d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%6.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1374,7 +1374,7 @@ ERROR_TYPE u64_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE f_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1407,11 +1407,11 @@ ERROR_TYPE f_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf,"%9ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"%9d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
@@ -1429,7 +1429,7 @@ ERROR_TYPE f_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 ERROR_TYPE d_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 {
   int y1, y2, x1, x2;
-  mia_size_t i, j;
+  int i, j;
   mia_size_t nx, ny, nz;
   PIX_TYPE *p;
 
@@ -1461,11 +1461,11 @@ ERROR_TYPE d_dumpxyz(IMAGE *im, int x, int y, int z, int dx, int dy)
 
   (void)sprintf(buf,"z=%4d  ", z); stdputstr(buf);
   for (i=x1; i<=x2; i++){
-    (void)sprintf(buf," %9ld|",i); stdputstr(buf);
+    (void)sprintf(buf," %9d|",i); stdputstr(buf);
   }
   (void)sprintf(buf,"\n"); stdputstr(buf);
   for (i=y1; i<=y2; i++){
-    (void)sprintf(buf,"|%4ld|",i); stdputstr(buf);
+    (void)sprintf(buf,"|%4d|",i); stdputstr(buf);
     for (j=x1; j<=x2; j++){
 #if FLOATING
       (void)sprintf(buf,"%10.3f",(float)p[z*nx*ny+i*nx+j]); stdputstr(buf);
