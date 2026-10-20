@@ -165,7 +165,9 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
   }
 
   /* reset directions */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix; i++)
     pdir[i]&=127;
 

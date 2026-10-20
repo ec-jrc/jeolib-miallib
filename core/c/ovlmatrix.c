@@ -129,7 +129,9 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
     idx[i]=i;
 
   /* first cycle for images with no overlap (g=1) */
+#ifdef OPENMP
 #pragma omp parallel for private (i,fn,fp)
+#endif
   for (i=0; i<n; i++)
     if (pg[idx[i]] == 1){
       sprintf(fn, "%s/%03d_%04d_%05d.txt", odir, (int)1,  (int)1, idx[i]);
@@ -148,8 +150,6 @@ ERROR_TYPE ovlmatrix(IMAGE *matrix, IMAGE *maxg_array, char *odir)
   // #pragma omp parallel for
   // private(g,cnt_done,ois,i,flagdone,flagdep,ofs,flag,j,fn,fp)
   for (g=2; g<=gmax; g++){
-
-
     cnt_done=0;
     ois=1;
     while (cnt_done<n){

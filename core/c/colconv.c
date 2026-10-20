@@ -337,7 +337,9 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
   pg=(PIX_TYPE *)GetImPtr(img);
   pb=(PIX_TYPE *)GetImPtr(imb);
 
+#ifdef OPENMP
 #pragma omp parallel for private(i,maxval,minval,aph,aps)
+#endif
   for (i=0; i<npix; i++){
     maxval=minval=pr[i];
     if (maxval<pg[i])

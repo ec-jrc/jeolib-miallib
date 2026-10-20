@@ -59,7 +59,9 @@ ERROR_TYPE f_mblincomb(IMAGE **imap, int nc, IMAGE *matrix)
 
   printf("coucou\n");
 
+#ifdef OPENMP
 #pragma omp parallel for private(j,pocrt,ofs,i)
+#endif
   for (k=0; k<npix; k++){
     for (j=0; j<nc; j++){
       pocrt[j]=0.0;

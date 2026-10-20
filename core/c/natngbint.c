@@ -102,7 +102,9 @@ IMAGE *uc_nni(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
   py=(double *)GetImPtr(imy);
   pim=(PIX_TYPE *)GetImPtr(im);
 
+#ifdef OPENMP
 #pragma omp parallel for private(i)
+#endif
   for (i=0; i<nin; ++i){
     pin[i].x=px[i];
     pin[i].y=py[i];
@@ -234,7 +236,9 @@ IMAGE *uc_csi(IMAGE *im, IMAGE *imx, IMAGE *imy, double startx, double starty, d
   /*
    * read input data into point array
    */
+#ifdef OPENMP
 #pragma omp parallel for private(i)
+#endif
   for (i = 0; i < nin; ++i) {
     p = &pin[i];
     p->x = px[i];

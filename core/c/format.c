@@ -1235,7 +1235,9 @@ ERROR_TYPE uint32_to_float(IMAGE *im)
   puint32=(UINT32 *)GetImPtr(im);
   pfloat=(float *)GetImPtr(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix; i++)
     pfloat[i]=(float)puint32[i];
 
@@ -1256,7 +1258,9 @@ ERROR_TYPE uint64_to_double(IMAGE *im)
   puint64=(UINT64 *)GetImPtr(im);
   pdouble=(double *)GetImPtr(im);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix; i++)
     pdouble[i]=(double)puint64[i];
 

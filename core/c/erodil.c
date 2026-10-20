@@ -733,7 +733,9 @@ ERROR_TYPE uc_erode4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]<out)
@@ -793,7 +795,9 @@ ERROR_TYPE us_erode4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]<out)
@@ -853,7 +857,9 @@ ERROR_TYPE i32_erode4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]<out)
@@ -913,7 +919,9 @@ ERROR_TYPE u32_erode4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]<out)
@@ -974,7 +982,9 @@ ERROR_TYPE f_erode4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]<out)
@@ -1068,7 +1078,9 @@ ERROR_TYPE uc_dilate4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]>out)
@@ -1130,7 +1142,9 @@ ERROR_TYPE us_dilate4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]>out)
@@ -1192,7 +1206,9 @@ ERROR_TYPE i32_dilate4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]>out)
@@ -1254,7 +1270,9 @@ ERROR_TYPE u32_dilate4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]>out)
@@ -1316,7 +1334,9 @@ ERROR_TYPE f_dilate4(IMAGE *im, int ox, int oy)
     pc4=p2+2;
     pc5=p3+1;
 
+#ifdef OPENMP
 #pragma omp parallel for private(out)
+#endif
     for(x=0;x<nx;x++){
       out=pc1[x];
       if(pc2[x]>out)

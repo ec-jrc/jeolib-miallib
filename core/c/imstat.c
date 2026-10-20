@@ -1230,7 +1230,9 @@ ERROR_TYPE uc_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
 
+ #ifdef OPENMP
  #pragma omp parallel for
+ #endif
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1263,7 +1265,9 @@ ERROR_TYPE us_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1296,7 +1300,9 @@ ERROR_TYPE u32_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1329,7 +1335,9 @@ ERROR_TYPE f_lookup(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   LUT_TYPE *lut=(LUT_TYPE *)GetImPtr(imlut), val;
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for(i=0;i<npix;i++){
     if((INT32)p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1390,7 +1398,9 @@ ERROR_TYPE uc_lookuptypematch(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   PIX_TYPE *lut=(PIX_TYPE *)GetImPtr(imlut);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1411,7 +1421,9 @@ ERROR_TYPE u32_lookuptypematch(IMAGE *im, IMAGE *imlut)
   PIX_TYPE *p=(PIX_TYPE *)GetImPtr(im);
   PIX_TYPE *lut=(PIX_TYPE *)GetImPtr(imlut);
 
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for(i=0;i<npix;i++){
     if(p[i]>maxlutidx)
       (void)sprintf(buf,"warning: lookup(): LUT not matching image values\n");
@@ -1475,7 +1487,9 @@ IMAGE *uc_lookuprgb(IMAGE *imr, IMAGE *img, IMAGE *imb, IMAGE *imlut)
     return NULL;
   p=(PIX_TYPE *)GetImPtr(imout);
 
+#ifdef OPENMP
 #pragma omp parallel for private(i,idx)
+#endif
   for(i=0;i<npix;i++){
     idx=pr[i]+pg[i]*nxlut+pb[i]*nxlut*nylut;
     if(idx>maxlutidx)

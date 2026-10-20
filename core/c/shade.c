@@ -362,7 +362,9 @@ IMAGE *us_LineDilate3D(IMAGE *im, float dh)
 
   printf("dh=%f\n", dh);
 
+#ifdef OPENMP
 #pragma omp parallel for private(j,picrt,pocrt,i,a,b)
+#endif
   for(j=0; j<ny; j++){
     picrt=pi+j*nx;
     pocrt=po+j*nx;
