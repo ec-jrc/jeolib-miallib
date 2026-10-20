@@ -23,13 +23,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include "miallib.h"
 
-extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
 
 /** \addtogroup group_format
  *  @{
  */
-
-
 
 /*
   based on \cite[pp. 235--237]{gonzalez-woods92}:

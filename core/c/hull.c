@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -42,8 +42,6 @@ typedef struct tms Ttime ;
 #ifndef min
 #define min(a,b) ((a)<(b)?(a):(b))
 #endif
-
-extern void tracelinecorrect(int, int, int, int , long int *, int *, int , int);
 
 
 /** \addtogroup group_opclo

@@ -20,7 +20,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 /*
 ** Header file for image analysis routines
-** by Pierre Soille@ec.europa.eu  1988--2018
+** by Pierre Soille@ec.europa.eu  1988--2026
 */
 
 #ifndef _MIALLIB_H
@@ -556,6 +556,8 @@ extern ERROR_TYPE rero(IMAGE *mark, IMAGE *mask, int graph, int flag);
 
 /* bresenham.c */
 extern ERROR_TYPE plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val);
+extern ERROR_TYPE us_plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val);
+extern void tracelinecorrect(int, int, int, int, long int *, int *, int, int);
 
 /* rminmax.c */
 extern IMAGE *minima(IMAGE *imin, int graph);

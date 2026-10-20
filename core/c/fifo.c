@@ -23,20 +23,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include "fifo.h"
 
-
-
-#if (defined(XLISP))
-extern char buf[];       /* used by sprintf() and stdputstr() */
-extern void stdputstr(); /* print a message to the standard output */
-extern void errputstr(); /* print a message to the standard error  */
-#else
-extern char buf[];       /* used by sprintf() and stdputstr() */
-extern void stdputstr(); /* print a message to the standard output */
-extern void errputstr(); /* print a message to the standard error  */
-#endif
-
 extern void nrerror(char *);
-
 
 /*
 GLOUP: the look functions seems a bit dodgy

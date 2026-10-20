@@ -41,9 +41,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define OIHTLABEL_TYPE int
 
 
-extern ERROR_TYPE i32_label(IMAGE *, IMAGE *, int, int, int);
-extern IMAGE *to_int32(IMAGE *);
-
 #include "uc_def.h"
 int ronsetest(IMAGE *pm1, IMAGE *pmsimple, int pix1, IMAGE *pmlabel, int* neighbours)
      /* remove all simple pixels as long as potentially new one appears */
@@ -410,7 +407,7 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -695,7 +692,7 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -1046,7 +1043,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -1367,7 +1364,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);  /* was us_ */
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
