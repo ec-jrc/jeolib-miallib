@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2002-2020 European Union (Joint Research Centre)
+Copyright (C) 2002-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -70,7 +70,6 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   */
 
   /*   char fname[50]; */
-  int pcount=0;
   IMAGE im[2];
   int box[6];
 
@@ -238,7 +237,6 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
 	      // printf("pit encountered, minval=%d, iori=%d, dyn=%d, crtlevel=%ld, x=%ld, y=%ld, i=%ld, ix=%ld, iy=%ld\n", minval, iori, dyn, crtlevel, ofsk-(long int)(ofsk/nx)*nx, (long int)(ofsk/nx), i, ofs-(long int)(ofs/nx)*nx, (long int)(ofs/nx));
-	      pcount+=1;
 
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
@@ -502,7 +500,6 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
   */
 
   /*   char fname[50]; */
-  int pcount=0;
   IMAGE im[2];
   int box[6];
 
@@ -672,7 +669,6 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
 	      /* printf("irrelevant n=minimum reached\n"); */
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
-	      pcount+=1;
 
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
@@ -937,7 +933,6 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
   */
 
   /* char fname[50];*/
-  int pcount=0;
   IMAGE im[2];
   int box[6];
 
@@ -1103,7 +1098,6 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
 	      /* printf("irrelevant n=minimum reached\n"); */
 	      minval = *(imr+ofsk); /* elevation of minimum, i=elevation of highest point on carving path */
 	      dyn = iori-minval; /* relative dynamic of reached minimum */
-	      pcount+=1;
 
 	      if ( (ec = (int *)calloc(dyn+1, sizeof(int))) == NULL ){ /* energy of carving  */
 		(void)sprintf(buf,"not enough memory for ec array (dyn=%d)\n", dyn); errputstr(buf);
