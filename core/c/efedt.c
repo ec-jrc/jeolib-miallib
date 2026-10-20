@@ -58,7 +58,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 #include "uc_def.h"
-#define EFEDT_G_IS_UINT32
 #ifdef  EFEDT_G_IS_UINT32
 #define GTYPE UINT32
 #define t_GTYPE t_UINT32
@@ -188,7 +187,6 @@ IMAGE *ucu32_sqedt(IMAGE *im)
 #include "uc_undef.h"
 
 #include "uc_def.h"
-#define EFEDT_G_IS_UINT32
 #ifdef  EFEDT_G_IS_UINT32
 #define GTYPE UINT32
 #define t_GTYPE t_UINT32

@@ -6,3 +6,6 @@
 #ifndef OPENMP
 #define OPENMP 
 #endif
+#ifndef EFEDT_G_IS_UINT32
+#define EFEDT_G_IS_UINT32
+#endif
