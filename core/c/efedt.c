@@ -209,7 +209,7 @@ IMAGE *ucu64_sqedt(IMAGE *im)
   GTYPE *g, bigval;
   DTYPE *dt;
   INT64 *t, *s;
-  INT64 int x, y, w, m, n, q, sep;
+  INT64 x, y, w, m, n, q, sep;
   UINT64 offset, yxm;
 
   m=GetImNx(im);

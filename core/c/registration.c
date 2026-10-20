@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2006-2020 European Union (Joint Research Centre)
+Copyright (C) 2006-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
