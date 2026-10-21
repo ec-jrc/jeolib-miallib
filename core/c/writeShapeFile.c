@@ -248,7 +248,7 @@ ERROR_TYPE writeShapeFile(struct REGION ** regions, int regionNumber, char * fil
  */
 SHPObject * writeSHPPolygon(struct REGION * region, int id, GTIF * gtif){
   //go on here
-  int i,abool=1, * trace;
+  int i, abool=1, * trace;
   struct LINE * line, ** lineArray,* hLine;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   double * xVertices, * yVertices;

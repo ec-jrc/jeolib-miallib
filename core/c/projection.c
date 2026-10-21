@@ -78,7 +78,6 @@ projXY proj(projXY idata, char *parms[], int n, int flag)
 }
 
 IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no)
-// , IMAGE *imx, IMAGE *imy, double res
 {
   /*
   ** Author:  Pierre Soille [EC-Joint Research Centre 2005 (first 2005-08-12)]

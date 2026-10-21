@@ -34,9 +34,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 extern int cluster();
-extern ERROR_TYPE agglo_cluster();
-extern ERROR_TYPE nearest_cluster();
-extern ERROR_TYPE knearest_cluster();
+extern ERROR_TYPE agglo_cluster(int *x, int *y, int *pn, double maxdst);
+extern ERROR_TYPE nearest_cluster(IMAGE *im, int *x, int *y, int *pn, double maxdst);
+extern ERROR_TYPE knearest_cluster(IMAGE *im, int *x, int *y, int *pn, int k, double maxdst);
 
 #define set_mean_type(TYPE1, TYPE2, i1, i2) \
 {\
@@ -162,7 +162,7 @@ extern ERROR_TYPE knearest_cluster();
   }  \
 }
 
-extern IMBLOB *create_blob();
+extern IMBLOB *create_blob(LBL_TYPE n);
 
 
 

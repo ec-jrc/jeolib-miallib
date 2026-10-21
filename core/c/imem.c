@@ -227,7 +227,8 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
     xmem();
     gc();
     xmem();
-    printf("nbyte=%llu\n", nbyte);
+    (void)sprintf(buf, "create_image: nbyte=%llu\n", nbyte);
+    stdputstr(buf);
     p = (char *)calloc(nbyte, sizeof(char));
     if (p == NULL){
       (void)sprintf(buf,"ERROR in create_image(data_type=%d, nx=%ld, ny=%d, nz=%d) \

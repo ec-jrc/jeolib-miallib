@@ -182,7 +182,7 @@ ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile gzFhd, GTIF *gtif)
 {
   //go on here
   char buffer[200];
-  int i,abool=1, * trace;
+  int i, abool=1, * trace;
   struct LINE * line, ** lineArray;
   struct POINT * firstPoint, * crtPoint, * newPoint;
   int * colorValues;
