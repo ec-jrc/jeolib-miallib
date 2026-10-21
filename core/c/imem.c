@@ -164,8 +164,19 @@ IMAGE *create_image(int data_type, long int nx, int ny, int nz)
 
   switch(data_type){
   case t_ONEBITPERPIXEL:
-    nbyte = sizeof(UCHAR)*(nx/BITPERCHAR+(nx%BITPERWORD ? 4 : 0))*ny*nz;   /* GLOUP 2006 CH */
+    nbyte = sizeof(UCHAR)*(nx/BITPERCHAR+(nx%BITPERWORD ? 4 : 0))*ny*nz;
     break;
+  case t_RGB:
+    /* warning: we do not handle this type, except for I */
+    /*  nz is set to 3 (one color per plane) */
+    nz=3;
+  case t_FOURBITPERPIXEL:
+    /* warning: we do not handle this type, except for I/O */
+    /* nbyte = ny*(nx/2+(nx%2))*sizeof(UCHAR); */
+    /* -> dummy type */
+  case t_TIFFONEBITPERPIXEL:
+    /* warning: we do not handle this type, except for I/O */
+    /* -> dummy type */
   case t_UCHAR:
     nbyte = sizeof(UCHAR)*(mia_size_t)nx*ny*nz;
     break;
