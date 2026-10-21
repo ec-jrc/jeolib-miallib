@@ -528,7 +528,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
   if (fread((char *)tag_info, 12, nbr_tags, fp) !=  nbr_tags)
     return(NULL);
 
-#if BYTE_ORDER==LITTLE_ENDIAN
+#if __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
   /*  Read indispensable tags  */
   for (i = 0; i < nbr_tags; i++){
     switch (tag_info[i].type){
@@ -708,7 +708,7 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
     return(NULL);
   }
   if (tiff_head.byte_order == 0x4d4d){
-#if BYTE_ORDER==BIG_ENDIAN
+#if __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
     im = read_tiff_file2(fp, tiff_head, x, y, szx, szy, scale);
 #else
     (void)sprintf(buf,"read_file(): cannot read big-endian TIFF files on little-endian machines\n");
@@ -717,7 +717,7 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
 #endif
   }
   else if (tiff_head.byte_order == 0x4949){
-#if BYTE_ORDER==LITTLE_ENDIAN
+#if __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
     im = read_tiff_file2(fp, tiff_head, x, y, szx, szy, scale);
 #else
     (void)sprintf(buf,"read_file(): cannot read little-endian TIFF files on big-endian machines\n");

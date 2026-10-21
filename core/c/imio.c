@@ -699,7 +699,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   }
 
   /*  Header initialisation  */
-#if BYTE_ORDER==BIG_ENDIAN
+#if __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
   tiff_head.byte_order  = 0x4d4d; /* big-endian byte ordering    */
 #else /* little endian */
   tiff_head.byte_order  = 0x4949; /* little-endian byte ordering */
@@ -750,7 +750,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   tag_info[ColorMap].length = 3*(1 << GetImBitPerPixel(im));
 
   /*  Values fitting in tag initialisation  */
-#if BYTE_ORDER==LITTLE_ENDIAN
+#if __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
   tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = (short)GetImBitPerPixel(im);
@@ -866,7 +866,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   }
 
   /*  Header initialisation  */
-#if BYTE_ORDER==BIG_ENDIAN
+#if __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
   tiff_head.byte_order  = 0x4d4d; /* big-endian byte ordering */
 #else /* must be little endian */
   tiff_head.byte_order  = 0x4949; /* little-endian byte ordering */
@@ -987,7 +987,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   }
 
   /*  Values fitting in tag initialisation  */
-#if BYTE_ORDER==BIG_ENDIAN
+#if __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
   tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = GetImBitPerPixel(im)<<16;
@@ -1012,7 +1012,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
    tag_info[SF].ValOrPoint  = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
    tag_info[SOT].ValOrPoint += GetImNz(im)*2;
   }
-#elif BYTE_ORDER==LITTLE_ENDIAN
+#elif __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
   tag_info[WIDTH].ValOrPoint  = GetImNx(im);
   tag_info[LENGTH].ValOrPoint = GetImNy(im);
   tag_info[BPS].ValOrPoint    = (short)GetImBitPerPixel(im);
@@ -1037,9 +1037,8 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
    tag_info[SF].ValOrPoint  = 10+nbr_tags*12+4+32+256+8+8+GetImNz(im)*2;
    tag_info[SOT].ValOrPoint += GetImNz(im)*2;
   }
-
 #else
- #error BYTE_ORDER must be either BIG_ENDIAN or LITTLE_ENDIAN
+ #error BYTE_ORDER must be either __ORDER_BIG_ENDIAN__ or __ORDER_LITTLE_ENDIAN__
 #endif
 
   /*  Open output file  */
