@@ -141,7 +141,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #define t_INT64               8
 #define t_UINT64              9
 #define t_FLOAT              10
-#define t_MIALFLOAT           10
+#define t_MIALFLOAT          10
 #define t_DOUBLE             11
 #define t_RGB                13 /* fake type, requires pixel data type=t_UCHAR */
 #define t_PTR                14

@@ -24,6 +24,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "miallib.h"
 #include "op.h"
 
+#define NDI_INVALID (-2.0)  /* normalized difference index */
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
@@ -176,7 +178,6 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -374,18 +375,6 @@ ERROR_TYPE generic_arith(IMAGE *im1, IMAGE *im2, int op)
 	p1[i] = 0;
     }
     break;
-  case NDI_op:
-#ifdef OPENMP
-#pragma omp parallel for
-#endif
-    for (i=0; i<npix; i++){
-      dval=(double)p1[i]+(double)p2[i];
-      if (dval==0.0)
-	p1[i]=PIX_MAX;
-      else
-	p1[i]=((double)p1[i]-(double)p2[i])/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -408,7 +397,6 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -553,15 +541,6 @@ ERROR_TYPE s_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in s_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -583,7 +562,6 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -728,15 +706,6 @@ ERROR_TYPE us_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -760,7 +729,6 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -905,15 +873,6 @@ ERROR_TYPE usuc_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -939,7 +898,6 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1084,15 +1042,6 @@ ERROR_TYPE suc_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -1118,7 +1067,6 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1241,15 +1189,6 @@ ERROR_TYPE luc_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1277,7 +1216,6 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1400,15 +1338,6 @@ ERROR_TYPE lus_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1436,7 +1365,6 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -1559,15 +1487,6 @@ ERROR_TYPE i32_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1592,7 +1511,6 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -1715,15 +1633,6 @@ ERROR_TYPE u32_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1749,7 +1658,6 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -1872,15 +1780,6 @@ ERROR_TYPE uluc_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -1909,7 +1808,6 @@ ERROR_TYPE ulus_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -2034,15 +1932,6 @@ ERROR_TYPE ulus_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -2066,7 +1955,6 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -2176,15 +2064,6 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
 #if FLOATING
   case ATAN_op:
     for (i=0; i<npix; i++, p1++, p2++){
@@ -2192,19 +2071,6 @@ ERROR_TYPE f_arith(IMAGE *im1, IMAGE *im2, int op)
       if (*p1<0.0)
 	*p1+=2*PI;
     }
-/*       dval=(double)*p1; */
-/*       dval2=(double)*p2; */
-/*       if (dval==0.) */
-/* 	*p1=0.0; */
-/*       else{ */
-/* 	*p1=(PIX_TYPE)atan(dval2 / dval); */
-/* 	if ( (dval<0.0) && (dval2<0.0) ) */
-/* 	  *p1+=PI; */
-/* 	else if (dval<0) */
-/* 	  *p1+=PI; */
-/* 	else if (dval2<0) */
-/* 	  *p1+=(2*PI); */
-/*       } */
     break;
 #endif
   default:
@@ -2230,7 +2096,6 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -2338,15 +2203,6 @@ ERROR_TYPE fuc_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -2373,7 +2229,6 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
 #endif
   PIX_TYPE *p1;
   PIX_TYPE2 *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE2 *)GetImPtr(im2);
@@ -2483,15 +2338,6 @@ ERROR_TYPE fus_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 0;
     }
     break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
-    }
-    break;
   default:
     (void)sprintf(buf, "ERROR in generic_arith(im1, im2, op): \
                 invalid op value\n"); errputstr(buf);
@@ -2514,7 +2360,6 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
   long int test;
 #endif
   PIX_TYPE *p1, *p2;
-  double dval;
 
   p1 = (PIX_TYPE *)GetImPtr(im1);
   p2 = (PIX_TYPE *)GetImPtr(im2);
@@ -2622,15 +2467,6 @@ ERROR_TYPE d_arith(IMAGE *im1, IMAGE *im2, int op)
 	*p1 = 1;
       else
 	*p1 = 0;
-    }
-    break;
-  case NDI_op:
-    for (i=0; i<npix; i++, p1++, p2++){
-      dval=(double)*p1+(double)*p2;
-      if (dval==0.)
-	*p1=PIX_MAX;
-      else
-	*p1=((double)*p1-(double)*p2)/dval;
     }
     break;
   default:
@@ -6054,7 +5890,6 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -6069,22 +5904,20 @@ IMAGE *generic_ndi(IMAGE *im1, IMAGE *im2)
   npix = GetImNPix(im1);
 
 #ifdef OPENMP
-#pragma omp parallel for reduction(+:ovfl)
+#pragma omp parallel for default(none) shared(p1, p2, pout, npix) reduction(+:ovfl)
 #endif
-  for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
-    if (dval==0.0){
-      pout[i]=-2;
-      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
-      /* if (dval==0.0) */
-      /* 	pout[i]=FP_NAN; */
-      /* else */
-      /* 	pout[i]=FP_INFINITE; */
-      ovfl+=1;
+  for (i = 0; i < npix; i++){
+    const MIALFLOAT num = (MIALFLOAT)p1[i] - (MIALFLOAT)p2[i];
+    const MIALFLOAT den = (MIALFLOAT)p1[i] + (MIALFLOAT)p2[i];
+
+    if (den == 0.0){
+      pout[i] = NDI_INVALID;
+      ovfl   += 1;
     }
     else
-      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
+      pout[i] = num / den;
   }
+
   if (ovfl){
     (void)sprintf(buf, "WARNING in generic_ndi(im1, im2): \
              %llu division(s) by 0 set to -2)\n", ovfl); stdputstr(buf);
@@ -6101,7 +5934,6 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -6116,21 +5948,18 @@ IMAGE *us_ndi(IMAGE *im1, IMAGE *im2)
   npix = GetImNPix(im1);
 
 #ifdef OPENMP
-#pragma omp parallel for reduction(+:ovfl)
+#pragma omp parallel for default(none) shared(p1, p2, pout, npix) reduction(+:ovfl)
 #endif
-  for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
-    if (dval==0.0){
-      pout[i]=-2;
-      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
-      /* if (dval==0.0) */
-      /* 	pout[i]=FP_NAN; */
-      /* else */
-      /* 	pout[i]=FP_INFINITE; */
-      ovfl+=1;
+  for (i = 0; i < npix; i++){
+    const MIALFLOAT num = (MIALFLOAT)p1[i] - (MIALFLOAT)p2[i];
+    const MIALFLOAT den = (MIALFLOAT)p1[i] + (MIALFLOAT)p2[i];
+
+    if (den == 0.0){
+      pout[i] = NDI_INVALID;
+      ovfl   += 1;
     }
     else
-      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
+      pout[i] = num / den;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in us_ndi(im1, im2): \
@@ -6147,7 +5976,6 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -6162,21 +5990,18 @@ IMAGE *i32_ndi(IMAGE *im1, IMAGE *im2)
   npix = GetImNPix(im1);
 
 #ifdef OPENMP
-#pragma omp parallel for reduction(+:ovfl)
+#pragma omp parallel for default(none) shared(p1, p2, pout, npix) reduction(+:ovfl)
 #endif
-  for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
-    if (dval==0.0){
-      pout[i]=-2;
-      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
-      /* if (dval==0.0) */
-      /* 	pout[i]=FP_NAN; */
-      /* else */
-      /* 	pout[i]=FP_INFINITE; */
-      ovfl+=1;
+  for (i = 0; i < npix; i++){
+    const MIALFLOAT num = (MIALFLOAT)p1[i] - (MIALFLOAT)p2[i];
+    const MIALFLOAT den = (MIALFLOAT)p1[i] + (MIALFLOAT)p2[i];
+
+    if (den == 0.0){
+      pout[i] = NDI_INVALID;
+      ovfl   += 1;
     }
     else
-      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
+      pout[i] = num / den;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in i32_ndi(im1, im2): \
@@ -6239,7 +6064,6 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   IMAGE *imout;
   PIX_TYPE *p1, *p2;
   MIALFLOAT *pout;
-  MIALFLOAT dval;
 
   imout = create_image(t_MIALFLOAT, GetImNx(im1), GetImNy(im1), GetImNz(im1));
   if (imout == NULL){
@@ -6254,21 +6078,18 @@ IMAGE *f_ndi(IMAGE *im1, IMAGE *im2)
   npix = GetImNPix(im1);
 
 #ifdef OPENMP
-#pragma omp parallel for reduction(+:ovfl)
+#pragma omp parallel for default(none) shared(p1, p2, pout, npix) reduction(+:ovfl)
 #endif
-  for (i=0; i<npix; i++){
-    dval=(MIALFLOAT)p1[i]+(MIALFLOAT)p2[i];
-    if (dval==0.0){
-      pout[i]=-2;
-      /* dval=(MIALFLOAT)p1[i]-(MIALFLOAT)p2[i]; */
-      /* if (dval==0.0) */
-      /* 	pout[i]=FP_NAN; */
-      /* else */
-      /* 	pout[i]=FP_INFINITE; */
-      ovfl+=1;
+  for (i = 0; i < npix; i++){
+    const MIALFLOAT num = (MIALFLOAT)p1[i] - (MIALFLOAT)p2[i];
+    const MIALFLOAT den = (MIALFLOAT)p1[i] + (MIALFLOAT)p2[i];
+
+    if (den == 0.0){
+      pout[i] = NDI_INVALID;
+      ovfl   += 1;
     }
     else
-      pout[i]=((MIALFLOAT)p1[i]-(MIALFLOAT)p2[i])/dval;
+      pout[i] = num / den;
   }
   if (ovfl){
     (void)sprintf(buf, "WARNING in f_ndi(im1, im2): \
