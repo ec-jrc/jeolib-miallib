@@ -142,7 +142,9 @@ MIALLIB_VERSION = $(MIALLIB_VERSION_MAJOR).$(MIALLIB_VERSION_MINOR).$(MIALLIB_VE
 
 GIT_DESCRIBE = git describe --tags --dirty --always 2>/dev/null || echo v.unknown
 
-config_miallib.h:
+.PHONY: FORCE
+FORCE:
+config_miallib.h: FORCE
 	@tag=`$(GIT_DESCRIBE)`; \
 	{ \
 	  echo '// the configured options and settings for miallib'; \
