@@ -895,7 +895,7 @@ IMAGE *u32_fillocarve_energy(unsigned short *iml, UINT32 *imr, int nx, int ny, i
   free(fah);
   free_pq(heap);
 
-  (void)sprintf(buf, "casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
+  (void)sprintf(buf, "us_fillocarve_energy():\n casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
   stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
@@ -1292,7 +1292,7 @@ IMAGE *us_fillocarve_area(unsigned short *iml, unsigned short *imr, int nx, int 
   free(fah);
   free_pq(heap);
 
-  (void)sprintf(buf,"casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased);
+  (void)sprintf(buf,"us_fillocarve_area():\n casea=%d\n caseb1(pure hybrid)=%d\n casec=%d\n cased=%d\n", casea, caseb, casec, cased);
   stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
