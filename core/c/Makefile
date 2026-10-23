@@ -14,7 +14,8 @@ CFLAGS         = -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CO
 
 CFLAGS-DEBUG   = -DDEBUG -DXLDEBUG -DXLDEBUG2 -DDEBUB
 
-CFLAGS-GENERIC = # -DNNI -DLIBPROJ # Currently not compiling with NNI and LIBRPROJ!
+CFLAGS-GENERIC = -DFFTW3_OPENMP
+# -DNNI -DLIBPROJ # Currently not compiling with NNI and LIBRPROJ!
 
 CFLAGS-XLISP   = -DXLISP $(CFLAGS-GENERIC)
 
@@ -111,12 +112,8 @@ INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}/ 
 
 # TODO: add -lcsa -lnn
 
-ifdef MSPA
-	LIBS       = -lgdal -ltiff -ldl -lmspa
-else
-	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
-endif
-
+LIBS-GENERIC    = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lfftw3 -lgsl -lgslcblas -lshp
+LIBS-MSPA       = -ltiff -ldl
 
 # Symbols used for using static and hared libraries
 STATIC=		.a
@@ -190,7 +187,7 @@ $(LDIR)/$(TARGET)_mspa.a: $(SOBJS-MSPA)
 
 $(LDIR)/$(TARGET)_mspa.so: $(DOBJS-MSPA)
 	@mkdir -p $(@D)
-	$(LDSHARED) $(DOBJS-MSPA) $(LIBS) -o $@
+	$(LDSHARED) $(DOBJS-MSPA) $(LIBS-MSPA) -o $@
 
 ##################################################################
 #####                       GENERIC                         ######
@@ -210,7 +207,7 @@ $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 
 $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 	@mkdir -p $(@D)
-	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS) -o $@
+	$(LDSHARED) $(DOBJS-GENERIC) $(LIBS-GENERIC) -o $@
 
 
 ##################################################################

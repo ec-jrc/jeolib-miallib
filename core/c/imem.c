@@ -59,14 +59,6 @@ void errputstr(char *buf)
 {
   printf("%s", buf);
 }
-// see https://docs.python.org/2/c-api/memory.html
-// void* PyMem_Malloc(size_t n)
-// void PyMem_Free(void *p)
-// TYPE* PyMem_New(TYPE, size_t n)
-#define my_malloc(x) PyMem_Malloc(x)
-#define my_free_malloc(x) PyMem_Free(x)
-#define my_calloc(x,y) PyMem_New(x,y)   /* x for TYPE and y for number of elements */
-#define my_free_calloc(x) PyMem_Del(x)
 #elif !defined(XLISP)
 void stdputstr(char *buf)
 {
@@ -76,10 +68,6 @@ void errputstr(char *buf)
 {
   fprintf(stderr,"%s\n", buf);
 }
-#define my_malloc(x) malloc(x)
-#define my_free_malloc(x) free(x)
-#define my_calloc(x,y) (x *)calloc(y,sizeof(x))
-#define my_free_calloc(x) free(x)
 #endif
 
 

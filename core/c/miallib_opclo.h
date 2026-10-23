@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -24,11 +24,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "mialtypes.h"
 
 /* uswilk.c */
-extern IMAGE *attribute(IMAGE *imliiar, int type, int oporclo, double lambdaVal, int graph);
-extern IMAGE *GreyAreaOpening(IMAGE *imliiar, int lambdaVal, int graph);
-extern IMAGE *GreyAreaClosing(IMAGE *imliiar, int lambdaVal, int graph);
-extern IMAGE *GreyAreaOpeningROI(IMAGE *imliiar, int lambdaVal, int graph);
-extern IMAGE *GreyAreaClosingROI(IMAGE *imliiar, int lambdaVal, int graph);
+extern IMAGE *attribute(IMAGE *im, int type, int oporclo, double lambdaVal, int graph);
+extern IMAGE *GreyAreaOpening(IMAGE *im, int lambdaVal, int graph);
+extern IMAGE *GreyAreaClosing(IMAGE *im, int lambdaVal, int graph);
+extern IMAGE *GreyAreaOpeningROI(IMAGE *im, int lambdaVal, int graph);
+extern IMAGE *GreyAreaClosingROI(IMAGE *im, int lambdaVal, int graph);
 
 /* myhull.c  */
 // extern IMAGE *chull(IMAGE *ilbl, int graph);
