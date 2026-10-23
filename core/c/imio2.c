@@ -29,8 +29,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "imio.h"
 #include <geotiff/xtiffio.h>
 #include <tiffio.h>
-#include <geotiff/geotiffio.h> /* 2005-12-20 */
-#include "banner.h"  /* 2007-12-10 */
+#include <geotiff/geotiffio.h>
 
 #if (!defined(SEEK_CUR))
 #define SEEK_CUR 1
@@ -90,14 +89,6 @@ void InstallGDALTiffTags()
 
 /* end of patch to accomodate unofficial extended TIFFTAGS             */
 /***********************************************************************/
-
-
-void print_mia_banner()
-{
-  char banner[512] = MIA_BANNER;
-  (void)sprintf(buf, "%s\n", banner);
-  errputstr(buf);
-}
 
 
 /**
@@ -329,7 +320,7 @@ IMAGE *GetGeoKey(char *fname, char *keyname)
     GTIFKeyGet(gtif, GTModelTypeGeoKey, &modelTypeCode, 0, 1);
   }
   else{
-    printf("GeoKey '%s' not handled\n", keyname);
+    printf("GetGeoKey(%s, %s) '%s' not handled\n", fname, keyname, keyname);
     return NULL;
   }
 
@@ -470,7 +461,6 @@ ERROR_TYPE read_image_data2(FILE *fp, IMAGE *im, int x, int y, int inx, int scal
   case t_DOUBLE:
     if (bpp==0)
       bpp=8;
-    /* printf("bpp=%d\n", bpp); */
     fseek(fp,(y*inx+x)*bpp,SEEK_CUR);
     if (scale==1){
       for (i=0; i<ny; i++){
@@ -610,7 +600,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
   free((char *)tag_info);
 
   if (test != 4){
-    (void)sprintf(buf, "read_tiff_file(): Tags missing !!!  Unable to read file on disk.\n");
+    (void)sprintf(buf, " read_tiff_file2(): Tags missing !!!  Unable to read file on disk.\n");
     errputstr(buf);
     return(NULL);
   }
@@ -633,7 +623,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
 
   /* check block to read */
   if ( (x+szx > nx) || (y+szy > ny) || (nz != 1) ){ /* invalid parameters */
-    (void)sprintf(buf,"read_tiff_file(): invalid block parameters x=%d y=%d szx=%d szy=%d nx=%d ny=%d nz=%d!\n", x, y, szx, szy, nx, ny, nz);
+    (void)sprintf(buf," read_tiff_file2(): invalid block parameters x=%d y=%d szx=%d szy=%d nx=%d ny=%d nz=%d!\n", x, y, szx, szy, nx, ny, nz);
     errputstr(buf);
     return NULL;
   }
@@ -650,7 +640,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
   /* create output image */
   im = create_image(data_type, nx, ny, nz);
   if (im == NULL){
-    (void)sprintf(buf,"read_tiff_file2(): not enough memory!\n");
+    (void)sprintf(buf," read_tiff_file2(): not enough memory!\n");
     errputstr(buf);
     return(NULL);
   }
@@ -671,7 +661,7 @@ IMAGE *read_tiff_file2(FILE *fp, struct mytiff tiff_head, int x, int y, int szx,
       SetImLut(im,plut);
       (void)fseek(fp, cm, 0);
       if (fread((char *)plut, sizeof(short), 3*(2<<bitpp), fp) != 3*(2<<bitpp)){
-	(void)sprintf(buf,"read_tiff_file2(): could not read color map!\n");
+	(void)sprintf(buf," read_tiff_file2(): could not read color map!\n");
 	errputstr(buf);
 	free_lut(im);
       }
@@ -694,7 +684,7 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
 
   /* Open file and try */
   if ((fp = fopen(fn, "rb")) == NULL){
-    (void)sprintf(buf,"ERROR in read_image(): \
+    (void)sprintf(buf,"ERROR in read_image2(): \
                    unable to read open file\n");
     errputstr(buf);
     return(NULL);
@@ -711,7 +701,7 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
 #if __BYTE_ORDER__==__ORDER_BIG_ENDIAN__
     im = read_tiff_file2(fp, tiff_head, x, y, szx, szy, scale);
 #else
-    (void)sprintf(buf,"read_file(): cannot read big-endian TIFF files on little-endian machines\n");
+    (void)sprintf(buf,"read_image2(): cannot read big-endian TIFF files on little-endian machines\n");
     errputstr(buf);
     im = NULL;
 #endif
@@ -720,13 +710,13 @@ IMAGE *read_image2(char *fn, int x, int y, int szx, int szy, int scale)
 #if __BYTE_ORDER__==__ORDER_LITTLE_ENDIAN__
     im = read_tiff_file2(fp, tiff_head, x, y, szx, szy, scale);
 #else
-    (void)sprintf(buf,"read_file(): cannot read little-endian TIFF files on big-endian machines\n");
+    (void)sprintf(buf,"read_image2(): cannot read little-endian TIFF files on big-endian machines\n");
     errputstr(buf);
     im = NULL;
 #endif
   }
   else{
-    (void)sprintf(buf,"read_file(): unable to read %s on disk\n", fn);
+    (void)sprintf(buf,"read_image2(): unable to read %s on disk\n", fn);
     errputstr(buf);
   }
 
@@ -852,7 +842,6 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     GTIF *gtif=(GTIF*)0;
     double pixsize[3], tiepoint[6];
     void *lbuf;
-    char imdesc[512] = MYBANNER;
     char mode[10];
     char *mp=mode;
 
@@ -872,7 +861,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     pixsize[2]  = 0.0;
 
     if ( (RasterType!=1) && (RasterType!=2) ){
-      (void)sprintf(buf,"writetiffospl(): invalid raster type (%d)\n", RasterType);
+      (void)sprintf(buf,"writeGeoTiffOneStripPerLine(): invalid raster type (%d)\n", RasterType);
       errputstr(buf);
       return ERROR;
     }
@@ -895,13 +884,14 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     /* if size of image data is larger than 4GB than assume BigTIFF even
        though the compressed data may be less than 4GB */
     if ( ((long int) nx * (long int) ny * (long int) nz * bpp) > UINT32_MAX ){
-      (void)printf("writetiffospl() message: output file %s will be a bigtiff file\n", fn);
+      (void)sprintf(buf, "writeGeoTiffOneStripPerLine(): output file %s will be a bigtiff file\n", fn);
+      stdputstr(buf);
       *mp++ = '8'; *mp = '\0';
     }
 
     tif = XTIFFOpen(fn, mode); /* X necessary for geotags */
     if (tif==NULL){
-      (void)sprintf(buf,"writetiffospl(): unable to write %s on disk\n", fn);
+      (void)sprintf(buf,"writeGeoTiffOneStripPerLine(): unable to write %s on disk\n", fn);
       errputstr(buf);
       return ERROR;
     }
@@ -956,7 +946,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       // GTIFKeySet(gtif, GeogGeodeticDatumGeoKey,  TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
       GTIFKeySet(gtif, GeogGeodeticDatumGeoKey,  TYPE_SHORT, 1, 6258); /* Euro. Terr. Ref. Sys. 1989 */
       // GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_DOUBLE, 1, 32767); /* 32767 for user-defined */
-      GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_DOUBLE, 1, 8901); /* Greenwich */
+      GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_SHORT, 1, 8901); /* Greenwich */
       GTIFKeySet(gtif, GeogLinearUnitsGeoKey, TYPE_SHORT,  1, 9001);
       GTIFKeySet(gtif, GeogAngularUnitsGeoKey, TYPE_SHORT,  1, 9102); // 9102 for Angular_Arc_Degree
       // GTIFKeySet(gtif, GeogEllipsoidGeoKey, TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
@@ -1023,20 +1013,14 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       break;
     default:/* undefined data format */
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): undefined data format\n", fn);
+      (void)sprintf(buf,"writeGeoTiffOneStripPerLine(%s): undefined data format\n", fn);
       errputstr(buf);
       return ERROR;
     }
     TIFFSetField(tif, TIFFTAG_SAMPLEFORMAT, sf);
     TIFFSetField(tif, TIFFTAG_DATETIME, getCrtTimeString(timeString));
     TIFFSetField(tif, TIFFTAG_DOCUMENTNAME, fn);
-#if (defined(XLISP))
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl-xlisp [mialisp]");
-#elif (defined(PYTHON))
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl-python");
-#else
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl");
-#endif
+    TIFFSetField(tif, TIFFTAG_SOFTWARE, MIALLIB_SOFTWARE);
     localhost_str = (char *)malloc(1024);
     if (localhost_str != NULL){
       if (gethostname(localhost_str, 1024)==0){
@@ -1044,15 +1028,15 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       }
       free(localhost_str);
     }
-    TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, imdesc);
     TIFFSetField(tif, TIFFTAG_ARTIST, user_str);
 
     if (nodata_flag==1){
       if (sf>2){
-	printf("warning, nodata flag ignored: only allowed for integer data type\n");
+	(void)sprintf(buf, "warning: writeGeoTiffOneStripPerLine() nodata flag ignored: only allowed for integer data type\n");
+	stdputstr(buf);
       }
       else{
-	sprintf(nodata_str, "%d", nodata_val);
+	(void)sprintf(nodata_str, "%d", nodata_val);
 	TIFFSetField(tif, TIFFTAG_GDAL_NODATA, &nodata_str);
       }
     }
@@ -1063,7 +1047,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
     lbuf=(void *)malloc(nx*bpp);
     if (lbuf==NULL){
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): not enough memory for line buffer\n", fn);
+      (void)sprintf(buf,"writeGeoTiffOneStripPerLine(%s): not enough memory for line buffer\n", fn);
       errputstr(buf);
       return ERROR;
     }
@@ -1071,7 +1055,7 @@ ERROR_TYPE writeGeoTiffOneStripPerLine(IMAGE *im, char *fn, int PCSCode, double 
       memcpy(lbuf, p, nx*bpp); /* because TIFFWriteEncodedStrip actually modifies the data ! */
       if (TIFFWriteEncodedStrip(tif, stripCount, lbuf, nx*bpp) == -1){
 	TIFFClose(tif);
-	(void)sprintf(buf,"writetiffospl(): unable to write %d th strip on disk, writing aborted\n", stripCount);
+	(void)sprintf(buf,"writeGeoTiffOneStripPerLine(): unable to write %d th strip on disk, writing aborted\n", stripCount);
         errputstr(buf);
 	return ERROR;
       }
@@ -1089,7 +1073,6 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     GTIF *gtif=(GTIF*)0;
     double pixsize[3], tiepoint[6];
     void *lbuf;
-    char imdesc[512] = MYBANNER;
     char mode[10];
     char *mp=mode;
 
@@ -1112,9 +1095,8 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     pixsize[1]  = scale;
     pixsize[2]  = 0.0;
 
-
     if ( (RasterType!=1) && (RasterType!=2) ){
-      (void)sprintf(buf,"writetiffospl(): invalid raster type (%d)\n", RasterType);
+      (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(): invalid raster type (%d)\n", RasterType);
       errputstr(buf);
       return ERROR;
     }
@@ -1136,20 +1118,21 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     /* if size of image data is larger than 4GB than assume BigTIFF even
        though the compressed data may be less than 4GB */
     if ( ((long int) nx * (long int) ny * (long int) nz * bpp) > UINT32_MAX ){
-      (void)printf("writetiffospl() message: output file %s will be a bigtiff file\n", fn);
+      (void)sprintf(buf, "writeMBGeoTiffOneStripPerLine() message: output file %s will be a bigtiff file\n", fn);
+      stdputstr(buf);
       *mp++ = '8'; *mp = '\0';
     }
 
     tif = XTIFFOpen(fn, mode); /* X necessary for geotags */
     if (tif==NULL){
-      (void)sprintf(buf,"writetiffospl(): unable to write %s on disk\n", fn);
+      (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(): unable to write %s on disk\n", fn);
       errputstr(buf);
       return ERROR;
     }
     gtif = GTIFNew(tif);
     if (!gtif){
       TIFFClose(tif);
-      (void)sprintf(buf,"writeGeoTiffOneStripPerLine(): error when calling GTIFNew()\n");
+      (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(): error when calling GTIFNew()\n");
       errputstr(buf);
       return ERROR;
     }
@@ -1197,7 +1180,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
       // GTIFKeySet(gtif, GeogGeodeticDatumGeoKey,  TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
       GTIFKeySet(gtif, GeogGeodeticDatumGeoKey,  TYPE_SHORT, 1, 6258); /* Euro. Terr. Ref. Sys. 1989 */
       // GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_DOUBLE, 1, 32767); /* 32767 for user-defined */
-      GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_DOUBLE, 1, 8901); /* Greenwich */
+      GTIFKeySet(gtif, GeogPrimeMeridianGeoKey, TYPE_SHORT, 1, 8901); /* Greenwich */
       GTIFKeySet(gtif, GeogLinearUnitsGeoKey, TYPE_SHORT,  1, 9001);
       GTIFKeySet(gtif, GeogAngularUnitsGeoKey, TYPE_SHORT,  1, 9102); // 9102 for Angular_Arc_Degree
       // GTIFKeySet(gtif, GeogEllipsoidGeoKey, TYPE_SHORT, 1, 32767); /* 32767 for user-defined */
@@ -1263,21 +1246,15 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
       break;
     default:/* undefined data format */
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): undefined data format\n", fn);
+      (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(%s): undefined data format\n", fn);
       errputstr(buf);
       return ERROR;
     }
     TIFFSetField(tif, TIFFTAG_SAMPLEFORMAT, sf);
     TIFFSetField(tif, TIFFTAG_DATETIME, getCrtTimeString(timeString));
     TIFFSetField(tif, TIFFTAG_DOCUMENTNAME, fn);
-#if (defined(XLISP))
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl-xlisp [mialisp]");
-#elif (defined(PYTHON))
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl-python");
-#else
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "jipl");
-#endif
-    TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, imdesc);
+    TIFFSetField(tif, TIFFTAG_SOFTWARE, MIALLIB_SOFTWARE);
+
     localhost_str = (char *)malloc(1024);
     if (localhost_str != NULL){
       if (gethostname(localhost_str, 1024)==0){
@@ -1289,10 +1266,11 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
 
     if (nodata_flag==1){
       if (sf>2){
-	printf("warning, nodata flag ignored: only allowed for integer data type\n");
+	(void)sprintf(buf, "warning: writeMBGeoTiffOneStripPerLine() nodata flag ignored: only allowed for integer data type\n");
+	stdputstr(buf);
       }
       else{
-	sprintf(nodata_str, "%d", nodata_val);
+	(void)sprintf(nodata_str, "%d", nodata_val);
 	TIFFSetField(tif, TIFFTAG_GDAL_NODATA, &nodata_str);
       }
     }
@@ -1303,7 +1281,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
     lbuf=(void *)malloc(nx*bpp);
     if (lbuf==NULL){
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): not enough memory for line buffer\n", fn);
+      (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(%s): not enough memory for line buffer\n", fn);
       errputstr(buf);
       return ERROR;
     }
@@ -1314,7 +1292,7 @@ ERROR_TYPE writeMBGeoTiffOneStripPerLine(IMAGE **imap, int nc, char *fn, int PCS
 	memcpy(lbuf, p, nx*bpp); /* because TIFFWriteEncodedStrip actually modifies the data ! */
 	if (TIFFWriteEncodedStrip(tif, stripCount, lbuf, nx*bpp) == -1){
 	  TIFFClose(tif);
-	  (void)sprintf(buf,"writetiffospl(): unable to write %d th strip on disk, writing aborted\n", stripCount);
+	  (void)sprintf(buf,"writeMBGeoTiffOneStripPerLine(): unable to write %d th strip on disk, writing aborted\n", stripCount);
 	  errputstr(buf);
 	  return ERROR;
 	}

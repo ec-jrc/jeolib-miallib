@@ -28,11 +28,9 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <time.h>
 #include <stdint.h>
 #include <tiffio.h>
-#include "banner.h"
 #include "miallib.h"
 #include "imio.h"
 
-extern IMAGE *deinterleave(IMAGE *);
 
 /** @defgroup group_io I/O operations
  *  Functions dealing with image I/0.
@@ -43,8 +41,8 @@ extern IMAGE *deinterleave(IMAGE *);
 /*
  *
  *
- *  getCrtTimeString:     generates a string with the current date and time.
- *                        example: 2004_06_24_18_54 for 24th of June 2004 at 18.54 o'clock
+ *  getCrtTimeString:     generates a string with the current date and time,
+ *                        with this format: YYYY:MM:DD HH:MM:SS
  *
  *  Parameters:
  *
@@ -229,7 +227,7 @@ ERROR_TYPE read_image_data(FILE *fp, IMAGE *im, int pc)
       }
     }
   }
-  else{ /* assume sequential x-y plane storage (BSQ) */p = (UCHAR *)GetImPtr(im);
+  else{ /* assume sequential x-y plane storage (BSQ) */
     p = (UCHAR *)GetImPtr(im);
     nx=GetImNx(im);
     ny=GetImNy(im);
@@ -339,7 +337,7 @@ IMAGE *read_image(char *fn)
       sf=1; /* 1 unsigned (default value in TIFF 6.0 specifications)
 	       2 signed, 3 float, 4 undefined */
     if (sf>3) {
-      (void)sprintf(buf, "WARNING: unexpected TIFFTAG_SAMPLEFORMAT=%d!!!  trying with default value 1!!!\n", sf);
+      (void)sprintf(buf, "read_image(): WARNING: unexpected TIFFTAG_SAMPLEFORMAT=%d!!!  trying with default value 1!!!\n", sf);
       errputstr(buf);
       sf=1;
     }
@@ -439,9 +437,9 @@ IMAGE *read_image(char *fn)
      if (data_type==t_UNSUPPORTED){
        (void)sprintf(buf,"warning: read_image(): unsupported data type bitpp=%d and sf=%d!\n", bitpp, sf);
        errputstr(buf);
-      TIFFClose(tiffp);
-#ifdef FSP
-      exit(1);
+       TIFFClose(tiffp);
+#ifdef MSPA
+       exit(1);
 #endif
       return(NULL);
     }
@@ -531,7 +529,7 @@ IMAGE *read_image(char *fn)
       return(read_all(fn, nx, ny, 1, t_UCHAR, 128, 1));
     }
     else{
-      (void)sprintf(buf,"read_file(): unable to read %s on disk\n", fn);
+      (void)sprintf(buf,"read_image(): unable to read %s on disk\n", fn);
       errputstr(buf);
       im = NULL;
     }
@@ -645,8 +643,8 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   FILE *fp;
   IMAGE *imtmp;
   UCHAR uc_maxi;
-  char doc_name[32];
-  char doc_info[256] = "File created using Pierre Soille's library of independent image analysis routines";
+  char doc_name[32] = "";
+  char doc_info[256] = MIALLIB_SOFTWARE;
   short int nbr_tags = NBR_TAGS;
   struct mytiff tiff_head;
   struct tag *tag_info=NULL;
@@ -656,29 +654,23 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
   short int pmi=3; /* must be 3 when there is a ColorMap */
   int ptr_dir2=0; /*Offset to second directory*/
 
-  strcpy(doc_name, fn);
-
   if (GetImNz(im)!=1 || GetImDataType(im)!=t_UCHAR || GetImLut(im) == NULL){
     (void)sprintf(buf,"write_ColorMap_tiff(): data type must be t_UCHAR, nz must be equal to 1, and ColorMap must exist\n");
     errputstr(buf);
     return(ERROR);
   }
 
+  /*  Truncate safely if fn is longer than the 32-byte DocumentName slot  */
+  if (snprintf(doc_name, sizeof(doc_name), "%s", fn) >= (int)sizeof(doc_name)){
+    (void)sprintf(buf, "write_ColorMap_tiff(): document name truncated to %d characters\n",
+                  (int)sizeof(doc_name) - 1);
+    stdputstr(buf);
+  }
   /* take minimum and maximum image values into account */
   pg = min_max(im);
   if (GetImDataType(im)==t_UCHAR && pg != NULL){
     uc_maxi = pg[1].uc_val;
     free(pg);
-    /******************************* if (uc_maxi < 2){
-      imtmp = to_tiff1bitpp(im);    !!! COMMENTED OUT SINCE TIFF DOES NOT COPE !!!
-      if (imtmp == NULL){           !!! WITH BINARY PALETTE COLOUR IMAGES      !!!
-        free((char *)tag_info);
-        return(ERROR);
-      }
-      im = imtmp;
-      swapflag = 1;
-      maxi = 1;
-    } else *************************/
 
     if (uc_maxi < 16){
       imtmp = to_tiff4bitpp(im);
@@ -693,7 +685,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 
   /*  Allocate memory for header  */
   if ((tag_info = (struct tag *)calloc((size_t)nbr_tags, sizeof(struct tag))) == NULL){
-    (void)sprintf(buf,"write_tiff_file(): not enough memory\n");
+    (void)sprintf(buf,"write_ColorMap_tiff(): not enough memory\n");
     errputstr(buf);
     return(ERROR);
   }
@@ -788,7 +780,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 
   /*  Open output file  */
   if ((fp = fopen(fn, "wb")) == NULL){
-    (void)sprintf(buf, "write_tiff(): unable to open output file\n");
+    (void)sprintf(buf, "write_ColorMap_tiff(): unable to open output file\n");
     errputstr(buf);
     if (swapflag)
       free_image(im);
@@ -813,7 +805,7 @@ ERROR_TYPE write_ColorMap_tiff(IMAGE *im, char *fn)
 
   /*  Write image data  */
   if (write_image_data(fp, im, PLANARCONFIG_CONTIG) != NO_ERROR){
-    (void)sprintf(buf, "write_tiff(): unable to write \"%s\" on disk\n", fn);
+    (void)sprintf(buf, "write_ColorMap_tiff(): unable to write \"%s\" on disk\n", fn);
     errputstr(buf);
     (void)fclose(fp);
     if (swapflag)
@@ -837,8 +829,8 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   FILE *fp;
   IMAGE *imtmp;
   UCHAR uc_maxi;
-  char doc_name[32];
-  char doc_info[256] = "File created using Pierre Soille's library of independent image analysis routines";
+  char doc_name[32] = "";
+  char doc_info[256] = MIALLIB_SOFTWARE;
   short int nbr_tags = NBR_TAGS;
   struct mytiff tiff_head;
   struct tag *tag_info;
@@ -849,10 +841,15 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   G_TYPE *pg=NULL;
   int ptr_dir2 = 0;  /*  Offset to next directory (if any) initialisation  */
 
-  strcpy(doc_name, fn);
-
   if (GetImNz(im)==1 && GetImDataType(im)==t_UCHAR && GetImLut(im) != NULL){ /* palette COLOUR TIFF */
       return(write_ColorMap_tiff(im, fn));
+  }
+
+  /*  Truncate safely if fn is longer than the 32-byte DocumentName slot  */
+  if (snprintf(doc_name, sizeof(doc_name), "%s", fn) >= (int)sizeof(doc_name)){
+    (void)sprintf(buf, "write_tiff(): filename reported in TIFF metadata truncated to %d characters\n", \
+                  (int)sizeof(doc_name) - 1);
+    stdputstr(buf);
   }
 
   /*   if (GetImNz(im)==1 || GetImDataType(im)==t_RGB) */
@@ -860,7 +857,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 
   /*  Allocate memory for header  */
   if ((tag_info = (struct tag *)calloc((size_t)nbr_tags, sizeof(struct tag))) == NULL){
-    (void)sprintf(buf,"write_tiff_file(): not enough memory\n");
+    (void)sprintf(buf,"write_tiff(): not enough memory\n");
     errputstr(buf);
     return(ERROR);
   }
@@ -888,10 +885,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[YR].type     = 283;  /*  YResolution  tag          */
   tag_info[SF].type     = 339;  /*  SampleFormat tag          */
 
-/*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
-/*     tag_info[N_PLANE].type = 32768;  /\*  ZResolution  tag  (for 3D images) *\/ */
-/*                                      /\*  NON-STANDART  TAG  !!!!           *\/ */
-
   /*  Data Type initialisation */
   tag_info[WIDTH].data_type  = 4;  /* 4  ==>  INT32            */
   tag_info[LENGTH].data_type = 4;
@@ -905,8 +898,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[XR].data_type     = 5;  /* 5  ==>  RATIONAL           */
   tag_info[YR].data_type     = 5;
   tag_info[SF].data_type     = 3;
-/*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
-/*     tag_info[N_PLANE].data_type  = 3;   */
 
   /*  Length initialisation  */
   tag_info[WIDTH].length  = 1;
@@ -920,8 +911,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[SBC].length    = 1;
   tag_info[XR].length     = 1;
   tag_info[YR].length     = 1;
-/*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
-/*     tag_info[N_PLANE].length  = 1;     */
 
   /* take minimum and maximum image values into account */
   nbyte=(GetImBitPerPixel(im)/8) * GetImNPix(im);  //GetImNByte(im);
@@ -952,12 +941,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
       }
     }
   }
-
-/*   if (GetImDataType(im)==t_RGB){ /\* full color image *\/    */
-/*     tag_info[BPS].length  = GetImNz(im); */
-/*     pmi=2; */
-/*     spp=GetImNz(im); /\* may be more for multispectral images *\/ */
-/*   } */
 
   if (GetImNz(im)>1){ /* multichannel or 3-D image */
     tag_info[BPS].length  = GetImNz(im);
@@ -996,8 +979,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[SPP].ValOrPoint    = spp<<16;
   tag_info[SF].ValOrPoint     = sf<<16;
   tag_info[SBC].ValOrPoint    = nbyte; //GetImNByte(im); //GetImBitPerPixel(im)/8 * GetImNPix(im);
-/*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
-/*     tag_info[N_PLANE].ValOrPoint = GetImNz(im)<<16; */
 
   /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint = 10+nbr_tags*12+4;
@@ -1021,8 +1002,6 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
   tag_info[SPP].ValOrPoint    = (short)spp;
   tag_info[SF].ValOrPoint     = (short)sf;
   tag_info[SBC].ValOrPoint    = nbyte; //GetImNByte(im); //GetImBitPerPixel(im)/8 * GetImNPix(im);
-/*   if (GetImNz(im)!=1 && GetImDataType(im)!=t_RGB) */
-/*     tag_info[N_PLANE].ValOrPoint = (short)GetImNz(im); */
 
   /*  Offset of values not fitting in tag initialisation  */
   tag_info[NAME].ValOrPoint = 10+nbr_tags*12+4;
@@ -1038,7 +1017,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
    tag_info[SOT].ValOrPoint += GetImNz(im)*2;
   }
 #else
- #error BYTE_ORDER must be either __ORDER_BIG_ENDIAN__ or __ORDER_LITTLE_ENDIAN__
+  #error BYTE_ORDER must be either __ORDER_BIG_ENDIAN__ or __ORDER_LITTLE_ENDIAN__
 #endif
 
   /*  Open output file  */
@@ -1089,7 +1068,7 @@ ERROR_TYPE write_tiff(IMAGE *im, char *fn)
 }
 
 
-ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
+ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *imdesc)
 {
     TIFF *tif;
     int nx  = GetImNx(im);
@@ -1100,7 +1079,6 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
     int bpp = GetImBitPerPixel(im)/8;
     int stripCount, sf;
     char timeString[20];
-    char imdesc[512] = MYBANNER;
     USHORT *lut;
     char mode[10];
     char *mp=mode;
@@ -1108,20 +1086,17 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
     *mp++ = 'w';
     *mp='\0';
 
-    if (desc)
-      strcpy(imdesc, desc);
-
     /* if size of image data is larger than 4GB than assume BigTIFF even
        though the compressed data may be less than 4GB */
     if ( ((long int) nx * (long int) ny * (long int) nz * bpp) > UINT32_MAX ){
-      (void)sprintf(buf, "writetiffospl() message: output file %s will be a bigtiff file\n", fn);
-      errputstr(buf);
+      (void)sprintf(buf, "writeTiffOneStripPerLine() message: output file %s will be a bigtiff file\n", fn);
+      stdputstr(buf);
       *mp++ = '8'; *mp = '\0';
     }
 
     tif = TIFFOpen(fn, mode);
     if (tif==NULL){
-      (void)sprintf(buf,"writetiffospl(): unable to write %s on disk\n", fn);
+      (void)sprintf(buf,"writeTiffOneStripPerLine(): unable to write %s on disk\n", fn);
       errputstr(buf);
       return ERROR;
     }
@@ -1144,7 +1119,7 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
       lut=(USHORT *)GetImLut(im);
       TIFFSetField(tif, TIFFTAG_PHOTOMETRIC, 3);
       if ( TIFFSetField(tif, TIFFTAG_COLORMAP, lut, lut+256, lut+512) != 1 ){
-	(void)sprintf(buf,"writetiffospl(%s): error while setting colour map\n", fn);
+	(void)sprintf(buf,"writeTiffOneStripPerLine(%s): error while setting colour map\n", fn);
         errputstr(buf);
       }
     }
@@ -1167,25 +1142,22 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
       break;
     default:/* undefined data format */
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): undefined data format\n", fn);
+      (void)sprintf(buf,"writeTiffOneStripPerLine(%s): undefined data format\n", fn);
       errputstr(buf);
       return ERROR;
     }
     TIFFSetField(tif, TIFFTAG_SAMPLEFORMAT, sf);
     TIFFSetField(tif, TIFFTAG_DATETIME, getCrtTimeString(timeString));
     TIFFSetField(tif, TIFFTAG_DOCUMENTNAME, fn);
-#ifdef XLISP
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "mialisp");
-#endif
-#ifdef FSP
-    TIFFSetField(tif, TIFFTAG_SOFTWARE, "mspa v2.0");
-#endif
-    TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, imdesc);
+    TIFFSetField(tif, TIFFTAG_SOFTWARE, MIALLIB_SOFTWARE);
+
+    if (imdesc != NULL)
+      TIFFSetField(tif, TIFFTAG_IMAGEDESCRIPTION, imdesc);
 
     lbuf=(void *)malloc(nx*bpp);
     if (lbuf==NULL){
       TIFFClose(tif);
-      (void)sprintf(buf,"writetiffospl(%s): not enough memory for line buffer\n", fn);
+      (void)sprintf(buf,"writeTiffOneStripPerLine(%s): not enough memory for line buffer\n", fn);
       errputstr(buf);
       return ERROR;
     }
@@ -1193,7 +1165,7 @@ ERROR_TYPE writeTiffOneStripPerLine(IMAGE *im, char *fn, char *desc)
       memcpy(lbuf, p, nx*bpp); /* because TIFFWriteEncodedStrip actually modifies the data ! */
       if(TIFFWriteEncodedStrip(tif, stripCount, lbuf, nx*bpp) == -1){
 	TIFFClose(tif);
-	(void)sprintf(buf,"writetiffospl(): unable to write %d th strip on disk, writing aborted\n", stripCount);
+	(void)sprintf(buf,"writeTiffOneStripPerLine(): unable to write %d th strip on disk, writing aborted\n", stripCount);
         errputstr(buf);
 	return ERROR;
       }
@@ -1261,7 +1233,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
       if ( (ctype != 1) && (nstrip == ny) && (fdata_type == t_UCHAR) ){
 	im = create_image(data_type, nx, ny, spp);
 	if (im == NULL){
-	  (void)sprintf(buf,"read_image(): not enough memory!\n");
+	  (void)sprintf(buf,"read_image_to_type(): not enough memory!\n");
 	  errputstr(buf);
 	  TIFFClose(tiffp);
 	  return(NULL);
@@ -1277,7 +1249,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
 	for (strip = 0; strip < nstrip-1; strip++){
 	  nbyte=TIFFReadEncodedStrip(tiffp, strip, GetImPtr(lim), (tsize_t) -1);
 	  if (nbyte==-1){
-	    (void)sprintf(buf,"read_image(): problem when reading strip number %d\n", (int)strip);
+	    (void)sprintf(buf,"read_image_to_type(): problem when reading strip number %d\n", (int)strip);
 	    errputstr(buf);
 	    TIFFClose(tiffp);
 	    return(NULL);
@@ -1291,7 +1263,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
 	if ((spp>1) && (pc==1)){ /* deinterleave */
 	  imtmp= deinterleave(im);
 	  if (imtmp == NULL){
-	    (void)sprintf(buf,"warning: read_image(): not enough memory for deinterleaving!\n");
+	    (void)sprintf(buf,"warning: read_image_to_type(): not enough memory for deinterleaving!\n");
 	    errputstr(buf);
 	    return im;
 	  }
@@ -1301,7 +1273,7 @@ IMAGE *read_image_to_type(char *fn, int data_type)
 	return im;
       }
     }
-    (void)sprintf(buf,"warning: read_image_in_type(): unsupported data type!\n");
+    (void)sprintf(buf,"warning: read_image_to_type(): unsupported data type!\n");
     errputstr(buf);
   }
   return NULL;

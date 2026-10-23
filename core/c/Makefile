@@ -8,25 +8,28 @@ TARGET     = lib$(BASE)
 CC         = gcc
 CXX        = c++
 
-# defined for debugging: -DDEBUG -DXLDEBUG -DXLDEBUG2 -DXLDEBUG -DDEBUB
-# skipped: -DNNI
 # to be done:  -Wextra -Wno-sign-compare
 
-CFLAGS     = -DOPENMP -DNOSHP -DCLASSIF -DODOITHIN -DMCISRG -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
+CFLAGS         = -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
 
-CFLAGS-XLISP  = -DXLISP
-CFLAGS-MSPA   = -DMSPA
+CFLAGS-DEBUG   = -DDEBUG -DXLDEBUG -DXLDEBUG2 -DDEBUB
+
+CFLAGS-GENERIC = # -DNNI -DLIBPROJ # Currently not compiling with NNI and LIBRPROJ!
+
+CFLAGS-XLISP   = -DXLISP $(CFLAGS-GENERIC)
+
+CFLAGS-MSPA    = -DMSPA
+
 
 prefix     = /usr/local
 exec_prefix= ${prefix}
 
 # NOTES:
 # skipped so far: smoothcc_grazzja.c
-# note that natngbint.c # requires NNI to be defined and the libcsa and libnn libraries.  libnn makefile,in needs to pe patched to include -fPIC when compiling
+# note that natngbint.c requires NNI to be defined and the libcsa and libnn libraries.  libnn makefile,in needs to pe patched to include -fPIC when compiling
 # note that phase_correlation.c requires -lfftw3
 # note that gsl.c requires -lgls -lgslcblas
 # skel.c and classification.c requires -DODOITHIN and -DCLASSIF respectively
-
 # min_max return type master (G_TYPE *) different from type specific (ERROR_TYPE)
 
 SRCS	   = imem.c shm.c pointop.c \
@@ -108,33 +111,14 @@ INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}/ 
 
 # TODO: add -lcsa -lnn
 
-ifdef $(NOSHP)
-	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas
+ifdef MSPA
+	LIBS       = -lgdal -ltiff -ldl -lmspa
 else
 	LIBS       = -lgdal -ltiff -ldl -lproj -lfftw3_omp -lgsl -lgslcblas -lshp
 endif
 
-INTERFACE  = imem.i
-SWIGOPT    =
-SWIG       = swig
-RUNTIMEDIR = $(exec_prefix)/lib
 
-LIBM       = -lieee -lm
-LIBC       =
-LIBCRYPT   = -lcrypt
-SYSLIBS    = $(LIBM) $(LIBC) $(LIBCRYPT)
-
-libtool_comp = $(TOP)/../Tools/libtool --mode compile
-libtool_link = $(TOP)/../Tools/libtool --mode link
-
-# X11 options
-
-XLIB       = -L/usr/X11R6/lib -lX11
-XINCLUDE   = -I/usr/X11R6/include
-
-
-
-# Symbols used for using shared libraries
+# Symbols used for using static and hared libraries
 STATIC=		.a
 LDSTATIC=	ar rcv
 CCSTATIC=       -fPIC
@@ -146,23 +130,55 @@ CXXSHARED=      gcc -shared
 
 
 ##################################################################
-#####                     SUPERCLASS                        ######
+#####                   config_miallib.h                    ######
 ##################################################################
 
-banner.h: $(SRCS)
-	echo "#define MYBANNER \"File created using programs by Pierre Soille et al.  Version as of `date` with git tag `git describe --tags --dirty`\"" > banner.h
-	echo "#define MIA_BANNER \"MIALlib version as of `date`\"" >> banner.h
+# --- version information: single source for the generated header ---
+
+MIALLIB_VERSION_MAJOR = 1
+MIALLIB_VERSION_MINOR = 3
+MIALLIB_VERSION_PATCH = 1
+MIALLIB_VERSION = $(MIALLIB_VERSION_MAJOR).$(MIALLIB_VERSION_MINOR).$(MIALLIB_VERSION_PATCH)
+
+GIT_DESCRIBE = git describe --tags --dirty --always 2>/dev/null || echo v.unknown
+
+config_miallib.h:
+	@tag=`$(GIT_DESCRIBE)`; \
+	{ \
+	  echo '// the configured options and settings for miallib'; \
+	  echo '#ifndef CONFIG_MIALLIB_H'; \
+	  echo '#define CONFIG_MIALLIB_H'; \
+	  echo ''; \
+	  echo '#define MIALLIB_VERSION_MAJOR $(MIALLIB_VERSION_MAJOR)'; \
+	  echo '#define MIALLIB_VERSION_MINOR $(MIALLIB_VERSION_MINOR)'; \
+	  echo '#define MIALLIB_VERSION_PATCH $(MIALLIB_VERSION_PATCH)'; \
+	  echo '#define MIALLIB_VERSION "$(MIALLIB_VERSION)"'; \
+	  echo '#define MIALLIB_GIT_TAG "'$$tag'"'; \
+	  echo ''; \
+	  echo '#ifndef OPENMP'; \
+	  echo '#define OPENMP $(PARALLEL_BOOL)'; \
+	  echo '#endif'; \
+	  echo ''; \
+	  echo '#ifndef EFEDT_G_IS_UINT32'; \
+	  echo '#define EFEDT_G_IS_UINT32'; \
+	  echo '#endif'; \
+	  echo ''; \
+	  echo '#endif /* CONFIG_MIALLIB_H */'; \
+	} > $@.tmp; \
+	if ! cmp -s $@.tmp $@; then mv $@.tmp $@; \
+	     echo "config_miallib.h: regenerated (git tag: $$tag)"; \
+	else rm -f $@.tmp; fi
 
 
 ##################################################################
-#####                       MSPA                         ######
+#####                       MSPA                            ######
 ##################################################################
 
-$(SDIR-MSPA)/%.o: %.c miallib.h banner.h
+$(SDIR-MSPA)/%.o: %.c miallib.h config_miallib.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-MSPA) $(INCLUDE) -o $@ $<
 
-$(DDIR-MSPA)/%.o: %.c miallib.h banner.h
+$(DDIR-MSPA)/%.o: %.c miallib.h config_miallib.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-MSPA) $(INCLUDE) -o $@ $<
 
@@ -178,13 +194,13 @@ $(LDIR)/$(TARGET)_mspa.so: $(DOBJS-MSPA)
 #####                       GENERIC                         ######
 ##################################################################
 
-$(SDIR-GENERIC)/%.o: %.c miallib.h banner.h
+$(SDIR-GENERIC)/%.o: %.c miallib.h config_miallib.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSTATIC) $(CFLAGS) $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-GENERIC) $(INCLUDE) -o $@ $<
 
-$(DDIR-GENERIC)/%.o: %.c miallib.h banner.h
+$(DDIR-GENERIC)/%.o: %.c miallib.h config_miallib.h
 	@mkdir -p $(@D)
-	$(CC) -c $(CCSHARED) $(CFLAGS) $(INCLUDE) -o $@ $<
+	$(CC) -c $(CCSHARED) $(CFLAGS) $(CFLAGS-GENERIC) $(INCLUDE) -o $@ $<
 
 $(LDIR)/$(TARGET)_generic.a: $(SOBJS-GENERIC)
 	@mkdir -p $(@D)
@@ -203,7 +219,7 @@ $(LDIR)/$(TARGET)_generic.so: $(DOBJS-GENERIC)
 # Build static library
 # ----------------------------------------------------------------
 
-$(SDIR-XLISP)/%.o: %.c miallib.h banner.h
+$(SDIR-XLISP)/%.o: %.c miallib.h config_miallib.h
 	@mkdir -p $(@D)
 	$(CC) -c $(CCSTATIC) $(CFLAGS) $(CFLAGS-XLISP)  $(INCLUDE) -o $@ $<
 
@@ -253,4 +269,4 @@ uninstall:
 
 clean:
 	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
-	-rm -f banner.h *.o
+	-rm -f *.o
