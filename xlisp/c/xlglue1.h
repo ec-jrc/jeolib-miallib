@@ -1,7 +1,4 @@
 
-extern struct apoint proj(struct apoint, char **, int, int);
-
-
 /* bresenham.c */
 extern ERROR_TYPE plotline(IMAGE *im, int x1, int y1, int x2, int y2, int val);
 
@@ -297,7 +294,8 @@ extern IMAGE *labelccattr(IMAGE *im, int graph, int rg, int rl);
 extern IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha);
 
 /* projection.c */
-extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no);
+extern struct apoint proj(struct apoint, char *, char *);
+extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *s_crs, char *t_crs);
 
 /* remsens.c  */
 extern double julian_date(short int year, short int month, short int day, double hour);

@@ -18,19 +18,18 @@ You should have received a copy of the GNU General Public License
 along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
 
+
+
+/* requires libproj API version >= 6 */
+
+#ifdef LIBPROJ
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
-#if (defined(LIBPROJ) || defined(LIBPROJ4))
-#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
-#include <proj_api.h>
-#endif
+#include <proj.h>
 #include "miallib.h"
-
-#ifdef OPENMP
-#include <omp.h>
-#endif
-
 
 
 /** @defgroup group_proj Map projections
@@ -38,138 +37,152 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-
-#if (defined(LIBPROJ) || defined(LIBPROJ4))
-projXY proj(projXY idata, char *parms[], int n, int flag)
+PJ_XY proj(PJ_XY idata, char *s_crs, char *t_crs)
 {
-  /*
-  ** Author:  Pierre Soille [EC-Joint Research Centre 2005]
-  ** XY idata: coordinates of input (double type) representing either spheroidal or map coordinates
-  ** char *parms[]: list of projection parameters
-  ** n: number of parameters
-  ** flag: 1 for forward projection, backward otherwise
+  PJ_CONTEXT *ctx = NULL;
+  PJ *P = NULL;
+  PJ_COORD cin, cout;
+  PJ_XY odata;
 
-  ** comment: wrapper for calling proj4 projection routines
-  */
+  odata.x = HUGE_VAL;
+  odata.y = HUGE_VAL;
 
-  projPJ *ref;
-  projXY odata;
+  ctx = proj_context_create();
+  P = proj_create_crs_to_crs(ctx, s_crs, t_crs, NULL);
 
-  odata.u=HUGE_VAL;
-  odata.v=HUGE_VAL;
-
-  if( ! (ref=pj_init(n, parms)) ){
+  if (P == NULL) {
+    sprintf(buf, "error in proj(): error when calling proj_create_crs_to_crs()\n");
+    errputstr(buf);
+    proj_context_destroy(ctx);
     return odata;
   }
-  if (flag==1)
-    odata = pj_fwd(idata, ref);
-  else
-    odata = pj_inv(idata, ref);
-  pj_free((void *) ref);
-  if (odata.u == HUGE_VAL){
-    if (flag==1){
-      sprintf(buf,"warning: pj_fwd() data conversion error\n"); errputstr(buf);
-    }
-    else{
-      sprintf(buf,"warning: pj_inv() data conversion error\n"); errputstr(buf);
-    }
+
+  cin.xy.x = idata.x;
+  cin.xy.y = idata.y;
+
+  cout = proj_trans(P, PJ_FWD, cin);
+
+  if (proj_errno(P) != 0) {
+    sprintf(buf, "error in proj(): proj_trans() inverse data conversion error\n");
+    errputstr(buf);
+    return odata;
   }
+  else {
+    odata.x = cout.xy.x;
+    odata.y = cout.xy.y;
+  }
+
+  proj_destroy(P);
+  proj_context_destroy(ctx);
+
   return odata;
 }
 
-IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no)
+IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *s_crs, char * t_crs)
 {
   /*
-  ** Author:  Pierre Soille [EC-Joint Research Centre 2005 (first 2005-08-12)]
-  ** ulc_e/ulc_n: coordinates of input ULC (double type) representing either spheroidal or map coordinates
-  ** char *parmsi[]: list of input projection parameters
-  ** ni number of input parameters
-  ** char *parmso[]: list of output projection parameters
-  ** no number of input parameters
-  ** imx: image to store x-coordinates of target image
-  ** imy: image to store y-coordinates of target image
-  ** res: resolution of target image
+    ulc_e: easting of upper left corner in source coordinate reference system
+    ulc_n: northing of upper left corner in source coordinate reference system
+    nx: size of grid along eastings
+    ny: size of grid along northings
+    res: spatial resolution (same along eastings and northings)
+         in units of source coordinate reference system
+    s_srs: string defining source coordinate reference system
+    t_srs: string defining target coordinate reference system
 
-  ** comment: wrapper for calling proj4 projection routines
+    returns: an array of 2 images, indicating respectively the
+    eastings and northings of input grid of points in the target
+    coordinate reference system
+
   */
 
-  projPJ *fromProj, *toProj;
-  int i,j;
-  // int nx,ny;
+  PJ_CONTEXT *ctx = NULL;
+  PJ *transform = NULL;
+  int i, j;
   double x, y;
-  double *pimx, *pimy, *z=NULL;
-  IMAGE *imx=NULL, *imy=NULL, **imap=NULL;
+  double *pimx, *pimy;
+  IMAGE *imx = NULL, *imy = NULL, **imap = NULL;
 
-  if( ! (fromProj=pj_init(ni, parmsi)) ){ /* init backward projection */
-    sprintf(buf,"error in cs2cs() error when calling backward pj_init()\n"); errputstr(buf);
+  ctx = proj_context_create();
+  transform = proj_create_crs_to_crs(ctx, s_crs, t_crs, NULL);
+
+  if (transform == NULL) {
+    sprintf(buf, "error in cs2cs(): error when calling proj_create_crs_to_crs()\n");
+    errputstr(buf);
+    proj_context_destroy(ctx);
     return NULL;
   }
-  if( ! (toProj=pj_init(no, parmso)) ){ /* init forward projection */
-    sprintf(buf,"error in cs2cs() error when calling forward pj_init()\n"); errputstr(buf);
-    return NULL;
-  }
 
-  imx=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imx==NULL){
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NULL;
-  }
-  imy=(IMAGE *)create_image(t_DOUBLE,nx,ny,1);
-  if (imy==NULL){
-    free_image(imx);
-      sprintf(buf,"error: ics2cs() not enough memory\n"); errputstr(buf);
-      return NULL;
-  }
-
-  imap=(IMAGE **)calloc(2,sizeof(IMAGE *));
-  imap[0]=imx;
-  imap[1]=imy;
-
-  nx=GetImNx(imx);
-  ny=GetImNy(imx);
-
-  pimx=(double *)GetImPtr(imx);
-  pimy=(double *)GetImPtr(imy);
-  for(j=0,y=ulc_n; j<ny; j++,y-=res){
-    for(i=0,x=ulc_e; i<nx; i++,x+=res){
-      *pimx++=x;
-      *pimy++=y;
-    }
-  }
-  pimx=(double *)GetImPtr(imx);
-  pimy=(double *)GetImPtr(imy);
-
-#ifdef DEBUG
-  printf("before transform *pimx=%f20\n", (float) *pimx);
-  printf("before transform *pimy=%f20\n", (float) *pimy);
-  printf("number of points to process =%d\n", nx*ny);
-#endif
-
-#ifdef OPENMP
-#pragma omp parallel for
-#endif
-  for (i=0;i<ny;i++){  // before OPENMP ,pimx+=nx,pimy+=nx
-    if (pj_transform(fromProj, toProj, nx, 0, pimx+i*nx, pimy+i*nx, z) != 0){
-      /* note: by default, the allocation of memory within the libproj library
-	 is not checked for.  This would require modifying the pj_alloc
-	 function.  Since this has not yet be done, a segmentation fault
-	 error follows failure for allocating memory from within libproj.a
-      */
-      sprintf(buf,"warning: cs2cs error when calling pj_transform()\n"); errputstr(buf);
+  /*  ensure input and returns as output coordinates using the
+      traditional GIS order*/
+  {
+    PJ *normalized = proj_normalize_for_visualization(ctx, transform);
+    if (normalized != NULL) {
+      proj_destroy(transform);
+      transform = normalized;
     }
   }
 
-#ifdef DEBUG
-  printf("after transform *pimx=%f20\n", (float) *pimx);
-  printf("after transform *pimy=%f20\n", (float) *pimy);
-#endif
+  imx = (IMAGE *)create_image(t_DOUBLE, nx, ny, 1);
+  imy = (IMAGE *)create_image(t_DOUBLE, nx, ny, 1);
+  imap = (IMAGE **)calloc(2, sizeof(IMAGE *));
 
-  pj_free((void *) fromProj);
-  pj_free((void *) toProj);
+  if (imx == NULL || imy == NULL || imap == NULL) {
+    sprintf(buf, "error: cs2cs() not enough memory\n");
+    errputstr(buf);
+    if (imx != NULL) free_image(imx);
+    if (imy != NULL) free_image(imy);
+    free(imap);
+    proj_destroy(transform);
+    proj_context_destroy(ctx);
+    return NULL;
+  }
+
+  imap[0] = imx;
+  imap[1] = imy;
+
+  nx = GetImNx(imx);
+  ny = GetImNy(imx);
+
+  pimx = (double *)GetImPtr(imx);
+  pimy = (double *)GetImPtr(imy);
+
+  for (j = 0, y = ulc_n; j < ny; j++, y -= res) {
+    for (i = 0, x = ulc_e; i < nx; i++, x += res) {
+      *pimx++ = x;
+      *pimy++ = y;
+    }
+  }
+
+  pimx = (double *)GetImPtr(imx);
+  pimy = (double *)GetImPtr(imy);
+
+
+#   ifdef OPENMP
+#   pragma omp parallel for
+#   endif
+  for (i = 0; i < ny; i++) {
+    size_t converted;
+
+    converted = proj_trans_generic(transform,
+				   PJ_FWD,
+				   pimx + (size_t)i * nx, sizeof(double), (size_t)nx,
+				   pimy + (size_t)i * nx, sizeof(double), (size_t)nx,
+				   NULL, 0, 0,
+				   NULL, 0, 0);
+
+    if (converted != (size_t)nx) {
+      sprintf(buf, "warning: cs2cs error when calling proj_trans_generic()\n");
+      errputstr(buf);
+    }
+  }
+
+  proj_destroy(transform);
+  proj_context_destroy(ctx);
 
   return imap;
 }
-#endif
-
 
 /*@}*/
+
+#endif

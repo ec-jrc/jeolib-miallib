@@ -14,18 +14,15 @@ SRCS = xlisp.c xlbfun.c xlcont.c xldbug.c xldmem.c xleval.c \
 
 OBJS = $(SRCS:.c=.o)
 
-
 BUILDOBJS =  $(SRCS:%.c=$(BUILDDIR)/%.o)
-
 
 INCLUDE=-I.
 
-CFLAGS = -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG -DMARCIN -DTESTING -DPROTOTYPES -I${CONDA_PREFIX}/include -std=gnu89
-
+CFLAGS = -DLIBPROJ -DXLISP -DPOSIX -DUNIX -DEDITOR -DMIAL -DALLFUNCTIONS -DTEST2 -DMCISRG -DMARCIN -DTESTING -DPROTOTYPES -I${CONDA_PREFIX}/include -std=gnu89
 
 
 $(BUILDDIR)/mialisp: banner_miallib.h $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a
-	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lshp
+	g++ -fopenmp -m64 -o $(BUILDDIR)/mialisp $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlisp.a -lz -ltiff -lgeotiff -lgdal -ldl -lfftw3 -lfftw3_omp -lgsl -lgslcblas -lshp -lproj
 
 
 banner_miallib.h: $(SRCS)
@@ -42,7 +39,6 @@ $(BUILDDIR)/%.o: %.c xlisp.h xlftab.h xlglob.h
 
 all: $(BUILDDIR)/mialisp
 
-
 install:
 	cp -a $(BUILDDIR)/mialisp $(PREFIX)/bin/
 	mkdir -p $(PREFIX)/share/mialisp/
@@ -52,9 +48,7 @@ uninstall:
 	-rm -f $(PREFIX)/bin/mialisp
 	-rm -rf $(PREFIX)/share/mialisp
 
-
 clean:
 	test -d $(BUILDDIR) && find $(BUILDDIR) -delete
 	test -f banner_miallib.h && rm banner_miallib.h
 	-rm -rf *.o
-

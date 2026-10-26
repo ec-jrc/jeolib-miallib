@@ -6,4 +6,12 @@ grep -h "^IMAGE *" ../../core/c/*.c | sed 's/IMAGE \*\*//' | sed 's/IMAGE \*//' 
 
 paste /tmp/Ai /tmp/Bi | sed '/cfgenericUD/d' | sed '/cfucUD/d' | sed '/cfusUD/d'  | sed '/cflUD/d'  | sed '/cfulUD/d'  | sed '/cffUD/d' | sed '/cfdUD/d' | sort -u > ../build/doc/texinputs/cfit.tex
 
+
+grep -h "^PJ_XY" ../../core/c/*.c | sed 's/^/\{/' | sed 's/$/\}/' | sed 's/_/\\_/g' > /tmp/Bi
+
+grep -h "^PJ_XY" ../../core/c/*.c | sed 's/PJ_XY *//' | awk -F\( '{ print "\\newcommand{\\cf" $1"}" }'> /tmp/Ai
+
+paste /tmp/Ai /tmp/Bi >> ../build/doc/texinputs/cfit.tex
+
+
 rm /tmp/Ai /tmp/Bi 

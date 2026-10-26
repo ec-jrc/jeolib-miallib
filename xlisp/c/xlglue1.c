@@ -9553,53 +9553,37 @@ LVAL ifitlinear()
 \basesection
 */
 
-#define NPARMS 32
 #if defined(LIBPROJ)
 LVAL iproj()
 {
-  LVAL arg, result, u_ptr, v_ptr;
+  LVAL result, u_ptr, v_ptr;
   struct apoint idata, odata;
-  char *parms[NPARMS];
-  int n=0, flag=1;
+  char *s_crs, *t_crs;
+
 /*
-  \lspfunction{*}{proj}{u v &opt proj4args (flag 1)}
-  \param{u}{floating point value:  x-coordinate in m for inverse projection or longitude in radian for forward projection (positive eastward)}
-  \param{v}{floating point value:  y-coordinate in m for inverse projection or latitude in radian for forward projection (positive northward)}
-  \param{proj4args}{series of strings, one per proj4 parameter}
-  \param{flag}{optional integer flag (default (1) for forward projection, inverse projection otherwise)}
-  \return{a list with two elements representing the value of u (1st element, i.e. car) and v (2nd element, i.e., cadr) according to the specified forward or inverse projection.}
-  \desc{wrapper function to \htmladdnormallink{proj4}{http://trac.osgeo.org/proj} cartographic projection procedures \cite{evenden2003}.}
-  \cfunction{see proj API}
-  \cfile{grid.c}
-  \example{(*proj4 634500.0 2376650.0 "proj=lcc" "lat_0=46.8" "lon_0=2.337229"  "x_0=600000."  "y_0=2200000."  "ellps=clrk80"  "lat_1=45898919"  "lat_2=47.6960140" 0)}{; inverse projection of Loing/Seine river confluence from France zone II \'etendu map coordinates (i.e., Lambert conic conformal projection)}
+  \lspfunction{*}{proj}{y x source_crs target_crs}
+  \param{y}{floating point value: y-coordinate (northing) in source coordinate reference sytem}
+  \param{x}{floating point value: x-coordinate (easting) in source coordinate reference system}
+  \param{source_crs}{string defining source coordinate reference system}
+  \param{target_crs}{string defining target coordinate reference system}
+  \return{a list with two elements representing the value of y (1st element, i.e. car) and x (2nd element, i.e., cadr) in the target coordinate reference system.}
+  \desc{Given the input coordinates in a source coordinate reference system, returns their equivalent coordinates in the taget coordinate reference system.  This function is a wrapper to \htmladdnormallink{PROJ}{http://proj.org} cartographic projection procedures \cite{evenden2003}\cite{proj2026}.}
+  \cfunction{\cfproj}
+  \cfile{projection.c}
+  \example{(*proj4 52.0 10.0 "EPSG:4326" "EPSG:3035")}{; compute the ETRS89-extended/LAEA Europe coordinates of the WGCS 84 52 North/10 East coordinates.}
 */
   if (!moreargs())
-    xlabort("(*proj u v &opt proj4args (flag 1)");
+    xlabort("(*proj x y source_crs target_crs)");
 
   idata.u = (double) getflonum(xlgaflonum());
   idata.v = (double) getflonum(xlgaflonum());
+  s_crs = (char *)getstring(xlgetfname());
+  t_crs = (char *)getstring(xlgetfname());
 
-  if ( moreargs() ){
-    while ( (arg=xlgetarg()) != NIL){
-      if ( stringp(arg) )
- 	parms[n++]=(char *)getstring(arg);
-      else if ( fixp(arg) ){
-	flag= getfixnum(arg);
-      }
-      else{
-	printf("error: invalid argument");
-	return NIL;
-      }
-      if (n==NPARMS){
-	printf("error: too many projection arguments");
-	return NIL;
-      }
-      if ( ! moreargs() )
-	break;
-    }
-  }
+  xllastarg();
 
-  odata = proj(idata, parms, n, flag);
+  odata = proj(idata, s_crs, t_crs);
+
   xlstkcheck(3);
   xlsave(u_ptr);
   xlsave(v_ptr);
@@ -9610,74 +9594,46 @@ LVAL iproj()
   xlpopn(3);
   return result;
 }
+
 LVAL ics2cs()
 {
-  LVAL arg, result, u_ptr, v_ptr;
+  LVAL result, u_ptr, v_ptr;
   double res, ulc_e, ulc_n;
   int nx, ny;
-  char *parmsi[NPARMS], *parmso[NPARMS], to[3]="to", emptystr[1]="";
+  char *s_crs, *t_crs;
   IMAGE *imx=NULL, *imy=NULL;
-  int ni=0, no=0, flag=1;
   IMAGE **imarray=NULL;
   
 /*
-  \lspfunction{*}{cs2cs}{ulc_e ulc_n nx ny res &opt proj4args (flag 1)}
-  \param{ulc_e}{floating point value for upper left corner x-coordinate (in m or rad) of target image}
-  \param{ulc_n}{floating point value for upper left corner y-coordinate (in m or rad) of target image}
+  \lspfunction{*}{cs2cs}{ulc_easting ulc_northing nx ny res source_crs target_crs}
+  \param{ulc_easting}{floating point value for upper left corner x-coordinate in source coordinate reference system}
+  \param{ulc_northing}{floating point value for upper left corner y-coordinate in source coordinate reference system}
   \param{nx}{integer value for number of columns of target image}
   \param{ny}{integer value for number of lines of target image}
-  \param{res}{floating point value for resolution of target image}
-  \param{proj4args}{series of strings, one per proj4 parameter}
-  \return{a list containing two images of float data type, the first for the x-ccordinates of the target image, the second for the y coodinates.}
-  \desc{wrapper function to \htmladdnormallink{proj4}{http://trac.osgeo.org/proj/} cartographic projection procedures \cite{evenden2003}.}
+  \param{res}{floating point value for resolution of target image in units of source coordinate reference system}
+  \param{source_crs}{string defining source coordinate reference system}
+  \param{target_crs}{string defining target coordinate reference system}
+  \return{a list containing two images of float data type, the first for the x-ccordinates of the target image, the second for the y-coordinates.}
+  \desc{Given an input regular grid of coordinates defined by its upper left coordinates (ulc_northing, ulc_easting) and equal spacing (res) in x and y directions in a source coordinate reference system, returns an array of 2 images indicating respectivery the easting and northing matching the input regularly spaced grid of points.  This function is a wrapper function to \htmladdnormallink{proj}{https://proj.org} cartographic projection procedures
+ \cite{evenden2003}\cite{proj2026}.}
   \cfunction{\cfcsTWOcs}
   \cfile{projection.c}
-  \example{}{}
+  \example{(setq im_xy (*cs2cs 52.0 10.0 1024 1024 0.001 "EPSG:4326" "EPSG:3035"))}{}
 */
   if (!moreargs())
-    xlabort("(*cs2cs ulc_e ulc_n nx ny res &proj4args");
+    xlabort("(*cs2cs ulc_e ulc_n nx ny res source_crs target_crs)");
+
   ulc_e = (double) getflonum(xlgaflonum());
   ulc_n = (double) getflonum(xlgaflonum());
   nx= (int) getfixnum(xlgafixnum());
   ny= (int) getfixnum(xlgafixnum());
   res= (double) getflonum(xlgaflonum());
+  s_crs = (char *)getstring(xlgetfname());
+  t_crs = (char *)getstring(xlgetfname());
 
-  if ( moreargs() ){
-    flag=1;
-    while ( (arg=xlgetarg()) != NIL){
-      if ( stringp(arg) && flag ){
- 	parmsi[ni++]=(char *)getstring(arg);
-	if (strcmp(parmsi[ni-1],emptystr)==0)
-	  ni-=1;
-	/* else
-	   printf("%s\n", parmsi[ni-1]); */
-      }
-      else if ( stringp(arg) ){
-	parmso[no++]=(char *)getstring(arg);
-	if (strcmp(parmso[no-1],emptystr)==0)
-	  no-=1;
-	/* else
-	   printf("%s\n", parmso[no-1]); */
-      }
-      else{
-	printf("error: invalid argument");
-	return NIL;
-      }
-      if ( (ni==NPARMS) || (no ==NPARMS) ){
-	printf("error: too many projection arguments");
-	return NIL;
-      }
-      if ( (flag==1) && (strcmp(parmsi[ni-1],to)==0) ){
-	flag=0;
-	ni-=1;
-	/* printf("ni=%d\n", ni);*/
-      }
-      if ( ! moreargs() )
-	break;
-    }
-  }
+  xllastarg();
 
-  imarray=cs2cs(ulc_e, ulc_n, nx, ny, res, parmsi, ni, parmso, no);
+  imarray=cs2cs(ulc_e, ulc_n, nx, ny, res, s_crs, t_crs);
   if (imarray == NULL){
       sprintf(buf,"error: returned by cs2cs()\n"); errputstr(buf);
       return NIL;
@@ -9729,7 +9685,6 @@ LVAL ijulian_date()
   
 }
 
-#undef NPARMS
 /*
   \lispsection
   \input{remsens.tex}  % Functions defined in lisp

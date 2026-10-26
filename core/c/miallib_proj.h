@@ -27,7 +27,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 extern IMAGE *grid(IMAGE *im, IMAGE *roi, IMAGE *imx, IMAGE *imy, float alpha);
 
 /* projection.c */
-extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *parmsi[], int ni, char *parmso[], int no);
+extern IMAGE **cs2cs(double ulc_e, double ulc_n, int nx, int ny, double res, char *s_crs, char *t_crs);
 
 
 
