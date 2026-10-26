@@ -269,3 +269,4 @@ uninstall:
 clean:
 	if [ x$(BUILDDIR) != 'x' ] && [ -d $(BUILDDIR) ]; then rm -rf ${BUILDDIR}; fi
 	-rm -f *.o
+	-rm -f config_miallib.h
