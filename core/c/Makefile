@@ -10,7 +10,7 @@ CXX        = c++
 
 # to be done:  -Wextra -Wno-sign-compare
 
-CFLAGS         = -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas -I${CONDA_PREFIX}/mial/include/
+CFLAGS         = -std=c99 -m64 -O3 -Wall -fopenmp -c -Wno-unknown-pragmas
 
 CFLAGS-DEBUG   = -DDEBUG -DXLDEBUG -DXLDEBUG2 -DDEBUB
 
@@ -108,7 +108,7 @@ DDIR-MSPA	   =  $(BUILDDIR)/build-shared-mspa
 DOBJS-GENERIC	   =  $(SRCS:%.c=$(DDIR-GENERIC)/%.o)
 DOBJS-MSPA	   =  $(SRCS-MSPA:%.c=$(DDIR-MSPA)/%.o)
 
-INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}/ -I/usr/include/gdal/
+INCLUDE    = -I./ -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include -I/mnt/jeoproc/envs/LUCHAP/conda/mial/include/python${PYVER}
 
 # TODO: add -lcsa -lnn
 
