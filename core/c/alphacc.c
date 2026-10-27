@@ -49,7 +49,6 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
   FIFO4 *q;
   int box[6];
 
-  
   if (alpha >= dissmax){
     (void)sprintf(buf,"alphacc(): alpha must be < %d\n", dissmax); errputstr(buf);
     return NULL;

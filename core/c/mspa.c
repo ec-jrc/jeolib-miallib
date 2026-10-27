@@ -104,7 +104,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
   int box[6];
   UCHAR *p;
   UCHAR ul_val, ur_val, ll_val, lr_val; /* corner values */
-  
+
   mia_size_t nx = GetImNx(im);
   mia_size_t ny = GetImNy(im);
 
@@ -218,7 +218,7 @@ IMAGE *fm_preproc2(IMAGE *im, int size)
   /* create quadrant image, set it to each corner value, and insert it
      the respective quadrant */
   corner_im=create_image(t_UCHAR, size, size, 1);
-  
+
   /* upper left quadrant */
   generic_blank(corner_im, ul_val);
   imputop(im, corner_im, 0, 0, 0, OR_op);

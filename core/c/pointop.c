@@ -45,7 +45,7 @@ ERROR_TYPE bitwise_op(IMAGE *im1, IMAGE *im2, int op)
 {
   long int *pim1, *pim2;
   mia_size_t i, nbyte, nword;
-  
+
   nbyte = GetImNByte(im1);
   nword=nbyte/sizeof(long int);
 
