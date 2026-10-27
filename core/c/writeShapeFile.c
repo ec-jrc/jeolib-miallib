@@ -33,7 +33,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "writeShapeFile.h"
 #include "miallib.h"
 #include "base.h"
-#include <geotiff/xtiffio.h>
+#include <xtiffio.h>
 #include <tiffio.h>
 
 /*

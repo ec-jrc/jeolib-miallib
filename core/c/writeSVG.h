@@ -29,7 +29,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 #include "borderdetection.h"
-#include <geotiff/geotiff.h>
+#include <geotiff.h>
 #include <gdal.h>
 
 ERROR_TYPE writeSVGPolygon(struct REGION * region, gzFile fhd, GTIF *gtif);
