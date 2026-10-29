@@ -3,7 +3,7 @@
 # documentation generation for core requires doxygen to be installed!
 #
 build:
-	cd core/c && make -j build && make -j doc
+	cd core/c && make -j build
 	cd xlisp/c && make -j all
 
 generic:
