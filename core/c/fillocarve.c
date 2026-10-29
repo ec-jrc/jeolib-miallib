@@ -461,7 +461,7 @@ IMAGE *us_fillocarve_energy(unsigned short *iml, unsigned short *imr, int nx, in
   free(fah);
   free_pq(heap);
 
-  (void)sprintf(buf, "us_fillocarve_energy(): casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
+  (void)sprintf(buf, "us_fillocarve_energy():\n casea=%d\n caseae=%d\n caseb(pure hybrid)=%d\n casebe(embedded hybrid)=%d\n casec=%d\n casece=%d\n cased=%d\n casede=%d\n", casea, caseae, caseb, casebe, casec, casece, cased, casede);
   stdputstr(buf);
 
   us_framebox(&(im[0]),box,0);
