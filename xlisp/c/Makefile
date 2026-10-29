@@ -26,7 +26,7 @@ $(BUILDDIR)/mialisp: banner_miallib.h $(BUILDOBJS) $(LIBMIALDIR)/libmiallib_xlis
 
 
 banner_miallib.h: $(SRCS)
-	echo "#define BANNER_MIALLIB \"Version as of `date`\"" > banner_miallib.h;
+	echo "#define BANNER_MIALLIB \"mialisp compiled on `date`, git tag \"" > banner_miallib.h;
 
 
 $(BUILDDIR)/xlftab.o : xlftab.c osdefs.h osptrs.h

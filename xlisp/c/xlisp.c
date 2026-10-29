@@ -128,7 +128,9 @@ int CDECL main(int argc, char *argv[])
     /* initialize and print the banner line */
     osinit(BANNER);
 #ifdef MIAL
-    osinit(BANNER_MIALLIB);
+    char buffer[256] = BANNER_MIALLIB;
+    strncat(buffer, MIALLIB_GIT_TAG, sizeof(buffer) - strlen(buffer) - 1);
+    osinit(buffer);
 #endif
 
     /* setup initialization error handler */

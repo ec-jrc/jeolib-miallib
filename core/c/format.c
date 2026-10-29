@@ -595,6 +595,41 @@ ERROR_TYPE i32_to_ushort(IMAGE *im, IMAGE *imout)
 }
 #include "i32_undef.h"
 
+#include "u32_def.h"
+ERROR_TYPE u32_to_ushort(IMAGE *im, IMAGE *imout)
+{
+  mia_size_t i, npix;
+  USHORT *p2;
+  PIX_TYPE *p1, mini, maxi;
+  double range;
+  G_TYPE *pg;
+
+  p1    = (PIX_TYPE *)GetImPtr(im);
+  p2    = (USHORT *)GetImPtr(imout);
+  npix  = GetImNPix(im);
+  pg    = min_max(im);
+  if (pg == NULL)
+    return(ERROR);
+  mini  = pg[0].u32_val;
+  maxi  = pg[1].u32_val;
+  range = (double)maxi - mini;
+
+  if ( (maxi <= USHORT_MAX) && (mini >= USHORT_MIN) )
+    for (i=0; i<npix; i++, p1++, p2++)
+      *p2 = (USHORT)(*p1);
+  else if (((double)maxi-mini) < (double)USHORT_MAX + 1){
+    for (i=0; i<npix; i++, p1++, p2++)
+      *p2 = (USHORT)(*p1 - mini);
+  }
+  else{
+    for (i=0; i<npix; i++, p1++, p2++)
+      *p2 = (USHORT)(((double)*p1 - mini)/range * USHORT_MAX);
+  }
+  free((char *)pg);
+  return(NO_ERROR);
+}
+#include "u32_undef.h"
+
 #include "f_def.h"
 ERROR_TYPE f_to_ushort(IMAGE *im, IMAGE *imout)
 {
@@ -707,6 +742,10 @@ IMAGE *to_ushort(IMAGE *im)
 
   case t_INT32:
     rval = i32_to_ushort(im, imout);
+    break;
+
+  case t_UINT32:
+    rval = u32_to_ushort(im, imout);
     break;
 
   case t_FLOAT:

@@ -67,7 +67,7 @@
     (@or i2 (*toushort i1))
     (*imfree i1)
     (setq maxfl (*getmax im))
-    (print "max flood level =")
+    (princ "@demcarve: max flood level =")
     (print maxfl)
     (*@aflood i2 im 8 maxfl)	; returns *flood* directions
     im
@@ -93,7 +93,7 @@
     (@or i2 (*toushort i1))
     (*imfree i1)
     (setq maxfl (*getmax im))
-    (print "max flood level =")
+    (princ "@demcarvewithpits: max flood level =")
     (print maxfl)
     (*@aflood i2 im 8 maxfl)	; returns *flood* directions
     im
@@ -123,13 +123,15 @@
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
     (setq i2 (@labelgraph (*toushort i0) 8))
+    (princ "@demfillocarve: number of border minina = ")
+    (print (*getmax i2))
     (*imfree i0)
     (@or i2 (*toushort i1))
     (*imfree i1)
     (setq maxfl (*getmax im))
-    (print "max flood level =")
+    (princ "@demfillovarve: max flood level = ")
     (print maxfl)
-    (print "flag =")
+    (princ "@demfillocarve: flag = ")
     (print flag)
     (*@fillocarve i2 im 8 maxfl flag)	; returns *flood* directions
     im
@@ -165,7 +167,7 @@
     (@or i2 (*toushort i1))
     (*imfree i1)
     (setq maxfl (*getmax im))
-    (print "max flood level =")
+    (princ "@demfillocarvewithpits: max flood level =")
     (print maxfl)
     (*@fillocarve i2 im 8 maxfl flag)	; returns *flood* directions
     im

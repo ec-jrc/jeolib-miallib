@@ -479,6 +479,10 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	  }
 	}
 	dcrt++;
+	if (dcrt >= FLAT_DB){
+	  sprintf(buf, "emergency in us_flatdir: dcrt=%ld (>= FLAT_DB)\n", (long int)dcrt);
+	  stdputstr(buf);
+	}
       }
 
       if (dcrt==0)
@@ -1038,7 +1042,8 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
       /* Create an array of FIFO	*/
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
-        (void) printf("i32_FlatDir(): not enough memory for the FAH\n");
+        (void) sprintf(buf, "i32_FlatDir(): not enough memory for the FAH\n");
+	errputstr(buf);
         return NULL;
       }
 
@@ -1055,7 +1060,8 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	    if (*p_k > pr_max){
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		(void) printf("i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		(void) sprintf(buf, "i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		errputstr(buf);
 		return (NULL);
 	      }
 	      for (i = 0; i <= pr_max; ++i)

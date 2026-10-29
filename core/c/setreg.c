@@ -169,7 +169,7 @@ extern IMBLOB *create_blob(LBL_TYPE n);
 ERROR_TYPE tessel_sum(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t i, maxlbl;
   HST1D_TYPE *psum;
 
   imhst = histo1d(ilbl);
@@ -373,7 +373,7 @@ ERROR_TYPE tessel_range(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_mean(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t i, maxlbl;
   HST1D_TYPE *pnbr, *psum;
 
   imhst = histo1d(ilbl);
@@ -491,7 +491,7 @@ ERROR_TYPE tessel_mean(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_min(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t i, maxlbl;
   HST1D_TYPE *psum;
 
   imhst = histo1d(ilbl);
@@ -607,7 +607,7 @@ ERROR_TYPE tessel_min(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_max(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t i, maxlbl;
   HST1D_TYPE *psum;
 
   imhst = histo1d(ilbl);
@@ -725,7 +725,7 @@ ERROR_TYPE tessel_max(IMAGE *ilbl, IMAGE *ival)
 ERROR_TYPE tessel_sigma(IMAGE *ilbl, IMAGE *ival)
 {
   IMAGE *imhst;
-  int i, maxlbl;
+  mia_size_t i, maxlbl;
   HST1D_TYPE *pnbr, *psum;
   double *psigma;
 
