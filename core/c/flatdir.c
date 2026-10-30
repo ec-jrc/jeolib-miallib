@@ -289,7 +289,7 @@ ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
     break;
 
   default:
-    (void)sprintf(buf, "ERROR in FlatIGeodAFAB(): invalid ImDataType\n");
+    (void)sprintf(buf, "ERROR in FlatIGeodAFAB(): invalid im ImDataType: must be USHORT\n");
     errputstr(buf);
     return(ERROR);
   }
@@ -651,9 +651,9 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 #define FLAT_TYPE UINT32
 #define PR_MAX 255
 #define FLAT_MAX   4294967295UL
-#define FLAT_MAXM1 4294967294UL  /* INT32_MAX-1   */
-#define FLAT_VAL   4294967293UL  /* INT32_MAX-2   */
-#define FLAT_DB    4294967292UL  /* INT32_MAX-3   */
+#define FLAT_MAXM1 4294967294UL  /* UINT32_MAX-1   */
+#define FLAT_VAL   4294967293UL  /* UINT32_MAX-2   */
+#define FLAT_DB    4294967292UL  /* UINT32_MAX-3   */
 #define REF_PIX_MSB   0x80000000
 IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 {
@@ -1034,7 +1034,7 @@ IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
   default:
     (void)sprintf(buf, "Error in FlatDir(IMAGE *flat, IMAGE *im, int graph): \
-                invalid ImDataType for flat image: flat areas must be of type USHORT (with flat regions set to 65533) or INT32 (with flat regions set to INT32_MAX-2) (\n");
+                invalid ImDataType for flat image: flat areas must be of type USHORT (with flat regions set to 65533) or UINT32 (with flat regions set to UINT32_MAX-2) (\n");
     errputstr(buf);
     return(NULL);
   }

@@ -123,7 +123,7 @@
     (@sub i0 i1)			; i0 holds now border minima
     (@framebox i0 1 1 1 1 0 0 0)
     (setq i2 (@labelgraph (*toushort i0) 8))
-    (princ "@demfillocarve: number of border minina = ")
+    (princ "@demfillocarve: number of border minima = ")
     (print (*getmax i2))
     (*imfree i0)
     (@or i2 (*toushort i1))
