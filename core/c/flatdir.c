@@ -298,7 +298,6 @@ ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 
 
 
-
 #include "us_def.h"
 
 #define FLAT_TYPE USHORT
@@ -344,15 +343,11 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
     return NULL;
   }
 
-
   pim=(PIX_TYPE *)GetImPtr(im);
   pim0=(PIX_TYPE *)GetImPtr(im);
   pflat=(FLAT_TYPE *)GetImPtr(flat);
   pflat0=(FLAT_TYPE *)GetImPtr(flat); /* used for computing offsets */
   pdir0 = (UCHAR *)GetImPtr(imdir);
-
-
-
 
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
@@ -457,7 +452,6 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       }
 
       pr_max = PR_MAX;
-
 
       /* initialize the FAH */
       while (fifo4_empty(qdb) == 0){
@@ -661,7 +655,7 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 #define FLAT_VAL   4294967293UL  /* INT32_MAX-2   */
 #define FLAT_DB    4294967292UL  /* INT32_MAX-3   */
 #define REF_PIX_MSB   0x80000000
-IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
+IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 {
   long int i, j, k, t, nx, ny, nz, shft[27];
   FIFO4 *q, *qflat, *qdst, *qdb, *qdball, *qab;
@@ -679,7 +673,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   int graphcrt;
 
   if (szgeocompat(im, flat) != NO_ERROR){
-    (void) sprintf(buf, "i32_FlatDir(): input images must be of same type\n");
+    (void) sprintf(buf, "u32_FlatDir(): input images must be of same type\n");
     errputstr(buf);
     return NULL;
   }
@@ -694,7 +688,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
   imdir = (IMAGE *)create_image(t_UCHAR, nx, ny, nz);
   if (imdir == NULL){
-    (void)sprintf(buf,"i32_FlatDir(): not enough memory!\n");
+    (void)sprintf(buf,"u32_FlatDir(): not enough memory!\n");
     errputstr(buf);
     return NULL;
   }
@@ -807,7 +801,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
       /* Create an array of FIFO	*/
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
-        (void) sprintf(buf, "i32_FlatDir(): not enough memory for the FAH\n");
+        (void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH\n");
 	errputstr(buf);
         return NULL;
       }
@@ -824,7 +818,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	    if (*p_k > pr_max){
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		(void) sprintf(buf, "i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		(void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
 		errputstr(buf);
 		return (NULL);
 	      }
@@ -861,7 +855,7 @@ IMAGE *i32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	      if (*p_k > pr_max){
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		  (void) sprintf(buf, "i32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		  (void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
 		  errputstr(buf);
 		  return (NULL);
 		}
@@ -1034,9 +1028,8 @@ IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph)
     return(us_FlatDir(flat, im, graph));
     break;
 
-  case t_INT32:
   case t_UINT32:
-    return(i32_FlatDir(flat, im, graph));
+    return(u32_FlatDir(flat, im, graph));
     break;
 
   default:
