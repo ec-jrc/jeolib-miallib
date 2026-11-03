@@ -21,6 +21,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 				/* fifo data structure */
 #include <stdio.h>
 #include <stdlib.h>
+#include "miallib.h"
 #include "fifo.h"
 
 extern void nrerror(char *);
@@ -50,7 +51,11 @@ FIFO4 *create_fifo4(long int mod)
       q->qpl    = q->qp;
       q->mod 	= mod+2;
     }
-    else return NULL;
+    else{
+      (void) sprintf(buf, "create_fifo4(): not enough memory\n");
+      errputstr(buf);
+      return NULL;
+    }
   }
 
   return q; /* return the pointer to the queue (NULL if not created) */
@@ -148,8 +153,9 @@ void fifo4_increase(FIFO4 *q)
   qoffset_last = (long int)(q->qplast - q->qp);
   nelem        = (long int)(q->qplast - q->qp) + q->mod + 1;
 
-  if ((q->qp = (long int *)realloc(q->qp, nelem*sizeof(long int))) == NULL)
+  if ((q->qp = (long int *)realloc(q->qp, nelem*sizeof(long int))) == NULL){
     nrerror("fifo4_increase(): not enough memory");
+  }
 
   q->qplast = q->qp + nelem - 1;
   q->qps = q->qp + qoffset_s;

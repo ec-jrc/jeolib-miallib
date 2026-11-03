@@ -43,10 +43,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #define FLAT_TYPE USHORT
 #define PR_MAX 255
-#define FLAT_MAX   65535 /* 32767 */
-#define FLAT_MAXM1 65534 /* 32766 */
-#define FLAT_VAL   65533 /* 32765 */
-#define FLAT_DB    65532 /* 32764 */
+#define FLAT_MAX   65535
+#define FLAT_MAXM1 65534
+#define FLAT_VAL   65533
+#define FLAT_DB    65532
 #define REF_PIX_MSB  0x8000  /* 32768 */
 
 ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
@@ -93,11 +93,15 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
     return ERROR;
 
   qdball = create_fifo4(nx+ny); /* will hold descending borders of all flat regions  */
-  if (qdball == NULL)
+  if (qdball == NULL){
+    free_fifo4(q);
+    free_fifo4(qflat);
+    free_fifo4(qdst);
+    free_fifo4(qdb);
     return ERROR;
+  }
 
   for (j=nx*ny*nz; j > 0; j--, pflat++, pim++){
-
     if (*pflat == FLAT_VAL){ /* unprocessed flat region */
       *pflat=FLAT_MAX;
       flatval=*pim;
@@ -139,6 +143,12 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 	  }
 	}
 	dcrt++;
+#ifdef DEBUG
+	if (dcrt >= FLAT_DB){
+	  sprintf(buf, "emergency in us_FlatDir(): dcrt=%ld (>= FLAT_DB)\n", (long int)dcrt);
+	  stdputstr(buf);
+	}
+#endif
       }
 
       dcrt++;
@@ -165,6 +175,11 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
         (void) sprintf(buf, "us_FlatIGeodAFAB(): not enough memory for the FAH\n");
 	errputstr(buf);
+	free_fifo4(q);
+	free_fifo4(qflat);
+	free_fifo4(qdst);
+	free_fifo4(qdb);
+	free_fifo4(qdball);
         return ERROR;
       }
 
@@ -182,6 +197,12 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
 		(void) sprintf(buf, "us_FlatIGeodAFAB(): not enough memory for the FAH\n");
 		errputstr(buf);
+		free((char *)fifo);
+		free_fifo4(q);
+		free_fifo4(qflat);
+		free_fifo4(qdst);
+		free_fifo4(qdb);
+		free_fifo4(qdball);
 		return -9;
 	      }
 	      for (i = 0; i <= pr_max; ++i)
@@ -218,6 +239,12 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
 		  (void) sprintf(buf, "us_FlatIGeodAFAB(): not enough memory for the FAH\n");
 		  errputstr(buf);
+		  free((char *)fifo);
+		  free_fifo4(q);
+		  free_fifo4(qflat);
+		  free_fifo4(qdst);
+		  free_fifo4(qdb);
+		  free_fifo4(qdball);
 		  return ERROR;
 		}
 		for (i = 0; i <= pr_max; ++i)
@@ -271,10 +298,10 @@ ERROR_TYPE us_FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 
 ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 {
-  /* Compute geodesic distance away from ascending borders
-     on all flat regions, then the geodesic time funtion from descending borders.
-     The flat image must be of type USHORT with pixels without drainage set to 65533 (FLAT_VAL)
-     First: 06-11-2001
+  /* Compute geodesic distance away from ascending borders on all flat
+     regions, then the geodesic time funtion from descending borders.
+     The flat image must be of type USHORT with pixels without
+     drainage set to 65533 (FLAT_VAL) First: 06-11-2001
   */
 
   if (GetImDataType(flat) != t_USHORT){
@@ -302,10 +329,10 @@ ERROR_TYPE FlatIGeodAFAB(IMAGE *flat, IMAGE *im, int graph)
 
 #define FLAT_TYPE USHORT
 #define PR_MAX 255
-#define FLAT_MAX   65535 /* 32767 */
-#define FLAT_MAXM1 65534 /* 32766 */
-#define FLAT_VAL   65533 /* 32765 */
-#define FLAT_DB    65532 /* 32764 */
+#define FLAT_MAX   65535
+#define FLAT_MAXM1 65534
+#define FLAT_VAL   65533
+#define FLAT_DB    65532
 #define REF_PIX_MSB  0x8000  /* 32768 */
 
 IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
@@ -315,11 +342,11 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   FIFO **fifo, **fifot, *pf;
   IMAGE *imdir;
 
-  FLAT_TYPE *p, *ptr, *pflat, *pflat0, dcrt, *pm, *pr, *p_k, pr_max, vngb, lowest;
+  FLAT_TYPE *p, *ptr, *pflat, *pflat0, dcrt, *pm, *pr, *p_k, pr_max=0, vngb, lowest;
   PIX_TYPE *pim, *pim0, flatval;
   UCHAR *pdir0, dir;
 
-  int stmp, delta, slope; /* slope holds twice the square of actual slope */
+  unsigned long int stmp, delta, slope; /* slope holds twice the square of actual slope */
   long int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
 
   if (szgeocompat(im, flat) != NO_ERROR){
@@ -349,35 +376,40 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   pflat0=(FLAT_TYPE *)GetImPtr(flat); /* used for computing offsets */
   pdir0 = (UCHAR *)GetImPtr(imdir);
 
+  /* set to FLAT_VAL all non-zero pixels */
+  for (i=nx*ny;i>0;i--,pflat++)
+    if (*pflat!=0)
+      *pflat=FLAT_VAL;
+  pflat=(FLAT_TYPE *)GetImPtr(flat);
+
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
 
-  q = create_fifo4(500);     /* use for geodesic distance computations */
+  q = create_fifo4(1024);     /* use for geodesic distance computations */
   if (q == NULL)
     return NULL;
 
-  qflat = create_fifo4(500); /* will hold all pixels of flat region */
+  qflat = create_fifo4(1024); /* will hold all pixels of flat region */
   if (qflat == NULL)
     return NULL;
 
-  qdst = create_fifo4(50);        /* used for computing distance transform */
+  qdst = create_fifo4(1024);        /* used for computing distance transform */
   if (qdst == NULL)
     return NULL;
 
-  qdb = create_fifo4(10);         /* will hold descending borders of flat region (one at a time) */
+  qdb = create_fifo4(1024);         /* will hold descending borders of flat region (one at a time) */
   if (qdb == NULL)
     return NULL;
 
-  qdball = create_fifo4(100);   /* will hold descending borders of all flat regions  */
+  qdball = create_fifo4(1024);   /* will hold descending borders of all flat regions  */
   if (qdball == NULL)
     return NULL;
 
-  qab = create_fifo4(10);         /* will hold ascending borders of flat region (one at a time) */
+  qab = create_fifo4(1024);         /* will hold ascending borders of flat region (one at a time) */
   if (qab == NULL)
     return NULL;
 
   for (j=nx*ny*nz; j > 0; j--, pflat++, pim++){
-
     if (*pflat == FLAT_VAL){ /* unprocessed flat region */
       *pflat=FLAT_MAX;
       flatval=*pim;
@@ -420,10 +452,12 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	  }
 	}
 	dcrt++;
+#ifdef DEBUG
 	if (dcrt >= FLAT_DB){
 	  sprintf(buf, "emergency in us_FlatDir(): dcrt=%ld (>= FLAT_DB)\n", (long int)dcrt);
 	  stdputstr(buf);
 	}
+#endif
       }
 
       if (dcrt==0)
@@ -448,6 +482,12 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
         (void) sprintf(buf, "us_FlatDir(): not enough memory for the FAH\n");
 	errputstr(buf);
+	free_fifo4(q);
+	free_fifo4(qflat);
+	free_fifo4(qdst);
+	free_fifo4(qdb);
+	free_fifo4(qdball);
+	free_fifo4(qab);
         return NULL;
       }
 
@@ -465,6 +505,13 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
 		(void) sprintf(buf, "us_FlatDir(): not enough memory for the FAH\n");
 		errputstr(buf);
+		free((char *)fifo);
+		free_fifo4(q);
+		free_fifo4(qflat);
+		free_fifo4(qdst);
+		free_fifo4(qdb);
+		free_fifo4(qdball);
+		free_fifo4(qab);
 		return (NULL);
 	      }
 	      for (i = 0; i <= pr_max; ++i)
@@ -497,10 +544,31 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 		continue;
 	      *p_k += t;
 
+	      /* emergency stop in case of overflow */
+	      if (*p_k >= REF_PIX_MSB){
+		sprintf(buf, "us_FlatDir(): emergency stop: geodesic time exceeds REF_PIX_MSB: *pk=%ld, pr_max=%ld, dcrt=%ld\n", (long int)*p_k, (long int)pr_max, (long int)dcrt);
+		errputstr(buf);
+		free((char *)fifo);
+		free_fifo4(q);
+		free_fifo4(qflat);
+		free_fifo4(qdst);
+		free_fifo4(qdb);
+		free_fifo4(qdball);
+		free_fifo4(qab);
+		return(NULL);
+	      }
+
 	      if (*p_k > pr_max){
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		  (void) sprintf(buf, "us_FlatDir(): not enough memory for the FAH\n");
+		  sprintf(buf, "us_FlatDir(): emergency stop: not enough memory for FAH: *pk=%ld, pr_max=%ld, dcrt=%ld\n", (long int)*p_k, (long int)pr_max, (long int)dcrt);
 		  errputstr(buf);
+		  free((char *)fifo);
+		  free_fifo4(q);
+		  free_fifo4(qflat);
+		  free_fifo4(qdst);
+		  free_fifo4(qdb);
+		  free_fifo4(qdball);
+		  free_fifo4(qab);
 		  return (NULL);
 		}
 		for (i = 0; i <= pr_max; ++i)
@@ -525,7 +593,6 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       free((char *)fifo);
 
       /* compute drainage directions on created relief */
-
       fifo4_lookreset(qdball);
       while ( (pm=(FLAT_TYPE *)fifo4_look(qdball)) != NULL) /* reset to 1 all descending borders */
 	*pm = 0;
@@ -539,8 +606,8 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	*pm ^= REF_PIX_MSB ;
 
       fifo4_lookreset(qflat);
-      while ( (pm=(FLAT_TYPE *)fifo4_look(qflat)) != NULL){    /* compute drainage direction */
 
+      while ( (pm=(FLAT_TYPE *)fifo4_look(qflat)) != NULL){    /* compute drainage direction */
 	/* initializations */
 	lowest=*pm;
 	dir=0;   /* no lower neighbour */
@@ -564,7 +631,7 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	  dir=4;
 	}
 	if (dir)
-	  slope=(*pm-lowest)*(*pm-lowest)*2;
+	  slope=(unsigned long int)(*pm-lowest)*(unsigned long int)(*pm-lowest)*2;
 
        /* remaining neighbours */
 	vngb=*(pm+shft5);
@@ -617,9 +684,12 @@ IMAGE *us_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       while ( (pm=(FLAT_TYPE *)fifo4_remove(qflat)) != NULL) /* reset to REF_PIX_MSB all flat pixels */
 	*pm = REF_PIX_MSB;
       fifo4_lookreset(qflat);
-
     }
   }
+
+  /* report on maximum pr_max value */
+  sprintf(buf, "us_FlatDir(): maximum pr_max value reached = %ld\n", (long int)pr_max);
+  stdputstr(buf);
 
   /* reset flat image */
   for (j=nx*ny*nz; j > 0; j--, pflat0++)
@@ -662,15 +732,13 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   FIFO **fifo, **fifot, *pf;
   IMAGE *imdir;
 
-  FLAT_TYPE *p, *ptr, *pflat, *pflat0, dcrt, *pm, *pr, *p_k, pr_max, vngb, lowest;
+  FLAT_TYPE *p, *ptr, *pflat, *pflat0, dcrt, *pm, *pr, *p_k, pr_max=0, vngb, lowest;
   PIX_TYPE *pim, *pim0, flatval;
   UCHAR *pdir0, dir;
 
   int delta;
   double slope, stmp, sqrt2=sqrt(2.0);
   long int shft1, shft2, shft3, shft4, shft5, shft6, shft7, shft8;
-
-  int graphcrt;
 
   if (szgeocompat(im, flat) != NO_ERROR){
     (void) sprintf(buf, "u32_FlatDir(): input images must be of same type\n");
@@ -699,6 +767,7 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   pflat0=(FLAT_TYPE *)GetImPtr(flat); /* used for computing offsets */
   pdir0 = (UCHAR *)GetImPtr(imdir);
 
+  /* set to FLAT_VAL all non-zero pixels */
   for (i=nx*ny;i>0;i--,pflat++)
     if (*pflat!=0)
       *pflat=FLAT_VAL;
@@ -707,27 +776,27 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
   /* set shift array */
   set_seq_shift(nx, ny, nz, graph, shft);
 
-  q = create_fifo4(500);     /* use for geodesic distance computations */
+  q = create_fifo4(1024);     /* use for geodesic distance computations */
   if (q == NULL)
     return NULL;
 
-  qflat = create_fifo4(500); /* will hold all pixels of flat region */
+  qflat = create_fifo4(1024); /* will hold all pixels of flat region */
   if (qflat == NULL)
     return NULL;
 
-  qdst = create_fifo4(50);        /* used for computing distance transform */
+  qdst = create_fifo4(1024);        /* used for computing distance transform */
   if (qdst == NULL)
     return NULL;
 
-  qdb = create_fifo4(10);         /* will hold descending borders of flat region (one at a time) */
+  qdb = create_fifo4(1024);         /* will hold descending borders of flat region (one at a time) */
   if (qdb == NULL)
     return NULL;
 
-  qdball = create_fifo4(100);   /* will hold descending borders of all flat regions  */
+  qdball = create_fifo4(1024);   /* will hold descending borders of all flat regions  */
   if (qdball == NULL)
     return NULL;
 
-  qab = create_fifo4(10);         /* will hold ascending borders of flat region (one at a time) */
+  qab = create_fifo4(1024);         /* will hold ascending borders of flat region (one at a time) */
   if (qab == NULL)
     return NULL;
 
@@ -762,23 +831,24 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
       /* compute geodesic distances */
       dcrt = 0;
-      graphcrt=8;
       while (fifo4_empty(qdst) == 0){
 	fifo4_add(qdst, 1L);
 	while ((pm = (FLAT_TYPE *)fifo4_remove(qdst)) != (FLAT_TYPE *)1L){
 	  *pm = dcrt;
-	  for (k=0; k < graphcrt; ++k){
+	  for (k=0; k < graph; ++k){
 	    if (*(pm + shft[k]) == FLAT_MAX){
 	      *(pm + shft[k]) = FLAT_MAXM1;
 	      fifo4_add(qdst, (long int)(pm + shft[k]));
 	    }
 	  }
 	}
-	if (graphcrt==4)  /* alternate 4- 8- connected neighbourhoods */
-	  graphcrt=8;
-	else
-	  graphcrt=4;
 	dcrt++;
+#ifdef DEBUG
+	if (dcrt >= FLAT_DB){
+	  sprintf(buf, "emergency in u32_FlatDir(): dcrt=%ld (>= FLAT_DB)\n", (long int)dcrt);
+	  stdputstr(buf);
+	}
+#endif
       }
 
       if (dcrt==0)
@@ -793,7 +863,7 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       }
       else{ /* intermediate plateau */
 	while ((pm=(FLAT_TYPE *)fifo4_look(qflat)) != NULL){
-	  *pm = (dcrt-*pm);   /* take square of distance to get more central rivers */
+	  *pm = (dcrt-*pm);
 	}
       }
 
@@ -803,6 +873,12 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       if ((fifo = (FIFO **)calloc(PR_MAX + 1, sizeof(FIFO *))) == NULL){
         (void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH\n");
 	errputstr(buf);
+	free_fifo4(q);
+	free_fifo4(qflat);
+	free_fifo4(qdst);
+	free_fifo4(qdb);
+	free_fifo4(qdball);
+	free_fifo4(qab);
         return NULL;
       }
 
@@ -818,8 +894,15 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 	    if (*p_k > pr_max){
 	      if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		(void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		(void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH: *p_k=%u, pr_max=%u\n", *p_k, pr_max);
 		errputstr(buf);
+		free((char *)fifo);
+		free_fifo4(q);
+		free_fifo4(qflat);
+		free_fifo4(qdst);
+		free_fifo4(qdb);
+		free_fifo4(qdball);
+		free_fifo4(qab);
 		return (NULL);
 	      }
 	      for (i = 0; i <= pr_max; ++i)
@@ -829,7 +912,6 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	      fifot=NULL;
 	      fifo[*p_k] = alloc_fifo(10L);
 	      pr_max = *p_k;
-	      printf("new pr_max value = %d\n", (int) pr_max);
 	    }
 	    else if (fifo[*p_k] == NULL){
 	      fifo[*p_k] = alloc_fifo(10L);
@@ -853,10 +935,31 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 		continue;
 	      *p_k += t;
 
+	      /* emergency stop in case of overflow */
+	      if (*p_k >= REF_PIX_MSB){
+		sprintf(buf, "u32_FlatDir(): emergency stop: geodesic time exceeds REF_PIX_MSB: *pk=%ld, pr_max=%ld, dcrt=%ld\n", (long int)*p_k, (long int)pr_max, (long int)dcrt);
+		errputstr(buf);
+		free((char *)fifo);
+		free_fifo4(q);
+		free_fifo4(qflat);
+		free_fifo4(qdst);
+		free_fifo4(qdb);
+		free_fifo4(qdball);
+		free_fifo4(qab);
+		return(NULL);
+	      }
+
 	      if (*p_k > pr_max){
 		if ((fifot = (FIFO **)calloc(*p_k + 1, sizeof(FIFO *))) == NULL){
-		  (void) sprintf(buf, "u32_FlatDir(): not enough memory for the FAH: *p_k=%u\n", *p_k);
+		  sprintf(buf, "u32_FlatDir(): emergency stop: not enough memory for FAH: *pk=%ld, pr_max=%ld, dcrt=%ld\n", (long int)*p_k, (long int)pr_max, (long int)dcrt);
 		  errputstr(buf);
+		  free((char *)fifo);
+		  free_fifo4(q);
+		  free_fifo4(qflat);
+		  free_fifo4(qdst);
+		  free_fifo4(qdb);
+		  free_fifo4(qdball);
+		  free_fifo4(qab);
 		  return (NULL);
 		}
 		for (i = 0; i <= pr_max; ++i)
@@ -881,7 +984,6 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       free((char *)fifo);
 
       /* compute drainage directions on created relief */
-
       fifo4_lookreset(qdball);
       while ( (pm=(FLAT_TYPE *)fifo4_look(qdball)) != NULL) /* reset to 1 all descending borders */
 	*pm = 0;
@@ -895,8 +997,8 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 	*pm ^= REF_PIX_MSB ;
 
       fifo4_lookreset(qflat);
-      while ( (pm=(FLAT_TYPE *)fifo4_look(qflat)) != NULL){    /* compute drainage D8 direction */
 
+      while ( (pm=(FLAT_TYPE *)fifo4_look(qflat)) != NULL){    /* compute drainage D8 direction */
 	/* initializations */
 	lowest=*pm;
 	dir=0;   /* no lower neighbour */
@@ -973,9 +1075,12 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
       fifo4_lookreset(qflat);
       while ( (pm=(FLAT_TYPE *)fifo4_remove(qflat)) != NULL) /* reset to REF_PIX_MSB all flat pixels */
 	*pm = REF_PIX_MSB;
-
     }
   }
+
+  /* report on maximum pr_max value */
+  sprintf(buf, "u32_FlatDir(): maximum pr_max value reached = %ld\n", (long int)pr_max);
+  stdputstr(buf);
 
   /* reset flat image */
   for (j=nx*ny*nz; j > 0; j--, pflat0++)
@@ -1003,17 +1108,12 @@ IMAGE *u32_FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
 IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph)
 {
-  /* Compute geodesic distance away from ascending borders
-     on all flat regions, then the geodesic time funtion from descending borders.
-     The flat image must be of type USHORT or INT32 with pixels without drainage set to 65533 (FLAT_VAL)
-     Then compute (and output) the D8 drainage direction for each pixel of the flat regions.
-     First: 06-11-2001
-  */
-
-  /* 2003-02-26 if ((GetImDataType(flat) != t_USHORT)  && (GetImDataType(flat) != t_UINT32) && (GetImDataType(flat) != t_INT32)){
-    (void) sprintf(buf, "FlatDir(): the image of flat areas must be of type USHORT (with flat regions set to 65533) or INT32 (with flat regions set to INT32_MAX-2)\n"); errputstr(buf);
-    return NULL;
-  }
+  /* Compute geodesic distance away from ascending borders on all flat
+     regions, then the geodesic time funtion from descending borders.
+     The flat image must be of type USHORT or UINT32 with pixels
+     without drainage set to 1 (all other pixels set to 0). Then
+     compute (and output) the D8 drainage direction for each pixel of
+     the flat regions.  First: 06-11-2001
   */
 
   if ( GetImDataType(im) != t_USHORT ){
@@ -1034,7 +1134,8 @@ IMAGE *FlatDir(IMAGE *flat, IMAGE *im, int graph)
 
   default:
     (void)sprintf(buf, "Error in FlatDir(IMAGE *flat, IMAGE *im, int graph): \
-                invalid ImDataType for flat image: flat areas must be of type USHORT (with flat regions set to 65533) or UINT32 (with flat regions set to UINT32_MAX-2) (\n");
+                invalid ImDataType for flat image: must be of type USHORT \
+                or UINT32 (with flat pixels defined as all non-zero pixels) (\n");
     errputstr(buf);
     return(NULL);
   }
