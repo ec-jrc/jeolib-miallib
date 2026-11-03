@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -25,13 +25,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "fifo.h"
 
 extern void nrerror(char *);
-
-/*
-GLOUP: the look functions seems a bit dodgy
-*/
-
-
-
 
 
 /*
