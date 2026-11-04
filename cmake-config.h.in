@@ -6,3 +6,7 @@
 #ifndef OPENMP
 #define OPENMP @PARALLEL_BOOL@
 #endif
+#ifndef EFEDT_G_IS_UINT32
+#define EFEDT_G_IS_UINT32
+#endif
+#define MIALLIB_GIT_TAG "@MIALLIB_GIT_TAG@"

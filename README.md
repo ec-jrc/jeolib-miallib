@@ -22,7 +22,6 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     libgdal-dev \
     libssl-dev \
     swig \
-    uthash-dev \
     libopenblas-dev \
     libshp-dev
 ```

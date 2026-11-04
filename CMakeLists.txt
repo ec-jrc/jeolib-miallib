@@ -110,7 +110,6 @@ set(SOURCES
   ${MIALLIB_SRC_DIR}/borderdetection.h
   ${MIALLIB_SRC_DIR}/bresenham.c
   ${MIALLIB_SRC_DIR}/b_undef.h
-  ${MIALLIB_SRC_DIR}/bytesex.h
   ${MIALLIB_SRC_DIR}/ced.c
   ${MIALLIB_SRC_DIR}/classification.c
   ${MIALLIB_SRC_DIR}/colconv.c
@@ -287,6 +286,89 @@ find_package(PkgConfig REQUIRED)
 
 # Setup configure file
 # configure a header file to pass some of the CMake settings to the source code
+
+# Set MIALLIB_GIT_TAG
+
+# Empty means "not set": an explicit -DMIALLIB_GIT_TAG=... therefore wins over everything
+set(MIALLIB_GIT_TAG "" CACHE STRING
+    "Version stamp for config_miallib.h; empty = auto (git describe, else declared version)")
+
+# Second choice: git describe a normal variable, recomputed at every configure
+if(NOT MIALLIB_GIT_TAG)
+  find_package(Git QUIET)
+  if(Git_FOUND)
+    execute_process(
+      COMMAND "${GIT_EXECUTABLE}" describe --tags --always --dirty
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+      OUTPUT_VARIABLE _tag
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      ERROR_QUIET
+      RESULT_VARIABLE _rc)
+    if(_rc EQUAL 0 AND NOT _tag STREQUAL "")
+      set(MIALLIB_GIT_TAG "${_tag}")
+    endif()
+  endif()
+endif()
+
+# Third choice: the declared version variables (tarball builds without git)
+if(NOT MIALLIB_GIT_TAG)
+  set(MIALLIB_GIT_TAG
+      "${MIALLIB_VERSION_MAJOR}.${MIALLIB_VERSION_MINOR}.${MIALLIB_VERSION_PATCH}")
+endif()
+
+# Reconfigure when HEAD moves (git checkouts only; absent in tarballs)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git/HEAD")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+               "${CMAKE_CURRENT_SOURCE_DIR}/.git/HEAD")
+endif()
+
+configure_file(cmake-config.h.in config_miallib.h)
+
+# ---- git stamping:
+# Cache default: used by tarball builds; a -DMIALLIB_GIT_TAG=... override wins
+set(MIALLIB_GIT_TAG "unknown" CACHE STRING
+    "Git tag or hash baked into config_miallib.h")
+# Auto-detect only when the caller did not supply a value
+find_package(Git QUIET)
+if(Git_FOUND AND MIALLIB_GIT_TAG STREQUAL "unknown")
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" describe --tags --always --dirty
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    OUTPUT_VARIABLE _tag
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+    RESULT_VARIABLE _rc)
+  if(_rc EQUAL 0 AND NOT _tag STREQUAL "")
+    set(MIALLIB_GIT_TAG "${_tag}" CACHE STRING
+        "Git tag or hash baked into config_miallib.h" FORCE)
+  endif()
+endif()
+
+# Re-run cmake whenever HEAD moves; skipped in tarballs, where .git is absent
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git/HEAD")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+               "${CMAKE_CURRENT_SOURCE_DIR}/.git/HEAD")
+endif()
+
+# ---- existing code continues ----
+configure_file(cmake-config.h.in config_miallib.h)
+
+
+find_package(Git QUIET)
+set(MIALLIB_GIT_TAG "unknown")
+if(Git_FOUND)
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" describe --tags --always --dirty
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    OUTPUT_VARIABLE _tag
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+    RESULT_VARIABLE _rc
+  )
+  if(_rc EQUAL 0 AND NOT _tag STREQUAL "")
+    set(MIALLIB_GIT_TAG "${_tag}")
+  endif()
+endif()
 
 configure_file ( "cmake-config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/core/c/config_miallib.h")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/core/c")# needed for config_miallib.h
