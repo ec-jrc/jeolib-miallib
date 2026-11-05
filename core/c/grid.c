@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -21,18 +21,15 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "miallib.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
-#include "miallib.h"
-
 
 extern double round(double );
 
 typedef float COOR_TYPE ;
-
-
-
 
 
 /** \addtogroup group_proj

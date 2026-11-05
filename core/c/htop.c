@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2013-2020 European Union (Joint Research Centre)
+Copyright (C) 2013-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -165,7 +165,9 @@ IMAGE *us_htop(IMAGE *dem, IMAGE *imdir)
   }
 
   /* reset directions */
+#ifdef OPENMP
 #pragma omp parallel for
+#endif
   for (i=0; i<npix; i++)
     pdir[i]&=127;
 

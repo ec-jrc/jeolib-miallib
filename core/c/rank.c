@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -25,9 +25,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include "miallib.h"
 #include "time.h"
 #include "pqueue.h"
-
-extern void tracelinecorrect(int, int, int, int , long int *, int *, int , int);
-
 
 
 /** @defgroup group_rank Rank filters

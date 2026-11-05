@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -21,7 +21,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include "miallib.h"
 
-
 #ifdef OPENMP
 #include <omp.h>
 #endif
@@ -37,8 +36,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 **	Function to shade an input image.
 **	Reference:	R. Sternberg (1986) Grayscale morphology. CVGIP, 35, 333-355.
 */
-
-extern int histcompress(IMAGE *);
 
 
 #ifndef NO_generic_IMAGE
@@ -365,7 +362,9 @@ IMAGE *us_LineDilate3D(IMAGE *im, float dh)
 
   printf("dh=%f\n", dh);
 
+#ifdef OPENMP
 #pragma omp parallel for private(j,picrt,pocrt,i,a,b)
+#endif
   for(j=0; j<ny; j++){
     picrt=pi+j*nx;
     pocrt=po+j*nx;

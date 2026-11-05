@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -71,7 +71,7 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   int indxi;
   PIX_TYPE maxipl[512];
   int adx, ady; /* absolute values of dx and dy */
-  int shift, nrlc;
+  int shift;
 
 #ifdef TIMING
   Ttime avant, apres;
@@ -153,10 +153,6 @@ IMAGE *generic_hpcloseti(IMAGE *im, int dx, int dy)
   } /* else no rounding problem ... */
 
   /* initialize rlc array */
-  nrlc=0; /* number of rlc code for elementary Bresenham line */
-  for (i=0; i<t; i++)
-    if (rlc[i]!=0)
-      nrlc+=1;
   rlctmp=rlc;
   *rlc=1;
   if (adx>ady){

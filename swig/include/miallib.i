@@ -91,6 +91,8 @@ Contact: Pierre.Soille@jrc.ec.europa.eu"
 
 %include miallib_newobjects.i
 
+// for sqedt in efedt.c
+%typemap(in, numinputs=0) int out_type "$1 = t_UINT32;"
 
 %typemap(in, numinputs=0)  double * (double temp){
   printf("typemap(in)\n");

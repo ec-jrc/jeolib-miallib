@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -21,12 +21,12 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#ifdef OPENMP
-#include <omp.h>
-#endif
 #include "miallib.h"
 #include "op.h"
 
+#ifdef OPENMP
+#include <omp.h>
+#endif
 
 /** @defgroup group_convolve Image convolution, correlation, and other kernel operations
  *  Functions dealing with image convolution, correlationm, and other kernel operations.
@@ -856,8 +856,6 @@ IMAGE *mean2d(IMAGE *im, int width)
 }
 
 
-extern ERROR_TYPE bitwise_op(IMAGE *, IMAGE *, int);
-
 #include "uc_def.h"
 IMAGE *uc_mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
 {
@@ -1014,7 +1012,6 @@ IMAGE *mean2dse(IMAGE *im, IMAGE *imse, int ox, int oy)
   }
   return NULL;
 }
-extern ERROR_TYPE write_tiff(IMAGE *im, char *fn);
 
 
 #include "uc_def.h"

@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2012-2022 European Union (Joint Research Centre)
+Copyright (C) 2012-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -27,12 +27,11 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <math.h>
 #include "miallib.h"
+#include "fifo.h"
+
 #ifdef OPENMP
 #include <omp.h>
 #endif
-
-#include "fifo.h"
-
 
 /** \addtogroup group_label
  *  @{
@@ -50,7 +49,6 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
   FIFO4 *q;
   int box[6];
 
-  
   if (alpha >= dissmax){
     (void)sprintf(buf,"alphacc(): alpha must be < %d\n", dissmax); errputstr(buf);
     return NULL;
@@ -129,7 +127,8 @@ IMAGE *uc_alphacc(IMAGE *dissx, IMAGE *dissy, int alpha)
     }
   }
   free_fifo4(q);
-  /* printf("alphacc(): number of labels=%ud\n", lbl); */
+  (void)sprintf(buf, "alphacc(): number of labels=%ud\n", lbl);
+  stdputstr(buf);
   ilbl->g.u32_val=lbl;
   return ilbl;
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -23,13 +23,10 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include "miallib.h"
 
-extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
 
 /** \addtogroup group_format
  *  @{
  */
-
-
 
 /*
   based on \cite[pp. 235--237]{gonzalez-woods92}:
@@ -218,7 +215,7 @@ void hls2rgb(double *phr, double *plg, double *psb)
 IMAGE *generic_imhls2rgb(IMAGE *imh, IMAGE *iml, IMAGE *ims)
 {
   double h, l, s;
-  long int k, npix;
+  mia_size_t k, npix;
   IMAGE *imout;
   PIX_TYPE *pimh, *piml, *pims, *pout;
 
@@ -340,7 +337,9 @@ IMAGE **uc_imrgb2hsx(IMAGE *imr, IMAGE *img, IMAGE *imb, int type)
   pg=(PIX_TYPE *)GetImPtr(img);
   pb=(PIX_TYPE *)GetImPtr(imb);
 
+#ifdef OPENMP
 #pragma omp parallel for private(i,maxval,minval,aph,aps)
+#endif
   for (i=0; i<npix; i++){
     maxval=minval=pr[i];
     if (maxval<pg[i])

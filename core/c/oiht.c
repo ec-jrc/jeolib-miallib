@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -39,18 +39,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 
 #define OIHTLABEL_TYPE int
-
-extern void free_image(IMAGE *);
-extern IMAGE *copy_image(IMAGE *);
-extern ERROR_TYPE rdil(IMAGE *, IMAGE *, int, int);
-extern ERROR_TYPE generic_blank(IMAGE *, UCHAR );
-extern ERROR_TYPE i32_label(IMAGE *, IMAGE *, int, int, int );
-extern IMAGE *to_int32(IMAGE *);
-extern ERROR_TYPE szcompat(IMAGE *, IMAGE *);
-extern ERROR_TYPE generic_addframebox(IMAGE *, int *, UCHAR);
-extern ERROR_TYPE us_addframebox(IMAGE *, int *, USHORT);
-extern ERROR_TYPE subframebox(IMAGE *, int *);
-extern G_TYPE *min_max(IMAGE *);
 
 
 #include "uc_def.h"
@@ -280,7 +268,6 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   int pixnb;
   int avirer;
   int nbvirer;
-  int loop;
   int nbvirerT;
   int ng;
   int minNG;
@@ -319,9 +306,6 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   OIHTLABEL_TYPE *ppmlabel;
 
   G_TYPE *pg;
-
-
-  int nbiter=0;
 
   /* get min & max values */
   pg = min_max(pm1NG);
@@ -376,7 +360,6 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
 
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
-  loop=0;
   pm2 = copy_image(pm1);
 
   ppm1    = (UCHAR *)GetImPtr(pm1);
@@ -387,7 +370,6 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   nx = GetImNx(pm1);
 
   while( nbvirerT != 0 ){ /* while pixels are removed */
-    loop++;
     nbvirerT=0;
     #ifdef DEBUB
       printf("pm1 before initial threshold \n");
@@ -425,7 +407,7 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -466,7 +448,6 @@ ERROR_TYPE generic_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       nbvirer=1;
 
       while (nbvirer != 0){ /* as long as this set is not empty loop */
-	nbiter++;
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
@@ -579,7 +560,6 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   int pixnb;
   int avirer;
   int nbvirer;
-  int loop;
   int nbvirerT;
   int ng;
   int minNG;
@@ -616,9 +596,6 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   PIX_TYPE *ppmcrt;
   UCHAR *pimse;
   OIHTLABEL_TYPE *ppmlabel;
-
-
-  int nbiter=0;
 
   /* avoid border problems */
   BOX_2D;
@@ -665,7 +642,6 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
 
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
-  loop=0;
   pm2 = copy_image(pm1);
 
   ppm1    = (UCHAR *)GetImPtr(pm1);
@@ -677,7 +653,6 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
   nx = GetImNx(pm1);
 
   while( nbvirerT != 0 ){ /* while pixels are removed */
-    loop++;
     nbvirerT=0;
     #ifdef DEBUB
       printf("pm1 before initial threshold \n");
@@ -717,7 +692,7 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -758,7 +733,6 @@ ERROR_TYPE us_oiskeleton(IMAGE *pm1NG, IMAGE *imanchor)
       nbvirer=1;
 
       while (nbvirer != 0){ /* as long as this set is not empty loop */
-	nbiter++;
 	nbvirer = 0;
 	for(i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
@@ -933,7 +907,6 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   int pixnb;
   int avirer;
   int nbvirer;
-  int loop;
   int nbvirerT;
   int ng;
   int minNG;
@@ -975,8 +948,6 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   PIX_TYPE *panchorcrt;
   PIX_TYPE *ppmcrt;
   OIHTLABEL_TYPE *ppmlabel;
-
-  int nbiter=0;
 
   /* avoid border problems */
   BOX_2D;
@@ -1020,7 +991,6 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
-  loop=0;
   pm2 = copy_image(pm1);
 
   ppm1      = (UCHAR *)GetImPtr(pm1);
@@ -1033,7 +1003,6 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 
   acounter=0;
   while( nbvirerT != 0 ){ /* while pixels are removed */
-    loop++;
     acounter++;
     nbvirerT=0;
     #ifdef DEBUB
@@ -1074,7 +1043,7 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -1115,7 +1084,6 @@ ERROR_TYPE generic_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       nbvirer=1;
 
       while ( nbvirer != 0){ /* as long as this set is not empty loop */
-	nbiter++;
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];
@@ -1259,7 +1227,6 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   int pixnb;
   int avirer;
   int nbvirer;
-  int loop;
   int nbvirerT;
   int ng;
   int minNG;
@@ -1301,8 +1268,6 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
   PIX_TYPE *panchorcrt;
   PIX_TYPE *ppmcrt;
   OIHTLABEL_TYPE *ppmlabel;
-
-  int nbiter=0;
 
   /* avoid border problems */
   BOX_2D;
@@ -1347,7 +1312,6 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 
   pm1 = (IMAGE *)create_image(t_UCHAR,GetImNx(pm1NG), GetImNy(pm1NG), GetImNz(pm1NG));
   nbvirerT=1;
-  loop=0;
   pm2 = copy_image(pm1);
 
   ppm1      = (UCHAR *)GetImPtr(pm1);
@@ -1360,7 +1324,6 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
 
   acounter=0;
   while( nbvirerT != 0 ){ /* while pixels are removed */
-    loop++;
     acounter++;
     nbvirerT=0;
     #ifdef DEBUB
@@ -1401,7 +1364,7 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       negation(pm1not);
       generic_addframebox(pm1not, box, 1);  /* was us_ */
       pmlabel = to_int32(pm1not);
-      i32_label(pmlabel, imse, 1, 1, 0);
+      label(pmlabel, imse, 1, 1, 0);
       subframebox(pmlabel, box);
       free_image(pm1not);
       ppmlabel  = (OIHTLABEL_TYPE *)GetImPtr(pmlabel);
@@ -1442,7 +1405,6 @@ ERROR_TYPE us_oiask(IMAGE *pm1NG, IMAGE *imanchor)
       nbvirer=1;
 
       while ( nbvirer != 0){ /* as long as this set is not empty loop */
-	nbiter++;
 	nbvirer = 0;
 	for( i=0; i<GetImNPix(pm1);i++)
 	  ppm2[i] = ppm1[i];

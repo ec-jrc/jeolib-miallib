@@ -450,6 +450,8 @@ extern void free_image(IMAGE *);
     }
   }
 
+%typemap(in, numinputs=0) int out_type "$1 = t_UINT32;"
+
 %typemap(in, numinputs=0)  unsigned long int *ofs (unsigned long int temp) {
   $1 = &temp;
 }

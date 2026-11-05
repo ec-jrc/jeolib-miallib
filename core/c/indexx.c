@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -30,9 +30,7 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
  *  @{
  */
 
-  
-int
-cmp_dbl (const void *a, const void *b)
+int cmp_dbl(const void *a, const void *b)
 {
   const double x = *(const double *) a;
   const double y = *(const double *) b;
@@ -44,8 +42,7 @@ cmp_dbl (const void *a, const void *b)
     return -1;
 }
 
-int
-cmp_flt (const void *a, const void *b)
+int cmp_flt(const void *a, const void *b)
 {
   const float x = *(const float *) a;
   const float y = *(const float *) b;
@@ -56,8 +53,6 @@ cmp_flt (const void *a, const void *b)
   else
     return -1;
 }
-
-
 
 
 void indexx(size_t n, double arrin[], size_t indx[])
