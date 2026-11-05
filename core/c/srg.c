@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2002-2020 European Union (Joint Research Centre)
+Copyright (C) 2002-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -27,9 +27,8 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 
 #if (defined(XLISP))
 extern void gc();
+extern void xmem();
 #endif
-
-
 
 /** \addtogroup group_seg
  *  @{
@@ -926,7 +925,7 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 
   ** comment:
   */
-  long int  k, *shft, offset, sof=0, count1=0, count2=0, delta, deltacrt, hprior;
+  long int  k, *shft, offset, sof=0, count1=0, delta, deltacrt, hprior;
   PIX_TYPE **pim;
   SEEDS_TYPE *p2, *p2last, *p2crt, *p2k, *p2o, val=SEEDS_TYPE_MIN;
   FIFO4 *nhq, *hq;
@@ -936,6 +935,9 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
   long int i, db, b, ofsk;
   PQDATUM apqd[1];
   struct node *pqd;
+#if DEBUG
+  long int count2=0;
+#endif
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
   for (i=0; i<nc; i++)
@@ -1033,7 +1035,9 @@ ERROR_TYPE generic_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int 
 	}
       }
       if (delta!=DELTA_MAX){
+#if DEBUG
 	count2++;
+#endif
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	if (pqd == NULL){
 #if (defined(XLISP))
@@ -1175,18 +1179,19 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 
   ** comment:
   */
-  long int  k, *shft, offset, sof=0, count1=0, count2=0, delta, deltacrt, hprior;
+  long int  k, *shft, offset, sof=0, count1=0, delta, deltacrt, hprior;
   PIX_TYPE **pim;
   SEEDS_TYPE *p2, *p2last, *p2crt, *p2k, *p2o, val=SEEDS_TYPE_MIN;
   FIFO4 *nhq, *hq;
   struct pqueue *pq;
   long int n, nx, ny, nz;
   int box[BOXELEM];
-
   long int i, db, b, ofsk;
-
   PQDATUM apqd[1];
   struct node *pqd;
+#if DEBUG
+  long int count2=0;
+#endif
 
 
   pim = (PIX_TYPE **)calloc(nc, sizeof(PIX_TYPE **));
@@ -1286,7 +1291,9 @@ ERROR_TYPE us_mssrgcore(IMAGE **imap, int nc, IMAGE *im2, IMAGE *imse, int ox, i
 	}
       }
       if (delta!=DELTA_MAX){
+#if DEBUG
 	count2++;
+#endif
 	pqd = (PQDATUM )malloc(sizeof(struct node));
 	if (pqd == NULL){
 #if (defined(XLISP))

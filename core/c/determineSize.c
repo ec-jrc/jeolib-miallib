@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Dominik Brunner and Pierre Soille
-Copyright (C) 2004-2020 European Union (Joint Research Centre)
+Copyright (C) 2004-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -220,7 +220,7 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
 {
   long int shft[27], i, label=SEED;
   int nx, ny;
-  LBL_TYPE count, countContrastPixel, k, offset, neighbourOffset, crtOffset, *pInputIm;
+  LBL_TYPE countContrastPixel, k, offset, neighbourOffset, crtOffset, *pInputIm;
   FIFO4 *nq, *rq, *cq;		// neighbourQueue, regionQueue, contrastQueue
   struct regionMean rm; //stores the region mean colour informatiion for the current region
   double contrast, distance;
@@ -298,13 +298,11 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
 
   pInputIm = (LBL_TYPE *) GetImPtr(inputIm);
   for (i = 0; i < nx * ny; i++){
-    count = 0;
     countContrastPixel = 0;
     clearRegionMean(&rm);
     contrast=0;
     if (crtStatus[i].is_labeled == NOTLABELED){
       offset = i;
-      count++;
       // put this pixel to region queue
       fifo4_add(rq, (long int) offset);
       rmAddValue(&rm, imap, (long int) offset);
@@ -318,7 +316,6 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
 	  crtStatus[neighbourOffset].is_labeled = LABELED;
 	  fifo4_add(rq, (long int) (neighbourOffset));
 	  rmAddValue(&rm, imap, (long int) neighbourOffset);
-	  count++;
 	}else{
 	  //check whether the pixel is already in the queue which stores the pixel to determine the contrast
 	  if((crtStatus[neighbourOffset].is_contrast_labeled == NOTLABELED) && \
@@ -338,7 +335,6 @@ long int thresholdRegion_Contrast(IMAGE **imap, int nc, IMAGE *inputIm, unsigned
 	    crtStatus[neighbourOffset].is_labeled = LABELED;
 	    fifo4_add(rq, (long int) (neighbourOffset));
 	    rmAddValue(&rm, imap, (long int) neighbourOffset);
-	    count++;
 	  }
 	  else{
 	    //check whether the pixel is already in the queue which stores the pixel to determine the contrast

@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2012-2020 European Union (Joint Research Centre)
+Copyright (C) 2012-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -18,24 +18,10 @@ You should have received a copy of the GNU General Public License
 along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 ***********************************************************************/
 
-/*
-  Need to read arbitrary raster files.
-  This need appears for the Core003 data holding tiled GeoTIFF files.
-
-  See also GDAL API: http://www.gdal.org/gdal_tutorial.html
-
-  First: 20121105
-  First working:  20121106
-  (needed to install version 1.9.2 to solve a bug for reading tiled images ...)
-
-  20160217: computation of min/max now only with -DDEBUG
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
 #include <gdal.h>
 #include  <ogr_srs_api.h>
 
@@ -72,10 +58,10 @@ int GDAL2MIALDataType(int aGDALDataType)
     return t_INT32;
   case GDT_Float32:
     return t_FLOAT;
-    /*   case GDT_UInt64: */
-    /*     return t_UINT64; */
-    /*   case GDT_Int64: */
-    /*     return t_INT64; */
+  case GDT_UInt64:
+    return t_UINT64;
+  case GDT_Int64:
+    return t_INT64;
   case GDT_Unknown:
     return t_UNSUPPORTED;
   default:
@@ -122,14 +108,13 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   ** Authors: Pierre Soille
   */
   GDALDatasetH  hDataset;
+  GDALRasterBandH hBand;
+#if DEBUG
   GDALDriverH   hDriver;
   double        adfGeoTransform[6];
-
-  GDALRasterBandH hBand;
-  int             nBlockXSize, nBlockYSize;
-#if DEBUG
-  int             bGotMin, bGotMax;
-  double          adfMinMax[2];
+  int           bGotMin, bGotMax;
+  double        adfMinMax[2];
+  int           nBlockXSize, nBlockYSize;
 #endif
 
   void *imptr;
@@ -138,8 +123,6 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   GDALAllRegister();
 
   /* opening the image file */
-  // hDataset = GDALOpen( imfn, GA_ReadOnly );
-  // GDALOpenEx introduced in 2.0
   hDataset = GDALOpenEx( imfn, GDAL_OF_RASTER | \
   			 GDAL_OF_READONLY | \
   			 GDAL_OF_VERBOSE_ERROR, \
@@ -149,7 +132,6 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
 
 #if DEBUG
   printf("IMAGE FILE OPENED SUCCESSFULLY by GDALOpen\n");
-#endif
 
   /* printing some information */
   hDriver = GDALGetDatasetDriver( hDataset );
@@ -172,16 +154,17 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
       printf( "Pixel Size = (%.6f,%.6f)\n",
 	      adfGeoTransform[1], adfGeoTransform[5] );
     }
+  printf("nXOff=%d nYOff=%d nXSize=%d nYSize=%d\n", nXOff, nYOff, nXSize, nYSize);
+#endif
 
   band+=1;
 
   if ((band <1) || (band > GDALGetRasterCount( hDataset ))){
-    printf("GDALRead(): invalid band number\n");
+    (void)sprintf(buf, "GDALRead(): invalid band number\n");
+    errputstr(buf);
     GDALClose(hDataset);
     return NULL;
   }
-
-  printf("nXOff=%d nYOff=%d nXSize=%d nYSize=%d\n", nXOff, nYOff, nXSize, nYSize);
 
   /* if no patch, == should be replaced by < */
   if ( (nXOff<0) || (nYOff<0) || (nXSize==0) || (nYSize==0) ){
@@ -196,8 +179,10 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
 
   if ( ((nXOff+nXSize)>GDALGetRasterXSize( hDataset ))	\
        || ((nYOff+nYSize)>GDALGetRasterYSize( hDataset ))){
-    printf("GDALRead(): nXOff or nXSize (resp. Y.) parameters out of permissible range\n");
-    printf("nXOff=%d nYOff=%d nXSize=%d nYSize=%d\n", nXOff, nYOff, nXSize, nYSize);
+    (void)sprintf(buf, "GDALRead(): nXOff or nXSize (resp. Y.) parameters out of permissible range\n");
+    errputstr(buf);
+    (void)sprintf(buf, "nXOff=%d nYOff=%d nXSize=%d nYSize=%d\n", nXOff, nYOff, nXSize, nYSize);
+    errputstr(buf);
     GDALClose(hDataset);
     return NULL;
   }
@@ -205,30 +190,21 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   /* Fetching a Raster Band */
   hBand = GDALGetRasterBand( hDataset, band );
 
-  switch(GDAL2MIALDataType(GDALGetRasterDataType(hBand))){
-  case t_UCHAR:
-    // bpp=1;
-    break;
-  case t_USHORT:
-  case t_SHORT:
-    // bpp=2;
-    break;
-  case t_UINT32:
-  case t_INT32:
-  case t_FLOAT:
-    // bpp=4;
-    break;
-  case t_DOUBLE:
-    // bpp=8;
-    break;
-  default:
-    printf("gdalread(): invalid type(=%d), detaching shared memory ...\n", GDAL2MIALDataType(GDALGetRasterDataType(hBand)));
+  if (GDAL2MIALDataType(GDALGetRasterDataType(hBand)) == t_UNSUPPORTED){
+    (void)sprintf(buf, "GDALRead(): invalid type(=%d), detaching shared memory ...\n", GDAL2MIALDataType(GDALGetRasterDataType(hBand)));
+    errputstr(buf);
     GDALClose(hDataset);
     return NULL;
   }
 
 #if DEBUG
-    printf("gdalread(): nXSize=%d, nYSize=%d, nXOff=%d nYOff=%d band=%d type=%d\n  nBufXSize=%d, nBufYSize=%d\n", nXSize, nYSize, nXOff, nYOff, band,GDAL2MIALDataType(GDALGetRasterDataType(hBand)), nBufXSize, nBufYSize);
+  printf("gdalread(): nXSize=%d, nYSize=%d, nXOff=%d nYOff=%d band=%d type=%d\n  nBufXSize=%d, nBufYSize=%d\n", nXSize, nYSize, nXOff, nYOff, band,GDAL2MIALDataType(GDALGetRasterDataType(hBand)), nBufXSize, nBufYSize);
+  GDALGetBlockSize( hBand, &nBlockXSize, &nBlockYSize );
+  (void)sprintf(buf, "Block=%dx%d Type=%s, ColorInterp=%s\n",
+	  nBlockXSize, nBlockYSize,
+	  GDALGetDataTypeName(GDALGetRasterDataType(hBand)),
+	  GDALGetColorInterpretationName(GDALGetRasterColorInterpretation(hBand)));
+  stdputstr(buf);
 #endif
 
   /* note: even if a subset is read, is is inserted in the full raster
@@ -243,19 +219,12 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
     return NULL;
   }
 
-  GDALGetBlockSize( hBand, &nBlockXSize, &nBlockYSize );
-  printf( "Block=%dx%d Type=%s, ColorInterp=%s\n",
-	  nBlockXSize, nBlockYSize,
-	  GDALGetDataTypeName(GDALGetRasterDataType(hBand)),
-	  GDALGetColorInterpretationName(GDALGetRasterColorInterpretation(hBand)) );
-
 #ifdef DEBUG
   adfMinMax[0] = GDALGetRasterMinimum( hBand, &bGotMin );
   adfMinMax[1] = GDALGetRasterMaximum( hBand, &bGotMax );
   if( ! (bGotMin && bGotMax) )
     GDALComputeRasterMinMax( hBand, TRUE, adfMinMax );
   printf( "Min=%.3fd, Max=%.3f\n", adfMinMax[0], adfMinMax[1] );
-#endif
 
   if( GDALGetOverviewCount(hBand) > 0 )
     printf( "Band has %d overviews.\n", GDALGetOverviewCount(hBand));
@@ -263,6 +232,7 @@ IMAGE *GDALRead(char *imfn, int band, int nXOff, int nYOff, int nXSize, int nYSi
   if( GDALGetRasterColorTable( hBand ) != NULL )
     printf( "Band has a color table with %d entries.\n",
 	    GDALGetColorEntryCount( GDALGetRasterColorTable( hBand ) ) );
+#endif
 
   /* Reading Raster Data */
   imptr = GetImPtr(im);
@@ -292,8 +262,6 @@ IMAGE *GDALInfoJIP(char *imfn)
   GDALDriverH   hDriver;
   double        adfGeoTransform[6];
 
-  printf("entering gdalinfo\n");
-
   IMAGE *im=NULL;
   double *ptr=NULL;
 
@@ -304,28 +272,30 @@ IMAGE *GDALInfoJIP(char *imfn)
   if( hDataset == NULL )
     return NULL;
 
-  printf("after GDALOpen\n");
-
-
   hDriver = GDALGetDatasetDriver( hDataset );
-  printf( "Driver: %s/%s\n",
-	  GDALGetDriverShortName( hDriver ),
-	  GDALGetDriverLongName( hDriver ) );
+  (void)sprintf(buf, "GDALInfoJIP(): Driver: %s/%s\n",
+		GDALGetDriverShortName( hDriver ),
+		GDALGetDriverLongName( hDriver ) );
+  stdputstr(buf);
 
-  printf( "Size is %dx%dx%d\n",
-	  GDALGetRasterXSize( hDataset ),
-	  GDALGetRasterYSize( hDataset ),
-	  GDALGetRasterCount( hDataset ) );
+  (void)sprintf(buf, "GDALInfoJIP(): Size is %dx%dx%d\n",
+		GDALGetRasterXSize( hDataset ),
+		GDALGetRasterYSize( hDataset ),
+		GDALGetRasterCount( hDataset ) );
+  stdputstr(buf);
 
-  if( GDALGetProjectionRef( hDataset ) != NULL )
-    printf( "Projection is `%s'\n", GDALGetProjectionRef( hDataset ) );
-
+  if( GDALGetProjectionRef( hDataset ) != NULL ){
+    (void)sprintf(buf, "Projection is `%s'\n", GDALGetProjectionRef( hDataset ) );
+    stdputstr(buf);
+  }
 
   if( GDALGetGeoTransform( hDataset, adfGeoTransform ) == CE_None ){
-    printf( "Origin = (%.6f,%.6f)\n",
-	    adfGeoTransform[0], adfGeoTransform[3] );
-    printf( "Pixel Size = (%.6f,%.6f)\n",
-	    adfGeoTransform[1], adfGeoTransform[5] );
+    (void)sprintf(buf, "GDALInfoJIP(): Origin = (%.6f,%.6f)\n",
+		  adfGeoTransform[0], adfGeoTransform[3] );
+    stdputstr(buf);
+    (void)sprintf(buf, "GDALInfoJIP(): Pixel Size = (%.6f,%.6f)\n",
+		  adfGeoTransform[1], adfGeoTransform[5] );
+    stdputstr(buf);
   }
 
   im=create_image(t_DOUBLE, 10, 1, 1);
@@ -349,67 +319,23 @@ IMAGE *GDALInfoJIP(char *imfn)
   hSRS= OSRNewSpatialReference(GDALGetProjectionRef( hDataset ));
   if (hSRS!=NULL){
     if(OSRGetAttrValue(hSRS, "AUTHORITY", 1)!=NULL){
-      printf( "EPSG=%s\n", OSRGetAttrValue(hSRS, "AUTHORITY", 1));
+      (void)sprintf(buf, "GDALInfoJIP(): EPSG=%s\n", OSRGetAttrValue(hSRS, "AUTHORITY", 1));
+      stdputstr(buf);
       ptr[9]=(double)atoi(OSRGetAttrValue(hSRS, "AUTHORITY", 1));
     }
-    else
-      printf("*gdalinfo() warning: getting GEOGCS EPSG code failed\n");
+    else {
+      (void)sprintf(buf, "GDALInfoJIP(): warning: getting GEOGCS EPSG code failed\n");
+      stdputstr(buf);
+    }
   }
-  else
-      printf("*gdalinfo() warning: getting GEOGCS EPSG code failed\n");
+  else{
+    (void)sprintf(buf, "GDALInfoJIP(): warning: getting GEOGCS EPSG code failed\n");
+    stdputstr(buf);
+  }
 
-  GDALClose(hDataset);
+    GDALClose(hDataset);
 
-  return im;
+    return im;
 }
-
-/* test for reading block by blocks assuming NO padding ! */
-/*                                                        */
-
-/*   nBlockY=(mia_size_t)(nYSize/nBlockYSize); */
-/*   nBlockX=(mia_size_t)(nXSize/nBlockXSize); */
-
-/*   bim = create_image(GDAL2MIALDataType(GDALGetRasterDataType(hBand)), \ */
-/* 		     nBlockXSize, \ */
-/* 		     nBlockYSize, \ */
-/* 		     1); */
-/*   if (bim == NULL){ */
-/*     (void)sprintf(buf,"GDALRead(): not enough memory!\n"); errputstr(buf); */
-/*     GDALClose(hDataset); */
-/*     free_image(im); */
-/*     return NULL; */
-/*   } */
-/* bimptr = (UCHAR *)GetImPtr(bim); */
-/*    for( iYBlock = 0; iYBlock < nBlockY; iYBlock++ ) */
-/*      { */
-/*        for( iXBlock = 0; iXBlock < nBlockX; iXBlock++ ) */
-/*          { */
-
-/* 	   printf("reading block i=%d  j=%d\n", (int)iXBlock, (int)iYBlock); */
-
-/* 	   //GDALReadBlock( hBand, iXBlock*nBlockXSize, iYBlock*nBlockYSize, imptr); */
-
-/* 	   if (GDALReadBlock( hBand, iXBlock, iYBlock, bimptr)== CE_Failure) */
-/* 	     printf("failure when reaing block!!!\n"); */
-/* 	   iminfo(bim); */
-
-/* 	   imputop(im, bim, iXBlock*nBlockXSize, iYBlock*nBlockYSize, 0, 5); */
-
-/* 	   generic_blank(bim, 0); */
-
-/* 	 } */
-/*      } */
-
-
-/* test for reading scan line by scan line ! */
-/*   pafScanline = (UCHAR *)GetImPtr(im); */
-/*    for (i=0; i<nYSize; i++, pafScanline+=nXSize) */
-/*       GDALRasterIO( hBand, GF_Read, 0, i, nXSize, 1, \ */
-/* 		    pafScanline, nXSize, 1, GDT_Byte,\ */
-/* 		    0, 0 ); */
-
-
-
-
 
 /** @}*/

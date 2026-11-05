@@ -1,6 +1,6 @@
 /***********************************************************************
 Author(s): Pierre Soille
-Copyright (C) 2000-2020 European Union (Joint Research Centre)
+Copyright (C) 2000-2026 European Union (Joint Research Centre)
 
 This file is part of miallib.
 
@@ -37,8 +37,6 @@ along with miallib.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef max
 #define max(a,b) ((a)>(b)?(a):(b))
 #endif
-
-extern void tracelinecorrect(int, int, int, int , long int *, int *, int , int);
 
 
 /** \addtogroup group_rank
@@ -162,14 +160,10 @@ IMAGE *uc_lrankti(IMAGE *im, int dx, int dy, int k, int rank, int o, int t, int 
     }
   }
 
-
-
   imout = (IMAGE *)create_image(GetImDataType(im),GetImNx(im),GetImNy(im),GetImNz(im));
   if (imout==NULL)
     return NULL;
   fo=(PIX_TYPE *)GetImPtr(imout)+k+ncol*k;
-
-
 
   /* process the whole image */
   ptmp = p;
