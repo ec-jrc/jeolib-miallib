@@ -567,8 +567,6 @@ IMAGE *uc_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
    ** comment: we assume that borders of appropriate width have been added
    ** to the image to handle border effects (value=255 should be in fact PIX_MAX+1!!!)
    ** That is, pixels with value equal to PIX_MAX are considered out of ROI
-   ** (c) by Pierre Soille.  ALl rights reserved.  This programme can only
-   ** be obtained directly from its author.
    */
 
 
@@ -686,8 +684,6 @@ IMAGE *us_squarerank(PIX_TYPE *pi, int ncol, int nlin, int k, int rank, int ox, 
    ** returns: pointer to created image holding the filtered image
    ** comment: we assume that borders of appropriate width have been added
    ** to the image to handle border effects (value=PIX_MAX+1!!!)
-   ** (c) by Pierre Soille.  ALl rights reserved.  This programme can only
-   ** be obtained directly from its author.
    */
 
 

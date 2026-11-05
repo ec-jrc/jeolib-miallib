@@ -1202,8 +1202,6 @@ IMAGE *uc_squarevol(PIX_TYPE *pi, int ncol, int nlin, int k, int ox, int oy)
    ** returns: pointer to created image holding the computed volumes (INT32 data type)
    ** comment: we assume that borders of appropriate width have been added
    ** to the image to handle border effects (value=255 should be in fact PIX_MAX+1!!!)
-   ** (c) by Pierre Soille.  ALl rights reserved.  This programme can only
-   ** be obtained directly from its author.
    ** see also: uc_squarerank() in rank.c
    */
 
