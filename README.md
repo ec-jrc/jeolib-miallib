@@ -12,18 +12,16 @@ DEBIAN_FRONTEND='noninteractive' sudo apt install -yq \
     git \
     build-essential \
     cmake \
-    libgsl-dev \
-    libgsl0-dev \
-    libfann-dev \
-    libgeotiff-dev \
     libfftw3-dev \
-    libproj-dev \
-    libjsoncpp-dev \
     libgdal-dev \
-    libssl-dev \
-    swig \
-    libopenblas-dev \
-    libshp-dev
+    libgeotiff-dev \
+    libgsl-dev \
+    libproj-dev \
+    libshp-dev \
+    libtiff-dev \
+    libtiff-dev \
+    pkgconf \
+    zlib1g-dev
 ```
 
 To build and install the miallib library via cmake for pyjeo:

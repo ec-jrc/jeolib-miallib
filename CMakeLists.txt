@@ -453,8 +453,6 @@ endif(PROCESS_IN_PARALLEL)
 
 find_package(PkgConfig REQUIRED)
 
-set(BLA_VENDOR OpenBLAS)
-
 find_package(GSL REQUIRED)
 if(GSL_FOUND)
   message(STATUS "Found GSL: ${GSL_LIBRARIES}")
